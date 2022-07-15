@@ -15,7 +15,7 @@ For predictor value, distinguishing two ways how predictor values are set (obser
 
 
 ## 2. Mapping Stats. model to Code
-Based on the mapping, `stan_builder` on pysd translate Vensim's `.mdl` file into Stan's `.stan` file for data generation and estimation. `create_stan_program_generator` and `create_stan_program_estimator` are functions that we will mainly use. The main difference is their purpose which is better understood when thinking in terms of Stan's program block. Stan has six program blocks which modularizes possible inflow and outflow of information in statistical estimation process. The following two stan files for non-hierarchical, non-ODE model illutstrate their difference. Also, measurement parameter ($\sigma$) is fixed as 1.2.
+Based on the mapping, `stan_builder` on pysd translate Vensim's `.mdl` file into Stan's `.stan` file for data generation and estimation. `create_stan_program_generator` and `create_stan_program` are functions that we will mainly use. The main difference is their purpose which is better understood when thinking in terms of Stan's program block. Stan has six program blocks which modularizes possible inflow and outflow of information in statistical estimation process. The following two stan files for non-hierarchical, non-ODE model illutstrate their difference. Also, measurement parameter ($\sigma$) is fixed as 1.2.
 
 ```stan
 data{
@@ -69,6 +69,7 @@ Hierarchical modeling predicts the outcome through linear combination $\eta$ tra
 #### Prior parameter for Hierarchy
 Prior parameter models shared structure among groups as they both affect data generation process (dgp) of data for every group. Hence in the estimation process, which is the reverse of dgp, prior parameters are updated by new data from any group.
 
+#### what `create_stan_program_generator` does
 The following tables lists how `create_stan_program_generator` translates SD_Stats. model into each block.
 
 | Program Block        | Purpose | SD_Stats. model                                                | e.g.  in SIR                 |
@@ -86,9 +87,10 @@ The following tables lists how `create_stan_program_generator` translates SD_Sta
 
 Data synthesis with one file may only be possible for simple linear [ODEs Mode](https://mc-stan.org/docs/stan-users-guide/solving-a-system-of-linear-odes-using-a-matrix-exponential.html). We recommend using pysd for data synthetis for complex models.
 
-The main step of model calibration is to estimate parameter based on the generated outcome .`simulated_cases` synthesized with `create_stan_program_generator` or `pysd` can be plugged in as  `cases` for `create_stan_program_estimator`. 
+The main step of model calibration is to estimate parameter based on the generated outcome .`simulated_cases` synthesized with `create_stan_program_generator` or `pysd` can be plugged in as  `cases` for `create_stan_program`. 
 
-The following tables lists how `create_stan_program_estimator` translates SD_Stats. model into each block. The main componentes of data block are $Y, X, Z$ and parameters block include $\beta, u, \phi$.
+#### what `create_stan_program` does
+The following tables lists how `create_stan_program` translates SD_Stats. model into each block. The main componentes of data block are $Y, X, Z$ and parameters block include $\beta, u, \phi$.
 
 | Program Block         | Purpose  | SD_Stats. model                                                         | e.g.  in SIR                 | e.g. in Hierarchical M.        |
 | --------------------- | -------- | ----------------------------------------------------------------------- | ---------------------------- | ------------------ |
@@ -117,7 +119,7 @@ Below is the example of Stan block code for SIR model which has the following OD
 <img width="816" alt="image" src="https://user-images.githubusercontent.com/30194633/179243440-7c6c6b41-3dde-4a94-9d94-31e0d13b879f.png">
 
 
-#### how `create_stan_program_estimator` works under the hood
+#### how `create_stan_program` works under the hood
 
 It first creates abstract syntax tree as described in [this](https://pysd.readthedocs.io/en/master/structure/vensim_translation.html) pysd vensim translation section then builds dependency graph for topological sort. This is needed as Stan requires all variables to be orderly declared. For instance, if `c=a+b` then, we make sure declaration of `a` or `b` precedes that of `c`. The aim is to get the minimal input from users for calibration process; for instance, repair and inventory model (`Repair.mdl, Inventory.mdl`) file under VensimModels folder, `stan_builder.build_function_block`  receives the following input: predictor and outcome. Codes are underdevelopment in [here](https://github.com/Dashadower/pysd) which we aim to merge into pysd package. You can run `testing.py` script in `test_scripts` folder. Running the following returns the template for `.stan` as below.
 ```
