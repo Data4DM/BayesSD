@@ -57,6 +57,8 @@ model{
 
 The following table shows the mapping for possible Bayesian variables with blocks as documented [here](https://mc-stan.org/docs/reference-manual/statistical-variable-taxonomy.html#variable-kinds.figure) in Stan manual.
 
+![[15879-Fall2022/DataInDM/Diagram/StatCodeMap.png]]
+
 ![[Pasted image 20220715052858.png]]
 
 ## 3. Mapping Hierarchical SD_Stats. model to Code
@@ -114,7 +116,7 @@ Below is the example of Stan block code for SIR model which has the following OD
 - $dR/dt = \gamma * I$
 
  ![[Pasted image 20220715025016.png]]
-
+![[15879-Fall2022/DataInDM/Diagram/SIRBlock.png]]
 
 #### how `create_stan_program_estimator` works under the hood
 
