@@ -1,4 +1,6 @@
 
+Model calibration can be viewed as balance loop between generator $(y|\theta)$ and estimator $(\theta|y)$.
+
 ## 1. Mapping SD model to Stats. model
 
 | -        | Statistical model | SD model                               |
@@ -9,7 +11,7 @@
 | data     | observed outcome  | target variable data                   |
 | data     | simulated outcome | ODE solution of target variable        |
 
-For predictor value, distinguishing two ways how predictor values are set (observed or assumed) are crucial. It directly affects the estimation process; parameter corresponding to assumed predictor stay fixed as the sampler explores the parameter space. We will call this fixing or conditioning as "clamped 🗜".
+For predictor value, distinguishing two ways how predictor values are set (observed or assumed) are crucial. It directly affects the estimation process; parameter corresponding to assumed predictor stay fixed as the sampler explores the parameter space. We will call this fixing or conditioning as "clamped 🗜". The table may be extended based on  [this](https://mc-stan.org/docs/reference-manual/statistical-variable-taxonomy.html#statistical-variable-taxonomy) section of Stan manual, especially regarding missing data concepts.
 
 
 ## 2. Mapping Stats. model to Code
@@ -85,7 +87,6 @@ Data synthesis with one file may only be possible for simple linear [ODEs Mode](
 
 The main step of model calibration is to estimate parameter based on the generated outcome .`simulated_cases` synthesized with `create_stan_program_generator` or `pysd` can be plugged in as  `cases` for `create_stan_program_estimator`. 
 
-
 The following tables lists how `create_stan_program_estimator` translates SD_Stats. model into each block. The main componentes of data block are $Y, X, Z$ and parameters block include $\beta, u, \phi$.
 
 | Program Block         | Purpose  | SD_Stats. model                                                         | e.g.  in SIR                 | e.g. in MLM        |
@@ -115,20 +116,12 @@ Below is the example of Stan block code for SIR model which has the following OD
  ![[Pasted image 20220715025016.png]]
 
 
-For more information, refer to  [this](https://mc-stan.org/docs/reference-manual/statistical-variable-taxonomy.html#statistical-variable-taxonomy) section of Stan manual.
+#### how `create_stan_program_estimator` works under the hood
 
-#### create_stan_program_estimator
-
-Most estimation can be placed under the umbrella of generalized linear regression which has the form of $EY = \phi()$ `generator` synthesize data with `generated quantities` block while `estimator` samples posterior draws with all blocks except `generated quantities` (five: data, transformed data, parameter, transformed parameter, model). As model gets more complex, where to define each variable with what parameterization led to stark computational cost but for now, noting the model and better understanding of how each block, refer to [this](https://mc-stan.org/docs/reference-manual/blocks.html) section of Stan manual which is well summarized in [this](https://mc-stan.org/docs/reference-manual/overview-of-stans-program-blocks.html#variable-read-write-and-definition-summary) table.
-
-
-It first creates abstract syntax tree as described in [this](https://pysd.readthedocs.io/en/master/structure/vensim_translation.html) pysd vensim translation section then creates dependency graph for topological sort. This is needed as Stan requires all variables to be orderly declared. For instance, if `c=a+b` then, we make sure declaration of `a` or `b` precedes that of `c`. 
-
-The aim is to get the minimal input from users for estiamtion process; for instance, repair and inventory model (`Repair.mdl, Inventory.mdl`) file under VensimModels folder, `stan_builder.build_function_block`  receives the following input: predictor and outcome.
+It first creates abstract syntax tree as described in [this](https://pysd.readthedocs.io/en/master/structure/vensim_translation.html) pysd vensim translation section then builds dependency graph for topological sort. This is needed as Stan requires all variables to be orderly declared. For instance, if `c=a+b` then, we make sure declaration of `a` or `b` precedes that of `c`. The aim is to get the minimal input from users for calibration process; for instance, repair and inventory model (`Repair.mdl, Inventory.mdl`) file under VensimModels folder, `stan_builder.build_function_block`  receives the following input: predictor and outcome.
 ```
-stan_builder.build_function_block(["failure_count", "repair_time"], ["battle_field", "repair_shop"])
+stan_builder.create_stan_program(["failure_count", "repair_time"], ["battle_field", "repair_shop"])
 
 stan_builder.create_stan_program(["demand"], ["inventory", "backlog"])
 ``` 
 
-For each Stan block which is explained in 
