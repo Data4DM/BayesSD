@@ -9,7 +9,7 @@ Model calibration can be viewed as balance loop between generator $(y|\theta)$ a
 | variable | outcome           | target variable                        |
 | data     | predictor value   | observed or assumed value of predictor |
 | data     | observed outcome  | target variable data                   |
-| data     | simulated outcome | ODE solution of target variable        |
+| simulated result     | simulated outcome | ODE solution of target variable        |
 
 For predictor value, distinguishing two ways how predictor values are set (observed or assumed) are crucial. It directly affects the estimation process; parameter corresponding to assumed predictor stay fixed as the sampler explores the parameter space. We will call this fixing or conditioning as "clamped 🗜". The table may be extended based on  [this](https://mc-stan.org/docs/reference-manual/statistical-variable-taxonomy.html#statistical-variable-taxonomy) section of Stan manual, especially regarding missing data concepts.
 
@@ -57,9 +57,8 @@ model{
 
 The following table shows the mapping for possible Bayesian variables with blocks as documented [here](https://mc-stan.org/docs/reference-manual/statistical-variable-taxonomy.html#variable-kinds.figure) in Stan manual.
 
-![[15879-Fall2022/DataInDM/Diagram/StatCodeMap.png]]
+<img width="819" alt="image" src="https://user-images.githubusercontent.com/30194633/179243325-f3dbfb4f-19b7-4832-8c6f-8975f49a7f39.png">
 
-![[Pasted image 20220715052858.png]]
 
 ## 3. Mapping Hierarchical SD_Stats. model to Code
 What code components is additionally needed for ODE and hierarhical model? This section introduces how function block encodes ODEs and prior parameters can express hierarchical concept. With these techniques, hierarchical SD model is translated into Stan file which once plugged into optimization algorithm implemented in Stan returns parameter samples.
@@ -91,7 +90,7 @@ The main step of model calibration is to estimate parameter based on the generat
 
 The following tables lists how `create_stan_program_estimator` translates SD_Stats. model into each block. The main componentes of data block are $Y, X, Z$ and parameters block include $\beta, u, \phi$.
 
-| Program Block         | Purpose  | SD_Stats. model                                                         | e.g.  in SIR                 | e.g. in MLM        |
+| Program Block         | Purpose  | SD_Stats. model                                                         | e.g.  in SIR                 | e.g. in Hierarchical M.        |
 | --------------------- | -------- | ----------------------------------------------------------------------- | ---------------------------- | ------------------ |
 | data                  | define   | predictor                                                               | N, size of each compartments |                    |
 | data                  | define   | initial outcome                                                         | y0                           |                    |
@@ -115,15 +114,72 @@ Below is the example of Stan block code for SIR model which has the following OD
 - $- dI/dt = \beta * I/N -\gamma * N$
 - $dR/dt = \gamma * I$
 
- ![[Pasted image 20220715025016.png]]
-![[15879-Fall2022/DataInDM/Diagram/SIRBlock.png]]
+<img width="816" alt="image" src="https://user-images.githubusercontent.com/30194633/179243440-7c6c6b41-3dde-4a94-9d94-31e0d13b879f.png">
+
 
 #### how `create_stan_program_estimator` works under the hood
 
-It first creates abstract syntax tree as described in [this](https://pysd.readthedocs.io/en/master/structure/vensim_translation.html) pysd vensim translation section then builds dependency graph for topological sort. This is needed as Stan requires all variables to be orderly declared. For instance, if `c=a+b` then, we make sure declaration of `a` or `b` precedes that of `c`. The aim is to get the minimal input from users for calibration process; for instance, repair and inventory model (`Repair.mdl, Inventory.mdl`) file under VensimModels folder, `stan_builder.build_function_block`  receives the following input: predictor and outcome.
+It first creates abstract syntax tree as described in [this](https://pysd.readthedocs.io/en/master/structure/vensim_translation.html) pysd vensim translation section then builds dependency graph for topological sort. This is needed as Stan requires all variables to be orderly declared. For instance, if `c=a+b` then, we make sure declaration of `a` or `b` precedes that of `c`. The aim is to get the minimal input from users for calibration process; for instance, repair and inventory model (`Repair.mdl, Inventory.mdl`) file under VensimModels folder, `stan_builder.build_function_block`  receives the following input: predictor and outcome. Codes are underdevelopment in [here](https://github.com/Dashadower/pysd) which we aim to merge into pysd package. You can run `testing.py` script in `test_scripts` folder. Running the following returns the template for `.stan` as below.
 ```
-stan_builder.create_stan_program(["failure_count", "repair_time"], ["battle_field", "repair_shop"])
+> vf = VensimFile("test_scripts/vensim_models/Inventory.mdl")
+> stan_builder.create_stan_program(["demand"], ["inventory", "backlog"])
 
-stan_builder.create_stan_program(["demand"], ["inventory", "backlog"])
+functions {
+    vector vensim_func(real time, vector outcome,     real demand    ){
+        real inventory = outcome[1];
+        real backlog = outcome[2];
+
+        real sd_of_demand = 10;
+        real inventory_adjustment_time = 3;
+        real supply_line_adjustment_time = 3;
+        real minimum_processing_time = 3;
+        real mean_of_demand = 100;
+        real desired_delivery_delay = 3;
+        real fulfilment_ratio = 1;
+        real bl_out = shipment_rate;
+        real bl_in = demand;
+        real back_log = bl_in - bl_out;
+        real desired_shipment = back_log / desired_delivery_delay;
+        real shipment_rate = desired_shipment * fulfilment_ratio;
+        real inventory_period = 5;
+        real demand_forecast = demand;
+        real desired_inventory = demand_forecast * inventory_period;
+        real lead_time = 5;
+        real desired_supply_line = demand_forecast * lead_time;
+        real adjustment_for_supply_line = desired_supply_line - supply_line / supply_line_adjustment_time;
+        real adjustment_for_inventory = desired_inventory - inventory / inventory_adjustment_time;
+        real desired_production_start = adjustment_for_inventory + adjustment_for_supply_line + demand_forecast;
+        real production_start = fmax(0,desired_production_start);
+        real supply_line = production_start - production_completion;
+        real production_completion = supply_line / lead_time;
+        real inventory_dydt = production_completion - shipment_rate;
+        real maximum_delivery_rate = inventory / minimum_processing_time;
+        real unit_overage_cost = 1;
+        real overage_cost = inventory + supply_line * unit_overage_cost;
+        real deficient_amount = fmax(0,back_log - shipment_rate);
+        real unit_underage_cost = 9;
+        real underage_cost = deficient_amount * unit_underage_cost;
+        real cost = underage_cost + overage_cost;
+        real forecast_period = 3;
+        real final_time = 100;
+        real initial_time = 0;
+        real time_step = 1;
+        real saveper = time_step;
+
+        return {inventory_dydt, backlog_dydt};
+    }
+}
+data{
+}
+transformed data{
+}
+parameters{
+}
+transformed parameters {
+    vector[2] initial_outcome;
+    initial_outcome = {inventory, backlog};
+    array[] vector integrated_result = integrate_ode_rk45(vensim_func, initial_outcome, initial_time, times, demand);
+}
+model{
+}
 ``` 
-
