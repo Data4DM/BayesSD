@@ -1,9 +1,14 @@
 
 ## What
-- Classify variables according to its 
-	- semantic (time, ratio, rate, level) where `parameters` are usually time or ratio
-	- SD_syntax (`exo`/`endo`, assumed/estimated `parameter` for `exo` and observed/simulated `level` and latent for `endo`)
-	- Bayes_syntax (data, transformed data, parameters, transformed parameters, model, generated quantities)
+- Classify variables:
+	- semantic: time, ratio, rate, price, state
+	- SD_syntax: assumed/estimated `parameter` from _exogenous_ and  observed/simulated `state` and latent for _endogenous_
+	- Bayes_syntax: data, transformed data, parameters, transformed parameters, model, generated quantities
+
+- Verify uncertainty source as:
+	- semantic: exogenous parameters like `time`, `ratio`, `rate`, `price` 
+	- SD_syntax:  `parameter uc`, `process uc`, `measurement uc`
+	- Bayes_syntax: `parameter uc` as prior distribution in params block, `measurement uc` as likelihood distribution in params block, `process uc` as function block (need c++ coding)
 
 - Understand them in generalized linear regression context: assumed/ data observed state Y and predictor X (driving data and values of assumed parameter) 
 - Understand how causal and feedback structure is affected by Bayesian inference
@@ -16,10 +21,10 @@ We start with a simple prey-preditor Lotka Voltera (LV) model and compare with d
 
 
 ### M1: Prey-Predator (LV)
-- 
 
 ### M2: Demand-Supply (DS): short time, Different space
 
+- M1, M2 vignette in process
 
 ### M3: Diffusion (SIR, COVID): Long time, Different space
 
