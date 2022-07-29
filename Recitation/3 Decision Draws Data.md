@@ -1,5 +1,5 @@
 ## 3D with 879879 loop
-Three dots to connect: data, draws, decision. We first unite [draws-decision] then add data [data - [draws-decision]]. The main spirit is, real data comes after calibrating the translation of our mental model to statistical+computational model. For this, we first make the rough mockup from data (in the form of prior-knowledge) to draws to decision then build up from the decision's end. As the saying "Match supply with demand" goes, we recommend pull instead of push system. The model building iteration is divided into three and we assume previous modules are `built-in` in the next.
+Three dots to connect: data, draws, decision. We first unite [draws-decision] then add data [data - [draws-decision]]. The main spirit is, real data comes after calibrating the translation of our mental model to statistical+computational model. For this, we first make the rough mockup from data (in the form of prior-knowledge) to draws to decision then build up from the decision's end. As the saying "Match supply with demand" goes, we recommend pull instead of push system. The model building iteration is divided into three and we assume previous modules are built-in in the next.
 
 ### 1. 879-Fall: Verify Draws-Decision
 In 879, `Bringing data in dynamic models`, we limit the bounds for data, draws, decision as follows.
@@ -19,7 +19,7 @@ Given the `real-world data`,
 - data to decision: Bayes factor simulation-based calibration and indirect inference
 - draws: posterior approximators from simulation-based inference e.g. BayesFlow
 ```
-Link to [Bayes factor SBC]([url](https://psycnet.apa.org/record/2022-39838-001)) and [BayesFlow]([url](https://github.com/stefanradev93/BayesFlow)).
+Link to [Bayes factor SBC](https://psycnet.apa.org/record/2022-39838-001) and [BayesFlow](https://github.com/stefanradev93/BayesFlow).
 
 This order is common in Bayesian inference where we first build the generator then do the inference conditional on the data. Working in both directions is the benefit of generative model (e.g. Bayesian) which operates on data-parameter joint space. Using this benefit, we argue the best practice of model building is to first make the rough mockup from data to decision then building up from the decision's end. For instance, the effect of new data on decision can be forwardly-simulated, then compared to inform us the best data. This spirit is similar to [Bayesian optimization](https://www.cs.ox.ac.uk/people/nando.defreitas/publications/BayesOptLoop.pdf). However, unlike their description of "taking human out of the loop", we aim to design human-machine interface. In practice, human's form of decision, or activation function in Bayesian optimization, becomes clearer during the model building iteration.
 
