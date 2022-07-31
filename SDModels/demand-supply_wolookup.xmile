@@ -204,7 +204,7 @@
 				<units>Month</units>
 				<doc></doc>
 					<eqn>
-	5					</eqn>
+	3					</eqn>
 			</aux>
 			<aux name="Shipment_Lead_Time">
 				<units>Month</units>
@@ -216,7 +216,7 @@
 				<units></units>
 				<doc></doc>
 					<eqn>
-	5					</eqn>
+	3					</eqn>
 			</aux>
 			<aux name="Supply_Line_Adj_Time">
 				<units></units>

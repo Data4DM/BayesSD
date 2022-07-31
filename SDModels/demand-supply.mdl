@@ -102,7 +102,7 @@ Forecasted Demand Rate= INTEG (
 	~		|
 
 Inventory Adj Time=
-	5
+	3
 	~	Month
 	~		|
 
@@ -176,7 +176,7 @@ Inventory= INTEG (
 	~		|
 
 Supply Lead Time=
-	5
+	3
 	~	
 	~		|
 
@@ -328,7 +328,7 @@ Backlog Control
 :L<%^E!@
 1:angie.vdfx
 4:Time
-5:Backlog Adj Rate Desired
+5:Demand Adj Time
 9:angie
 19:90,0
 21:Overage Retrodictive / Underage Predictive Control
