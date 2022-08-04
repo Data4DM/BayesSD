@@ -1,5 +1,5 @@
 ## What
-Calibrating Hierarchical Bayesian ODE; for this, tracing the source of uncertainty and hierarchy is needed.
+Calibrating Hierarchical Bayesian ODE; for this, tracing the source of variation and hierarchy is needed.
 
 ### Variation (a.k.a. Uncertainty)
 As the main part of calibration is inference, our goal is to formulate dynamic model into Bayesian statistical model.
@@ -18,7 +18,16 @@ As the main part of calibration is inference, our goal is to formulate dynamic m
 - Understand the role of parameter inference in terms of model calibration (first heuristic Ring-Toss success ratio on different quantiles then formal SBC)
 
 ### Hierarchy
-Hierarchical model (HM) is introduced in [[Reading/Gesmann20_HierCompRsrv.pdf]] paper as popular tools in social and life sciences whose role is to help us understand which characteristics are shared among individuals within a population as well as which ones vary, and to what extent. I believe the connection between HM and aggregation from System dyanmics is natural as hierarchical model (a.k.a partial pooling) infer the degree of heterogeneity. HM infers from data, where the data-generating-process stands between no pooling (no mixing) and complete pooling (perfect mixing). Hazhir and I set the goal of 879 Fall seminar as hierarchical model in production model (Chp.18 of business dynamics textbook) which I call below as Demand-Supply.
+
+Hierarchical model (HM) is introduced in [[Reading/Gesmann20_HierCompRsrv.pdf]] paper as popular tools in social and life sciences whose role is to help us understand which characteristics are shared among individuals within a population as well as which ones vary, and to what extent. I believe the connection between HM and aggregation from System dyanmics is natural as hierarchical model (a.k.a partial pooling) infer the degree of heterogeneity. HM infers from data, where the data-generating-process stands between no pooling (no mixing) and complete pooling (perfect mixing). 
+
+Hazhir and I set the goal of 879 Fall seminar as calibrating hierarchical model in production model (Chp.18 of business dynamics textbook) which I call below as Demand-Supply. In this context, the following questions need to be addressed: 
+
+1. Is agent-based (AB) and Differential equation be thought as no pooling and complete pooling? 
+
+2. If so, what would mean of AB model correspond to in Bayesian context? 
+
+3. Could vensim subscript and hierarhical model replace order fullfillment lookup function? I understood the source of fuzzy function as M:1 (M SKUs each with different (but similar) production process become 1 item in shipment process).
 
 If time allows, I wish to address interaction between temporal heterogenity and spatial heterogenity which may be accessed with cross-correlation of time series. To elaborate, Hierarchy allows the spectrum between heterogenous to homogenous on spatial axis but with this hierarchy evolve over time, it faces another hierarchy in time axis due to seasonality. Understanding the interaction between two hierarchy interests me. [This](https://dl.acm.org/doi/abs/10.1016/j.eswa.2022.117195) paper was my first attempt in modeling time series hierarchy. 
 
