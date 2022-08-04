@@ -1,4 +1,8 @@
 ## What
+Calibrating Hierarchical Bayesian ODE; for this, tracing the source of uncertainty and hierarchy is needed.
+
+### Uncertainty
+As the main part of calibration is inference, our goal is to formulate dynamic model into Bayesian statistical model.
 - Classify variables:
 	- semantic: time, ratio, rate, price, state
 	- SD_syntax: assumed/estimated `parameter` from _exogenous_ and  observed/simulated `state` and latent for _endogenous_
@@ -7,34 +11,61 @@
 - Verify uncertainty source as:
 	- semantic: exogenous parameters like `time`, `ratio`, `rate`, `price` 
 	- SD_syntax:  `parameter uc`, `process uc`, `measurement uc`
-	- Bayes_syntax: `parameter uc` as prior distribution in params block, `measurement uc` as likelihood distribution in params block, `process uc` as function block (need c++ coding)
+	- Bayes_syntax (block for Stan syntax): `parameter uc` as prior distribution in params block, `measurement uc` as likelihood distribution in params block, `process uc` as function block (need either Python for data generation or C++ for RNG in Stan function block)
 
-- Understand them in generalized linear regression context: assumed/ data observed state Y and predictor X (driving data and values of assumed parameter) 
+- Understand dynamic model in generalized linear regression context: `observed state` Y as `outcome` and `assumed parameter` value X as `predictor`
 - Understand how causal and feedback structure is affected by Bayesian inference
-- Understand the role of parameter inference in terms of model calibration (first counting Ring-Toss-Success ratio then using SBC)
- 
+- Understand the role of parameter inference in terms of model calibration (first heuristic Ring-Toss success ratio on different quantiles then formal SBC)
+
+### Hierarchy
+Hierarchical model (HM) is introduced in [[Reading/Gesmann20_HierCompRsrv.pdf]] paper as popular tools in social and life sciences whose typical role is to help us understand which characteristics are shared among individuals within a population as well as which ones vary, and to what extent. I believe the connection between HM and aggregation in System dyanmics is natural as hierarchical model (a.k.a partial pooling) infer the degree of heterogeneity. HM infers from data, where the data-generating-process stands between no pooling (no mixing) and complete pooling (perfect mixing). Hazhir and I set the goal of 879 Fall seminar as hierarchical model in production model (Chp.18 of business dynamics textbook) which I call below as matching supply with demand.
+
+If time allows, I wish to address interaction between temporal heterogenity and spatial heterogenity which may be accessed with cross-correlation of time series. To elaborate, Hierarchy allows the spectrum between heterogenous to homogenous on spatial axis but with this hierarchy evolve over time, it faces another hierarchy in time axis due to seasonality. Understanding the interaction between two hierarchy interests me. [This](https://dl.acm.org/doi/abs/10.1016/j.eswa.2022.117195) paper was my first attempt in modeling time series hierarchy. 
 
 ## How
+We start with a simple prey-preditor (PP) model and compare with demand-supply (DS) model to understand three sources of uncertainty: parameter, measurement, and process. PP has two uncertainty while DS can be modeled to have all three uncertainties. Then we add hierarchy to the two model to test HM's role of gauging system heterogeneity and allowable aggregation level.
 
-We start with a simple prey-preditor Lotka Voltera (LV) model and compare with demand-supply (DS) model to understand three sources of uncertainty. Then we observe the effect of hierarchy and how it affects uncertainty of parameter, measurement, and process.
+### M1: Prey-Predator (PP)
+<img width="856" alt="image" src="https://user-images.githubusercontent.com/30194633/182760257-81fac798-1927-430d-841e-40569427b43f.png">
+
+PP has 8 parameters to estimate and 0 parameters that is assumed
+
+8 = 4 (2*2) stock-related (:= observable)
+
+	- `latent_state_init`, `msr_error_scale` for each stock `Prey`, `Predator`
+
+plus 4 estimated params (:= external to loop)
+
+	- `prey_birth_coeff`, `prey_death_coeff`, `pred_birth_coeff`, `pred_death_coeff`
+
+### M2: Demand-Supply (DS)
+<img width="1210" alt="image" src="https://user-images.githubusercontent.com/30194633/182761909-83a6c6dd-c683-4fec-9cf8-5f302be4209c.png">
+
+DS has 8 parameters to estimate and 5 parameters that is assumed
+
+8 = 6 (2 * 3) stock-related
+
+	- `latent_state_init`, `msr_error_scale` for each stock `Supply Line`, `Inventory`, `Backlog`
+
+plus 2 estimated params 
+
+	- `supply_lead_time`, `shipment_lead_time`,
+
+and
+
+5 `assumed params`
+
+	- const: `supply_line_adj_time`, `inventory_adj_time`, `backlog_adj_time` , `demand_adj_time`
+	- series: `demand`
+
+Note that diagram follows the rule of
+- variable color: according to semantic and unit (red for time month , green for state #, blue for rate (#/month), skyblue for ratio dmnl)
+- arrow shape: solid arrow for same level or integration and dotted arrow for derivative
+
+### M3: Hierarchical version of M1 and M2
 
 
-### M1: Prey-Predator (LV)
-
-### M2: Demand-Supply (DS): short time, Different space
-
-- M1, M2 vignette in process
-
-### M3: Diffusion (SIR, COVID): Long time, Different space
-
-
-### M4: Hierarchical Model
-
-Hierarchical model (HM) is introduced in [[Reading/Gesmann20_HierCompRsrv.pdf]] paper as popular tools in social and life sciences whose typical role is to help us understand which characteristics are shared among individuals within a population as well as which ones vary, and to what extent.
-
-
- 
----
+### (if time permits) M4: Diffusion (SI, SIR, COVID) and its hierarchy version.
 
 
  
