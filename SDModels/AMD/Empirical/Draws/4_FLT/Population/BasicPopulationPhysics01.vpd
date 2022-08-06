@@ -1,0 +1,3 @@
+*C
+Population[gender,AgeGroup]/weight for population[gender,AgeGroup]
+births[gender]/weight for births[gender]

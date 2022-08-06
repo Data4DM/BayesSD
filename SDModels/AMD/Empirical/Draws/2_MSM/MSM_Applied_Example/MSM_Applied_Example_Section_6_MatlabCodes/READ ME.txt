@@ -1,0 +1,1 @@
+Open 'RUN_MSM.m' file and press F5 to execute the codes.

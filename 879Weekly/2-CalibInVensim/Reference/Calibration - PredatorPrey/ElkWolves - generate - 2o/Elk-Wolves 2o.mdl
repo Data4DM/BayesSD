@@ -1,0 +1,496 @@
+{UTF-8}
+Elk increase rate=
+	RANDOM POISSON(0, 1e+06 , MAX(Min elk,Elk)*Elk fractional growth rate alpha*TIME STEP\
+		 , 0 , 1 , 0 )/TIME STEP
+	~	Prey/Time
+	~	Rate of increase in prey (e.g., births of elk or rabbits); prey are \
+		assumed to have unlimited food supply and therefore to increase \
+		exponentially in the absence of predation.
+	|
+
+Wolf increase rate=
+	RANDOM POISSON(0, 1e+06 , MAX(Min wolves,Wolves)*Wolf fractional growth rate*TIME STEP\
+		 , 0 , 1 , 0 )/TIME STEP
+	~	pred/Time
+	~		|
+
+Min elk=
+	1
+	~	Prey
+	~		|
+
+Min wolves=
+	1
+	~	pred
+	~		|
+
+E Maturing=
+	RANDOM BINOMIAL(0, Young Elk-Young elk predation rate*TIME STEP , TIME STEP/Elk Maturation Time\
+		 , Young Elk , 0 , 1 , 0 )
+	/TIME STEP
+	~	Prey/Time
+	~		|
+
+Elk= INTEG (
+	E Maturing-Elk decrease rate,
+		INTEGER(Relative initial elk*Reference elk))
+	~	Prey
+	~		|
+
+Elk Maturation Time=
+	1
+	~	Time
+	~		|
+
+Wolf Maturation Time=
+	1
+	~	Time
+	~		|
+
+Young elk predation rate=
+	RANDOM BINOMIAL(0, Young Elk , Fractional predation rate*TIME STEP , Young Elk , 0 ,\
+		 1 , 0 )/TIME STEP
+	~	Prey/Time
+	~		|
+
+Young Wolves= INTEG (
+	Wolf increase rate-W Maturing,
+		INTEGER(Wolves*Wolf fractional growth rate*Wolf Maturation Time))
+	~	pred
+	~		|
+
+Wolves= INTEG (
+	W Maturing-Wolf decrease rate,
+		INTEGER(Relative initial wolves*Reference wolves))
+	~	pred
+	~		|
+
+Young Elk= INTEG (
+	Elk increase rate-E Maturing-Young elk predation rate,
+		INTEGER(Elk*Elk fractional growth rate alpha/(Fractional predation rate + 1/Elk Maturation Time\
+		)))
+	~	Prey
+	~		|
+
+W Maturing=
+	RANDOM BINOMIAL(0, Young Wolves , TIME STEP/Wolf Maturation Time , Young Wolves , 0 \
+		, 1 , 0 )/TIME STEP
+	~	pred/Time
+	~		|
+
+Predation Noise SD=
+	0
+	~	fraction [0,1]
+	~		|
+
+Est Wolf measurement SD=
+	10
+	~	Prey
+	~		|
+
+Fractional predation rate=
+	Reference elk per wolf*(Wolves/Reference wolves)
+	*EXP(Predation Noise SD*RANDOM NORMAL(-6,6,0,1,0))
+	~	fraction/Time
+	~	Fractional rate of decrease in prey from predation; equal to (beta*y) in \
+		the wiki article.
+	|
+
+Est Elk driving noise variance=
+	100
+	~	Dmnl
+	~		|
+
+Est Elk measurement SD=
+	10
+	~	pred
+	~		|
+
+Est Wolf driving noise variance=
+	100
+	~	Dmnl
+	~		|
+
+Wolf fractional growth rate=
+	Reference wolf growth rate*(Elk/Reference elk)
+	*EXP(Wolf Growth Noise SD*RANDOM NORMAL(-6,6,0,1,0))
+	~	fraction/Time
+	~	Fractional rate of increase of predators; equal to (delta*x) in the wiki \
+		article.
+	|
+
+Wolf Growth Noise SD=
+	0
+	~	fraction [0,1]
+	~		|
+
+Measured Elk=
+	IF THEN ELSE( PULSE TRAIN(0, 0, measurement interval , FINAL TIME )
+	, RANDOM POISSON(0, 2*Elk, Elk , 0 , 1 , 0 )
+	, :NA: )
+	~	Prey
+	~		|
+
+Measured Wolves=
+	IF THEN ELSE( PULSE TRAIN(0, 0, measurement interval , FINAL TIME )
+	, RANDOM POISSON(0, 2*Wolves, Wolves , 0 , 1 , 0 )
+	, :NA: )
+	~	pred
+	~		|
+
+measurement interval=
+	1
+	~	Time
+	~		|
+
+NOISE SEED=
+	1
+	~	Dmnl [1,1000,1]
+	~		|
+
+Wolf decrease rate=
+	RANDOM BINOMIAL(0, Wolves , Wolf mortality rate*TIME STEP , Wolves , 0 , 1 , 0 )/TIME STEP
+	~	pred/Time
+	~	Natural rate of decrease of predators from mortality and emmigration.
+	|
+
+Wolf mortality rate=
+	0.1
+	~	fraction/Time [0,1]
+	~		|
+
+Elk decrease rate=
+	RANDOM BINOMIAL(0, Elk , Fractional predation rate*TIME STEP , Elk , 0 , 1 , 0 )/TIME STEP
+	~	Prey/Time
+	~	Rate of decrease in prey from predation
+	|
+
+Elk fractional growth rate alpha=
+	0.3
+	~	fraction/Time [0,1]
+	~	Fractional growth rate of prey per unit time, absent predation
+	|
+
+Reference elk per wolf=
+	0.1
+	~	fraction/Time [0,1]
+	~		|
+
+Reference wolf growth rate=
+	0.2
+	~	fraction/Time [0,1]
+	~		|
+
+Reference wolves=
+	10
+	~	pred [0,?]
+	~		|
+
+Reference elk=
+	100
+	~	Prey [0,?]
+	~		|
+
+Relative initial wolves=
+	1
+	~	Dmnl [0.1,5]
+	~	Initial predators, relative to the reference value
+	|
+
+Relative initial elk=
+	1
+	~	Dmnl [0.1,5]
+	~	Initial prey, relative to the reference value
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Time
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Time
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Time [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.125
+	~	Time [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Dynamics
+$192-192-192,0,Arial|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,75,0
+10,1,Wolves,630,342,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,2,Elk,634,556,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,3,48,273,339,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,4,6,84,4,0,43,22,0,0,0,-1--1--1,,1|(396,339)|
+1,5,6,3,100,0,0,22,0,0,0,-1--1--1,,1|(320,339)|
+11,6,0,363,339,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,7,Wolf increase rate,363,363,55,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,8,48,812,342,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,9,11,8,4,0,0,22,0,0,0,-1--1--1,,1|(769,342)|
+1,10,11,1,100,0,45,22,2,64,0,-1--1--1,|||0-0-0,1|(697,342)|
+11,11,0,730,342,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,12,Wolf decrease rate,730,366,57,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,13,48,273,553,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,14,16,85,4,0,43,22,0,0,0,-1--1--1,,1|(403,553)|
+1,15,16,13,100,0,0,22,0,0,0,-1--1--1,,1|(322,553)|
+11,16,0,368,553,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,17,Elk increase rate,368,570,51,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,18,48,809,554,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,19,21,18,4,0,0,22,0,0,0,-1--1--1,,1|(768,554)|
+1,20,21,2,100,0,45,22,2,64,0,-1--1--1,|||0-0-0,1|(700,554)|
+11,21,0,732,554,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,22,Elk decrease rate,732,571,53,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,23,1,11,1,0,43,0,2,64,0,-1--1--1,|||0-0-0,1|(719,317)|
+1,24,2,17,1,0,43,0,0,64,0,-1--1--1,,1|(428,645)|
+1,25,2,21,1,0,43,0,2,64,0,-1--1--1,|||0-0-0,1|(665,516)|
+1,26,1,7,1,0,43,0,2,192,0,-1--1--1,|||0-0-0,1|(570,392)|
+10,27,Elk fractional growth rate alpha,288,638,53,16,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||0-128-0,0,0,0,0,0,0
+1,28,27,17,0,0,43,0,0,64,0,-1--1--1,,1|(0,0)|
+10,29,Relative initial elk,625,656,52,9,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||0-128-0,0,0,0,0,0,0
+1,30,29,2,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,31,Relative initial wolves,620,421,42,16,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||0-128-0,0,0,0,0,0,0
+10,32,Fractional predation rate,730,451,42,16,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,33,1,32,1,0,43,0,0,64,0,-1--1--1,,1|(684,385)|
+1,34,32,21,1,0,43,0,2,192,0,-1--1--1,|||0-0-0,1|(739,496)|
+10,35,Wolf fractional growth rate,353,438,44,16,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,36,2,35,1,0,43,0,0,64,0,-1--1--1,,1|(515,459)|
+1,37,35,7,1,0,43,0,0,64,0,-1--1--1,,1|(349,401)|
+10,38,Reference elk,199,472,42,9,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,39,Reference wolf growth rate,218,413,45,16,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||0-128-0,0,0,0,0,0,0
+1,40,39,35,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,41,38,35,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,42,Reference elk per wolf,879,475,42,16,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||0-128-0,0,0,0,0,0,0
+1,43,42,32,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,44,Reference wolves,865,426,52,9,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,45,44,32,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,46,Wolf mortality rate,920,366,55,9,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||0-128-0,0,0,0,0,0,0
+1,47,46,12,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+12,48,0,1230,579,150,150,3,44,0,0,2,0,0,0,0,0,0,0,0,0
+Elk,graph
+12,49,0,1530,579,150,150,3,44,0,0,2,0,0,0,0,0,0,0,0,0
+Wolves,graph
+12,50,0,1830,579,150,150,3,44,0,0,1,0,0,0,0,0,0,0,0,0
+Predator-Prey_Phase
+12,51,0,1304,889,226,160,3,188,0,0,1,0,0,0,0,0,0,0,0,0
+Prey
+12,52,0,1755,889,225,160,3,188,0,0,1,0,0,0,0,0,0,0,0,0
+Predators
+12,53,0,476,33,175,18,8,135,0,26,-1,0,0,0,-1--1--1,0-0-0,|14|B|0-0-255,0,0,0,0,0,0
+Lotka-Volterra (predator-prey) system
+12,54,0,416,68,102,9,0,135,0,0,-1,0,0,0,0,0,0,0,0,0
+Adapted from the wikipedia article 
+12,55,0,736,68,374,9,0,135,0,18,-1,0,253,253,-1--1--1,0-0-0,||U|0-0-255,0,0,0,0,0,0
+http://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equation|http://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equation
+12,56,0,386,103,73,9,0,7,0,0,-1,0,0,0,0,0,0,0,0,0
+By Tom Fiddaman, 2011
+12,57,0,561,103,110,9,0,7,0,18,-1,0,253,253,-1--1--1,0-0-0,||U|0-0-255,0,0,0,0,0,0
+http://metasd.com|http://metasd.com
+12,58,0,603,140,286,14,8,135,0,0,-1,0,0,0,0,0,0,0,0,0
+The rate equations have been expanded and normalized for clarity, which involves a change in parameters, but the equations are mathematically equivalent to the original
+1,59,38,2,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+12,60,0,1530,247,450,182,3,188,0,0,1,0,0,0,0,0,0,0,0,0
+Predator-Prey
+12,61,0,606,188,235,17,8,135,0,0,-1,0,0,0,0,0,0,0,0,0
+Further adapted for synthetic data generation and parameter estimation, 2018
+10,62,Predation Noise SD,865,526,59,9,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||128-0-128,0,0,0,0,0,0
+10,63,Wolf Growth Noise SD,233,517,38,16,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||128-0-128,0,0,0,0,0,0
+1,64,63,35,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,65,62,32,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,66,NOISE SEED,852,656,42,9,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,67,Wolves,441,808,31,9,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,68,Elk,424,862,20,9,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,69,Measured Wolves,602,811,54,9,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,70,Est Wolf measurement SD,949,771,54,16,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,71,Measured Elk,595,863,42,9,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,72,Est Elk measurement SD,948,905,54,16,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,73,67,69,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,74,68,71,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,75,Est Wolf driving noise variance,948,812,48,16,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,76,Est Elk driving noise variance,950,858,44,16,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,77,measurement interval,759,839,42,16,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||128-0-128,0,0,0,0,0,0
+1,78,77,71,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,79,FINAL TIME,682,753,45,9,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,80,79,69,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,81,77,69,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,82,FINAL TIME,666,925,45,9,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,83,82,71,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,84,Young Wolves,464,338,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,85,Young Elk,473,555,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,86,88,1,4,0,0,22,0,0,0,-1--1--1,,1|(572,340)|
+1,87,88,84,100,0,0,22,0,0,0,-1--1--1,,1|(523,340)|
+11,88,0,548,340,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,89,W Maturing,548,357,36,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,90,92,2,4,0,0,22,0,0,0,-1--1--1,,1|(574,555)|
+1,91,92,85,100,0,0,22,0,0,0,-1--1--1,,1|(528,555)|
+11,92,0,549,555,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,93,E Maturing,549,572,34,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,94,Wolf Maturation Time,524,281,48,16,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,95,94,88,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,96,84,89,1,0,0,0,0,128,0,-1--1--1,,1|(492,377)|
+1,97,85,93,1,0,0,0,0,128,0,-1--1--1,,1|(504,591)|
+10,98,Elk Maturation Time,493,623,45,16,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,99,98,93,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+12,100,48,449,466,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,101,103,100,4,0,0,22,0,0,0,-1--1--1,,1|(449,486)|
+1,102,103,85,100,0,0,22,0,0,0,-1--1--1,,1|(449,523)|
+11,103,0,449,505,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,104,Young elk predation rate,499,505,42,16,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,105,32,104,1,0,0,0,0,128,0,-1--1--1,,1|(618,489)|
+1,106,85,104,1,0,0,0,0,128,0,-1--1--1,,1|(524,534)|
+1,107,98,85,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,108,94,84,0,0,0,0,0,128,1,-1--1--1,,1|(0,0)|
+1,109,44,1,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,110,31,1,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+12,111,0,353,257,97,24,8,7,0,4,-1,0,0,0,-1--1--1,255-255-128,|||0-0-0,0,0,0,0,0,0
+This version includes additional stocks of young animals, making each species 2nd order.
+1,112,111,84,0,0,0,2,2,128,1,-1--1--1,|||0-0-0,1|(0,0)|
+10,113,TIME STEP,797,395,44,9,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,114,113,12,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,115,TIME STEP,732,596,44,9,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,116,115,22,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,117,TIME STEP,523,433,44,9,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,118,117,104,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,119,TIME STEP,548,382,44,9,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,120,119,89,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,121,TIME STEP,549,597,44,9,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,122,121,93,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,123,TIME STEP,363,388,44,9,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,124,123,7,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,125,TIME STEP,368,595,44,9,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,126,125,17,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,127,104,92,1,0,0,0,0,192,0,-1--1--1,,1|(542,528)|
+1,128,35,84,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,129,1,84,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,130,2,85,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,131,27,85,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,132,32,85,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,133,Min wolves,249,289,43,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,134,Min elk,310,507,43,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,135,133,6,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,136,134,16,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+///---\\\
+:GRAPH Predator-Prey
+:TITLE Predator-Prey
+:SCALE
+:VAR Wolves
+:Y-MIN 0
+:LINE-WIDTH 3
+:SCALE
+:VAR Elk
+:Y-MIN 0
+:LINE-WIDTH 3
+
+:GRAPH Predator-Prey_Phase
+:TITLE Predator-Prey Phase
+:X-AXIS Elk
+:X-MIN 0
+:DOTS
+:SCALE
+:VAR Wolves
+:Y-MIN 0
+:SCALE
+:VAR Wolves
+:DATASET *2
+
+:GRAPH Prey
+:TITLE Prey
+:SCALE
+:VAR Elk
+:Y-MIN 0
+:LINE-WIDTH 3
+:SCALE
+:VAR Elk increase rate
+:Y-MIN 0
+:LINE-WIDTH 2
+:VAR Elk decrease rate
+:LINE-WIDTH 2
+:SCALE
+:VAR Elk fractional growth rate alpha
+:Y-MIN 0
+:LINE-STYLE DASH
+:VAR Fractional predation rate
+:LINE-STYLE DASH
+
+:GRAPH Predators
+:TITLE Predators
+:SCALE
+:VAR Wolves
+:Y-MIN 0
+:LINE-WIDTH 3
+:SCALE
+:VAR Wolf increase rate
+:Y-MIN 0
+:LINE-WIDTH 2
+:VAR Wolf mortality rate
+:LINE-WIDTH 2
+:SCALE
+:VAR Wolf fractional growth rate
+:Y-MIN 0
+:LINE-STYLE DASH
+:VAR Wolf mortality rate
+:LINE-STYLE DASH
+:L<%^E!@
+1:NoisyData2o.vdfx
+4:Time
+5:Young Wolves
+9:NoisyData2o
+19:75,0
+24:0
+25:100
+26:100
+22:$,Dollar,Dollars,$s
+22:Day,Days
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+18:
+20:
+15:0,1,0,0,0,0
+27:2,
+34:0,
+42:0
+72:0
+73:0
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Courier|12||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1

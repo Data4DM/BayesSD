@@ -41,9 +41,17 @@ We start with a simple prey-preditor (PP) model and compare with demand-supply (
 
 PP has 8 parameters to estimate and 0 parameters that is assumed
 
+<<<<<<< Updated upstream
 8 = 4 (2*2) stock-related (:= observable)
 
 	- `latent_state_init`, `msr_error_scale` for each stock `Prey`, `Predator`
+=======
+### M1: Prey-Predator (LV)
+![[Pasted image 20220731033849.png]]
+
+### M2: Demand-Supply (DS): short time, Different space
+![[Pasted image 20220731033922.png]]
+>>>>>>> Stashed changes
 
 plus 4 estimated params (:= external to loop)
 
@@ -75,6 +83,7 @@ Note that diagram follows the rule of
 	- orange is `estimated params`
 - arrow shape: solid arrow for same level or integration and dotted arrow for derivative
 
+<<<<<<< Updated upstream
 ### M3: Hierarchical version of M1 and M2
 
 
@@ -91,3 +100,18 @@ Note that diagram follows the rule of
 ODEs: Implementation in Stan and Application to Bayesian PK/PD Modeling, 2017](https://www.metrumrg.com/wp-content/uploads/2017/10/Gillespie_MixedSolver_ACOP2017.pdf)
 
 [4] Stan discourse on hierarchical prey-predator starting from [Hierarchical Lotka Volterra](https://discourse.mc-stan.org/t/hierarchical-lotka-volterra/4423) and ending with [Estimating Parameters for Chaotic Systems](https://discourse.mc-stan.org/t/estimating-parameters-for-chaotic-systems-lotka-volterra-redux/5243) which includes Charles' `CStem` package for hierarchical SDE (2018)
+=======
+
+1. Combining Calibration and Heterogeneity Estimation using Sparsity Inducing Prior
+
+Current Bayesian workflow recommends a sequential step of calibration using synthetic data then 
+
+- local vs global time series forecasting (not perfect mixing!)
+- start with no pooling then based on the estimated result, proceed to 
+full Using horse shoe prior, could the level of hierarchical model be automatically determined? 
+
+adding 
+
+
+2. Interaction of Temporal and Spatial Heterogeneity
+>>>>>>> Stashed changes
