@@ -1,10 +1,13 @@
-Calibration Coflow of
+## Collaboration of
 - Internal-External Consistency
 - User-Program
 - Dynamics modeling and statistical modeling (long time vs short time)
-- Vensim-PySD-Stan
+- Six packages
 
-## Workflow of User-Program Calibration Collaboration
+### Internal-External Consistency
+- Verification, Validation
+
+### User-Program Collaboration
 
 | Step | Program's work (P-rows have `.function(input)`)                                                      | User's work                                                                                                 | added info (for U-row) or infrastructure (for P-row)       -            | out format                    |
 | ---- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------- |
@@ -18,7 +21,17 @@ Calibration Coflow of
 | U5   |                                                                                                      | a. Set precision with `iter_sampling` (:= # of samples)                                                     |                                                                         | `int`                         |
 | P4   | `Stan`, `.sample`(P2, P3, U5.a)): Sample posterior draws (optimize measure with specified precision) |                                                                                                             |                                                                         | DataFrame `object`            |
 
+### Dynamics modeling and statistical modeling 
+- Oliiva20 introduce two cultures of explainability: variation and process
+- Yaman's slide:
+<img width="686" alt="image" src="https://user-images.githubusercontent.com/30194633/183563210-76b281c8-616a-4905-8456-3e5b38750372.png">
 
+### Six packages
+1. perceive and programming `Demand` Vensim-SDA 
+2. compute scientific `Draws` Stan-SBC 
+3. collect supporting `Data` BATS-SOPS
+
+SilkRoad detailed [here](https://github.com/hyunjimoon/DataInDM#demand-of-silkroad-project)
 ## How
 ### Modular design
 Given a system, we aim for modular design in consistency check which requires two: modular decomposition of the system and a testing system that can detect which submodule caused the problem (breached consistency).
