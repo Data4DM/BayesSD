@@ -12,10 +12,9 @@ Calibrating Bayes model, modularized as `prior`, `family`, `posterior-approximat
 - Use both process model (causal-policy, long term) and statistics model (statistical-forecast, short term) 
 
 ### 4. Who
-- Between two: User, Program, their interaction
-- Between three: `prior`, `family`, `posterior-approximator` 
-- Between six: `Vensim-SDA` (Generator, approximation error), `Stan-SBC` (Discriminator, optimization error), `BATS-SOPS` (empirical setting, precision, statistical error) and their interaction
-- 
+- Between two: User, Program, 
+- Between three + their interaction: `prior`, `family`, `posterior-approximator` 
+- Between six + their interaction: `Vensim-SDA` (Generator, approximation error), `Stan-SBC` (Discriminator, optimization error), `BATS-SOPS` (empirical setting, precision, statistical error) 
 
 ### 5. When
 - Building model family tree
@@ -25,9 +24,9 @@ Calibrating Bayes model, modularized as `prior`, `family`, `posterior-approximat
 ## 1. What
 
 ### prior 
+#### What: Probability measure and Pooler
 
-What: Probability measure and Pooler
-How: Scale-separation, Restrict to, Regulate against
+#### How: Scale-separation, Restrict to, Regulate against
 
 Based on teachings From Good83, BDA, and Andrew, my prior building principles are:
 - 🗡 (restrict to) `geometric-inspired` which is on hyperplane (e.g. [inductive prior](https://youtu.be/bIZB1hIJ4u8?t=334) for GDL)
@@ -35,7 +34,7 @@ Based on teachings From Good83, BDA, and Andrew, my prior building principles ar
 
 Especially, prior for variance parameter which learns heterogeneity in hierarchical model; Andrew's long history of research on the variance prior (half-t (2006), gamma/inverse gamma, half normal, zero-avoiding (2012), currently tight prior (we've been working on this). Refutations exist for zero-excluding by Dan [here](https://statmodeling.stat.columbia.edu/2018/05/04/zero-excluding-priors-probably-bad-idea-hierarchical-variance-parameters/).
 
-Why: Good's device of imaginary results
+#### Why: Core of Simulation and Bayesian is "device of imaginary results" (Good83)
 
 ### family  
 ```
@@ -61,18 +60,23 @@ can be found in [[5 Algorithms for Optimization]].
 ## 2. How
 
 ### Internal-External Consistency
-- Verification, Validation
+- SBC ensures verifies internal consistency
+- Prior predictive, posterior predictive, sensitivity check validate external consistency
+<img width="1087" alt="image" src="https://user-images.githubusercontent.com/30194633/183689023-91d490d7-b182-4eba-ad6e-ecca7ea0d099.png">
+
 
 
 ## 3. Why
-### Dynamics modeling and statistical modeling 
-- Oliiva20 introduce two cultures of explainability: variation and process
-- Yaman's slide:
-<img width="686" alt="image" src="https://user-images.githubusercontent.com/30194633/183563210-76b281c8-616a-4905-8456-3e5b38750372.png">
+### Combining Long term and short term modeling 
+- Oliva20 introduce two cultures of explainability: variation and process
+- Yaman's slide on comparison of (a) exogenous, static, forecasting and (b) endogenous, dynamic, policy model for city population
+
+<img width="1035" alt="image" src="https://user-images.githubusercontent.com/30194633/183689650-bfe7d048-f724-4c0b-aeaa-d86b4397a289.png">
+
 
 ## 4. Who
 
-### Between two User-Program
+### User-Program WF: One actor and its tool
 
 | Step | Program's work (P-rows have `.function(input)`)                                                      | User's work                                                                                                 | added info (for U-row) or infrastructure (for P-row)       -            | out format                    |
 | ---- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------- |
@@ -86,9 +90,11 @@ can be found in [[5 Algorithms for Optimization]].
 | U5   |                                                                                                      | a. Set precision with `iter_sampling` (:= # of samples)                                                     |                                                                         | `int`                         |
 | P4   | `Stan`, `.sample`(P2, P3, U5.a)): Sample posterior draws (optimize measure with specified precision) |                                                                                                             |                                                                         | DataFrame `object`            |
 
-### Between three modules 
+### Bayesian WF: Between three modules 
+- Bayesian workflow [paper](https://arxiv.org/pdf/2011.01808.pdf)
+- more focused on SBC as prior calibrator; relevent references on theory and application can be found [here](https://hyunjimoon.github.io/SBC/#references)
 
-### Between six softwares (`Vensim-SDA, Stan-SBC, BATS-SOPS`)
+### SilkRoad WF: Between six softwares (`Vensim-SDA, Stan-SBC, BATS-SOPS`)
 
 - Program perceived `Demand` with `Vensim-SDA`, Compute scientific `Draws` with `Stan-SBC`, Supply rationing `Data` with `BATS-SOPS`
 - Diagrams and details for each Software is detailed [here](https://github.com/hyunjimoon/DataInDM/blob/main/Recitation/3%20Desire%20Draws%20Data.md#3-879-fall-nondiscrete-data---draws---demand)
@@ -108,5 +114,7 @@ can be found in [[5 Algorithms for Optimization]].
 |     Iterate and communicate                          |   Hub `pysd`, `readsdr`                               | [PySD](https://pysd.readthedocs.io/en/master/), [readsdr](https://github.com/jandraor/readsdr)                                                            |  🗣 Language            |                                                                          |     O (Python, R)               |
 
 ## 5. When
-- Stat: Sec.7.3 Topology of models from Bayesian Workflow paper.
-- Comp: Model tree software [MStan](http://ryanbe.me/) modular stan for timeseries. 
+Demand-based multiverse analysis as part of model development
+
+- Stat: Sec.7.3 Topology of models from Bayesian Workflow paper
+- Comp: Model tree software [MStan](http://ryanbe.me/) modular stan for timeseries
