@@ -23,8 +23,13 @@ Calibrating Bayes model, modularized as `prior`, `family`, `posterior-approximat
 
 ## 1. What
 
-### prior 
+### Prior function()  
 #### What: Probability measure and Pooler
+
+| -          | `demand_prior()`     | `relational_prior()` | `variation_prior()`        |  
+| ---------- | -------------------- | ------------------ | ------------------------ | 
+| type       | objective function   | set of equalities  | probability distribution | 
+| Stan block | generated quantities | function           | model                    | 
 
 #### How: Scale-separation, Restrict to, Regulate against
 
@@ -58,13 +63,36 @@ The quasi family accepts the links logit, probit, cloglog, identity, inverse, lo
 can be found in [[5 Algorithms for Optimization]].
 
 ## 2. How
+Given parameter and data as follows:
 
-### Internal-External Consistency
-- SBC ensures verifies internal consistency
-- Prior predictive, posterior predictive, sensitivity check validate external consistency
+### Parameter
+Combination of `prior_function()` and data Prior_Param.
+
+| -          | `demand_prior()`     | `relational_prior()` | `variation_prior()`        |  
+| ---------- | -------------------- | ------------------ | ------------------------ | 
+| type       | objective function   | set of equalities  | probability distribution | 
+| Stan block | generated quantities | function           | model                    | 
+
+### Data
+| -              | Prior_param       | SynData                                            | Data                         | (Posterior) Draws                                                                                                       | Precision |
+| -------------- | ----------------- | -------------------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------- |
+| type           | vector            | xarray                                             | xarray                       |                                                                                                                         |  real         |
+| Stan block     | model             | .                                                  | data                         |                                                                                                                         |      transformed parameter     |
+| source | user's assumption | `relation_prior(variation_prior(prior_parameter))` | to be collected with purpose | `post_approx`(`Data`, `relational_prior(variation_prior(`Prior_Param`))`, `variation_prior(`Prior_Param`)`, Precision`))` |           |
+
+
+checks internal and external consistency with three check functions. SBC verifies internal consistency, Prior predictive and posterior predictive, (+sensitivity check) validate external consistency.
+
 <img width="1087" alt="image" src="https://user-images.githubusercontent.com/30194633/183689023-91d490d7-b182-4eba-ad6e-ecca7ea0d099.png">
 
 
+#### Check function()
+| -                      | measured distance between                                                                                    | 
+| ---------------------- | ---------------------------------------------------------------------------------------------------- | 
+| Prior predictive check | SynData VS Data        |     |
+| SBC                    | `variation_prior()` VS  `post_approx(`Data, `relational_prior(variation_prior(`Prior_Param`))`, `variation_prior(`Prior_Param`)`, Precision`))` |    
+| Posterior predictive check                       |  Data VS relational_prior(Draws)                                                                                                    |     |
+		
 
 ## 3. Why
 ### Combining Long term and short term modeling 
