@@ -4,14 +4,14 @@ The short term purpose of this respository is to supply students of 879 seminar 
 ## Demand of SilkRoad project
 Short answer: I wished to connect the lifelong brainchild of the scholars I respect. 
 
-Five ideas documented below are not evaporative because of its software (Vensim, SDA, Stan, BATS, SOPS). However, more fundamentally, each are sustained by creator's affection. Like parents, Tom, Rogelio, Andrew, Yaman, Erling revisit their child every so often to document and update. Their thrill and willingness to invest time are few memorable emotions that inspired me which made me devoted to this project. I seeked paths to ensure sustainability of five ideas and reasoned how cultural diffusion on SilkRoad was its engine for over 1,500 years. Moreover, the united front gave birth to technologies such as glass and paper making, religious ideas and language like 35,000 new words which entered Chinese from Buddhist missionaries.
+Five ideas documented below are not evaporative because of its software (Vensim, SDA, Stan, BATS, SOPS). However, more fundamentally, each are sustained by creator's affection. Like parents, Tom, Rogelio, Andrew, Yaman, Erling revisit their child every so often to document and update. Their thrill and willingness to invest time are few memorable emotions that inspired me. This explains my devotion to this project. I am seeking paths to ensure sustainability of five ideas and reasoned how cultural diffusion on SilkRoad was its engine for over 1,500 years. This unity gave birth to technologies such as glass and paper making, religious ideas and language like 35,000 new words which entered Chinese from Buddhist missionaries.
 
-Moreover, I judged the ideas have great potential to contribute to humanity and find it my duty to preserve my major's heritage.
+Moreover, I can see how these ideas once united can contribute to humanity and find it my duty to preserve the heritage of my major: simulation.
 
 ## Supply of SilkRoad project
-Supply based on my research interests, skill set, network in both statistical and system dynamics modeling community can meet the above demand. So why hestiate for the first shovel to connect? i.e. ensure sustainability of five ideas I can't wait to see the first flow.
+Supply based on my research interests, skill set, network in both statistical and system dynamics modeling community can meet the above demand. So why hestiate for the first move?
 
-- `Vensim`, `SBC`, `Stan`, `SDA`, `BATS`, `SOPS` softwares with seminar ideas but in different languages (Vensim, R, Stan, Mathematica (R), Python, Powersim) which is a great obstacle for Bayesian workflow where iteration is the key. With the help of Tom, (me), Andrew, Rogelio, Yaman, Erling who are the leader (and lover) of each software, I wish to invite them on SilkRoad where ideas can flow better.
+- `Vensim`, `SBC`, `Stan`, `SDA`, `BATS`, `SOPS` softwares each with seminar functions but in different languages is a great obstacle in Bayesian workflow where iteration is the key. With the help of Tom, (me), Andrew, Rogelio, Yaman, Erling who are the leader (and lover) of each software, we invite them on SilkRoad for the better flow.
 
 | Step                          | Output                          | Software                                                    | Symbol  | Description                                                                        | opensource? (language)          |
 | ----------------------------- | ------------------------------- | ----------------------------------------------------------- | ------------ | ------------------------------------------------------------------------ | -------------------- |
@@ -25,8 +25,9 @@ Supply based on my research interests, skill set, network in both statistical an
 | 3.                            | b. Empirical Policy Parameter   | SOPS (communicating with Erling)                            | 🚀  One-shot |Optimizes policy one-shot in stochastic dynamic system               | O (Powersim)         |
 | -                             |                                 |                                                             |              |                                                                          |                      |
 |     Iterate and communicate                          |   Hub `pysd`, `readsdr`                               | [PySD](https://pysd.readthedocs.io/en/master/), [readsdr](https://github.com/jandraor/readsdr)                                                            |  🗣 Language            |                                                                          |     O (Python, R)               |
+<img width="935" alt="image" src="https://user-images.githubusercontent.com/30194633/183892835-324cc2ce-d3a6-46f9-a815-8b3aa106adc5.png">
 
-
-- Plan is to collaborate with PySD team [here](https://github.com/JamesPHoughton/pysd/pull/347)
+- Detailed summary of each package is being documented in [here](https://github.com/hyunjimoon/DataInDM/blob/main/Recitation/3%20Desire%20Draws%20Data.md#3-879-fall-nondiscrete-data---draws---demand)
+- Collaboration with PySD team is happening through [this](https://github.com/JamesPHoughton/pysd/pull/347) PR.
 - Case studies may be presented in cookbook format like [here](https://pysd-cookbook.readthedocs.io/en/latest/index.html) (tbd)
 - Users can cook their decision by `programming demand`, `sampling scientific draws`, `collecting sensible data`.
