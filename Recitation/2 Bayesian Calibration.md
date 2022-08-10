@@ -23,13 +23,20 @@ Calibrating Bayes model, modularized as `prior`, `family`, `posterior-approximat
 
 ## 1. What
 
-### Prior function()  
-#### What: Probability measure and Pooler
+### Prior() function  
+#### What: Probability measure() and Pooler()
 
 | -          | `demand_prior()`     | `relational_prior()` | `variation_prior()`        |  
 | ---------- | -------------------- | ------------------ | ------------------------ | 
 | type       | objective function   | set of equalities  | probability distribution | 
 | Stan block | generated quantities | function           | model                    | 
+
+Everything that is liable to change can be seen as `_prior()` in the sense of weighted average. The following definitions can make `_prior()` clearer.
+
+- proper := distribution function $(-\infty,0)$ to $( \infty, 1)$
+- generative model := model with proper prior distribution
+- generator() := variation_prior * relation_prior =  `relation_prior(variation_prior(`Prior_Param`))` i.e. convolution of two functions, given the value of Prior_Param as data
+- nonidentification problem := improper posterior distribution 
 
 #### How: Scale-separation, Restrict to, Regulate against
 
@@ -78,7 +85,7 @@ Combination of `prior_function()` and data Prior_Param.
 | -------------- | ----------------- | -------------------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------- |
 | type           | vector            | xarray                                             | xarray                       |                                                                                                                         |  real         |
 | Stan block     | model             | .                                                  | data                         |                                                                                                                         |      transformed parameter     |
-| source | user's assumption | `relation_prior(variation_prior(prior_parameter))` | to be collected with purpose | `post_approx`(`Data`, `relational_prior(variation_prior(`Prior_Param`))`, `variation_prior(`Prior_Param`)`, Precision`))` |           |
+| source | user's assumption | `relation_prior(variation_prior(`Prior_Param`))` | to be collected with purpose | `post_approx`(`Data`, `relational_prior(variation_prior(`Prior_Param`))`, `variation_prior(`Prior_Param`)`, Precision`))` |           |
 
 
 checks internal and external consistency with three check functions. SBC verifies internal consistency, Prior predictive and posterior predictive, (+sensitivity check) validate external consistency.
@@ -91,7 +98,7 @@ checks internal and external consistency with three check functions. SBC verifie
 | ---------------------- | ---------------------------------------------------------------------------------------------------- | 
 | Prior predictive check | SynData VS Data        |     |
 | SBC                    | `variation_prior()` VS  `post_approx(`Data, `relational_prior(variation_prior(`Prior_Param`))`, `variation_prior(`Prior_Param`)`, Precision`))` |    
-| Posterior predictive check                       |  Data VS relational_prior(Draws)                                                                                                    |     |
+| Posterior predictive check                       |  Data VS `relational_prior(`Draws`)`                                                                                                    |     |
 		
 
 ## 3. Why
