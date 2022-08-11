@@ -1,2 +1,0 @@
-Warning: no export definition file provided
-dllwrap will create one, but may not be what you want

@@ -1,0 +1,292 @@
+---
+title: "Inventory model"
+author: "Jair Andrade"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(deSolve)
+library(dplyr)
+library(furrr)
+library(ggplot2)
+library(readsdr)
+```
+
+# Normal noise
+
+```{r}
+set.seed(123)
+mdl <- read_xmile("./models/Inventory.xmile")
+```
+
+```{r}
+sd_stocks(mdl)
+```
+
+```{r}
+sd_constants(mdl)
+```
+
+```{r}
+output <- sd_simulate(mdl$deSolve_components, start_time = 0,
+                      stop_time = 100, timestep = 1/16, integ_method = "euler")
+```
+
+```{r}
+ggplot(output, aes(time, Inventory)) +
+  geom_line(colour = "steelblue") +
+  scale_y_continuous(limits = c(0, NA)) +
+  theme_classic()
+```
+
+```{r}
+plan(multisession, workers = 3)
+
+set.seed(345)
+
+future_map_dfr(1:200, \(i) {
+  
+  output <- sd_simulate(mdl$deSolve_components, start_time = 0,
+                      stop_time = 100, timestep = 1/16, 
+                      integ_method = "euler") |> 
+    filter(time %in% seq(0, 100, 1/16)) |> 
+    mutate(iter = i)
+  
+},.options = furrr_options(seed = TRUE)) -> output1
+
+output1 <- output1 |> mutate(inv_dt = "16")
+```
+
+```{r}
+ggplot(output1, aes(time, Inventory)) +
+  geom_line(colour = "steelblue", aes(group = iter), alpha = 0.5) +
+  theme_classic()
+```
+
+
+```{r}
+plan(multisession, workers = 3)
+
+set.seed(543)
+
+future_map_dfr(1:100, \(i) {
+  sd_simulate(mdl$deSolve_components, start_time = 0, stop_time = 100,
+              timestep = 1/128, integ_method = "euler") |> 
+    filter(time %in% seq(0, 100, 1/16)) |> 
+    mutate(iter = i)
+},.options = furrr_options(seed = TRUE)) -> output2
+
+output2 <- output2 |> mutate(inv_dt = "128")
+```
+
+```{r}
+output <- bind_rows(output1, output2)
+```
+
+```{r}
+ggplot(output, aes(time, Demand)) +
+  geom_line(aes(colour = inv_dt, group = iter), alpha = 0.1) +
+  facet_wrap(~inv_dt) +
+  theme_classic()
+```
+
+```{r}
+ggplot(output, aes(time, Inventory)) +
+  geom_line(aes(colour = inv_dt, group = iter), alpha = 0.1) +
+  facet_wrap(~inv_dt) +
+  theme_classic()
+```
+
+# Pink noise
+
+
+```{r}
+mdl3 <- read_xmile("./models/Inventory_PN.stmx")
+```
+
+```{r}
+set.seed(999)
+output <- sd_simulate(mdl3$deSolve_components, start_time = 0,
+                      stop_time = 100, timestep = 1/64, integ_method = "euler")
+```
+
+```{r}
+ggplot(output, aes(time, Inventory)) +
+  geom_line(colour = "steelblue") +
+  scale_y_continuous(limits = c(0, NA)) +
+  theme_classic()
+```
+
+```{r}
+plan(multisession, workers = 3)
+
+set.seed(100)
+
+future_map_dfr(1:100, \(i) {
+  
+  library(deSolve)
+  
+  sd_simulate(mdl3$deSolve_components, start_time = 0, stop_time = 100, 
+              timestep = 1/16, integ_method = "euler") |> 
+    filter(time %in% seq(0, 100, 1/16)) |> 
+    mutate(iter = i)
+  
+},.options = furrr_options(seed = TRUE)) -> output1
+
+output1 <- output1 |> mutate(inv_dt = "16")
+```
+
+```{r}
+plan(multisession, workers = 3)
+
+set.seed(200)
+
+future_map_dfr(1:100, \(i) {
+  
+  library(deSolve)
+  
+  output <- sd_simulate(mdl3$deSolve_components, start_time = 0,
+                      stop_time = 100, timestep = 1/128, 
+                      integ_method = "euler") |> 
+    filter(time %in% seq(0, 100, 1/16)) |> 
+    mutate(iter = i)
+  
+},.options = furrr_options(seed = TRUE)) -> output2
+output2 <- output2 |> mutate(inv_dt = "128")
+```
+
+```{r}
+output <- bind_rows(output1, output2)
+```
+
+```{r}
+ggplot(output, aes(time, Demand)) +
+  geom_line(aes(colour = inv_dt, group = iter), alpha = 0.1) +
+  facet_wrap(~inv_dt) +
+  theme_classic()
+```
+
+```{r}
+set.seed(123)
+sample_ids <- sample.int(100, 5)
+sample_df <- output1 |> filter(iter %in% sample_ids)
+
+ggplot(sample_df, aes(time, Demand)) +
+  geom_line(aes(colour = as.factor(iter), group = iter)) +
+  facet_wrap(~iter) +
+  theme_classic()
+
+```
+
+```{r}
+ggplot(output, aes(time, Inventory)) +
+  geom_line(aes(colour = inv_dt, group = iter), alpha = 0.1) +
+  facet_wrap(~inv_dt) +
+  theme_classic()
+```
+
+
+
+
+
+
+# Brownian motion
+
+```{r}
+mdl2 <- read_xmile("./models/Inventory_GBM.stmx",
+                   const_list = list(Volatility_of_Demand = 0.001))
+```
+
+```{r}
+set.seed(678)
+output <- sd_simulate(mdl2$deSolve_components, start_time = 0,
+                      stop_time = 100, timestep = 1/64, integ_method = "euler")
+```
+
+```{r}
+ggplot(output, aes(time, Inventory)) +
+  geom_line(colour = "steelblue") +
+  scale_y_continuous(limits = c(0, NA)) +
+  theme_classic()
+```
+
+```{r}
+plan(multisession, workers = 3)
+
+set.seed(100)
+
+future_map_dfr(1:100, \(i) {
+  
+  library(deSolve)
+  
+  sd_simulate(mdl2$deSolve_components, start_time = 0, stop_time = 100, 
+              timestep = 1/16, integ_method = "euler") |> 
+    filter(time %in% seq(0, 100, 1/16)) |> 
+    mutate(iter = i)
+  
+},.options = furrr_options(seed = TRUE)) -> output1
+
+output1 <- output1 |> mutate(inv_dt = "16")
+```
+
+```{r}
+plan(multisession, workers = 3)
+
+set.seed(200)
+
+future_map_dfr(1:100, \(i) {
+  
+  library(deSolve)
+  
+  output <- sd_simulate(mdl2$deSolve_components, start_time = 0,
+                      stop_time = 100, timestep = 1/128, 
+                      integ_method = "euler") |> 
+    filter(time %in% seq(0, 100, 1/16)) |> 
+    mutate(iter = i)
+  
+},.options = furrr_options(seed = TRUE)) -> output2
+output2 <- output2 |> mutate(inv_dt = "128")
+```
+
+```{r}
+output <- bind_rows(output1, output2)
+```
+
+```{r}
+ggplot(output, aes(time, Demand)) +
+  geom_line(aes(colour = inv_dt, group = iter), alpha = 0.1) +
+  facet_wrap(~inv_dt) +
+  theme_classic()
+```
+
+```{r}
+set.seed(321)
+sample_ids <- sample.int(100, 5)
+sample_df <- output1 |> filter(iter %in% sample_ids)
+
+ggplot(sample_df, aes(time, Demand)) +
+  geom_line(aes(colour = as.factor(iter), group = iter)) +
+  facet_wrap(~iter) +
+  theme_classic()
+
+```
+
+
+
+```{r}
+ggplot(output, aes(time, Inventory)) +
+  geom_line(aes(colour = inv_dt, group = iter), alpha = 0.1) +
+  facet_wrap(~inv_dt) +
+  theme_classic()
+```
+
+```{r}
+hist_df <- filter(output, time == 50)
+
+ggplot(hist_df, aes(Demand)) +
+  geom_histogram(aes(fill = inv_dt), colour = "white", 
+                 alpha = 0.25, position="identity") +
+  theme_classic()
+```
