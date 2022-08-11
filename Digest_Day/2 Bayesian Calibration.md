@@ -90,7 +90,7 @@ Combination of `prior_function()` and data Prior_Param.
 
 checks internal and external consistency with three check functions. SBC verifies internal consistency, Prior predictive and posterior predictive, (+sensitivity check) validate external consistency.
 
-<img width="1087" alt="image" src="https://user-images.githubusercontent.com/30194633/183689023-91d490d7-b182-4eba-ad6e-ecca7ea0d099.png">
+<img width="1047" alt="image" src="https://user-images.githubusercontent.com/30194633/184231139-06c76206-591a-44b0-b87e-60fc0d72600b.png">
 
 
 #### Check function()
@@ -106,7 +106,7 @@ checks internal and external consistency with three check functions. SBC verifie
 - Oliva20 introduce two cultures of explainability: variation and process
 - Yaman's slide on comparison of (a) exogenous, static, forecasting and (b) endogenous, dynamic, policy model for city population
 
-<img width="1035" alt="image" src="https://user-images.githubusercontent.com/30194633/183689650-bfe7d048-f724-4c0b-aeaa-d86b4397a289.png">
+<img width="1001" alt="image" src="https://user-images.githubusercontent.com/30194633/184233122-3f3dbe1e-3311-4819-8b9b-6775a096861b.png">
 
 
 ## 4. Who
