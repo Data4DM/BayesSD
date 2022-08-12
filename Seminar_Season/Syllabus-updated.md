@@ -1,23 +1,23 @@
 This only holds the updated parts from the pdf syllabus in the same folder.
 
+## Research Paper(s)
+
+The topics we cover in this course are explored in depth in various communities focused on statistical and operations research methods, yet their applications to SD models remain sparse. Thus, we don’t have clear guidance on questions such as 
+- What optimization algorithms are best suited for calibration of SD models?
+- How much quantitative data is needed to reliably infer parameters of an SD model?
+- What features of the model determine the value of including state resetting and filtering methods in the calibration process?
+- What estimation methods provide reliable confidence/credible intervals for estimated parameters?
+
 ## Candidate Models 
 
 Weekly assignments are organized around classical SD models, and each student will be picking up a model and conducting her assignment for each week using that model. Here is a menu of potential models to choose from sorted based on complexity of the models; we will finalize the model assignments in the first session of the class: 
-
 -   Stock management structure (demo model which we will work on throughout class exercises; not available for individual work) 
-    
--   SEIR with behavioral feedback from Rahmandad et al 2022 
-    
+-   SEIR with behavioral feedback from Rahmandad et al 2022     
 -   Longwave model from Sterman 1985 
-    
 -   Project management model from Ford and Sterman 1998 
-    
 -   Market Growth model (from Forrester and Morecroft) 
-    
 -   Service Quality model by Oliva and Sterman 2001 
-    
 -   Urban Dynamics 
-    
 -   World 3 model from Limits to Growth 30 year update  
     
 
