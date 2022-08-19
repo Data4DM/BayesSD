@@ -16,7 +16,8 @@ Calibrating Bayes model, modularized as `prior`, `family`, `posterior-approximat
 ### 2. How
 - Make three modules internally consistent and external consistent with data 
 - Follow Demand-Draws-Data process with `Vensim-SDA, Stan-SBC, BATS-SOPS` tool
-
+- Present graphical diagnostics
+- 
 ### 3. Why
 - Use both process model (causal-policy, long term) and statistics model (statistical-forecast, short term) 
 
@@ -122,17 +123,34 @@ checks internal and external consistency with three check functions. SBC verifie
 
 ### User-Program WF: One actor and its tool
 
-| Step | Program's work (P-rows have `.function(input)`)                                                      | User's work                                                                                                 | added info (for U-row) or infrastructure (for P-row)       -            | out format                    |
-| ---- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------- |
-| U1   | `Vensim` assists U1.a()                                                                              | a. Translate mental model to SD model                                                                       | Relation btw Variables                                                  | `.mdl`                        |
-| U2   | `PySD` assists U2.a()                                                                                | a. Classify parameters `est_param`, `ass_param`, b. Select `obs_state` among stocks                         | Want (`est_param`) and Have (assume: `ass_param`, observe: `obs_state`) | `.json`                       |
-| P1   | `PySD`, `.read_vensim`(U1.a): Switch lang. from FP to OOP                                            |                                                                                                             | None                                                                    | `.py`                         |
-| U3   |                                                                                                      | a. Supply value or series of `assmed_param`, b. Choose `family`(:= dist. of `msr_err_scale`)                |                                                                         | DataFrame `object`,   `.json` |
-| U4   |                                                                                                      | a. Choose `prior_family`(`est_param`'s prior dist. type) , b. Set `prior_param` (`est_param`'s prior param) |                                                                         | `.json`                       |
-| P2   | `PySD`, `.run`(U2.ab, U3.ab): Generate synthetic data                                                |                                                                                                             |                                                                         | DataFrame `object`            |
-| P3   | `PySD`,`.create_stan_program`(U2.ab, U3.ab): Switch lang. from OOP to PPL                            |                                                                                                             |                                                                         | `.stan`                       |
-| U5   |                                                                                                      | a. Set precision with `iter_sampling` (:= # of samples), b. Select posterior approximator                                                     |                                                                         | `int`                         |
-| P4   | `Stan`, `.sample`(P2, P3, U5.a, U5.b)): Sample posterior draws (optimize measure with specified precision) |                                                                                                             |                                                                         | DataFrame `object`            |
+| Step                  | Program's work (P-rows have `.function(input)`)                                                                                | User's work                                                                                                 | added info (for U-row) or infrastructure (for P-row)       -            | out format                    |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------- |
+| U1-Draft              | `Vensim` assists U1.a()                                                                                                        | a. Translate mental model to SD model                                                                       | Relation btw Variables                                                  | `.mdl`                        |
+| U2-Classify           | `PySD` assists U2.a()                                                                                                          | a. Classify parameters `est_param`, `ass_param`, b. Select `obs_state` among stocks                         | Want (`est_param`) and Have (assume: `ass_param`, observe: `obs_state`) | `.json`                       |
+| P1-relate             | `PySD`, `.build_function_block`(U1.a)                                                                                          |                                                                                                             |                                                                         | `.stan`                       |
+| U3-Specify_restrict   |                                                                                                                                | a. Supply value or series of `assmed_param`, b. Choose `family`(:= dist. of `msr_err_scale`)                |                                                                         | DataFrame `object`,   `.json` |
+| U4-Specify-regularize |                                                                                                                                | a. Choose `prior_family`(`est_param`'s prior dist. type) , b. Set `prior_param` (`est_param`'s prior param) |                                                                         | `.json`                       |
+| P2-predict            | `draws2data.stan`, `fit_prior_data.sample()`, `fit_prior_data = (U2.ab, U3.ab, U4.ab)`: Prior predictive check (opt-out prior) |                                                                                                             |                                                                         | DataFrame `object`            |
+| P3-infer              | `data2draws.stan`,`.create_stan_program`(U2.ab, U3.ab): Infer parameter from (synthetic) data: SBC                             |                                                                                                             |                                                                         | `.stan`                       |
+| U5-Specify_tolerance  |                                                                                                                                | a. Set precision with `iter_sampling` (:= # of samples), b. Select posterior approximator                   |                                                                         | `int`                         |
+| P4-infer              | `Stan`, `fit_post_draws.sample()`, ` fit_post_draws = (P1, U3.ab, U4.ab, U5.ab)`: Posterior predictive check (opt-in prior)    |                                                                                                             |                                                                         | DataFrame `object`            |
+|                       |                                                                                                                                |                                                                                                             |                                                                         |                               |
+
+| Step | Goal               | Program's work (P-rows have `.function(input)`)                                                                                | User's work                                                                                                 |
+| ---- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| U1   | Draft              | `Vensim` assists U1.a()                                                                                                        | a. Translate mental model to SD model                                                                       |
+| U2   | Classify           | `PySD` assists U2.a()                                                                                                          | a. Classify parameters `est_param`, `ass_param`, b. Select `obs_state` among stocks                         |
+| P1   | relate             | `PySD`, `.build_function_block`(U1.a)                                                                                          |                                                                                                             |
+| U3   | Specify_project    |                                                                                                                                | a. Supply value or series of `assmed_param`, b. Choose `family`(:= dist. of `msr_err_scale`)                |
+| U4   | Specify_regularize |                                                                                                                                | a. Choose `prior_family`(`est_param`'s prior dist. type) , b. Set `prior_param` (`est_param`'s prior param) |
+| P2   | predict            | `draws2data.stan`, `fit_prior_data.sample()`, `fit_prior_data = (U2.ab, U3.ab, U4.ab)`: Prior predictive check (opt-out prior) |                                                                                                             |
+| P3   | infer              | `data2draws.stan`,`.create_stan_program`(U2.ab, U3.ab): Infer parameter from (synthetic) data: SBC                             |                                                                                                             |
+| U5   | Specify_tolerance  |                                                                                                                                | a. Set precision with `iter_sampling` (:= # of samples), b. Select posterior approximator                   |
+| P4   | infer              | `Stan`, `fit_post_draws.sample()`, ` fit_post_draws = (P1, U3.ab, U4.ab, U5.ab)`: Posterior predictive check (opt-in prior)    |                                                                                                             |
+
+
+
+Q0. Main role of prior predictive check?
 
 ### Bayesian WF: Between three modules 
 - Bayesian workflow [paper](https://arxiv.org/pdf/2011.01808.pdf)
@@ -162,3 +180,7 @@ Demand-based multiverse analysis as part of model development
 
 - Stat: Sec.7.3 Topology of models from Bayesian Workflow paper
 - Comp: Model tree software [MStan](http://ryanbe.me/) modular stan for timeseries
+
+
+
+

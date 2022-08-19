@@ -1,5 +1,22 @@
 # Hierarchical model and priors
 
+Summary tips:
+1. Explore direction
+	start from complete pooling i.e. direction of wideneding sigma distribution (for group heterogentity starting from $\delta_0$). For small number of groups (<5 or around), complete or no pooling may perform better.
+2. Scale
+   - every parameter to unit range (hence exploration on full hyper cude) as much as possible. Autoscaling is handy but users should be notified for nonlinear changes during which parameter interpretation changes  (even with Jacobian additions implemented in Stan)
+	1. Y's transform: box-cox etc transform
+	2. centered to non-centered parmaterization
+3. Consider Y's type (e.g. continuous, count, non-negative, between[0,1]) when setting its prior distribution type
+4. Middle ground for sigma: not close to 0 (funnel) but not fat tail (in) 비추: 0에 너무 가깝지 않고 (funnel), 너무 크지도 않은. 
+5. With groups with little data, use centered parameterization while those with enough data, use centered version i.e. theta = mu + tau * eta; for this automation, refer to Mike's ADC automation [this](https://betanalpha.github.io/assets/case_studies/hierarchical_modeling.html#43_Now_I_Know_my_ADCs)  (but this may be complicated to implement)
+6. Make parameters less correlated
+
+How I improved divergence for Hierarchical Spline prior ([youtube]( https://youtu.be/1FJyNntNMH4?t=387)) using the above. 
+![[Pasted image 20220818111020.png]]
+
+Below are theoretical notes. History of variance of hierarchical model will be added.
+
 ## 1. Math
 ### complete pooling
 
