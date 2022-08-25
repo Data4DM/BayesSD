@@ -19,7 +19,7 @@ Weekly assignments are organized around classical SD models, and each student wi
 -   Service Quality model by Oliva and Sterman 2001 
 -   Urban Dynamics 
 -   World 3 model from Limits to Growth 30 year update  
-    
+
 
 ## References 
 

@@ -100,7 +100,7 @@ Combination of `prior_function()` and data Prior_Param.
 
 checks internal and external consistency with three check functions. SBC verifies internal consistency, Prior predictive and posterior predictive, (+sensitivity check) validate external consistency.
 
-<img width="1047" alt="image" src="https://user-images.githubusercontent.com/30194633/184231139-06c76206-591a-44b0-b87e-60fc0d72600b.png">
+<img width="1001" alt="image" src="https://user-images.githubusercontent.com/30194633/184233122-3f3dbe1e-3311-4819-8b9b-6775a096861b.png">
 
 
 #### Check function()
@@ -109,44 +109,30 @@ checks internal and external consistency with three check functions. SBC verifie
 | Prior predictive check | SynData VS Data        |     |
 | SBC                    | `variation_prior()` VS  `post_approx(`Data, `relational_prior(variation_prior(`Prior_Param`))`, `variation_prior(`Prior_Param`)`, Precision`))` |    
 | Posterior predictive check                       |  Data VS `relational_prior(`Draws`)`                                                                                                    |     |
-		
+
 
 ## 3. Why
 ### Combining Long term and short term modeling 
 - Oliva20 introduce two cultures of explainability: variation and process
 - Yaman's slide on comparison of (a) exogenous, static, forecasting and (b) endogenous, dynamic, policy model for city population
 
-<img width="1001" alt="image" src="https://user-images.githubusercontent.com/30194633/184233122-3f3dbe1e-3311-4819-8b9b-6775a096861b.png">
 
 
 ## 4. Who
 
 ### User-Program WF: One actor and its tool
 
-| Step                  | Program's work (P-rows have `.function(input)`)                                                                                | User's work                                                                                                 | added info (for U-row) or infrastructure (for P-row)       -            | out format                    |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------- |
-| U1-Draft              | `Vensim` assists U1.a()                                                                                                        | a. Translate mental model to SD model                                                                       | Relation btw Variables                                                  | `.mdl`                        |
-| U2-Classify           | `PySD` assists U2.a()                                                                                                          | a. Classify parameters `est_param`, `ass_param`, b. Select `obs_state` among stocks                         | Want (`est_param`) and Have (assume: `ass_param`, observe: `obs_state`) | `.json`                       |
-| P1-relate             | `PySD`, `.build_function_block`(U1.a)                                                                                          |                                                                                                             |                                                                         | `.stan`                       |
-| U3-Specify_restrict   |                                                                                                                                | a. Supply value or series of `assmed_param`, b. Choose `family`(:= dist. of `msr_err_scale`)                |                                                                         | DataFrame `object`,   `.json` |
-| U4-Specify-regularize |                                                                                                                                | a. Choose `prior_family`(`est_param`'s prior dist. type) , b. Set `prior_param` (`est_param`'s prior param) |                                                                         | `.json`                       |
-| P2-predict            | `draws2data.stan`, `fit_prior_data.sample()`, `fit_prior_data = (U2.ab, U3.ab, U4.ab)`: Prior predictive check (opt-out prior) |                                                                                                             |                                                                         | DataFrame `object`            |
-| P3-infer              | `data2draws.stan`,`.create_stan_program`(U2.ab, U3.ab): Infer parameter from (synthetic) data: SBC                             |                                                                                                             |                                                                         | `.stan`                       |
-| U5-Specify_tolerance  |                                                                                                                                | a. Set precision with `iter_sampling` (:= # of samples), b. Select posterior approximator                   |                                                                         | `int`                         |
-| P4-infer              | `Stan`, `fit_post_draws.sample()`, ` fit_post_draws = (P1, U3.ab, U4.ab, U5.ab)`: Posterior predictive check (opt-in prior)    |                                                                                                             |                                                                         | DataFrame `object`            |
-|                       |                                                                                                                                |                                                                                                             |                                                                         |                               |
-
-| Step | Goal               | Program's work (P-rows have `.function(input)`)                                                                                | User's work                                                                                                 |
-| ---- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
-| U1   | Draft              | `Vensim` assists U1.a()                                                                                                        | a. Translate mental model to SD model                                                                       |
-| U2   | Classify           | `PySD` assists U2.a()                                                                                                          | a. Classify parameters `est_param`, `ass_param`, b. Select `obs_state` among stocks                         |
-| P1   | relate             | `PySD`, `.build_function_block`(U1.a)                                                                                          |                                                                                                             |
-| U3   | Specify_project    |                                                                                                                                | a. Supply value or series of `assmed_param`, b. Choose `family`(:= dist. of `msr_err_scale`)                |
-| U4   | Specify_regularize |                                                                                                                                | a. Choose `prior_family`(`est_param`'s prior dist. type) , b. Set `prior_param` (`est_param`'s prior param) |
-| P2   | predict            | `draws2data.stan`, `fit_prior_data.sample()`, `fit_prior_data = (U2.ab, U3.ab, U4.ab)`: Prior predictive check (opt-out prior) |                                                                                                             |
-| P3   | infer              | `data2draws.stan`,`.create_stan_program`(U2.ab, U3.ab): Infer parameter from (synthetic) data: SBC                             |                                                                                                             |
-| U5   | Specify_tolerance  |                                                                                                                                | a. Set precision with `iter_sampling` (:= # of samples), b. Select posterior approximator                   |
-| P4   | infer              | `Stan`, `fit_post_draws.sample()`, ` fit_post_draws = (P1, U3.ab, U4.ab, U5.ab)`: Posterior predictive check (opt-in prior)    |                                                                                                             |
+| Step | Goal               | Program, work, `command` (P-rows have `.function(input)`)                                                                      | User's work                                                                                                    | output format                                                  |
+| ---- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| U1   | Draft              | `Vensim` assists U1.a()                                                                                                        | a. Translate mental model to SD model                                                                          | `.mdl`                                                         |
+| U2   | Classify           | `PySD` assists U2.a()                                                                                                          | a. Classify parameters `est_param`, `ass_param`, b. Select `obs_state` among stocks                            | `.json`                                                        |
+| P1   | relate             | `PySD`, `.build_function_block`(U1.a)                                                                                          |                                                                                                                | `relation.stan`                                                |
+| U3   | Specify_project    |                                                                                                                                | a. Supply value or series of `assmed_param`, b. Choose `family`(:= dist. of `msr_err_scale`)                   | `draws2data.stan` gq block,  `data2draws.stan` model, gq block |
+| U4   | Specify_regularize |                                                                                                                                | a. Set {min, mode, max} of `est_param`'s prior param (optional) b. Choose `prior_family`(default: PERT Normal) | `draws2data.stan` gq block,  `data2draws.stan` model, gq block |
+| P2   | predict            | `draws2data.stan`, `fit_prior_data.sample()`, `fit_prior_data = (U2.ab, U3.ab, U4.ab)`: Prior predictive check (opt-out prior) |                                                                                                                |                                                                |
+| P3   | infer to verify    | `Stan`, `data2draws.stan`,`.create_stan_program`(U2.ab, U3.ab): Infer parameter from (synthetic) data: SBC                     |                                                                                                                | Prior predictive check plot (summary stats.)                   |
+| U5   | Specify_tolerance  |                                                                                                                                | a. Set precision with `iter_sampling` (:= # of samples), b. Select posterior approximator                      | $\gamma$ from SBC-graphics                                     |
+| P4   | infer to validate  | `Stan`, `fit_post_draws.sample()`, ` fit_post_draws = (P1, U3.ab, U4.ab, U5.ab)`: Posterior predictive check (opt-in prior)    |                                                                                                                | Posterior predictive check plot                                |
 
 
 

@@ -1,10 +1,9 @@
-Compared to [[Flow1 (Method 1)]]
-- Macro models with greater than 7 (around 30 for world3 model) stocks with many `est_param` (have seen around 100 (30 for local and 40 for global))
+- For: Macro models with greater than 7 (around 30 for world3 model) stocks with many `est_param` (have seen around 100 (30 for local and 40 for global))
 - Key: Optimization algorithm design which may take weeks (two weeks for Covid epidemiological model for inference)
-
+- Compared to [[Flow1 (Method 1)]], (will ask Jason for advice on what might be an important research question here)
 
 ## Iterative Calibration 
-(Vengine version written with with Jason)
+(written with with Jason, revising TY's manual)
 WARNING: THIS VERSION REQUIRES VENGINE TO RUN!
 
 1) Save the .py file in the same folder as your model and relevant modelling files (.voc, .vpd, .vsc, .vdfx inputs, etc.). The program will copy all relevant files to a new subfolder and work there, as it will usually generate a lot of new files.

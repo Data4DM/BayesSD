@@ -567,3 +567,23 @@ class ists:
         if period == len(x)/2:
             period = 0
         return period
+
+    
+# -> classLikelihoodAll(y) returns likelihood table containing scores of all possible classes. ex. table = ists_instance.classLikelihoodAll(y)
+
+# -> getClassId(y) returns the id of the class that given data is belong to after behavior classification ex. class_id = ists_instance.getClassId(y)
+
+# -> getPeriod(y) returns the period of the given data. ex. period = ists_instance.getPeriod(y)
+
+# -> smooth(y) applies exponential smoothing to the given data and returns the smoothed data. ex. smoothed_y = ists_instance.smooth(y)
+
+# -> normalize(y) normalizes the given data and returns the normalized data ex. normalized_y = ists_instance.normalize(y)
+
+# -> getClassIdByName(name) returns the id of the class used in the classification ex. class_id = ists_instance.GetClassIdByName('gr1da')
+
+# -> getClassNameById(id) returns the name of the class used in the classification ex. class_name = ists_instance.GetClassNameById(2)
+
+# **Functions that can be used without creating an instance
+
+# -> autocorrelation(y) returns the autocorrelation of the data
+# ex. autocor_y = ists.autocorrelation(y) -> covariance(y) returns the covariance of the data ex. cov_y = ists.covariance(y)
