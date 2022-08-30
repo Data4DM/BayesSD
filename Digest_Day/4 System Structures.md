@@ -1,12 +1,85 @@
-## What
-Four system structures (n $\in$ 1..N):
-- flow - $(\text{stock}-\text{flow})_{n}$
-- flow - $(\text{stock}-\text{flow})_{n}$- stock
-- stock - $(\text{flow}-\text{stock})_{n}$
-- stock - $(\text{flow}-\text{stock})_{n}$- flow
+Time, Graph, Openness, Hierarchy are four components of system structure.
+
+## 1. Time
+Everything is relative. Any policy can be myopic as the time horizon can always be elongated. Speed is the integration of acceleration, but is the differentiation of location. Worlding starts from setting the time horizon and time step. 
+
+## 2. Graph: Time+Space
+Once the time axis is set, we move on to the spatial structure layout. Stock and flow diagram is a cyclic directed graph with the aggregation lever in each link. This aggregation is why the graph holds not only the information of space but also time. Modeler's will for system's heterogeneity, is expressed as the number of assumed parameter i.e. replacing nuisance parameter to its equilibrium value (first moment). `N`th order system's order usually has `N` number of stocks. With greater order comes greater responsibility for the marginalized out heterogenity. These integration explains "low pass filter" role of SD models, killing the aleatoric uncertainty with high frequency.
+
+Usually, variables in one view are one connected graph.
+
+## 3. Openness: Information+Energy+Material
+Four types of system exists depending how open this system is on the axis of information, energy, and material. Closed, information open, information+energy open, information+energy+material open are the four systems in order of modeling complexity.
+
+ The following  (n $\in$ 1..N) structure classification may tell us something on how open the system is. For instance, c is the most closed (perfect markov chain). Balking is one physical mechanism that transforms open to closed system.
+a. flow - $(\text{stock}-\text{flow})_{n}$
+b. flow - $(\text{stock}-\text{flow})_{n}$- stock
+c. stock - $(\text{flow}-\text{stock})_{n}$
+d. stock - $(\text{flow}-\text{stock})_{n}$- flow
+
+#hrq Q. Could we find the relation between a~d to information, energy, material open system?
+
+## 4. Hierarchy
+To implement fractional order of aggreagation, we use hierarchical Bayesian modeling with subscripts. 
 
 
-Calibrating Hierarchical Bayesian ODE; for this, tracing the source of variation and hierarchy is needed.
+## Eight examples
+Below are eight examples of world models (in process).
+
+| Name           | Time (unit, init, final, step)    | list of Stock                                                                                                                                                                                                                  | order | View # and name                                                     | Info | Energy | Material | Hierarchy |
+| -------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----- | ------------------------------------------------------------------- | ---- | ------ | -------- | --------- |
+| SEIRb          | day, 50, 580, .25                 | S, E, I, Recovered, Dead                                                                                                                                                                                                       | 6     | 1                                                                   |      |        |          |           |
+| Project        | week, 0, 200, .125                | Rework Backlog, Quality Assurance Backlog, Work Released, Initial completion backlog, Project duration, Project resources                                                                                                      | 6     | 2: workflow, resource                                               |      |        |          |           |
+| LongWave       | year, 0, 200, .03125 (1/32 month) | Expected orders, Capital Supply Line, Capital Stock, Backlog, Goods Supply Line                                                                                                                                                | 5     | 3: capital goods, cosunmer goods, capital sector                    |      |        |          |           |
+| MarketGrowth   | month, 0, 130, .25                | Sales Force, Recent Revenue, Backlog, Delivery Delay Perceived by Market, Delivery Delay perceived by Company, Capacity                                                                                                        | 6     | 4: sales force, production, market, capacity aquisition             |      |        |          |           |
+| ServiceQuality | week, 53, 300, .125               | sales force, recent revenue, backlog, delivery delay perceived by company, delivery delay perceived by market, capacity                                                                                                        | 14    | 5: input, service capacity, labor, delivery, quality                |      |        |          |           |
+| Material cycle | year, 0, 160, .03125              | Pink Noise, Industry Demand, Long Run Expected Price, Expected Production Costs, WIP, Inventoy, Capacity Utilization, Short Run Expected Price, Expected Variable Costs, Traders' Expected Price, Perceived Inventory Coverage | 11    | 5: unit cost, demand, desired capacity, production inventory, price |      |        |          |           |
+| UrbanDynamics  | year, 0, 250, 1                   |                                                                                                                                                                                                                                |       |                                                                     |      |        |          |           |
+| World3         | year, 1900, 2100, .5              |                                                                                                                                                                                                                                |       |                                                                     |      |        |          |           |
+
+#hrq  longwave model: 
+- may I call this as mng(capacity)
+- should I count graph connected around init capital stock as one?
+- 
+
+### 1. SEIRb
+Mng(Population)
+![[Pasted image 20220822225557.png]]
+
+### 2. Project
+Mng(Project)
+![[Mng(project).excalidraw.svg]]
+
+
+### 3. Capacity
+Mng(Capacity): capital
+![[Mng(Longwave).excalidraw.svg]]
+
+
+### 4. Market growth
+Mng(Market)
+![[Mng(Market).excalidraw.svg]]
+- why do we have three backlogs?
+- book to bill ratio?
+- stock: sales force, reent revenue, backlog, delivery delay perceived by company, delivery delay perceived by market, capacity
+
+
+### 5. Service quality
+Mng(Service)
+![[Manage(Service).excalidraw.svg]]
+
+### 6. Material Cycle
+Mng(MaterialSupplyPink Noise, Industry Demand, Long Run Expected Price, Expected Production Costs, WIP, Inventoy, Capacity Utilization, Short Run Expected Price, Expected Variable Costs)
+
+![[Mng(Commodity).excalidraw.svg]]
+
+### 7. City
+Mng(City)
+
+
+### 8. World 
+Mng(World) 
+
 
 ### Variation (a.k.a. Uncertainty)
 As the main part of calibration is inference, our goal is to formulate dynamic model into Bayesian statistical model.
