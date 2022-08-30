@@ -10,9 +10,18 @@ A comment "filtering is the best approach to modeling dynamic systems" from [th
 
 Below are some discussion I had with Hazhir and Tom:
 
-**1. Kalman filtering VS MCMC?**
+**1.  Filtering VS MCMC?**
 
-Kalman filtering and MCMC (with its variants) are two algorithm families I am weighing upon. My main area has been MCMC but I wish to know more on Kalman filtering considering the comment "I tend to agree with you that filtering is the best approach to modeling dynamic systems" from the following post which also introduce [this](https://streaklinks.com/BK7lCbrh4XfhPiYDmwg_8Yfz/https%3A%2F%2Fgithub.com%2Frlabbe%2FKalman-and-Bayesian-Filters-in-Python?email=hyunji.moonb%40gmail.com) python library that supports Kalman filters,extended Kalman filters, unscented Kalman filters, particle filters. Also, I noticed Kalman filtering community has a great need for SBC methodology which may be due to the inexistence of theoretically supported convergence diagnostics (other than SBC).
+Importance sampling and gradient-based sampling are two 
+MCMC helped implementing Bayesian update by replacing the marginalized likelihood of posterior distribution with its Monte Carlo estimate. This was start of the computational Bayesian statistics. Hamiltonian Monte Carlo (HMC) made the random
+Sequential Monte Carlo (also known as particle filtering) and MCMC (with their variants on each side) are two algorithm families that are compared.
+
+Bayesian Monte Carlo techniques for filtering
+
+pMCMC being the 
+
+Dynamic models are  our coupling based MCMC to 
+explicit MCMC but I wish to know more on Kalman filtering considering the comment "I tend to agree with you that filtering is the best approach to modeling dynamic systems" from the following post which also introduce [this](https://streaklinks.com/BK7lCbrh4XfhPiYDmwg_8Yfz/https%3A%2F%2Fgithub.com%2Frlabbe%2FKalman-and-Bayesian-Filters-in-Python?email=hyunji.moonb%40gmail.com) python library that supports Kalman filters,extended Kalman filters, unscented Kalman filters, particle filters. Also, I noticed Kalman filtering community has a great need for SBC methodology which may be due to the inexistence of theoretically supported convergence diagnostics (other than SBC).
 
 [https://discourse.mc-stan.org/t/state-space-kalman-filtering-advice-for-inverse-model/8648/14](https://discourse.mc-stan.org/t/state-space-kalman-filtering-advice-for-inverse-model/8648/14)  
 
