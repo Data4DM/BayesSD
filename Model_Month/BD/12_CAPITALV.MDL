@@ -1,0 +1,765 @@
+********************************************************
+	.vintaging
+********************************************************~
+		
+		Capital Vintaging Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This model, developed in chapter 12, combines an aging chain with coflows.
+		It tracks the input (factor) requirements of a firm's capital stock (such as 
+		labor, energy, or materials requirements, or emissions generated per unit of capital \
+		per period)
+		from the ordering of new plant and equipment through ultimate discard.  Three
+		vintages of capital are assumed.
+	|
+
+Average Factor Intensity of Capital=
+	Total Factor Requirements of Capital/Total Capital Stock
+	~	Factor Units/Capital Unit
+	~	The average factor intensity of the entire productive stock is the ratio \
+		of total factor requirements to total capital.
+	|
+
+Total Capital Stock=
+	Capital Vintage 1+Capital Vintage 2+Capital Vintage 3
+	~	Capital Units
+	~	The sum of each vintage of capital.
+	|
+
+Total Factor Requirements of Capital=
+	Factor Requirements of Capital Vintage 1+Factor Requirements of Capital Vintage 2+Factor Requirements of Capital Vintage 3
+	~	Factor Units
+	~	The sum of the factor requirements of each vintage of capital.
+	|
+
+Average Life of Capital=
+	20
+	~	Years
+	~	The average  total life of capital (the residence time in any cohort is \
+		the average total life divided by the number of cohorts).
+	|
+
+Capital Acquisition=
+	Capital Under Construction/Construction Delay
+	~	Capital Units/Year
+	~	Capital is acquired after an average delay given by the Construction \
+		Delay.  A first-order process is assumed, but in general any higher-order \
+		delay may be used.
+	|
+
+Capital Aging 1=
+	Capital Vintage 1/(Average Life of Capital/3)
+	~	Capital Units/Year
+	~	Capitalages from vintage 1 to vintage 2 by a first-order process.  The \
+		average residence time in the cohort is 1/3 the average life of capital.
+	|
+
+Capital Aging 2=
+	Capital Vintage 2/(Average Life of Capital/3)
+	~	Capital Units/Year
+	~	Capitalages from vintage 2 to vintage 3 by a first-order process.  The \
+		average residence time in the cohort is 1/3 the average life of capital.
+	|
+
+Capital Discards=
+	Capital Vintage 3/(Average Life of Capital/3)
+	~	Capital Units/Year
+	~	Capital is discarded from the final cohort.  The average residence time in \
+		the final cohort is 1/3 the average life of capital.
+	|
+
+Capital Under Construction= INTEG (
+	+Construction Starts-Capital Acquisition,
+		Construction Starts*Construction Delay)
+	~	Capital Units
+	~	Capital on order and under construction.
+	|
+
+Capital Vintage 1= INTEG (
+	Capital Acquisition-Capital Aging 1,
+		Construction Starts*(Average Life of Capital/3))
+	~	Capital Units
+	~	Capital in the first vintage.  Initialized in equilibrium.
+	|
+
+Capital Vintage 2= INTEG (
+	Capital Aging 1-Capital Aging 2,
+		Construction Starts*(Average Life of Capital/3))
+	~	Capital Units
+	~	Capital in the second vintage.  Initialized in equilibrium.
+	|
+
+Capital Vintage 3= INTEG (
+	Capital Aging 2-Capital Discards,
+		Construction Starts*(Average Life of Capital/3))
+	~	Capital Units
+	~	Capital in the third vintage.  Initialized in equilibrium.
+	|
+
+Change in Pink Noise = (White Noise - Pink Noise)/Noise Correlation Time
+	~	1/Year
+	~	Change in the pink noise value; Pink noise is a first order exponential smoothing \
+		delay of the white
+		         noise input.
+	|
+
+Change in Pink Noise 0 = (White Noise 0 - Pink Noise 0)/Noise Correlation Time 0
+	~	1/Year
+	~	Change in the pink noise value; Pink noise is a first order exponential smoothing \
+		delay of the white
+		         noise input.
+	|
+
+Construction Delay=
+	2
+	~	Years
+	~	The average construction delay.
+	|
+
+Construction Starts=
+	Exogenous Construction Start Rate
+	~	Capital Units/Year
+	~	Construction starts are exogenous for testing purposes.
+	|
+
+Exogenous Construction Start Rate = Initial Capital Acquisition Rate*Input
+	~	Capital Units/Year
+	~	The construction start rate is exogenous.  A variety of test inputs allow users to \
+		try different patterns,
+		         including a step, pulse, sine wave, and random noise.
+	|
+
+Exogenous Marginal Factor Intensity = Initial Labor Requirements of Capital*Input 0
+	~	Factor Units/Capital Unit
+	~	The marginal factor intensity of new capital is exogenous.  A variety of test inputs \
+		allow users to try different patterns,
+		         including a step, pulse, sine wave, and random noise.
+	|
+
+Exponential Growth Rate=
+	0
+	~	1/Year
+	~	The exogenous growth fraction for the test input.
+	|
+
+Exponential Growth Rate 0=
+	0
+	~	1/Year
+	~	The exogenous growth fraction for the test input.
+	|
+
+Exponential Growth Time=
+	5
+	~	Year
+	~	The time at which exponential growth in the test input begins.
+	|
+
+Exponential Growth Time 0=
+	5
+	~	Year
+	~	The time at which exponential growth in the test input begins.
+	|
+
+Factor Intensity of Capital 1=
+	Factor Requirements of Capital Vintage 1/Capital Vintage 1
+	~	Factor Units/Capital Unit
+	~	The number of factor units required per unit of capital in vintage 1 .   \
+		Given by the ratio of total factor requirements for the vintage to the \
+		total capital stock in the vintage.
+	|
+
+Factor Intensity of Capital 2=
+	Factor Requirements of Capital Vintage 2/Capital Vintage 2
+	~	Factor Units/Capital Unit
+	~	The number of factor units required per unit of capital in vintage 2 .   \
+		Given by the ratio of total factor requirements for the vintage to the \
+		total capital stock in the vintage.
+	|
+
+Factor Intensity of Capital 3=
+	Factor Requirements of Capital Vintage 3/Capital Vintage 3
+	~	Factor Units/Capital Unit
+	~	The number of factor units required per unit of capital in vintage 3 .   \
+		Given by the ratio of total factor requirements for the vintage to the \
+		total capital stock in the vintage.
+	|
+
+Factor Intensity of Capital Under Construction=
+	Factor Requirements of Capital Under Construction/Capital Under Construction
+	~	Factor Units/Capital Unit
+	~	The number of factor units required per unit of capitalunder construction \
+		.   Given by the ratio of total factor requirements for the capital under \
+		construction to the capital under construction itself.
+	|
+
+Factor Intensity of New Construction=
+	Exogenous Marginal Factor Intensity
+	~	Factor Units/Capital Unit
+	~	The number of factor units required per unit of capital ordered today (on \
+		the margin).  Determined exogenously for testing purposes.
+	|
+
+Factor Requirements of Capital Under Construction= INTEG (
+	+Increase in Factor Requirements of Capital Under Construction-Increase in Factor Requirements of Capital 1\
+		,
+		Factor Intensity of New Construction*Capital Under Construction)
+	~	Factor Units
+	~	The total factor that will be required to operate the capital under \
+		construction once it enters the productive stock.
+	|
+
+Factor Requirements of Capital Vintage 1= INTEG (
+	Increase in Factor Requirements of Capital 1-Increase in Factor Requirements of Capital 2\
+		,
+		Factor Intensity of New Construction*Capital Vintage 1)
+	~	Factor Units
+	~		|
+
+Factor Requirements of Capital Vintage 2= INTEG (
+	Increase in Factor Requirements of Capital 2-Increase in Factor Requirements of Capital 3\
+		,
+		Factor Intensity of New Construction*Capital Vintage 2)
+	~	Factor Units
+	~	The total factor required to operate the capital in vintage 2.
+	|
+
+Factor Requirements of Capital Vintage 3= INTEG (
+	Increase in Factor Requirements of Capital 3-Reduction in Factor Requirements from Discards\
+		,
+		Factor Intensity of New Construction*Capital Vintage 3)
+	~	Factor Units
+	~	The total factor required to operate the capital in vintage 3.
+	|
+
+Increase in Factor Requirements of Capital 1=
+	Capital Acquisition*Factor Intensity of Capital Under Construction
+	~	Factor Units/Year
+	~	Factor requirements of the capital under construction are reduced by the \
+		average for the the supply line when units move into the first vintage of \
+		productive capital.
+	|
+
+Increase in Factor Requirements of Capital 2=
+	Capital Aging 1*Factor Intensity of Capital 1
+	~	Factor Units/Year
+	~	Factor requirements of the source vintage are reduced by the average for \
+		the vintage when units move into the next vintage.
+	|
+
+Increase in Factor Requirements of Capital 3=
+	Capital Aging 2*Factor Intensity of Capital 2
+	~	Factor Units/Year
+	~	Factor requirements of the source vintage are reduced by the average for \
+		the vintage when units move into the next vintage.
+	|
+
+Increase in Factor Requirements of Capital Under Construction=
+	Construction Starts*Factor Intensity of New Construction
+	~	Factor Units/Year
+	~	The factor requirements of the supply line of capital under construction \
+		are increased by the marginal requirements per unit of new capital ordered.
+	|
+
+Initial Capital Acquisition Rate=
+	100
+	~	Capital Units/Year
+	~	Initial value of customer orders, set to 10,000 widgets per week.
+	|
+
+Initial Labor Requirements of Capital=
+	100
+	~	Factor Units/Capital Unit
+	~	Initial Factor Intensity of New Units
+	|
+
+Input=
+	1+STEP(Step Height,Step Time)+
+	(Pulse Quantity/TIME STEP)*PULSE(Pulse Time,TIME STEP)+
+	RAMP(Ramp Slope,Ramp Start Time,Ramp End Time)+(STEP(1, Exponential Growth Time)*(exp\
+		(Exponential Growth Rate*(Time - Exponential Growth Time))-1))+
+	Sine Amplitude*SIN(2*3.14159*Time/Sine Period)+
+	  	STEP(1,Noise Start Time)*Pink Noise
+	~	Dimensionless
+	~	Input is a dimensionless variable which provides a variety of test input patterns, \
+		including a step,
+		         pulse, sine wave, and random noise.
+	|
+
+Input 0=
+	1+STEP(Step Height 0,Step Time 0)+
+	(Pulse Quantity 0/TIME STEP)*PULSE(Pulse Time 0,TIME STEP)+
+	RAMP(Ramp Slope 0,Ramp Start Time 0,Ramp End Time 0)+(STEP(1, Exponential Growth Time 0\
+		)*(exp(Exponential Growth Rate 0*(Time - Exponential Growth Time 0))-1))+
+	Sine Amplitude 0*SIN(2*3.14159*Time/Sine Period 0)+
+	  	STEP(1,Noise Start Time 0)*Pink Noise 0
+	~	Dimensionless
+	~	Input is a dimensionless variable which provides a variety of test input patterns, \
+		including a step,
+		         pulse, sine wave, and random noise.
+	|
+
+Noise Correlation Time = 4
+	~	Year
+	~	The correlation time constant for Pink Noise.
+	|
+
+Noise Correlation Time 0 = 4
+	~	Year
+	~	The correlation time constant for Pink Noise.
+	|
+
+Noise Standard Deviation = 0
+	~	Dimensionless
+	~	The standard deviation of the pink noise process.
+	|
+
+Noise Standard Deviation 0 = 0
+	~	Dimensionless
+	~	The standard deviation of the pink noise process.
+	|
+
+Noise Start Time = 5
+	~	Year
+	~	Start time for the random input.
+	|
+
+Noise Start Time 0 = 5
+	~	Year
+	~	Start time for the random input.
+	|
+
+Pink Noise = INTEG(Change in Pink Noise,0)
+	~	Dimensionless
+	~	Pink Noise is first-order autocorrelated noise.  Pink noise provides a realistic \
+		noise input to
+		        models in which the next random shock depends in part on the previous \
+		shocks.  The user
+		        can specify the correlation time.  The mean is 0 and the standard deviation \
+		is specified
+		         by the user.
+	|
+
+Pink Noise 0 = INTEG(Change in Pink Noise 0,0)
+	~	Dimensionless
+	~	Pink Noise is first-order autocorrelated noise.  Pink noise provides a realistic \
+		noise input to
+		        models in which the next random shock depends in part on the previous \
+		shocks.  The user
+		        can specify the correlation time.  The mean is 0 and the standard deviation \
+		is specified
+		         by the user.
+	|
+
+Pulse Quantity=0
+	~	Dimensionless*Year
+	~	The quantity to be injected to customer orders, as a fraction of the base value of \
+		Input. 
+		        For example, to pulse in a quantity equal to 50% of the current value of \
+		input, set to
+		         .50.
+	|
+
+Pulse Quantity 0=0
+	~	Dimensionless*Year
+	~	The quantity to be injected to customer orders, as a fraction of the base value of \
+		Input. 
+		        For example, to pulse in a quantity equal to 50% of the current value of \
+		input, set to
+		         .50.
+	|
+
+Pulse Time=5
+	~	Year
+	~	Time at which the pulse in Input occurs.
+	|
+
+Pulse Time 0=5
+	~	Year
+	~	Time at which the pulse in Input occurs.
+	|
+
+Ramp End Time=1e+009
+	~	Year
+	~	End time for the ramp input.
+	|
+
+Ramp End Time 0=1e+009
+	~	Year
+	~	End time for the ramp input.
+	|
+
+Ramp Slope=0
+	~	1/Year
+	~	Slope of the ramp input, as a fraction of the base value (per week).
+	|
+
+Ramp Slope 0=0
+	~	1/Year
+	~	Slope of the ramp input, as a fraction of the base value (per week).
+	|
+
+Ramp Start Time=5
+	~	Year
+	~	Start time for the ramp input.
+	|
+
+Ramp Start Time 0=5
+	~	Year
+	~	Start time for the ramp input.
+	|
+
+Reduction in Factor Requirements from Discards=
+	Capital Discards*Factor Intensity of Capital 3
+	~	Factor Units/Year
+	~	Factor requirements are reduced by the average for the vintage when units \
+		exit the vintage.
+	|
+
+Sine Amplitude=0
+	~	Dimensionless
+	~	Amplitude of sine wave in customer orders (fraction of mean).
+	|
+
+Sine Amplitude 0=0
+	~	Dimensionless
+	~	Amplitude of sine wave in customer orders (fraction of mean).
+	|
+
+Sine Period=50
+	~	Year
+	~	Period of sine wave in customer demand.  Set initially to 50 weeks (1 \
+		year).
+	|
+
+Sine Period 0=50
+	~	Year
+	~	Period of sine wave in customer demand.  Set initially to 50 weeks (1 \
+		year).
+	|
+
+Step Height=0
+	~	Dimensionless
+	~	Height of step input to customer orders, as fraction of initial value.
+	|
+
+Step Height 0=0
+	~	Dimensionless
+	~	Height of step input to customer orders, as fraction of initial value.
+	|
+
+Step Time=5
+	~	Year
+	~	Time for the step input.
+	|
+
+Step Time 0=5
+	~	Year
+	~	Time for the step input.
+	|
+
+White Noise = Noise Standard Deviation*((24*Noise Correlation Time/TIME STEP)^0.5*(RANDOM 0 1\
+		() - 0.5
+))
+	~	Dimensionless
+	~	White noise input to the pink noise process.
+	|
+
+White Noise 0 = Noise Standard Deviation 0*((24*Noise Correlation Time 0/TIME STEP)^0.5\
+		*(RANDOM 0 1() - 0.5
+))
+	~	Dimensionless
+	~	White noise input to the pink noise process.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 80
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Year
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.125
+	~	Year
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Capital Vintaging and Factor Requirements
+$0,0,Helvetica|9|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Capital Under Construction,331,111,50,25,3,3,0,0,0,0,0,0
+10,2,Capital Vintage 1,527,111,50,25,3,3,0,0,0,0,0,0
+10,3,Capital Vintage 2,714,111,50,25,3,3,0,0,0,0,0,0
+10,4,Capital Vintage 3,903,111,50,25,3,3,0,0,0,0,0,0
+12,5,48,183,113,8,8,0,3,0,0,-1,0,0,0
+1,6,8,1,4,0,0,22,0,0,0,-1--1--1,,1|(261,113)|
+1,7,8,5,100,0,0,22,0,0,0,-1--1--1,,1|(210,113)|
+11,8,48,236,113,6,8,34,3,0,0,1,0,0,0
+10,9,Construction Starts,236,146,50,25,40,3,0,0,-1,0,0,0
+1,10,12,2,4,0,0,22,0,0,0,-1--1--1,,1|(456,111)|
+1,11,12,1,100,0,0,22,0,0,0,-1--1--1,,1|(402,111)|
+11,12,556,429,111,6,8,34,3,0,0,1,0,0,0
+10,13,Capital Acquisition,429,148,41,29,40,3,0,0,-1,0,0,0
+1,14,16,3,4,0,0,22,0,0,0,-1--1--1,,1|(645,111)|
+1,15,16,2,100,0,0,22,0,0,0,-1--1--1,,1|(595,111)|
+11,16,444,620,111,6,8,34,3,0,0,1,0,0,0
+10,17,Capital Aging 1,620,147,31,28,40,3,0,0,-1,0,0,0
+1,18,20,4,4,0,0,22,0,0,0,-1--1--1,,1|(833,111)|
+1,19,20,3,100,0,0,22,0,0,0,-1--1--1,,1|(783,111)|
+11,20,508,808,111,6,8,34,3,0,0,1,0,0,0
+10,21,Capital Aging 2,808,144,30,25,40,3,0,0,-1,0,0,0
+12,22,48,1060,112,8,8,0,3,0,0,-1,0,0,0
+1,23,25,22,4,0,0,22,0,0,0,-1--1--1,,1|(1030,112)|
+1,24,25,4,100,0,0,22,0,0,0,-1--1--1,,1|(974,112)|
+11,25,48,1002,112,6,8,34,3,0,0,1,0,0,0
+10,26,Capital Discards,1002,147,35,27,40,3,0,0,-1,0,0,0
+10,27,Construction Delay,363,27,50,25,8,3,0,0,0,0,0,0
+1,28,27,12,1,0,45,0,0,192,0,-1--1--1,,1|(444,61)|
+10,29,Average Life of Capital,798,24,50,25,8,3,0,0,0,0,0,0
+1,30,29,16,1,0,45,0,0,192,0,-1--1--1,,1|(681,48)|
+1,31,29,20,1,0,45,0,0,192,0,-1--1--1,,1|(806,63)|
+1,32,29,25,1,0,45,0,0,192,0,-1--1--1,,1|(932,47)|
+1,33,1,13,1,0,43,0,0,192,0,-1--1--1,,1|(352,154)|
+1,34,2,17,1,0,43,0,0,192,0,-1--1--1,,1|(560,157)|
+1,35,3,21,1,0,43,0,0,192,0,-1--1--1,,1|(748,158)|
+1,36,4,26,1,0,43,0,0,192,0,-1--1--1,,1|(937,157)|
+10,37,Factor Requirements of Capital Under Construction,331,386,50,25,3,3,0,0,0,0,0,0
+10,38,Factor Requirements of Capital Vintage 1,527,386,50,25,3,3,0,0,0,0,0,0
+10,39,Factor Requirements of Capital Vintage 2,714,386,50,25,3,3,0,0,0,0,0,0
+10,40,Factor Requirements of Capital Vintage 3,903,386,50,25,3,3,0,0,0,0,0,0
+12,41,48,183,388,8,8,0,3,0,0,-1,0,0,0
+1,42,44,37,4,0,0,22,0,0,0,-1--1--1,,1|(261,388)|
+1,43,44,41,100,0,0,22,0,0,0,-1--1--1,,1|(210,388)|
+11,44,48,236,388,6,8,34,3,0,0,1,0,0,0
+10,45,Increase in Factor Requirements of Capital Under Construction,236,438,56,42,40,3,0,0,-1,0,0,0
+1,46,48,38,4,0,0,22,0,0,0,-1--1--1,,1|(456,386)|
+1,47,48,37,100,0,0,22,0,0,0,-1--1--1,,1|(402,386)|
+11,48,972,429,386,6,8,34,3,0,0,1,0,0,0
+10,49,Increase in Factor Requirements of Capital 1,429,431,55,37,40,3,0,0,-1,0,0,0
+1,50,52,39,4,0,0,22,0,0,0,-1--1--1,,1|(645,386)|
+1,51,52,38,100,0,0,22,0,0,0,-1--1--1,,1|(595,386)|
+11,52,988,620,386,6,8,34,3,0,0,1,0,0,0
+10,53,Increase in Factor Requirements of Capital 2,620,431,50,37,40,3,0,0,-1,0,0,0
+1,54,56,40,4,0,0,22,0,0,0,-1--1--1,,1|(833,386)|
+1,55,56,39,100,0,0,22,0,0,0,-1--1--1,,1|(783,386)|
+11,56,1004,808,386,6,8,34,3,0,0,1,0,0,0
+10,57,Increase in Factor Requirements of Capital 3,808,431,51,37,40,3,0,0,-1,0,0,0
+12,58,48,1060,387,8,8,0,3,0,0,-1,0,0,0
+1,59,61,58,4,0,0,22,0,0,0,-1--1--1,,1|(1030,387)|
+1,60,61,40,100,0,0,22,0,0,0,-1--1--1,,1|(974,387)|
+11,61,48,1002,387,6,8,34,3,0,0,1,0,0,0
+10,62,Reduction in Factor Requirements from Discards,1002,434,52,39,40,3,0,0,-1,0,0,0
+10,63,Factor Intensity of New Construction,160,256,50,25,8,3,0,0,0,0,0,0
+10,64,Factor Intensity of Capital Under Construction,329,256,50,25,8,3,0,0,0,0,0,0
+10,65,Factor Intensity of Capital 1,516,256,50,25,8,3,0,0,0,0,0,0
+10,66,Factor Intensity of Capital 2,708,256,50,25,8,3,0,0,0,0,0,0
+10,67,Factor Intensity of Capital 3,905,256,50,25,8,3,0,0,0,0,0,0
+1,68,9,44,1,0,43,0,0,192,0,-1--1--1,,1|(258,240)|
+1,69,37,64,1,0,43,0,0,192,0,-1--1--1,,1|(283,333)|
+1,70,64,48,1,0,43,0,0,64,0,-1--1--1,,1|(406,331)|
+1,71,13,48,1,0,43,0,0,192,0,-1--1--1,,1|(448,325)|
+1,72,38,65,1,0,43,0,0,192,0,-1--1--1,,1|(488,318)|
+1,73,65,52,1,0,43,0,0,64,0,-1--1--1,,1|(583,314)|
+1,74,39,66,1,0,43,0,0,192,0,-1--1--1,,1|(671,326)|
+1,75,66,56,1,0,43,0,0,64,0,-1--1--1,,1|(778,326)|
+1,76,40,67,1,0,43,0,0,192,0,-1--1--1,,1|(865,309)|
+1,77,67,61,1,0,43,0,0,64,0,-1--1--1,,1|(980,335)|
+1,78,17,52,1,0,43,0,0,192,0,-1--1--1,,1|(639,322)|
+1,79,21,56,1,0,43,0,0,192,0,-1--1--1,,1|(828,291)|
+1,80,26,61,1,0,43,0,0,192,0,-1--1--1,,1|(1025,283)|
+1,81,1,64,1,0,45,0,0,192,0,-1--1--1,,1|(303,195)|
+1,82,2,65,1,0,45,0,0,192,0,-1--1--1,,1|(493,179)|
+1,83,3,66,1,0,45,0,0,192,0,-1--1--1,,1|(676,191)|
+1,84,4,67,1,0,45,0,0,192,0,-1--1--1,,1|(875,193)|
+1,85,63,44,1,0,43,0,0,64,0,-1--1--1,,1|(214,340)|
+10,86,Exogenous Construction Start Rate,120,74,50,25,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,87,86,9,1,1,43,0,0,192,0,-1--1--1,,1|(145,148)|
+10,88,Exogenous Marginal Factor Intensity,93,354,50,25,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,89,88,63,1,1,43,0,0,192,0,-1--1--1,,1|(102,297)|
+10,90,Total Capital Stock,515,588,48,17,8,3,0,0,0,0,0,0
+10,91,Capital Vintage 1,387,530,40,19,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,92,Capital Vintage 2,386,585,41,16,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,93,Capital Vintage 3,385,643,39,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,94,Factor Requirements of Capital Vintage 1,803,528,66,29,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,95,Factor Requirements of Capital Vintage 2,803,596,66,25,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,96,Factor Requirements of Capital Vintage 3,811,665,70,22,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,97,Total Factor Requirements of Capital,647,591,47,22,8,3,0,0,0,0,0,0
+10,98,Average Factor Intensity of Capital,583,661,68,18,8,3,0,0,0,0,0,0
+1,99,91,90,0,0,43,0,0,192,0,-1--1--1,,1|(445,556)|
+1,100,92,90,0,0,43,0,0,192,0,-1--1--1,,1|(440,585)|
+1,101,93,90,0,0,43,0,0,192,0,-1--1--1,,1|(442,618)|
+1,102,94,97,1,0,43,0,0,192,0,-1--1--1,,1|(718,555)|
+1,103,95,97,1,0,43,0,0,192,0,-1--1--1,,1|(719,586)|
+1,104,96,97,1,0,43,0,0,192,0,-1--1--1,,1|(729,622)|
+1,105,97,98,1,0,43,0,0,192,0,-1--1--1,,1|(628,627)|
+1,106,90,98,1,0,45,0,0,192,0,-1--1--1,,1|(535,621)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Inputs
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Exogenous Construction Start Rate,279,-148,63,25,8,3,0,0,0,0,0,0
+10,2,Input,125,-174,31,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,3,Input,254,52,22,11,0,3,0,0,-1,0,0,0
+10,4,Pink Noise,606,-13,40,20,3,3,0,0,0,0,0,0
+12,5,48,738,-10,8,8,0,3,0,0,-1,0,0,0
+10,6,White Noise,633,90,40,20,8,3,0,0,0,0,0,0
+10,7,Initial Capital Acquisition Rate,132,-122,47,24,8,3,0,0,0,0,0,0
+10,8,Noise Standard Deviation,526,118,40,20,8,3,0,0,0,0,0,0
+10,9,TIME STEP,540,50,54,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,10,Pink Noise,175,2,52,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,11,Noise Start Time,222,-27,65,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,12,Pulse Quantity,311,-42,58,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,13,Pulse Time,364,-18,44,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,14,Ramp End Time,190,141,63,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,15,Ramp Slope,154,83,49,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,16,Ramp Start Time,152,113,65,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,17,Sine Amplitude,367,87,60,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,18,Sine Period,346,115,46,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,19,Step Height,259,156,47,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,20,Step Time,312,136,40,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,21,Time,150,34,30,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,22,TIME STEP,150,59,54,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+11,23,156,696,-9,6,8,34,3,0,0,1,0,0,0
+10,24,Change in Pink Noise,696,19,40,20,40,3,0,0,0,0,0,0
+10,25,Noise Correlation Time,763,71,40,20,8,3,0,0,0,0,0,0
+1,26,7,1,0,0,0,0,0,0,0,-1--1--1,,1|(190,-131)|
+1,27,11,3,0,0,0,0,0,0,0,-1--1--1,,1|(234,6)|
+1,28,12,3,0,0,0,0,0,0,0,-1--1--1,,1|(286,0)|
+1,29,13,3,0,0,0,0,0,0,0,-1--1--1,,1|(314,13)|
+1,30,14,3,0,0,0,0,0,0,0,-1--1--1,,1|(217,102)|
+1,31,15,3,0,0,0,0,0,0,0,-1--1--1,,1|(203,67)|
+1,32,16,3,0,0,0,0,0,0,0,-1--1--1,,1|(196,86)|
+1,33,17,3,1,0,0,0,0,0,0,-1--1--1,,1|(291,67)|
+1,34,18,3,0,0,0,0,0,0,0,-1--1--1,,1|(305,87)|
+1,35,19,3,0,0,0,0,0,0,0,-1--1--1,,1|(256,110)|
+1,36,20,3,0,0,0,0,0,0,0,-1--1--1,,1|(287,99)|
+1,37,21,3,0,0,0,0,0,0,0,-1--1--1,,1|(198,42)|
+1,38,22,3,0,0,0,0,0,0,0,-1--1--1,,1|(211,55)|
+1,39,2,1,0,0,0,0,0,0,0,-1--1--1,,1|(179,-164)|
+1,40,23,4,4,0,0,22,0,0,0,-1--1--1,,1|(668,-9)|
+1,41,23,5,100,0,0,22,0,0,0,-1--1--1,,1|(716,-9)|
+1,42,4,24,2,0,0,0,0,0,0,-1--1--1,,1|(655,42)|
+1,43,6,24,2,0,0,0,0,0,0,-1--1--1,,1|(693,57)|
+1,44,25,24,2,0,0,0,0,0,0,-1--1--1,,1|(749,23)|
+1,45,25,6,1,0,0,0,0,0,0,-1--1--1,,1|(693,108)|
+1,46,9,6,1,0,0,0,0,0,0,-1--1--1,,1|(576,78)|
+1,47,8,6,1,0,0,0,0,0,0,-1--1--1,,1|(593,107)|
+1,48,10,3,0,0,0,0,0,0,0,-1--1--1,,1|(208,23)|
+10,49,Exogenous Marginal Factor Intensity,275,265,69,25,8,3,0,0,0,0,0,0
+10,50,Input 0,116,235,37,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,51,Input 0,245,461,28,11,0,3,0,0,-1,0,0,0
+10,52,Pink Noise 0,597,396,40,20,3,3,0,0,0,0,0,0
+12,53,48,729,399,8,8,0,3,0,0,-1,0,0,0
+10,54,White Noise 0,624,499,40,20,8,3,0,0,0,0,0,0
+10,55,Initial Labor Requirements of Capital,113,286,56,24,8,3,0,0,0,0,0,0
+10,56,Noise Standard Deviation 0,517,527,40,20,8,3,0,0,0,0,0,0
+10,57,TIME STEP,531,459,54,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,58,Pink Noise 0,166,411,59,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,59,Noise Start Time 0,217,382,71,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,60,Pulse Quantity 0,318,359,64,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,61,Pulse Time 0,340,458,51,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,62,Ramp End Time 0,181,550,69,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,63,Ramp Slope 0,145,492,55,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,64,Ramp Start Time 0,143,522,72,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,65,Sine Amplitude 0,350,486,66,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,66,Sine Period 0,337,524,53,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,67,Step Height 0,250,565,53,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,68,Step Time 0,303,545,47,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,69,Time,141,443,30,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,70,TIME STEP,141,468,54,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+11,71,156,687,400,6,8,34,3,0,0,1,0,0,0
+10,72,Change in Pink Noise 0,687,428,40,20,40,3,0,0,0,0,0,0
+10,73,Noise Correlation Time 0,754,480,40,20,8,3,0,0,0,0,0,0
+1,74,55,49,0,0,0,0,0,0,0,-1--1--1,,1|(180,277)|
+1,75,59,51,0,0,0,0,0,0,0,-1--1--1,,1|(228,414)|
+1,76,60,51,0,0,0,0,0,0,0,-1--1--1,,1|(285,404)|
+1,77,61,51,0,0,0,0,0,0,0,-1--1--1,,1|(287,459)|
+1,78,62,51,0,0,0,0,0,0,0,-1--1--1,,1|(208,511)|
+1,79,63,51,0,0,0,0,0,0,0,-1--1--1,,1|(191,477)|
+1,80,64,51,0,0,0,0,0,0,0,-1--1--1,,1|(187,495)|
+1,81,65,51,1,0,0,0,0,0,0,-1--1--1,,1|(280,472)|
+1,82,66,51,0,0,0,0,0,0,0,-1--1--1,,1|(296,496)|
+1,83,67,51,0,0,0,0,0,0,0,-1--1--1,,1|(247,519)|
+1,84,68,51,0,0,0,0,0,0,0,-1--1--1,,1|(278,508)|
+1,85,69,51,0,0,0,0,0,0,0,-1--1--1,,1|(186,450)|
+1,86,70,51,0,0,0,0,0,0,0,-1--1--1,,1|(199,464)|
+1,87,50,49,0,0,0,0,0,0,0,-1--1--1,,1|(172,244)|
+1,88,71,52,4,0,0,22,0,0,0,-1--1--1,,1|(659,400)|
+1,89,71,53,100,0,0,22,0,0,0,-1--1--1,,1|(707,400)|
+1,90,52,72,2,0,0,0,0,0,0,-1--1--1,,1|(646,451)|
+1,91,54,72,2,0,0,0,0,0,0,-1--1--1,,1|(684,466)|
+1,92,73,72,2,0,0,0,0,0,0,-1--1--1,,1|(740,432)|
+1,93,73,54,1,0,0,0,0,0,0,-1--1--1,,1|(684,517)|
+1,94,57,54,1,0,0,0,0,0,0,-1--1--1,,1|(567,487)|
+1,95,56,54,1,0,0,0,0,0,0,-1--1--1,,1|(584,516)|
+1,96,58,51,0,0,0,0,0,0,0,-1--1--1,,1|(199,432)|
+10,97,Exponential Growth Rate,400,18,40,20,8,3,0,0,-1,0,0,0
+1,98,97,3,0,0,0,0,0,0,0,-1--1--1,,1|(324,34)|
+10,99,Exponential Growth Time,442,60,40,20,8,3,0,0,-1,0,0,0
+1,100,99,3,0,0,0,0,0,0,0,-1--1--1,,1|(345,55)|
+10,101,Exponential Growth Rate 0,375,391,40,20,8,3,0,0,-1,0,0,0
+1,102,101,51,0,0,0,0,0,0,0,-1--1--1,,1|(307,427)|
+10,103,Exponential Growth Time 0,428,431,40,20,8,3,0,0,-1,0,0,0
+1,104,103,51,0,0,0,0,0,0,0,-1--1--1,,1|(337,445)|
+///---\\\
+:GRAPH FACTOR_INTENSITY
+:TITLE Factor Intensity
+:X-AXIS time
+:SCALE
+:VAR Average Factor Intensity of Capital
+:Y-MIN 0
+:Y-MAX 100
+:VAR Factor Intensity of New Construction
+:GRAPH CAPITAL_FLOWS
+:TITLE Capital Flows
+:X-AXIS time
+:SCALE
+:VAR Construction Starts
+:VAR Capital Acquisition
+:VAR Capital Discards
+:GRAPH FACTOR_INTENSITY_OF_CAPI
+:TITLE Factor Intensity of Capital Flows
+:X-AXIS time
+:SCALE
+:VAR Increase in Factor Requirements of Capital Under Construction
+:VAR Increase in Factor Requirements of Capital 1
+:VAR Reduction in Factor Requirements from Discards
+:GRAPH FACTOR_INTENSITY_OF_VINT
+:TITLE Factor Intensity of Vintages
+:X-AXIS time
+:SCALE
+:VAR Factor Intensity of Capital 1
+:VAR Factor Intensity of Capital 2
+:VAR Factor Intensity of Capital 3
+:VAR Average Factor Intensity of Capital
+:L<%^E!@
+9:Current
+22:$,Dollar,Dollars,$s
+22:Capital Units,Capital Unit
+22:Day,Days
+22:Factor Unit,Factor Units
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+15:0,0,0,0
+19:100,0
+5:Initial Capital Acquisition Rate

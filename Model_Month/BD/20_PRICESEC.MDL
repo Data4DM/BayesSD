@@ -1,0 +1,229 @@
+********************************************************
+	.PriceTest
+********************************************************~
+		
+		Pricing Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This partial model represents price setting as an adaptive process.
+		For documentation, see chapter 20.  In this partial model, unit costs and 
+		the demand/supply balance are exogenous for testing purposes.
+	|
+
+Change in Traders' Expected Price=
+	(Indicated Price - Traders' Expected Price)/Time to Adjust Traders' Expected Price
+	~	$/Unit/Year
+	~	Traders' beliefs about the underlying equilibrium price adjust in response \
+		to the gap between the indicated price and the current belief.  Expected \
+		underlying price adjusts via first-order adaptive expectations to the \
+		actual price, constrained to be greater than a minimum level.
+	|
+
+Effect of Costs on Price=
+	1+Sensitivity of Price to Costs*((Expected Production Costs/Traders' Expected Price)\
+		-1)
+	~	Dimensionless
+	~	Price responds to the gap between traders' beliefs about the underlying \
+		equilibrium price and their beliefs about the costs of production.  When \
+		expected costs rise above the expected price, prices tend to rise, and \
+		vice versa.
+	|
+
+Effect of Inventory Coverage on Price=
+	Relative Inventory Coverage^Sensitivity of Price to Inventory Coverage
+	~	Dimensionless
+	~	Price rises when inventory coverage is less than normal, and falls when it \
+		is greater.  The Sensitivity of Price to Inventory Coverage controls the \
+		magnitude of the response.
+	|
+
+Expected Production Costs=
+	Initial Price*(1+(STEP(0,1)-STEP(0,400)))
+	~	$/Unit
+	~	Expected Production Costs represent beliefs among market participants \
+		about the unit costs of production (variable and fixed, including normal \
+		profit margins).  Expected Costs therefore represent beliefs about what a \
+		'fair' price would be, or the long-run equilibrium price.  Expected costs \
+		adjust to the actual costs with a delay representing the time required for \
+		gain information and adjust beliefs about costs.  Exogenous for partial \
+		model test.
+	|
+
+Indicated Price=
+	MAX(Minimum Price,Price)
+	~	$/Unit
+	~	Beliefs about the underlying equilibrium price are never less than a \
+		minimum price level capturing the variable costs of goods.
+	|
+
+Initial Price=
+	100
+	~	$/Unit
+	~	The initial price of the commodity.  Used to initialize unit costs and \
+		price expectations so the system begins in equilibrium.
+	|
+
+Inventory Coverage=
+	Reference Inventory Coverage*(1+STEP(-0.25,1)-STEP(-0.25,700)-STEP(0.52,1200))
+	~	Years
+	~	Exogenous  input for partial model test
+	|
+
+Minimum Price=
+	Unit Variable Cost
+	~	$/Unit
+	~	Trader's do not believe prices can fall below the variable cost per unit \
+		of production.
+	|
+
+Price=
+	Traders' Expected Price*Effect of Inventory Coverage on Price*Effect of Costs on Price
+	~	$/Unit
+	~	Trader's set prices by adjusting their belief about the underlying \
+		equilibrium price in response to market pressures such as the \
+		supply/demand balance, here represented by inventory coverage relative to \
+		the normal level, and unit costs.
+	|
+
+Reference Inventory Coverage= INITIAL(
+	0.2)
+	~	Years
+	~	The normal inventory coverage required to ensure desired levels of service \
+		(the desired ability to fill orders).
+	|
+
+Relative Inventory Coverage=
+	Inventory Coverage/Reference Inventory Coverage
+	~	Dimensionless
+	~	Inventory coverage relative to the normal level needed to ensure desired \
+		service levels in the market.
+	|
+
+Sensitivity of Price to Costs=
+	0.5
+	~	Dimensionless
+	~	Controls the response of price to discrepancies between the expected price \
+		and the expected cost of production.
+	|
+
+Sensitivity of Price to Inventory Coverage=
+	-1
+	~	Dimensionless
+	~	Controls the response of price to inventory coverage.  Must be negative \
+		for high inventory to lead to lower prices.  Higher absolute values lead \
+		to greater price changes for any given inventory coverage level.
+	|
+
+Time to Adjust Traders' Expected Price=
+	1
+	~	Years
+	~	Trader's belief about the underlying equilibrium price adjust to actual \
+		prices over this period.
+	|
+
+Traders' Expected Price= INTEG (
+	Change in Traders' Expected Price,
+		Initial Price)
+	~	$/Unit
+	~	The price market makers and traders believe would clear the market if \
+		demand and supply were in balance, and no other pressures to change price \
+		existed.
+	|
+
+Unit Variable Cost=
+	60
+	~	$/Unit
+	~	Unit Variable Costs of production are exogenous.  A variety of test inputs \
+		allow users to try different patterns, including a step, pulse, sine wave, \
+		and random noise.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 15
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Year
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.03125
+	~	Year
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Price Test Model
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Price,445,295,40,20,8,3,0,0,0,0,0,0
+10,2,Traders' Expected Price,341,73,40,20,3,3,0,0,0,0,0,0
+12,3,48,190,73,8,8,0,3,0,0,-1,0,0,0
+1,4,6,2,4,0,0,22,0,0,0,-1--1--1,,1|(278,73)|
+1,5,6,3,100,0,0,22,0,0,0,-1--1--1,,1|(220,73)|
+11,6,48,249,73,6,8,34,3,0,0,1,0,0,0
+10,7,Change in Traders' Expected Price,249,112,47,31,40,3,0,0,-1,0,0,0
+1,8,2,7,1,0,45,0,0,192,0,-1--1--1,,1|(340,190)|
+10,9,Indicated Price,189,266,40,20,8,3,0,0,0,0,0,0
+1,10,9,7,1,0,43,0,0,192,0,-1--1--1,,1|(178,178)|
+10,11,Time to Adjust Traders' Expected Price,67,143,64,32,8,3,0,0,0,0,0,0
+1,12,11,7,1,0,0,0,0,64,0,-1--1--1,,1|(145,109)|
+1,13,2,1,1,0,43,0,0,192,0,-1--1--1,,1|(430,130)|
+10,14,Effect of Inventory Coverage on Price,511,376,62,26,8,3,0,0,0,0,0,0
+10,15,Minimum Price,81,345,40,20,8,3,0,0,0,0,0,0
+1,16,15,9,1,0,43,0,0,192,0,-1--1--1,,1|(109,298)|
+1,17,1,9,1,0,43,0,0,192,0,-1--1--1,,1|(291,340)|
+1,18,14,1,1,0,43,0,0,192,0,-1--1--1,,1|(476,305)|
+10,19,Relative Inventory Coverage,640,413,52,26,8,3,0,0,0,0,0,0
+1,20,19,14,1,0,45,0,0,192,0,-1--1--1,,1|(574,422)|
+10,21,Reference Inventory Coverage,685,327,40,20,8,3,0,0,0,0,0,0
+1,22,21,19,1,0,45,0,0,192,0,-1--1--1,,1|(677,370)|
+10,23,Inventory Coverage,806,352,40,20,8,3,0,0,-1,0,0,0
+1,24,23,19,1,0,43,0,0,192,0,-1--1--1,,1|(749,409)|
+12,25,0,318,255,20,20,4,4,0,0,0,0,0,0
+R
+12,26,0,320,292,39,13,8,4,0,8,0,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Price Adjustment
+12,27,0,319,126,20,20,4,4,0,0,0,0,0,0
+B
+12,28,0,321,163,39,13,8,4,0,8,0,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Expectation Adjustment
+10,29,Unit Variable Cost,96,494,71,14,8,3,0,0,-1,0,0,0
+1,30,29,15,1,0,43,0,0,192,0,-1--1--1,,1|(76,416)|
+10,31,Sensitivity of Price to Inventory Coverage,362,430,67,33,8,3,0,0,0,0,0,0
+1,32,31,14,1,0,43,0,0,192,0,-1--1--1,,1|(477,428)|
+10,33,Effect of Costs on Price,592,179,40,20,8,3,0,0,0,0,0,0
+1,34,33,1,1,0,43,0,0,192,0,-1--1--1,,1|(538,256)|
+1,35,2,33,1,0,45,0,0,192,0,-1--1--1,,1|(463,75)|
+10,36,Sensitivity of Price to Costs,574,53,40,20,8,3,0,0,0,0,0,0
+1,37,36,33,1,0,43,0,0,192,0,-1--1--1,,1|(620,129)|
+10,38,Initial Price,741,24,40,20,8,3,0,0,-1,0,0,0
+12,39,0,503,167,20,20,4,4,0,0,0,0,0,0
+B
+12,40,0,505,204,39,13,8,4,0,8,0,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+Cost Pressure
+10,41,Expected Production Costs,797,137,40,20,8,3,0,0,-1,0,0,0
+1,42,41,33,1,0,43,0,0,192,0,-1--1--1,,1|(743,170)|
+1,43,21,23,0,0,0,0,0,0,0,-1--1--1,,1|(738,337)|
+1,44,38,41,1,0,0,0,0,0,0,-1--1--1,,1|(787,73)|
+///---\\\
+:L<%^E!@
+9:Price Test
+22:Year,Years
+15:0,0,0,0
+19:100,0
+5:Effect of Costs on Price

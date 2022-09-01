@@ -1,0 +1,790 @@
+{UTF-8}
+********************************************************
+	.MarketGrowth
+********************************************************~
+		Replicated by ??? MIT System Dynamics Group
+		Updated by Tom Fiddaman, Ventana Systems, Tom@Vensim.com
+		Morecroft, J. D. W. (1983). System Dynamics: Portraying Bounded \
+		Rationality. Omega, 11(2), 131-142. See also: Forrester, J. W. (1968). \
+		Market Growth as Influenced by Capital Investment. Industrial Management \
+		Rev. (MIT), 9(2), 83-105.
+	|
+
+Backlog = INTEG(Orders Booked - Delivery Rate, 2000)
+	~	units
+	~	
+		
+		DOCUMENT:  Backlog
+		
+		UNITS: units
+	|
+
+ConstantSalesPeople=
+	10
+	~	people
+	~		|
+
+Budget = Delivery Rate Average*Price of an Order*Fraction Rev to Sales
+	~	$/Month
+	~	
+		DOCUMENT:  Marketing Budget
+		
+		UNITS: dollars/month
+	|
+
+Capacity Arrival Rate=
+	 PCOO 3/(Prd Cap Transit Delay/3)
+	~	units/Month/Month
+	~	
+		DOCUMENT:  Arrival Rate of New Production Capacity
+		
+		UNITS: capacity units/month
+	|
+
+Capacity Expansion Fraction = 
+Capacity Expansion Fraction LOOKUP(Delivery Delay Condition-Delivery Delay Bias)
+	~	fraction/Month
+	~	
+		DOCUMENT:  Capacity Expansion Fraction as Determined by the Delivery Delay Condition
+		
+		UNITS: dimensionless
+	|
+
+Capacity Expansion Fraction LOOKUP( 
+(0, -0.07), (0.5, -0.02), (1, 0), (1.5, 0.02), (2, 0.07), (2.5, 0.15) )
+	~	fraction/Month
+	~	
+		DOCUMENT:  Capacity Expansion Fraction as Determined by the Delivery Delay Condition
+		
+		UNITS: dimensionless
+	|
+
+Chng In DDRC = (Delivery Delay Indicated-Delivery Delay Recognized by the Company)/DDRC Average Time
+	~	months/Month
+	~	
+		DOCUMENT:  Change in the Delivery Delay Recognized by the Company
+		
+		UNITS: months/month
+	|
+
+Chng In DDRM = (Delivery Delay Recognized by the Company-Delivery Delay Recognized by the Market
+)/DDRM Average Time
+	~	months/Month
+	~	
+		DOCUMENT:  Change in the Delivery Delay Recognized by the Market
+		
+		UNITS: months/month
+	|
+
+Chng in DDT = (Delivery Delay Recognized by the Company-
+Delivery Delay Traditional)/Time for DDT
+	~	months/Month
+	~		|
+
+Chng In DRA = (Delivery Rate-Delivery Rate Average)/Delivery Rate Average Time
+	~	units/Month/Month
+	~	
+		DOCUMENT:  Change in the Average Rate of Product Delivery
+		
+		UNITS: units/month/month
+	|
+
+Contacts=
+	 (SalesPeople*SWM+(1-SWM)*ConstantSalesPeople)*Contacts per Person
+	~	contacts/Month
+	~	
+		DOCUMENT:  Sales Contacts
+		
+		UNITS: contacts/month
+	|
+
+Contacts per Person = 100
+	~	contacts/person/Month
+	~	
+		DOCUMENT:  Contacts per Sales Person
+		
+		UNITS: contacts/person/month
+	|
+
+DDRC Average Time = 4
+	~	months
+	~	
+		DOCUMENT:  Average Time Required for Adjustement in the Delivery Delay Recognized by \
+		the Com[any
+		
+		UNITS: months
+	|
+
+DDRM Average Time = 6
+	~	months
+	~	
+		DOCUMENT:  Average Time Requried to Adjust the Delivery Delay Recognized by the \
+		Market
+		
+		UNITS: months
+	|
+
+Delivery Delay Bias = 0.3
+	~	dmnl
+	~	
+		DOCUMENT:  Delivery Delay Bias
+		
+		UNITS: dimensionless
+	|
+
+Delivery Delay Condition = Delivery Delay Recognized by the Company/
+Delivery Delay Operating Goal
+	~	dmnl
+	~	
+		DOCUMENT:  Delivery Delay Condition
+		
+		UNITS: dimensionless
+	|
+
+Delivery Delay Indicated = Backlog/Delivery Rate
+	~	months
+	~	
+		DOCUMENT:  Delivery Delay Indicated by the Current Backlog and Delivery Rate
+		
+		UNITS: months
+	|
+
+Delivery Delay Management Goal = 2
+	~	months
+	~	
+		DOCUMENT:  Management's Goal for Delivery Delay
+		
+		UNITS: months
+	|
+
+Delivery Delay Minimum = Backlog/Production Capacity
+	~	months
+	~	
+		DOCUMENT:  Minimum Possible Delivery Delay
+		
+		UNITS: months
+	|
+
+Delivery Delay Operating Goal = (Delivery Delay Traditional*Delivery Delay Weighting)
++
+
+Delivery Delay Management Goal*Delivery Delay Weighting Comp
+	~	months
+	~	
+		DOCUMENT:  Operating Goal for Delivery Delay
+		
+		UNITS: months
+	|
+
+Delivery Delay Recognized by the Company = INTEG( Chng In DDRC, Delivery Delay Indicated
+)
+	~	months
+	~	
+		
+		DOCUMENT:  Delivery Delay Recognized by the Company
+		
+		UNITS: months
+	|
+
+Delivery Delay Recognized by the Market = INTEG(Chng In DDRM, Delivery Delay Recognized by the Company
+)
+	~	months
+	~	
+		
+		DOCUMENT:  Delivery Delay Recognized by the Market
+		
+		UNITS: months
+	|
+
+Delivery Delay Traditional = INTEG(Chng in DDT, Delivery Delay Management Goal)
+	~	months
+	~	
+		
+		DOCUMENT:  Traditional Delivery Delay
+		
+		UNITS: months
+	|
+
+Delivery Delay Weighting = 1
+	~	dmnl
+	~	
+		DOCUMENT:  Weighting Parameter for Tradtional Delivery Delay in the Delivery Delay \
+		Operating Goal
+		
+		UNITS: dimensionless
+	|
+
+Delivery Delay Weighting Comp = 1-Delivery Delay Weighting
+	~	dmnl
+	~	
+		DOCUMENT:  Delivery Delay Weighting Complement
+		
+		UNITS: months
+	|
+
+Delivery Rate = Production Capacity*Utilization of Capacity*SWCC+(Backlog/Delivery Delay Operating Goal
+)*(1-SWCC)
+	~	units/Month
+	~	
+		DOCUMENT:  Rate of Product Delivery
+		
+		UNITS: units/month
+	|
+
+Delivery Rate Average = INTEG(Chng In DRA, Delivery Rate)
+	~	units/Month
+	~	
+		
+		DOCUMENT:  Average Rate of Product Delivery
+		
+		Units: units/month
+	|
+
+Delivery Rate Average Time = 1
+	~	months
+	~	
+		DOCUMENT:  Average Time Required to Adjust Average Delivery Rate
+		
+		UNITS: months
+	|
+
+EPA = Normal Effect of Product Attractiveness*EPA Switch+
+
+(1-EPA Switch)*(1+STEP(0,36))
+	~	dmnl
+	~	
+		DOCUMENT:  Effect of Delivery Delay on Product Attractiveness
+		
+		UNITS: dimensionless
+	|
+
+EPA Switch = 1
+	~	dmnl
+	~		|
+
+FINAL TIME  = 120
+	~	Month
+	~		|
+
+Fraction Rev to Sales = 0.1+STEP(0.05,12)*0
+	~	dmnl
+	~	
+		DOCUMENT:  Fraction of Sales Revenue Dedicated to Marketing and Sales
+		
+		UNITS: dimensionless
+	|
+
+Indicated SalesPeople = Budget/SalesPerson Salary
+	~	people
+	~	
+		DOCUMENT:  Level of Sales Personnel Indicated by Current Marketing Budget
+		
+		UNTIS: people
+	|
+
+INITIAL TIME  = 0
+	~	Month
+	~		|
+
+InitProduction Capacity = 500
+	~	units/Month
+	~	
+		DOCUMENT:  Intial Production Capacity
+		
+		UNTIS: production capacity units
+	|
+
+Normal Effect of Product Attractiveness = 
+Normal Effect of Product Attractiveness LOOKUP(Delivery Delay Recognized by the Market
+)
+	~	dmnl
+	~	
+		DOCUMENT:  Effect of Delivery Delay on Product Attractiveness
+		
+		UNITS: dimensionless
+	|
+
+Normal Effect of Product Attractiveness LOOKUP( 
+(0, 1), (1, 0.97), (2, 0.87), (3, 0.73), (4, 0.53), (5, 0.38), (6, 0.25), (7, 0.15), 
+(8, 0.08), (9, 0.03), (10, 0.02) )
+	~	dmnl
+	~	
+		DOCUMENT:  Effect of Delivery Delay on Product Attractiveness
+		
+		UNITS: dimensionless
+	|
+
+Orders Booked = Contacts*Orders Per Contact*EPA*
+
+(1+STEP(Step in Product Order Rate,Time for Step in Order Rate))
+	~	units/Month
+	~	
+		DOCUMENT:  Orders for Product Booked
+		
+		Units: units/month
+	|
+
+Orders Per Contact = 1
+	~	units/contact
+	~	
+		DOCUMENT:  Orders per Sales Contact
+		
+		Units: units/contact
+	|
+
+PCCO 1 to 2=
+	 Prd Capacity on Order 1/(Prd Cap Transit Delay/3)
+	~	units/Month/Month
+	~	
+		DOCUMENT:  Flow from Production Capacity on Order One to Two
+		
+		UNITS: capacity units/month
+	|
+
+PCCO 2 to 3=
+	 PCOO 2/(Prd Cap Transit Delay/3)
+	~	units/Month/Month
+	~	
+		DOCUMENT:  Production Capacity on Order Moving from Stage Two to Three
+		
+		UNITS: capacity units/month
+	|
+
+PCOO 2= INTEG (
+	PCCO 1 to 2-PCCO 2 to 3,
+		 Production Cap Ordered*Prd Cap Transit Delay/3)
+	~	units/Month
+	~	
+		
+		DOCUMENT:  Production Capacity on Order, Stage Two of Three
+		
+		UNITS: capacity units
+	|
+
+PCOO 3= INTEG (
+	PCCO 2 to 3-Capacity Arrival Rate,
+		 Production Cap Ordered*Prd Cap Transit Delay/3)
+	~	units/Month
+	~	
+		
+		DOCUMENT:  Production Capacity on Order, Stage Three of Three
+		
+		UNITS: Production Capacity
+	|
+
+Prd Cap Transit Delay=
+	 12
+	~	Month
+	~	
+		DOCUMENT:  Average Time Required for Production Capacity Ordered to be Received
+		
+		UNITS: month
+		
+		COMMENT_ Delay is Twelved Months
+	|
+
+Prd Capacity on Order 1= INTEG (
+	Production Cap Ordering-PCCO 1 to 2,
+		 Production Cap Ordered*Prd Cap Transit Delay/3)
+	~	units/Month
+	~	
+		
+		DOCUMENT:  Production Capacity on Order, Stage One of Three
+		
+		UNITS: capacity units
+	|
+
+Price of an Order = 960
+	~	$/unit
+	~	
+		DOCUMENT:  Price of an Order
+		
+		UNITS: dollars/unit
+	|
+
+Production Cap Ordered=
+	 Production Capacity*Capacity Expansion Fraction*Switch for Capacity
+	~	units/Month/Month
+	~	
+		DOCUMENT:  New Order for Production Capacity
+		
+		UNITS: capacity units/month
+	|
+
+Production Cap Ordering=
+	 Production Cap Ordered
+	~	units/Month/Month
+	~	
+		DOCUMENT:  Orders for New Production Capacity
+		
+		UNITS: capacity units/month
+	|
+
+Production Capacity = INTEG(Capacity Arrival Rate, InitProduction Capacity)
+	~	units/Month
+	~	
+		
+		DOCUMENT:  Production Capacity
+		
+		UNITS: units/month
+	|
+
+SalesPeople = INTEG(SalesPeople Hired, 10)
+	~	people
+	~	
+		
+		DOCUMENT:  Sales People
+		
+		UNITS: people
+	|
+
+SalesPeople Adjustment Time = 20
+	~	months
+	~	
+		DOCUMENT:  Average Time Required to Hire/Fire Sales People
+		
+		UNTIS: months
+	|
+
+SalesPeople Hired = (Indicated SalesPeople-SalesPeople)/SalesPeople Adjustment Time
+	~	people/Month
+	~	
+		DOCUMENT:  Sales People Hired/Fired
+		
+		UNITS: People/month
+	|
+
+SalesPerson Salary = 4000
+	~	$/person/Month
+	~	
+		DOCUMENT:  Monthly Salary for a Sales Person
+		
+		UNITS: dollars/month
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Month
+	~		|
+
+Step in Product Order Rate=
+	 0
+	~	dmnl
+	~	DOCUMENT:  Test Step in Product Order Rate
+		(0.5)
+	|
+
+SWCC = 1
+	~	dmnl
+	~	
+		DOCUMENT:  Switch for Contacts
+	|
+
+Switch for Capacity = 1
+	~	dmnl
+	~	
+		DOCUMENT:  Switch for Capacity Constraing
+	|
+
+SWM = 1
+	~	dmnl
+	~	
+		DOCUMENT:  Switch for Marketing Test
+	|
+
+Time for DDT = 12
+	~	months
+	~	
+		DOCUMENT:  Average Time Required for Adjustments in the Traditional Delivery Delay
+		
+		UNITS: months
+	|
+
+Time for Step in Order Rate = 10
+	~	months
+	~	
+		DOCUMENT:  Time for Test Step in Product Order Rate
+	|
+
+TIME STEP  = 0.5
+	~	Month
+	~		|
+
+Unfilled Order for Capacity=
+	Prd Capacity on Order 1+PCOO 2+PCOO 3
+	~	units/Month
+	~	DOCUMENT:  Total Outstanding Orders for Production Capacity
+		
+		UNITS: production capacity units
+	~	:SUPPLEMENTARY 
+	|
+
+Utilization of Capacity=
+	 Utilization of Capacity LOOKUP(Delivery Delay Minimum)
+	~	dmnl
+	~	
+		DOCUMENT:  Utilization of Capacity
+		
+		UNITS: dimensionless
+		
+		COMMENT- Relates minimum posssible delivery delay to current product rate, \
+		time constant for production is implicit in the table function.
+	|
+
+Utilization of Capacity LOOKUP( 
+(0, 0), (0.5, 0.25), (1, 0.5), (1.5, 0.67), (2, 0.8), (2.5, 0.87), (3, 0.93), (3.5, 0.95
+), (4, 0.97), (4.5, 0.98), (5, 1) )
+	~	dmnl
+	~	
+		DOCUMENT:  Utilization of Capacity
+		
+		UNITS: dimensionless
+		
+		COMMENT- Relates minimum posssible delivery delay to current product rate, \
+		time constant for production is implicit in the table function.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Marketing
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,100,0
+10,1,SalesPeople,404,155,40,20,3,3,0,0,0,0,0,0
+10,2,Indicated SalesPeople,278,288,69,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+12,3,48,217,156,10,8,0,3,0,0,-1,0,0,0
+11,4,48,279,156,6,8,34,3,0,0,1,0,0,0
+10,5,SalesPeople Hired,279,172,58,11,32,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,6,SalesPeople Adjustment Time,175,219,102,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,7,Budget,275,357,24,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,8,SalesPerson Salary,115,285,69,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,9,Delivery Rate Average,448,356,40,20,3,3,0,1,0,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,10,Fraction Rev to Sales,280,424,76,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,11,Price of an Order,155,355,64,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,12,Delivery Rate,505,435,52,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+12,13,48,627,355,10,8,0,3,0,0,-1,0,0,0
+11,14,48,563,355,6,8,34,3,0,0,1,0,0,0
+10,15,Chng In DRA,563,371,44,11,32,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,16,Delivery Rate Average Time,650,434,88,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+1,17,4,1,4,0,0,22,0,0,0,-1--1--1,,1|(324,156)|
+1,18,4,3,100,0,0,22,0,0,0,-1--1--1,,1|(250,156)|
+1,19,2,5,0,0,0,0,0,0,0,-1--1--1,,1|(278,237)|
+1,20,1,5,1,0,0,0,0,0,0,-1--1--1,,1|(343,202)|
+1,21,6,5,0,0,0,0,0,0,0,-1--1--1,,1|(220,198)|
+1,22,7,2,0,0,0,0,0,0,0,-1--1--1,,1|(275,329)|
+1,23,8,2,0,0,0,0,0,0,0,-1--1--1,,1|(189,286)|
+1,24,9,7,0,0,0,0,0,0,0,-1--1--1,,1|(360,356)|
+1,25,10,7,0,0,0,0,0,0,0,-1--1--1,,1|(278,397)|
+1,26,11,7,0,0,0,0,0,0,0,-1--1--1,,1|(228,356)|
+1,27,14,9,4,0,0,22,0,0,0,-1--1--1,,1|(522,355)|
+1,28,14,13,100,0,0,22,0,0,0,-1--1--1,,1|(593,355)|
+1,29,12,15,0,0,0,0,0,0,0,-1--1--1,,1|(528,408)|
+1,30,9,15,1,0,0,0,0,0,0,-1--1--1,,1|(483,386)|
+1,31,16,15,0,0,0,0,0,0,0,-1--1--1,,1|(612,406)|
+12,32,0,415,25,149,11,0,4,0,2,-1,0,0,0,0-0-0,0-0-0,|12||255-0-0
+Replicated by ??? MIT System Dynamics Group
+12,33,0,405,45,205,11,0,4,0,2,-1,0,0,0,0-0-0,0-0-0,|12||255-0-0
+Updated by Tom Fiddaman, Ventana Systems, Tom@Vensim.com
+12,34,0,405,85,300,40,8,4,0,2,-1,0,0,0,0-0-0,0-0-0,|12||255-0-0
+Morecroft, J. D. W. (1983). System Dynamics: Portraying Bounded Rationality. Omega, 11(2), 131-142. See also: Forrester, J. W. (1968). Market Growth as Influenced by Capital Investment. Industrial Management Rev. (MIT), 9(2), 83-105.
+10,35,Delivery Rate,450,285,52,11,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|0||128-128-128
+1,36,35,9,0,0,0,0,0,64,1,-1--1--1,,1|(449,309)|
+12,37,10161236,855,250,150,150,3,44,0,0,2,0,0,0
+SalesPeople,Graph
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Delivery Standards
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,100,0
+10,1,Delivery Delay Traditional,281,131,40,20,3,3,0,0,0,0,0,0
+10,2,Delivery Delay Recognized by the Company,206,238,145,11,0,2,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+12,3,48,85,130,10,8,0,3,0,0,-1,0,0,0
+11,4,48,152,130,6,8,34,3,0,0,1,0,0,0
+10,5,Chng in DDT,152,146,43,11,32,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,6,Time for DDT,91,214,45,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,7,Delivery Delay Operating Goal,471,195,95,11,0,3,0,0,-1,0,0,0
+10,8,Delivery Delay Management Goal,399,271,113,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,9,Delivery Delay Weighting,601,131,79,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,10,Delivery Delay Weighting Comp,619,270,100,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+1,11,4,1,4,0,0,22,0,0,0,-1--1--1,,1|(199,130)|
+1,12,4,3,100,0,0,22,0,0,0,-1--1--1,,1|(120,130)|
+1,13,2,5,0,0,0,0,0,0,0,-1--1--1,,1|(182,198)|
+1,14,1,5,1,0,0,0,0,0,0,-1--1--1,,1|(229,164)|
+1,15,6,5,0,0,0,0,0,0,0,-1--1--1,,1|(116,185)|
+1,16,8,7,0,0,0,0,0,0,0,-1--1--1,,1|(429,238)|
+1,17,1,7,0,0,0,0,0,0,0,-1--1--1,,1|(372,161)|
+1,18,9,7,0,0,0,0,0,0,0,-1--1--1,,1|(542,159)|
+1,19,10,7,0,0,0,0,0,0,0,-1--1--1,,1|(551,235)|
+1,20,9,10,1,0,0,0,0,0,0,-1--1--1,,1|(632,191)|
+10,21,Delivery Delay Management Goal,280,65,64,19,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|0||128-128-128
+1,22,21,1,0,0,0,0,0,64,1,-1--1--1,,1|(280,90)|
+12,23,9440340,885,180,150,150,3,44,0,0,2,0,0,0
+Delivery Delay Traditional,graph
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Capacity and Supply
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,100,0
+10,1,Prd Capacity on Order 1,170,150,40,20,3,3,0,0,0,0,0,0
+10,2,Prd Cap Transit Delay,380,240,70,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,3,PCOO 2,350,150,40,20,3,3,0,0,0,0,0,0
+10,4,Production Cap Ordered,110,260,78,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,5,PCOO 3,530,150,40,20,3,3,0,0,0,0,0,0
+10,6,Capacity Expansion Fraction,120,390,98,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,7,Production Capacity,710,150,40,20,3,3,0,1,0,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,8,Switch for Capacity,210,360,71,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+12,9,48,20,150,10,8,0,3,0,0,-1,0,0,0
+11,10,48,80,150,6,8,34,3,0,0,1,0,0,0
+10,11,Production Cap Ordering,80,178,50,20,40,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+11,12,1196,260,150,6,8,34,3,0,0,1,0,0,0
+10,13,PCCO 1 to 2,260,169,44,11,32,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+11,14,1116,440,150,6,8,34,3,0,0,1,0,0,0
+10,15,PCCO 2 to 3,440,169,44,11,32,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,16,InitProduction Capacity,680,90,74,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+11,17,1020,620,150,6,8,34,3,0,0,1,0,0,0
+10,18,Capacity Arrival Rate,620,178,40,20,40,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,19,Unfilled Order for Capacity,350,50,85,11,0,3,0,0,0,0,0,0
+1,20,14,5,4,0,0,22,0,0,0,-1--1--1,,1|(468,150)|
+1,21,12,3,4,0,0,22,0,0,0,-1--1--1,,1|(288,150)|
+1,22,10,1,4,0,0,22,0,0,0,-1--1--1,,1|(108,150)|
+1,23,10,9,100,0,0,22,0,0,0,-1--1--1,,1|(52,150)|
+1,24,4,11,1,0,0,0,0,0,0,-1--1--1,,1|(85,222)|
+1,25,2,13,1,0,0,0,0,0,0,-1--1--1,,1|(290,208)|
+1,26,1,13,1,0,0,0,0,0,0,-1--1--1,,1|(208,191)|
+1,27,3,15,1,0,0,0,0,0,0,-1--1--1,,1|(398,190)|
+1,28,2,15,1,0,0,0,0,0,0,-1--1--1,,1|(442,208)|
+1,29,6,4,0,0,0,0,0,0,0,-1--1--1,,1|(115,331)|
+1,30,8,4,0,0,0,0,0,0,0,-1--1--1,,1|(164,314)|
+1,31,17,7,4,0,0,22,0,0,0,-1--1--1,,1|(648,150)|
+1,32,5,18,1,0,0,0,0,0,0,-1--1--1,,1|(580,203)|
+1,33,2,18,1,0,0,0,0,64,0,-1--1--1,,1|(563,231)|
+1,34,14,3,36,0,0,22,0,64,0,-1--1--1,,1|(412,150)|
+1,35,12,1,36,0,0,22,0,64,0,-1--1--1,,1|(232,150)|
+1,36,17,5,36,0,0,22,0,64,0,-1--1--1,,1|(592,150)|
+1,37,7,4,1,0,0,0,0,64,0,-1--1--1,,1|(441,320)|
+1,38,1,19,0,0,0,0,0,64,0,-1--1--1,,1|(261,98)|
+1,39,3,19,0,0,0,0,0,64,0,-1--1--1,,1|(350,102)|
+1,40,5,19,0,0,0,0,0,64,0,-1--1--1,,1|(437,98)|
+1,41,2,1,0,1,0,0,0,64,1,-1--1--1,,1|(288,200)|
+1,42,4,1,0,1,0,0,0,64,1,-1--1--1,,1|(134,215)|
+1,43,2,3,0,1,0,0,0,64,1,-1--1--1,,1|(368,206)|
+1,44,4,3,0,1,0,0,0,64,1,-1--1--1,,1|(215,211)|
+1,45,2,5,0,1,0,0,0,64,1,-1--1--1,,1|(441,203)|
+1,46,4,5,0,1,0,0,0,64,1,-1--1--1,,1|(314,206)|
+1,47,16,7,0,0,0,0,0,64,1,-1--1--1,,1|(689,109)|
+12,48,0,850,345,150,150,3,44,0,0,2,0,0,0
+Production Capacity,graph
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Delivery Delay Condition
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,100,0
+10,1,Delivery Delay Condition,395,196,78,11,0,3,0,0,-1,0,0,0
+10,2,Delivery Delay Operating Goal,393,141,104,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,3,DDRC Average Time,344,352,77,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,4,Delivery Delay Recognized by the Company,395,262,55,20,3,3,0,0,0,0,0,0
+10,5,Delivery Delay Indicated,198,353,77,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+12,6,48,160,264,10,8,0,3,0,0,-1,0,0,0
+11,7,48,255,263,6,8,34,3,0,0,1,0,0,0
+10,8,Chng In DDRC,255,279,50,11,32,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,9,Backlog,239,430,36,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,10,Delivery Rate,136,431,52,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+1,11,2,1,0,0,0,0,0,0,0,-1--1--1,,1|(393,161)|
+1,12,4,1,0,0,0,0,0,0,0,-1--1--1,,1|(395,231)|
+1,13,7,4,4,0,0,22,0,0,0,-1--1--1,,1|(300,263)|
+1,14,7,6,100,0,0,22,0,0,0,-1--1--1,,1|(209,263)|
+1,15,3,8,0,0,0,0,0,0,0,-1--1--1,,1|(304,319)|
+1,16,5,8,0,0,0,0,0,0,0,-1--1--1,,1|(221,321)|
+1,17,4,8,1,0,0,0,0,0,0,-1--1--1,,1|(336,296)|
+1,18,9,5,0,0,0,0,0,0,0,-1--1--1,,1|(221,397)|
+1,19,10,5,0,0,0,0,0,0,0,-1--1--1,,1|(162,397)|
+1,20,5,4,0,1,0,0,0,64,1,-1--1--1,,1|(279,314)|
+12,21,0,655,312,150,150,3,12,0,0,2,0,0,0
+Delivery Delay Recognized by the Company,graph
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Market & Production
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,100,0
+10,1,Backlog,557,62,40,20,3,3,0,0,0,0,0,0
+10,2,Contacts,243,109,29,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,3,EPA,362,226,17,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+12,4,48,387,63,10,8,0,3,0,0,-1,0,0,0
+10,5,Orders Per Contact,275,150,62,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+12,6,48,739,64,10,8,0,3,0,0,-1,0,0,0
+11,7,48,654,63,6,8,34,3,0,0,1,0,0,0
+10,8,Delivery Rate,654,79,43,11,32,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+11,9,188,465,62,6,8,34,3,0,0,1,0,0,0
+10,10,Orders Booked,465,78,50,11,32,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,11,Step in Product Order Rate,298,182,86,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,12,Time for Step in Order Rate,250,35,87,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,13,Delivery Delay Operating Goal,852,77,104,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,14,Production Capacity,743,163,73,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,15,SWCC,650,162,25,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,16,Utilization of Capacity,843,250,69,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,17,Delivery Delay Minimum,663,249,77,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,18,Utilization of Capacity LOOKUP,843,312,103,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,19,Contacts per Person,127,99,64,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,20,SalesPeople,126,131,48,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,21,SWM,149,161,21,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,22,EPA Switch,447,261,39,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,23,Normal Effect of Product Attractiveness,284,290,123,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,24,Delivery Delay Recognized by the Market,285,379,55,20,3,3,0,1,0,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,25,Normal Effect of Product Attractiveness LOOKUP,490,332,158,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,26,DDRM Average Time,549,438,70,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+12,27,48,525,379,10,8,0,3,0,0,-1,0,0,0
+11,28,48,444,379,6,8,34,3,0,0,1,0,0,0
+10,29,Chng In DDRM,444,395,51,11,32,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12||0-0-0
+10,30,Delivery Delay Recognized by the Company,405,457,145,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+1,31,9,1,4,0,0,22,0,0,0,-1--1--1,,1|(494,62)|
+1,32,9,4,100,0,0,22,0,0,0,-1--1--1,,1|(428,62)|
+1,33,7,6,4,0,0,22,0,0,0,-1--1--1,,1|(694,63)|
+1,34,7,1,100,0,0,22,0,0,0,-1--1--1,,1|(622,63)|
+1,35,2,10,0,0,0,0,0,0,0,-1--1--1,,1|(336,95)|
+1,36,3,10,0,0,0,0,0,0,0,-1--1--1,,1|(408,157)|
+1,37,5,10,0,0,0,0,0,0,0,-1--1--1,,1|(362,116)|
+1,38,11,10,0,0,0,0,0,0,0,-1--1--1,,1|(375,133)|
+1,39,12,10,0,0,0,0,0,0,0,-1--1--1,,1|(353,55)|
+1,40,1,8,1,0,0,0,0,0,0,-1--1--1,,1|(578,85)|
+1,41,13,8,0,0,0,0,0,0,0,-1--1--1,,1|(729,78)|
+1,42,14,8,0,0,0,0,0,0,0,-1--1--1,,1|(703,125)|
+1,43,15,8,0,0,0,0,0,0,0,-1--1--1,,1|(651,127)|
+1,44,16,8,1,0,0,0,0,0,0,-1--1--1,,1|(810,152)|
+1,45,17,16,1,0,0,0,0,0,0,-1--1--1,,1|(741,272)|
+1,46,18,16,0,4,0,0,0,0,0,-1--1--1,,1|(843,288)|
+1,47,1,17,1,0,0,0,0,0,0,-1--1--1,,1|(566,127)|
+1,48,14,17,0,0,0,0,0,0,0,-1--1--1,,1|(707,200)|
+1,49,19,2,0,0,0,0,0,0,0,-1--1--1,,1|(195,104)|
+1,50,20,2,0,0,0,0,0,0,0,-1--1--1,,1|(187,119)|
+1,51,21,2,0,0,0,0,0,0,0,-1--1--1,,1|(189,138)|
+1,52,22,3,0,0,0,0,0,0,0,-1--1--1,,1|(406,244)|
+1,53,23,3,0,0,0,0,0,0,0,-1--1--1,,1|(317,262)|
+1,54,24,23,0,0,0,0,0,0,0,-1--1--1,,1|(284,336)|
+1,55,25,23,0,4,0,0,0,0,0,-1--1--1,,1|(393,312)|
+1,56,28,24,4,0,0,22,0,0,0,-1--1--1,,1|(389,379)|
+1,57,28,27,100,0,0,22,0,0,0,-1--1--1,,1|(482,379)|
+1,58,26,29,0,0,0,0,0,0,0,-1--1--1,,1|(503,419)|
+1,59,30,29,0,0,0,0,0,0,0,-1--1--1,,1|(420,431)|
+1,60,24,29,1,0,0,0,0,0,0,-1--1--1,,1|(348,415)|
+10,61,ConstantSalesPeople,120,65,75,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+1,62,61,2,0,0,0,0,0,0,0,-1--1--1,,1|(174,84)|
+10,63,Delivery Delay Recognized by the Company,175,460,59,28,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|0||128-128-128
+1,64,63,24,0,0,0,0,0,64,1,-1--1--1,,1|(229,419)|
+12,65,9833556,866,498,150,150,3,12,0,0,2,0,0,0
+Backlog,graph
+///---\\\
+:L<%^E!@
+1:test.vdf
+9:test
+22:$,Dollar,Dollars,$s
+22:Contact,Contacts
+22:Day,Days
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+15:0,0,0,0,0,0
+19:100,0
+27:0,
+34:0,
+4:Time
+5:ConstantSalesPeople
+24:0
+25:120
+26:120

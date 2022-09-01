@@ -1,0 +1,155 @@
+Time for Increase in Pressure=
+	1
+	~	Period
+	~	The time at which the exogenous pressure on the desired state  increases.
+	|
+
+Time for Decrease in Pressure=
+	8
+	~	Period
+	~	The time at which the exogenous pressure on the desired state  decreases.
+	|
+
+External Pressures X=
+	 STEP(Increase in External Pressure,Time for Increase in Pressure)  - STEP(Decrease in External Pressure\
+		, Time for Decrease in Pressure)
+	~	Dimensionless
+	~	External pressure is exogenous in this test model
+	|
+
+Decrease in External Pressure=
+	0
+	~	Dimensionless
+	~	The fractional decrease in the exogenous pressure on the desired state of \
+		the system.
+	|
+
+Increase in External Pressure=
+	0
+	~	Dimensionless
+	~	The fractional increase in the exogenous pressure on the desired state of \
+		the system.
+	|
+
+Change in State of System=
+	("Desired State S*" - State of System S)/State Adjustment Time
+	~	Units/Period
+	~	The state of the system adjust to the desired state over the State \
+		Adjustment Timee.
+	|
+
+Sensitivity to External Pressures=
+	1
+	~	Dimensionless
+	~	The sensitivity of the desired state to the external pressures.
+	|
+
+"Desired State S*"=
+	State of System S*Effect of External Pressures on Desired State
+	~	Units
+	~	The desired state of the system is anchored on the actual state, then adjusted
+		in response to (a variety of) external pressures..
+	|
+
+Effect of External Pressures on Desired State=
+	EXP(Sensitivity to External Pressures * External Pressures X)
+	~	Dimensionless
+	~	In general, there can be multiple external pressures causing the desired state
+		to differ from the current state.  For testing, a single external pressure is 
+		assumed, and it is set equal to the exponential function of the external pressures,.
+		with a sensitivity parameter to control the strength of the effect.  In general, 
+		these effects can be arbitrary nonlinear functions of the pressures.
+	|
+
+State Adjustment Time=
+	1
+	~	Period
+	~	The state of the system adjusts to the desired level over this interval.
+	|
+
+State of System S= INTEG (
+	Change in State of System,
+		100)
+	~	Units
+	~	The state of the system.  Initially equal to 100 units.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 10
+	~	Period
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Period
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Period
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.125
+	~	Period
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,State of System S,367,113,40,20,3,3,0,0,0,0,0,0
+12,2,48,212,114,8,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(299,113)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(239,113)|
+11,5,48,265,113,6,8,34,3,0,0,1,0,0,0
+10,6,Change in State of System,265,149,34,28,40,3,0,0,-1,0,0,0
+10,7,"Desired State S*",325,322,35,17,8,3,0,0,0,0,0,0
+10,8,Effect of External Pressures on Desired State,516,335,63,27,8,3,0,0,0,0,0,0
+1,9,1,6,1,0,45,0,0,192,0,-1--1--1,,1|(362,220)|
+1,10,7,6,1,0,43,0,0,192,0,-1--1--1,,1|(218,245)|
+1,11,1,7,1,0,43,0,0,192,0,-1--1--1,,1|(447,236)|
+10,12,State Adjustment Time,155,188,41,24,8,3,0,0,0,0,0,0
+1,13,12,6,1,0,0,0,0,64,0,-1--1--1,,1|(180,155)|
+12,14,0,329,161,20,20,4,4,0,0,-1,0,0,0
+B
+12,15,0,328,195,36,22,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+State Adjustment
+1,16,8,7,1,0,43,0,0,192,0,-1--1--1,,1|(415,347)|
+12,17,0,336,254,20,20,4,4,0,0,-1,0,0,0
+R
+12,18,0,335,288,36,22,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Goal Revision
+10,19,External Pressures X,660,335,40,20,8,3,0,0,0,0,0,0
+1,20,19,8,1,0,0,0,0,64,0,-1--1--1,,1|(598,346)|
+10,21,Sensitivity to External Pressures,451,427,47,26,8,3,0,0,-1,0,0,0
+1,22,21,8,0,0,0,0,0,0,0,-1--1--1,,1|(478,387)|
+10,23,Increase in External Pressure,735,255,50,25,8,3,0,0,0,0,0,0
+10,24,Decrease in External Pressure,737,407,50,25,8,3,0,0,0,0,0,0
+1,25,23,19,1,0,43,0,0,192,0,-1--1--1,,1|(673,279)|
+1,26,24,19,1,0,45,0,0,192,0,-1--1--1,,1|(675,377)|
+10,27,Time for Decrease in Pressure,838,360,50,25,8,3,0,0,-1,0,0,0
+1,28,27,19,0,0,0,0,0,0,0,-1--1--1,,1|(750,347)|
+10,29,Time for Increase in Pressure,836,292,50,25,8,3,0,0,-1,0,0,0
+1,30,29,19,0,0,0,0,0,0,0,-1--1--1,,1|(749,312)|
+///---\\\
+:L<%^E!@
+9:Current
+22:$,Dollar,Dollars,$s
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+22:Day,Days
+15:0,0,0,0
+19:100,0
+5:Change in State of System

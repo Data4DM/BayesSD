@@ -1,0 +1,313 @@
+********************************************************
+	.NetworkModel
+********************************************************~
+		
+		Simple Network Externality Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This model captures the competition for market share of two firms in an environment
+		where product attractiveness depends on the installed base of the product, \
+		representing
+		network externality and compatibility effects.  In this version, the \
+		product is not discarded.  Chapter 10.
+	|
+
+Installed Base Product 2= INTEG (
+	Sales of Product 2,
+		Initial Installed Base Product 2)
+	~	Units
+	~	The installed base of product 2 is the accumulation of  sales.   There are \
+		no discards.
+	|
+
+Total Demand=
+	1e+006
+	~	Units/Year
+	~	The demand for products in this simple model is constant at 1 million \
+		units/year
+	|
+
+Installed Base Product 1= INTEG (
+	Sales of Product 1,
+		Initial Installed Base Product 1)
+	~	Units
+	~	The installed base of product 1 is the accumulation of  sales.   There are \
+		no discards.
+	|
+
+Product 2 Share of Installed Base=
+	Installed Base Product 2/Total Installed Base
+	~	Dimensionless
+	~	The fraction of the installed base of products that are product 2.
+	|
+
+Total Installed Base=
+	Installed Base Product 1 + Installed Base Product 2
+	~	Units
+	~	The total number of products that are currently in use.
+	|
+
+Product 1 Share of Installed Base=
+	Installed Base Product 1/Total Installed Base
+	~	Dimensionless
+	~	The fraction of the installed base of products that are product 1.
+	|
+
+Effect of Other Factors on Attractiveness of Product 2=
+	RANDOM NORMAL(0,4,1,Standard Deviation of Random Effects on Attractiveness,Noise Seed for Random Effects on Attractiveness of Product 2
+	)
+	~	Dimensionless
+	~	The aggregate effect of factors on the attractiveness of product 2, \
+		excluding compatibility. This formulation aggregates the effects of price, \
+		features, availability, and so on into a single factor, which in this \
+		simple model is assumed to be exogenous.
+	|
+
+Initial Installed Base Product 1=
+	1
+	~	Units
+	~	The initial number of product in use.
+	|
+
+Noise Seed for Random Effects on Attractiveness of Product 1=
+	2000
+	~	Dimensionless
+	~	The initial input to the random function for determining the effects of \
+		attractiveness from outside factors of product 1.
+	|
+
+Initial Installed Base Product 2=
+	1
+	~	Units
+	~	The initial number of product 2 in use.
+	|
+
+Noise Seed for Random Effects on Attractiveness of Product 2=
+	1000
+	~	Dimensionless
+	~	The initial input to the random function for determining the effects of \
+		attractiveness from outside factors of product 2.
+	|
+
+Effect of Compatibility on Attractiveness of Product 1=
+	EXP(Sensitivity of Attractiveness to Installed Base * Installed Base Product 1/Threshold for Compatibility Effects\
+		)
+	~	Dimensionless
+	~	The effect of compatibility on attractiveness captures the network and \
+		compatibility effects:  the larger the installed base, the greater the \
+		attractiveness of that product. There are a number of plausible shapes for \
+		the relationship between installed base and attractiveness.
+	|
+
+Effect of Compatibility on Attractiveness of Product 2=
+	EXP(Sensitivity of Attractiveness to Installed Base * Installed Base Product 2/Threshold for Compatibility Effects\
+		)
+	~	Dimensionless
+	~	The effect of compatibility on attractiveness  captures the network and \
+		compatibility effects:  the larger the installed base, the greater the \
+		attractiveness of that product. There are a number of plausible shapes for \
+		the relationship between installed base and attractiveness.
+	|
+
+Sensitivity of Attractiveness to Installed Base=
+	2
+	~	Dimensionless
+	~	The parameter allows the modeler to vary the strength of the effect of \
+		compatiblity on product attractiveness in sensitivity tests.
+	|
+
+Standard Deviation of Random Effects on Attractiveness=
+	STEP(0.01,0)
+	~	Dimensionless
+	~	A 1% standard deviation for the randome effects on attractiveness is \
+		assumed.
+	|
+
+Threshold for Compatibility Effects=
+	1e+006
+	~	Units
+	~	The threshold is a scaling factor representing the size of the installed \
+		base above which network effects become important.
+	|
+
+Attractiveness of Product 1=
+	Effect of Compatibility on Attractiveness of Product 1*Effect of Other Factors on Attractiveness of Product 1
+	~	Dimensionless
+	~	Attractiveness is the product of two terms:  the effect of compatibility \
+		on attractiveness (the network effect) and the effect of all other factors \
+		of attractiveness.
+	|
+
+Attractiveness of Product 2=
+	Effect of Compatibility on Attractiveness of Product 2 * Effect of Other Factors on Attractiveness of Product 2
+	~	Dimensionless
+	~	Attractiveness is the product of two terms:  the effect of compatibility \
+		on attractiveness (the network effect) and the effect of all other factors \
+		of attractiveness.
+	|
+
+Effect of Other Factors on Attractiveness of Product 1=
+	RANDOM NORMAL(0,4,1,Standard Deviation of Random Effects on Attractiveness,Noise Seed for Random Effects on Attractiveness of Product 1\
+		)
+	~	Dimensionless
+	~	The aggregate effect of factors on the attractiveness of product 2, \
+		excluding compatibility. This formulation aggregates the effects of price, \
+		features, availability,  and so on into a single factor, which in this \
+		simple model is assumed to be exogenous.
+	|
+
+Market Share Product 1=
+	Attractiveness of Product 1/Total Attractiveness of All Products
+	~	Dimensionless
+	~	Market share is determined by the attractiveness of each firm's products \
+		relative to the  attractiveness of the other firms' products.
+	|
+
+Market Share Product 2=
+	Attractiveness of Product 2/Total Attractiveness of All Products
+	~	Dimensionless
+	~	Market share is determined by the attractiveness of each firm's products \
+		relative to the  attractiveness of the other firms' products.
+	|
+
+Sales of Product 1=
+	Total Demand * Market Share Product 1
+	~	Units/Year
+	~	The sales rate is determined by the market share for the given product and \
+		the exogenous total demand.
+	|
+
+Sales of Product 2=
+	Total Demand * Market Share Product 2
+	~	Units/Year
+	~	The sales rate is determined by the market share for the given product and \
+		the exogenous total demand.
+	|
+
+Total Attractiveness of All Products=
+	Attractiveness of Product 1 + Attractiveness of Product 2
+	~	Dimensionless
+	~	Total attractiveness is the sum of the attractiveness levels of all \
+		products in the marketplace.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 10
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = -1
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Year
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.25
+	~	Year
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96
+10,1,Installed Base Product 1,718,70,39,20,3,3,0,0,0,0,0,0
+10,2,Installed Base Product 2,713,651,40,20,3,3,0,0,0,0,0,0
+12,3,48,559,72,8,8,0,3,0,0,-1,0,0,0
+1,4,6,1,4,0,0,22,0,0,0,-1--1--1,,1|(649,71)|
+1,5,6,3,100,0,0,22,0,0,0,-1--1--1,,1|(587,71)|
+11,6,48,613,71,6,8,34,3,0,0,1,0,0,0
+10,7,Sales of Product 1,613,99,40,20,40,3,0,0,-1,0,0,0
+12,8,48,587,650,8,8,0,3,0,0,-1,0,0,0
+1,9,11,2,4,0,0,22,0,0,0,-1--1--1,,1|(649,649)|
+1,10,11,8,100,0,0,22,0,0,0,-1--1--1,,1|(604,649)|
+11,11,48,619,649,6,8,34,3,0,0,1,0,0,0
+10,12,Sales of Product 2,619,681,36,24,40,3,0,0,-1,0,0,0
+10,13,Total Demand,332,369,40,20,8,3,0,0,0,0,0,0
+10,14,Market Share Product 1,510,219,40,20,8,3,0,0,0,0,0,0
+10,15,Market Share Product 2,511,544,40,20,8,3,0,0,0,0,0,0
+10,16,Attractiveness of Product 1,698,278,52,20,8,3,0,0,0,0,0,0
+10,17,Attractiveness of Product 2,702,467,54,22,8,3,0,0,0,0,0,0
+10,18,Total Attractiveness of All Products,528,371,57,27,8,3,0,0,0,0,0,0
+10,19,Effect of Compatibility on Attractiveness of Product 1,819,201,61,27,8,3,0,0,0,0,0,0
+10,20,Effect of Compatibility on Attractiveness of Product 2,796,560,62,29,8,3,0,0,0,0,0,0
+10,21,Effect of Other Factors on Attractiveness of Product 2,896,435,50,29,8,3,0,0,0,0,0,0
+10,22,Effect of Other Factors on Attractiveness of Product 1,898,324,59,34,8,3,0,0,0,0,0,0
+1,23,14,7,1,0,43,0,0,192,0,-1--1--1,,1|(520,148)|
+1,24,16,18,1,0,43,0,0,64,0,-1--1--1,,1|(631,351)|
+1,25,17,18,1,0,43,0,0,64,0,-1--1--1,,1|(662,414)|
+1,26,19,16,1,0,43,0,0,192,0,-1--1--1,,1|(787,256)|
+1,27,22,16,1,0,43,0,0,192,0,-1--1--1,,1|(790,316)|
+1,28,21,17,1,0,43,0,0,192,0,-1--1--1,,1|(780,435)|
+1,29,20,17,1,0,43,0,0,192,0,-1--1--1,,1|(778,487)|
+1,30,2,20,1,0,43,0,0,192,0,-1--1--1,,1|(771,619)|
+1,31,1,19,1,0,43,0,0,192,0,-1--1--1,,1|(759,93)|
+1,32,16,14,1,0,43,0,0,192,0,-1--1--1,,1|(578,268)|
+1,33,17,15,1,0,43,0,0,192,0,-1--1--1,,1|(575,483)|
+1,34,15,12,1,0,43,0,0,192,0,-1--1--1,,1|(519,590)|
+1,35,13,7,1,0,43,0,0,192,0,-1--1--1,,1|(397,178)|
+1,36,13,12,1,0,43,0,0,192,0,-1--1--1,,1|(364,548)|
+1,37,18,14,1,0,45,0,0,192,0,-1--1--1,,1|(496,237)|
+1,38,18,15,1,0,45,0,0,192,0,-1--1--1,,1|(486,488)|
+12,39,0,653,177,20,20,4,4,0,0,-1,0,0,0
+R1
+12,40,0,654,215,35,21,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Network Effect
+12,41,0,651,546,20,20,5,4,0,0,-1,0,0,0
+R1
+12,42,0,651,581,34,21,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Network Effect
+12,43,0,555,294,20,20,4,4,0,0,-1,0,0,0
+B1
+12,44,0,554,326,40,20,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Share Saturation
+12,45,0,553,423,20,20,5,4,0,0,-1,0,0,0
+B1
+12,46,0,552,455,40,20,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Share Saturation
+10,47,Threshold for Compatibility Effects,980,147,56,23,8,3,0,0,0,0,0,0
+1,48,47,19,1,0,45,0,0,192,0,-1--1--1,,1|(911,188)|
+10,49,Sensitivity of Attractiveness to Installed Base,983,223,62,30,8,3,0,0,0,0,0,0
+1,50,49,19,1,0,0,0,0,64,0,-1--1--1,,1|(888,232)|
+10,51,Sensitivity of Attractiveness to Installed Base,970,557,63,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,52,Threshold for Compatibility Effects,966,627,54,23,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,53,52,20,1,0,45,0,0,192,0,-1--1--1,,1|(894,591)|
+1,54,51,20,1,0,0,0,0,64,0,-1--1--1,,1|(878,530)|
+10,55,Noise Seed for Random Effects on Attractiveness of Product 2,1111,500,69,45,8,3,0,0,-1,0,0,0
+1,56,55,21,0,0,0,0,0,0,0,-1--1--1,,1|(1000,467)|
+10,57,Noise Seed for Random Effects on Attractiveness of Product 1,1111,285,63,36,8,3,0,0,-1,0,0,0
+1,58,57,22,0,0,0,0,0,0,0,-1--1--1,,1|(1009,303)|
+10,59,Standard Deviation of Random Effects on Attractiveness,1113,385,67,34,8,3,0,0,-1,0,0,0
+1,60,59,22,0,0,0,0,0,0,0,-1--1--1,,1|(1008,354)|
+10,61,Initial Installed Base Product 1,292,43,65,26,8,3,0,0,-1,0,0,0
+10,62,Initial Installed Base Product 2,291,116,62,29,8,3,0,0,-1,0,0,0
+1,63,59,21,0,0,0,0,0,64,0,-1--1--1,,1|(1002,409)|
+10,64,Product 1 Share of Installed Base,190,717,52,29,8,3,0,0,0,0,0,0
+10,65,Product 2 Share of Installed Base,390,718,52,29,8,3,0,0,0,0,0,0
+10,66,Installed Base Product 1,93,799,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,67,Installed Base Product 2,471,799,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,68,Total Installed Base,297,801,40,20,8,3,0,0,0,0,0,0
+1,69,66,64,1,0,43,0,0,192,0,-1--1--1,,1|(112,723)|
+1,70,66,68,0,0,43,0,0,192,0,-1--1--1,,1|(188,799)|
+1,71,67,68,0,0,43,0,0,192,0,-1--1--1,,1|(390,799)|
+1,72,67,65,1,0,43,0,0,192,0,-1--1--1,,1|(454,738)|
+1,73,68,64,1,0,45,0,0,192,0,-1--1--1,,1|(288,762)|
+1,74,68,65,1,0,45,0,0,192,0,-1--1--1,,1|(326,726)|
+///---\\\
+:L<%^E!@
+9:Current2
+15:0,0,0,0
+19:100,0
+5:Threshold for Compatibility Effects

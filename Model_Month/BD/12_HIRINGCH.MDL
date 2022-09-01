@@ -1,0 +1,243 @@
+********************************************************
+	.Workforce
+********************************************************~
+		
+		Hiring Chain Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This model represents a two-stage hiring/promotion chain for workers in a firm
+		where new hires are less productive than experienced workers.  Chapter 12.
+	|
+
+Assimilation Rate=
+	Rookie Employees/Assimilation Time
+	~	People/Week
+	~	The rate at which rookie employees are assimilated into the ranks of the \
+		fully productive, experienced workers.
+	|
+
+Assimilation Time=
+	100
+	~	Week
+	~	The average time required to become an experienced worker.
+	|
+
+Average Productivity=
+	Potential Output/Total Employees
+	~	Units/Week/Person
+	~	Average productivity of the workforce.
+	|
+
+Exogenous Growth Rate 0=
+	0
+	~	1/Week
+	~	The exogenous growth rate for the total workforce.
+	|
+
+Experienced Employees= INTEG (
+	Assimilation Rate-Experienced Quit Rate,
+		1000)
+	~	People
+	~	The number of experienced (fully productive) employees
+	|
+
+Experienced Productivity=
+	1
+	~	Units/(Week*Person)
+	~	The productivity of experienced workers.  Set to 1 in this test model.
+	|
+
+Experienced Quit Fraction=
+	0.002
+	~	1/Week
+	~	The fraction of the experienced workers quitting each week.
+	|
+
+Experienced Quit Rate=
+	Experienced Employees*Experienced Quit Fraction
+	~	People/Week
+	~	Experienced workers quit at a given fractional rate.
+	|
+
+Growth Rate=
+	STEP(Exogenous Growth Rate 0, Growth Start Time 0)
+	~	1/Week
+	~	The exogenous growth rate for the total labor force.
+	|
+
+Growth Start Time 0=
+	5
+	~	Week
+	~	The time at which the exogenous growth in workforce begins.
+	|
+
+Potential Output=
+	Experienced Productivity*(Rookie Productivity Fraction*Rookie Employees +  Experienced Employees\
+		)
+	~	Units/Week
+	~	Potential output is the rate at which the workforce can complete tasks \
+		given the number of each type of worker and their productivity.
+	|
+
+Rookie Employees= INTEG (
+	+Rookie Hire Rate-Assimilation Rate-Rookie Quit Rate,
+		Experienced Employees*Experienced Quit Fraction*Assimilation Time)
+	~	People
+	~	Rookies are inexpeerienced new hires.  Set to the initial equilibrium \
+		value.
+	|
+
+Rookie Fraction=
+	Rookie Employees/Total Employees
+	~	Dimensionless
+	~	The fraction of the workforce consisting of inexperienced workers.
+	|
+
+Rookie Hire Rate=
+	Growth Rate*Total Employees + Total Quit Rate
+	~	People/Week
+	~	The hire rate is set to replace all quits and grow the total labor force \
+		at an exogenous fractional growth rate.
+	|
+
+Rookie Productivity Fraction=
+	0.25
+	~	Dimensionless
+	~	The average productivity of new employees.
+	|
+
+Rookie Quit Fraction=
+	0.01
+	~	1/Week
+	~	The fraction of the rookies quitting each week.
+	|
+
+Rookie Quit Rate=
+	Rookie Employees*Rookie Quit Fraction
+	~	People/Week
+	~	Rookies quit at a given fractional rate.
+	|
+
+Total Employees=
+	Rookie Employees + Experienced Employees
+	~	People
+	~	Total employees includes rookies and experienced staff.
+	|
+
+Total Quit Rate=
+	Rookie Quit Rate + Experienced Quit Rate
+	~	People/Week
+	~	The total quite rate, including rookies and experienced workers.
+	|
+
+Exogenous Growth Rate=
+	0
+	~	1/Week
+	~		|
+
+Growth Start Time=
+	5
+	~	Week
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 200
+	~	Week
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Week
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Week
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.5
+	~	Week
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Exogenous Growth Rate,83,279,40,20,8,3,1,0,-1,0,0,0
+10,2,Growth Start Time,85,177,30,21,8,3,1,0,-1,0,0,0
+10,3,Rookie Employees,413,114,45,22,3,3,0,0,0,0,0,0
+10,4,Experienced Employees,413,300,45,22,3,3,0,0,0,0,0,0
+12,5,48,229,114,8,8,0,3,0,0,-1,0,0,0
+1,6,8,3,4,0,0,22,0,0,0,-1--1--1,,1|(336,113)|
+1,7,8,5,100,0,0,22,0,0,0,-1--1--1,,1|(265,113)|
+11,8,48,299,113,6,8,34,3,0,0,1,0,0,0
+10,9,Rookie Hire Rate,299,143,45,22,40,3,0,0,-1,0,0,0
+1,10,12,4,4,0,0,22,0,0,0,-1--1--1,,1|(413,245)|
+1,11,12,3,100,0,0,22,0,0,0,-1--1--1,,1|(413,168)|
+11,12,540,413,207,8,6,33,3,0,0,4,0,0,0
+10,13,Assimilation Rate,466,207,45,22,40,3,0,0,-1,0,0,0
+12,14,48,599,302,8,8,0,3,0,0,-1,0,0,0
+1,15,17,14,4,0,0,22,0,0,0,-1--1--1,,1|(556,303)|
+1,16,17,4,100,0,0,22,0,0,0,-1--1--1,,1|(484,303)|
+11,17,48,516,303,6,8,34,3,0,0,1,0,0,0
+10,18,Experienced Quit Rate,516,333,45,22,40,3,0,0,-1,0,0,0
+12,19,48,598,113,8,8,0,3,0,0,-1,0,0,0
+1,20,22,19,4,0,0,22,0,0,0,-1--1--1,,1|(558,113)|
+1,21,22,3,100,0,0,22,0,0,0,-1--1--1,,1|(486,113)|
+11,22,48,521,113,6,8,34,3,0,0,1,0,0,0
+10,23,Rookie Quit Rate,521,139,43,18,40,3,0,0,-1,0,0,0
+10,24,Total Employees,266,224,40,20,8,3,0,0,0,0,0,0
+10,25,Growth Rate,169,232,29,22,8,3,0,0,0,0,0,0
+10,26,Total Quit Rate,735,218,40,20,8,3,0,0,0,0,0,0
+1,27,25,9,1,0,43,0,0,192,0,-1--1--1,,1|(206,180)|
+1,28,24,9,1,0,43,0,0,192,0,-1--1--1,,1|(269,179)|
+1,29,3,24,1,0,43,0,0,192,0,-1--1--1,,1|(354,186)|
+1,30,4,24,1,0,43,0,0,64,0,-1--1--1,,1|(343,253)|
+1,31,3,23,1,0,43,0,0,192,0,-1--1--1,,1|(471,156)|
+1,32,3,13,1,0,43,0,0,64,0,-1--1--1,,1|(443,153)|
+1,33,4,18,1,0,43,0,0,192,0,-1--1--1,,1|(464,365)|
+1,34,23,26,1,0,43,0,0,64,0,-1--1--1,,1|(624,157)|
+1,35,18,26,1,0,43,0,0,64,0,-1--1--1,,1|(616,314)|
+10,36,Rookie Quit Fraction,612,193,43,14,8,3,0,0,0,0,0,0
+10,37,Experienced Quit Fraction,632,380,47,15,8,3,0,0,0,0,0,0
+1,38,36,23,1,0,43,0,0,192,0,-1--1--1,,1|(545,166)|
+1,39,26,8,1,0,43,0,0,192,0,-1--1--1,,1|(641,100)|
+10,40,Assimilation Time,571,259,44,16,8,3,0,0,0,0,0,0
+1,41,40,13,1,0,45,0,0,192,0,-1--1--1,,1|(486,239)|
+1,42,37,18,1,0,43,0,0,192,0,-1--1--1,,1|(553,361)|
+10,43,Exogenous Growth Rate 0,223,298,40,20,8,3,1,0,-1,0,0,0
+1,44,43,25,1,1,43,0,0,192,0,-1--1--1,,1|(209,259)|
+10,45,Growth Start Time 0,172,350,30,21,8,3,1,0,-1,0,0,0
+1,46,45,25,1,1,0,0,0,0,0,-1--1--1,,1|(157,286)|
+10,47,Rookie Fraction,172,593,40,20,8,3,0,0,0,0,0,0
+10,48,Total Employees,340,610,52,21,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,49,52,47,1,0,43,0,0,192,0,-1--1--1,,1|(253,554)|
+1,50,48,47,1,0,45,0,0,192,0,-1--1--1,,1|(253,609)|
+10,51,Average Productivity,471,614,40,20,8,3,0,0,0,0,0,0
+10,52,Rookie Employees,341,544,46,21,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,53,Rookie Productivity Fraction,724,567,40,20,8,3,0,0,0,0,0,0
+10,54,Experienced Productivity,727,648,48,21,8,3,0,0,0,0,0,0
+1,55,48,51,0,0,45,0,0,192,0,-1--1--1,,1|(404,611)|
+10,56,Potential Output,594,614,40,20,8,3,0,0,0,0,0,0
+1,57,53,56,0,0,43,0,0,192,0,-1--1--1,,1|(665,587)|
+1,58,54,56,0,0,43,0,0,192,0,-1--1--1,,1|(663,631)|
+1,59,52,56,1,0,43,0,0,192,0,-1--1--1,,1|(466,552)|
+1,60,56,51,0,0,43,0,0,192,0,-1--1--1,,1|(539,614)|
+10,61,Experienced Employees,346,691,58,25,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,62,61,56,1,0,43,0,0,192,0,-1--1--1,,1|(467,699)|
+///---\\\
+:L<%^E!@
+9:Current
+22:People,Person
+15:0,0,0,0
+19:100,0
+5:Experienced Employees

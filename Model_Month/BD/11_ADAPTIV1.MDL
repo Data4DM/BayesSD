@@ -1,0 +1,100 @@
+********************************************************
+	.Smoothing
+********************************************************~
+		
+		Adaptive Expectations Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This is the generic structure for adaptive expectations (first-order exponential
+		smoothing).  Chapter 11
+	|
+
+Adjustment Time=
+	7
+	~	Day
+	~	The time constant or delay time for the adjustment of the perceived input \
+		to the reported value.
+	|
+
+Change in Perceived Value=
+	"Error (Reported Value - Perceived Value)"/Adjustment Time
+	~	Units/Day
+	~	The perceived state of the system adjusts in proportion to the error, or \
+		gap between the actual and perceived value of the input.
+	|
+
+"Error (Reported Value - Perceived Value)"=
+	"Input: Reported Value of Variable (X)"-"Output: Perceived Value of Input"
+	~	Units
+	~	The error is the gap between the reported and perceived value of the input.
+	|
+
+"Input: Reported Value of Variable (X)"=
+	RANDOM NORMAL(20,200,100,25,1000)
+	~	Units
+	~	The reported value of the input is exogenous for testing purposes.   The \
+		input is set to a normally distributed random variable with mean 100 and \
+		standard deviation 25 units.
+	|
+
+"Output: Perceived Value of Input"= INTEG (
+	Change in Perceived Value,
+		100)
+	~	Units
+	~	The output of adaptive expectations is a stock representing the perceived \
+		state of the system.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 300
+	~	Day
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Day
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Day
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Day
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,"Output: Perceived Value of Input",413,164,51,26,3,3,0,0,0,0,0,0
+12,2,48,259,163,8,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(337,163)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(284,163)|
+11,5,48,307,163,6,8,34,3,0,0,1,0,0,0
+10,6,Change in Perceived Value,307,195,37,24,40,3,0,0,-1,0,0,0
+10,7,"Input: Reported Value of Variable (X)",72,246,36,35,8,3,0,0,0,0,0,0
+10,8,"Error (Reported Value - Perceived Value)",359,321,63,26,8,3,0,0,0,0,0,0
+1,9,7,8,1,0,43,0,0,192,0,-1--1--1,,1|(236,317)|
+1,10,1,8,1,0,45,0,0,192,0,-1--1--1,,1|(467,252)|
+1,11,8,6,1,0,43,0,0,192,0,-1--1--1,,1|(275,240)|
+12,12,0,368,250,20,20,4,4,0,0,-1,0,0,0
+B
+10,13,Adjustment Time,191,211,40,20,8,3,0,0,0,0,0,0
+1,14,13,6,1,0,0,0,0,64,0,-1--1--1,,1|(262,186)|
+///---\\\
+:L<%^E!@
+9:Current
+15:0,0,0,0
+19:100,0
+5:Adjustment Time

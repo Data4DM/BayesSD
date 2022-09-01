@@ -1,0 +1,605 @@
+{UTF-8}
+Approve Task Rate=
+	Quality Assurance*(1-Fraction of Tests Rejected)
+	~	Task/Month
+	~	Rate of approving tasks after ensuring its quality.(eq9,pg43)
+	|
+
+Available Resources=
+	5
+	~	Person
+	~		|
+
+Average Defect in Approved Task=
+	-ln((1-Defective Fraction in Approved Tasks))
+	~	Defect/Task
+	~		|
+
+Completion rate=
+	Feasible New Dev Rate
+	~	Task/Month
+	~	The rate of completing tasks as a first development stage. (eq13,pg43)
+	|
+
+Correct Defective Tasks=
+	XIDZ(Defective Tasks Pending Rework, Tasks Pending Rework, 0)*Task Correction Probability\
+		*Rework Rate
+	~	Task/Month
+	~	Changes that were corrected after being discovered. (eq32,pg64) Use a \
+		different parameter for the error rate
+	|
+
+Current Defect Rate in Completion=
+	Defect Rate in Completion*Schedule Pressure Impacted on Defects
+	~	Defect/Task
+	~		|
+
+Current Defect Rate in Rework=
+	Defect Rate in Rework*Schedule Pressure Impacted on Defects
+	~	Defect/Task
+	~		|
+
+Current Task Remained=
+	Tasks not Completed+Tasks Pending Rework
+	~	Task
+	~		|
+
+Defect Correction Rate=
+	0.8
+	~	Defect/Task
+	~		|
+
+Defect Rate in Completion=
+	0.4
+	~	Defect/Task
+	~	The number of defects made when working on a task, in average.
+	|
+
+Defect Rate in Rework=
+	0.4
+	~	Defect/Task
+	~	The defect rate for creating new defects in the reworked Task.
+	|
+
+Defective Completion Probability=
+	(1-EXP(-Defect Rate in Completion))*(1-Schedule Pressure SW) + (1-EXP(-Current Defect Rate in Completion\
+		))*Schedule Pressure SW
+	~	dmnl
+	~	This is one minus the probability that there is no error in the task. \
+		Given that errors are distributed randomly across the tasks, with the \
+		error density given from M3, we can find probability of having \
+		Defect=1-probability of having no error, which latter, given a Poisson \
+		distribution can be expressed as above. I am not quite sure if this is \
+		correct however: it assumes tasks are of the same size (?)
+	|
+
+Defective Fraction in Approved Tasks=
+	ZIDZ(Defective Tasks Approved, Tasks Approved)
+	~	dmnl
+	~		|
+
+Defective Task Not Fixed=
+	(XIDZ(Defective Tasks Pending Rework, Tasks Pending Rework, 0))*(1-Task Correction Probability\
+		)*Rework Rate
+	~	Task/Month
+	~	Taks that were discoved with more changes during the change avtivity. \
+		(eq31,pg64)
+	|
+
+Defective Tasks Approved= INTEG (
+	Miss Defective Task,
+		0)
+	~	Task
+	~	Total changes approved. (eq28,pg63)
+	|
+
+Defective Tasks Density UM2=
+	ZIDZ(Defective Tasks Pending Rework,Tasks Pending Rework)
+	~	dmnl
+	~		|
+
+Defective Tasks Pending Rework= INTEG (
+	Discover Defective Task-Correct Defective Tasks-Defective Task Not Fixed,
+		0)
+	~	Task
+	~	Tasks that were discovered with changes.(eq27,pg63)
+	|
+
+Defective Tasks Pending Test= INTEG (
+	+Defective Task Not Fixed+Generate defects during completion-Miss Defective Task-Discover Defective Task\
+		,
+		0)
+	~	Task
+	~	Changes that were not discovered. (eq26,pg63)
+	|
+
+Dev Resources to New Dev=
+	Dsrd New Dev Resources*MIN(1,ZIDZ(Available Resources,Total Desired Resources))*Task Finish Switch
+	~	Person
+	~	The resources between rework and new development are distributed based on \
+		how much need there is for each, proportionately.
+	|
+
+Dev Resources to Rework=
+	Dsrd Rwrk Resources*MIN(1,ZIDZ(Available Resources,Total Desired Resources))*Task Finish Switch
+	~	Person
+	~	The resources between rework and new development are distributed based on \
+		how much need there is for each, proportionately.
+	|
+
+Discover Defective Task=
+	Rework Discovery Rate
+	~	Task/Month
+	~	Rate of discovering chages within tasks. (eq33,pg64)
+	|
+
+Dsrd New Dev Resources=
+	Tasks not Completed/Min Time to Do Task/Productivity
+	~	Person
+	~	Desired new development rate depends on the productivity in normal \
+		situations and the rate of development desired.
+	|
+
+Dsrd Rwrk Resources=
+	Tasks Pending Rework/Min Time to Do Task/Productivity
+	~	Person
+	~	The desired resources for rework depend on the normal productivity of \
+		people and the desired rework rate.
+	|
+
+Expected Time Left=
+	Current Task Remained/(Available Resources*Productivity)
+	~	Month
+	~		|
+
+Feasible New Dev Rate=
+	Dev Resources to New Dev*Productivity
+	~	Task/Month
+	~	The development rate that is feasible based on availability of resources \
+		for development of new Task.
+	|
+
+Feasible Rwrk Rate=
+	Dev Resources to Rework*Productivity
+	~	Task/Month
+	~	Feasible rework rate from resources depends on the availability of \
+		resources as well as their productivity.
+	|
+
+Fraction of Tests Rejected=
+	Fraction Tasks Defective*(1-Probability of Missing a Defect)
+	~	dmnl
+	~	Discovering changes depend on the probability of discovering changes from \
+		all developed tasks and probability of changes required within all tasks. \
+		(eq10, pg43)  .......****11-EXP(ln(1-Fraction Tasks Defective \
+		M2)*(1-Probability of Missing a Defect))
+	|
+
+Fraction Tasks Defective=
+	ZIDZ( Defective Tasks Pending Test, Tasks Pending Test)
+	~	dmnl [0,1]
+	~	The probability of tasks that need to be changed among all developed \
+		tasks. Not a parameter, see equation 36
+	|
+
+Generate defects during completion=
+	(Completion rate*Defective Completion Probability)
+	~	Task/Month
+	~	Rate of generating changes during completion avtivity.(eq39,pg65)
+	|
+
+Initial Tasks to Complete=
+	100
+	~	Task
+	~		|
+
+Initial Time Schedule=
+	Initial Tasks to Complete/(Available Resources*Productivity)
+	~	Month
+	~		|
+
+Min Time Left=
+	1
+	~	Month
+	~		|
+
+Min Time to Do Task=
+	0.2
+	~	Month
+	~		|
+
+Miss Defective Task=
+	(Quality Assurance*Fraction Tasks Defective)-Discover Defective Task
+	~	Task/Month
+	~	Rate in which the changes are approved during task approval phase. \
+		(eq37,pg65)
+	|
+
+Probability of Missing a Defect=
+	0.3
+	~	dmnl [0,0.99]
+	~	This parameter represents the quality of testing, as captured by \
+		probability of missing an error that exists in the task, while doing the \
+		testing.
+	|
+
+Productivity=
+	5
+	~	Task/Person/Month
+	~	The productivity depends on the work pressure and Task complexity effects.
+	|
+
+Quality Assurance=
+	Tasks Pending Test/Testing Time*Task Finish Switch
+	~	Task/Month
+	~	Number of tasks that could be checked for quality in a Month. (eq7,pg42)
+	|
+
+Rework Discovery Rate=
+	Fraction of Tests Rejected*Quality Assurance
+	~	Task/Month
+	~	The rate of discovering changes from tasks that were completed. (eq8, pg43)
+	|
+
+Rework Rate=
+	Feasible Rwrk Rate
+	~	Task/Month
+	~	The rate of changing tasks. The errors need to be corrected before \
+		apporving the task. (eq6,pg42
+	|
+
+Schedule Pressure Impacted on Defects=
+	Table of Schedule Pressure(Schedule Pressure)
+	~	dmnl
+	~		|
+
+Schedule Pressure=
+	Expected Time Left/Schedule Time Left
+	~	dmnl
+	~		|
+
+Schedule Pressure SW=
+	0
+	~	dmnl [0,1]
+	~	when Schedule Pressure SW = 0, there is no effect on changing the defect \
+		rate from Schedule Pressure. When it equals to 1, schedule pressure \
+		impacts on the defect rate.
+	|
+
+Schedule Time Left=
+	Max(Min Time Left, (Initial Time Schedule-Time) )
+	~	Month
+	~		|
+
+Table of Schedule Pressure(
+	[(0,0)-(2,2)],(0,1),(1,1),(1.5,1.5),(2,1.5))
+	~	dmnl
+	~		|
+
+Task Correction Probability=
+	((1-EXP(-Defect Correction Rate))*EXP(-Defect Rate in Rework))*(1-Schedule Pressure SW\
+		) + ((1-EXP(-Defect Correction Rate))*EXP(-Current Defect Rate in Rework))*Schedule Pressure SW
+	~	dmnl
+	~	We correct an error if 1-The error is fixed in the change activity 2-No \
+		additional errors are added to the task. The above equation reflects this.
+	|
+
+Task Finish Switch=
+	if then else(Tasks Approved<Initial Tasks to Complete*Threshold Finish Task, 1, 0)
+	~	dmnl
+	~		|
+
+Tasks Approved= INTEG (
+	Approve Task Rate,
+		0)
+	~	Task
+	~	Tasks that are approved for quality.(eq4,pg40)
+	|
+
+Tasks not Completed= INTEG (
+	-Completion rate,
+		Initial Tasks to Complete)
+	~	Task
+	~	These are tasks that needs to be completed and checked before releasing. \
+		(eq1,pg40)
+	|
+
+Tasks Pending Rework= INTEG (
+	Rework Discovery Rate-Rework Rate,
+		0)
+	~	Task
+	~	Tasks that were discovered with errors are stocked under tasks to be \
+		changed. These tasks will have to undergo chnages before being approved. \
+		(eq3, pg40)
+	|
+
+Tasks Pending Test= INTEG (
+	Rework Rate+Completion rate-Rework Discovery Rate-Approve Task Rate,
+		0)
+	~	Task
+	~	Tasks that were completed during the initial stage but not yet checked for \
+		errors. (eq2, pg40)
+	|
+
+Testing Time=
+	0.1
+	~	Month
+	~		|
+
+Threshold Finish Task=
+	0.99
+	~	dmnl
+	~	Fraction of tasks to complete before calling the project complete
+	|
+
+Total Desired Resources=
+	Dsrd New Dev Resources+Dsrd Rwrk Resources
+	~	Person
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Month
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Month
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Month [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.03125
+	~	Month [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Model
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|255-255-255|255-255-255|96,96,100,0
+10,1,Tasks Pending Rework,863,351,47,25,3,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,2,Tasks Pending Test,859,125,53,31,3,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,3,Tasks Approved,1118,124,50,22,3,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,4,Tasks not Completed,478,135,45,24,3,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,5,7,2,4,0,0,22,0,0,0,-1--1--1,,1|(851,205)|
+1,6,7,1,100,0,0,22,0,0,0,-1--1--1,,1|(851,296)|
+11,7,0,851,260,8,6,33,3,0,0,2,0,0,0,0,0,0,0,0,0
+10,8,Rework Rate,795,260,48,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,9,11,2,4,0,0,22,0,0,0,-1--1--1,,1|(777,139)|
+1,10,11,4,100,0,0,22,0,0,0,-1--1--1,,1|(630,139)|
+11,11,0,743,139,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,12,Completion rate,743,165,43,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,13,15,3,4,0,0,22,0,0,0,-1--1--1,,1|(1033,125)|
+1,14,15,2,100,0,0,22,0,0,0,-1--1--1,,1|(949,125)|
+11,15,0,992,125,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,16,Approve Task Rate,992,151,52,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,17,Quality Assurance,1140,281,53,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,18,Fraction Tasks Defective,1291,492,55,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,19,Fraction of Tests Rejected,1081,411,61,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,20,18,19,0,0,43,0,34,64,0,-1--1--1,Arial|||0-0-0,1|(0,0)|
+1,21,2,17,1,0,43,0,34,64,0,-1--1--1,Arial|||0-0-0,1|(973,201)|
+1,22,17,16,0,0,43,0,34,64,0,-1--1--1,Arial|||0-0-0,1|(0,0)|
+1,23,25,1,4,0,0,22,0,0,0,-1--1--1,,1|(909,297)|
+1,24,25,2,100,0,0,22,0,0,0,-1--1--1,,1|(909,206)|
+11,25,0,909,263,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,26,Rework Discovery Rate,984,263,67,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,27,19,26,1,0,43,0,34,64,0,-1--1--1,Arial|||0-0-0,1|(1054,382)|
+10,28,Tasks Pending Test,1346,375,60,18,8,130,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,29,28,18,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,30,Defective Tasks Pending Test,1231,579,67,18,8,130,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,31,30,18,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,32,Dev Resources to New Dev,826,-260,66,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,33,Feasible New Dev Rate,690,-115,51,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,34,32,33,1,0,43,0,40,64,0,-1--1--1,Arial|12||0-0-0,1|(813,-244)|
+10,35,Dev Resources to Rework,575,-27,66,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,36,Feasible Rwrk Rate,418,-50,53,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,37,35,36,1,0,43,0,40,64,0,-1--1--1,Arial|12||0-0-0,1|(501,-56)|
+10,38,Dsrd New Dev Resources,373,-288,54,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,39,Dsrd Rwrk Resources,226,-23,45,16,8,131,0,40,0,0,0,0,0-0-0,0-0-0,Arial|10||0-0-0,0,0,0,0,0,0
+1,40,39,35,1,0,43,0,32,64,0,-1--1--1,Arial|||0-0-0,1|(382,8)|
+1,41,38,32,0,0,43,0,32,64,0,-1--1--1,Arial|||0-0-0,1|(0,0)|
+10,42,Total Desired Resources,510,-194,54,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,43,42,35,1,0,0,0,0,64,0,-1--1--1,,1|(516,-194)|
+1,44,42,32,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,45,39,42,1,0,0,0,0,64,0,-1--1--1,,1|(284,-140)|
+1,46,38,42,1,0,0,0,0,64,0,-1--1--1,,1|(453,-243)|
+10,47,Tasks Pending Rework,103,-77,60,18,8,130,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,48,47,39,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,49,33,12,1,0,0,0,0,64,0,-1--1--1,,1|(737,67)|
+10,50,Productivity,379,-130,51,10,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,51,50,36,1,0,0,0,0,64,0,-1--1--1,,1|(401,-93)|
+1,52,50,39,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,53,50,33,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,54,50,38,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,55,Testing Time,1167,358,47,10,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,56,55,17,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,57,Min Time to Do Task,205,-350,56,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,58,57,38,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,59,Probability of Missing a Defect,1015,508,62,18,8,131,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,60,59,19,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,61,Defective Tasks Pending Test,867,722,56,43,3,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,62,63,61,100,0,0,22,0,0,0,-1--1--1,,1|(899,801)|
+11,63,0,899,843,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,64,Discover Defective Task,976,843,69,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,65,66,61,100,0,0,22,0,0,0,-1--1--1,,1|(969,744)|
+11,66,0,1021,744,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,67,Miss Defective Task,1021,770,55,18,40,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,68,69,61,4,0,0,22,0,0,0,-1--1--1,,1|(627,725)|
+11,69,0,438,725,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,70,Generate defects during completion,438,751,79,18,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,71,Defective Tasks Pending Rework,867,973,49,27,3,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,72,63,71,4,0,0,22,0,0,0,-1--1--1,,1|(899,897)|
+1,73,75,61,4,0,0,22,0,0,0,-1--1--1,,1|(820,799)|
+1,74,75,71,100,0,0,22,0,0,0,-1--1--1,,1|(820,895)|
+11,75,0,820,839,8,6,33,3,0,0,2,0,0,0,0,0,0,0,0,0
+10,76,Defective Task Not Fixed,757,839,55,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+12,77,48,856,1119,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,78,80,77,4,0,0,22,0,0,0,-1--1--1,,1|(854,1087)|
+1,79,80,71,100,0,0,22,0,0,0,-1--1--1,,1|(854,1025)|
+11,80,0,854,1057,8,6,33,131,0,0,2,0,0,0,0,0,0,0,0,0
+10,81,Correct Defective Tasks,781,1057,65,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,82,Defective Tasks Approved,1200,738,40,30,3,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,83,66,82,4,0,0,22,0,0,0,-1--1--1,,1|(1093,744)|
+1,84,71,76,1,0,43,0,34,0,0,-1--1--1,Arial|||0-0-0,1|(819,901)|
+10,85,Tasks Pending Rework,586,961,60,18,8,130,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,86,85,76,1,0,43,0,34,0,0,-1--1--1,Arial|||0-0-0,1|(630,852)|
+10,87,Rework Rate,710,920,53,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,88,87,76,1,0,45,0,34,0,0,-1--1--1,Arial|||0-0-0,1|(716,891)|
+1,89,71,81,1,0,43,0,34,64,0,-1--1--1,Arial|||0-0-0,1|(793,1034)|
+1,90,85,81,1,0,45,0,34,64,0,-1--1--1,Arial|||0-0-0,1|(682,979)|
+1,91,87,81,1,0,43,0,34,64,0,-1--1--1,Arial|||0-0-0,1|(710,960)|
+10,92,Rework Discovery Rate,1036,960,71,18,8,130,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,93,92,64,0,0,43,0,34,64,0,-1--1--1,Arial|||0-0-0,1|(0,0)|
+10,94,Quality Assurance,1310,829,58,18,8,130,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+10,95,Fraction Tasks Defective,1256,899,59,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,96,94,67,1,0,43,0,34,64,0,-1--1--1,Arial|||0-0-0,1|(1147,804)|
+1,97,95,67,1,0,43,0,34,64,0,-1--1--1,Arial|||0-0-0,1|(1125,859)|
+1,98,64,67,1,0,45,0,34,64,0,-1--1--1,Arial|||0-0-0,1|(960,772)|
+10,99,Completion rate,155,754,47,18,8,130,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,100,99,70,0,0,43,0,34,64,0,-1--1--1,Arial|||0-0-0,1|(0,0)|
+10,101,Tasks Approved,1216,762,55,18,8,2,1,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+12,102,48,349,723,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,103,69,102,100,0,0,22,0,0,0,-1--1--1,,1|(395,725)|
+10,104,Defective Completion Probability,240,880,53,27,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,105,104,70,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,106,Defect Rate in Completion,331,943,57,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,107,106,104,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,108,Task Correction Probability,422,1036,59,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,109,108,81,1,0,0,0,0,64,0,-1--1--1,,1|(581,1072)|
+1,110,108,76,1,0,0,0,0,64,0,-1--1--1,,1|(434,902)|
+10,111,Defect Rate in Rework,547,1119,57,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,112,111,108,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,113,Feasible Rwrk Rate,649,339,58,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,114,113,8,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,115,Tasks not Completed,35,-220,59,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,116,115,38,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,117,Fraction of Tests Rejected,1264,246,66,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,118,117,16,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,119,17,26,1,0,0,0,0,64,0,-1--1--1,,1|(1062,305)|
+10,120,Defective Tasks Density UM2,1009,1098,59,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,121,Tasks Pending Rework,1181,1141,60,18,8,130,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,122,121,120,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,123,71,120,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,124,Average Defect in Approved Task,1558,301,70,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,125,Defective Fraction in Approved Tasks,1523,466,75,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+1,126,3,125,1,0,0,0,0,64,0,-1--1--1,,1|(1356,240)|
+1,127,82,125,1,0,0,0,0,64,0,-1--1--1,,1|(1360,637)|
+1,128,125,124,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,129,Task Finish Switch,920,-118,43,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,130,129,32,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,131,129,35,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,132,129,17,1,0,0,0,0,64,0,-1--1--1,,1|(1216,52)|
+10,133,Initial Tasks to Complete,438,243,57,18,8,2,17,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,134,133,4,0,17,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,135,Available Resources,1039,-211,40,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,136,135,32,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,137,Available Resources,578,46,45,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,138,137,35,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,139,Min Time to Do Task,226,88,48,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,140,139,39,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,141,Defect Correction Rate,318,1115,58,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,142,141,108,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,143,Initial Time Schedule,1256,-211,48,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,144,Schedule Time Left,1348,-305,55,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,145,Expected Time Left,1470,-148,56,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,146,Current Task Remained,1480,-24,52,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,147,Tasks not Completed,1388,81,59,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+10,148,Tasks Pending Rework,1557,66,60,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,149,147,146,1,0,0,0,0,64,0,-1--1--1,,1|(1427,27)|
+1,150,148,146,1,0,0,0,0,64,0,-1--1--1,,1|(1533,28)|
+1,151,146,145,1,0,0,0,0,64,0,-1--1--1,,1|(1489,-84)|
+10,152,Productivity,1265,-124,42,10,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+10,153,Schedule Pressure,1538,-312,47,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,154,Schedule Pressure Impacted on Defects,1728,-234,75,27,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,155,Current Defect Rate in Completion,1833,-85,73,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,156,Current Defect Rate in Rework,1780,81,70,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+10,157,Time,1325,-414,29,10,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+10,158,Min Time Left,1168,-363,49,10,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,159,157,144,1,0,0,0,0,64,0,-1--1--1,,1|(1352,-359)|
+1,160,158,144,1,0,0,0,0,64,0,-1--1--1,,1|(1276,-347)|
+1,161,143,144,1,0,0,0,0,64,0,-1--1--1,,1|(1294,-257)|
+1,162,152,143,1,0,0,0,0,64,0,-1--1--1,,1|(1242,-167)|
+1,163,152,145,1,0,0,0,0,64,0,-1--1--1,,1|(1376,-115)|
+1,164,135,143,1,0,0,0,0,64,0,-1--1--1,,1|(1151,-218)|
+1,165,135,145,1,0,0,0,0,64,0,-1--1--1,,1|(1235,-61)|
+10,166,Initial Tasks to Complete,1088,-283,52,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,167,166,143,1,0,0,0,0,64,0,-1--1--1,,1|(1204,-269)|
+1,168,144,153,1,0,0,0,0,64,0,-1--1--1,,1|(1436,-341)|
+10,169,Table of Schedule Pressure,1732,-374,70,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,170,169,154,1,0,0,0,0,64,0,-1--1--1,,1|(1732,-287)|
+1,171,153,154,1,0,0,0,0,64,0,-1--1--1,,1|(1663,-278)|
+1,172,154,155,1,0,0,0,0,64,0,-1--1--1,,1|(1803,-139)|
+1,173,154,156,1,0,0,0,0,64,0,-1--1--1,,1|(1675,-38)|
+10,174,Defect Rate in Completion,1899,-208,53,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+10,175,Defect Rate in Rework,1904,5,53,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,176,174,155,1,0,0,0,0,64,0,-1--1--1,,1|(1843,-158)|
+1,177,175,156,1,0,0,0,0,64,0,-1--1--1,,1|(1823,36)|
+1,178,145,153,1,0,0,0,0,64,0,-1--1--1,,1|(1525,-211)|
+10,179,Schedule Pressure SW,206,983,49,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+10,180,Current Defect Rate in Completion,88,936,78,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,181,180,104,1,0,0,0,0,64,0,-1--1--1,,1|(128,897)|
+1,182,179,104,1,0,0,0,0,64,0,-1--1--1,,1|(216,941)|
+10,183,Current Defect Rate in Rework,545,1185,74,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|||128-128-128,0,0,0,0,0,0
+1,184,179,108,1,0,0,0,0,64,0,-1--1--1,,1|(395,1130)|
+1,185,183,108,1,0,0,0,0,64,0,-1--1--1,,1|(478,1128)|
+1,186,166,129,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,187,3,129,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+10,188,Threshold Finish Task,852,-30,53,19,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,189,188,129,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Introduction
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|255-255-255|255-255-255|96,96,100,0
+12,1,0,879,328,107,28,8,7,0,0,-1,0,0,0,0,0,0,0,0,0
+Project Dynamics Model from Ford and Sterman, 1997 paper in System Dynamics Review
+12,2,0,891,431,120,38,8,7,0,0,-1,0,0,0,0,0,0,0,0,0
+Replicated by Hazhir Rahmandad and Kun Hu in developing the 2011 SDR paper on capturing multiple errors per task
+///---\\\
+:L<%^E!@
+5:Current Defect Rate in Completion
+9:current
+19:100,0
+24:0
+25:0
+26:0
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:1
+72:0
+73:0
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:0
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Arial|11||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1

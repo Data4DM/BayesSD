@@ -1,0 +1,120 @@
+********************************************************
+	.Smoothing
+********************************************************~
+		
+		Adaptive Expectations Model with Random Walk
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This is the generic structure for adaptive expectations (first-order exponential
+		smoothing).  The test input here is a random walk.  Chapter 11
+	|
+
+Adjustment Time=
+	7
+	~	Day
+	~	The time constant or delay time for the adjustment of the perceived input \
+		to the reported value.
+	|
+
+Change in Perceived Value=
+	"Error (Reported Value - Perceived Value)"/Adjustment Time
+	~	Units/Day
+	~	The perceived state of the system adjusts in proportion to the error, or \
+		gap between the actual and perceived value of the input.
+	|
+
+"Error (Reported Value - Perceived Value)"=
+	"Input: Reported Value of Variable (X)"-"Output: Perceived Value of Input"
+	~	Units
+	~	The error is the gap between the reported and perceived value of the input.
+	|
+
+Input to Random Walk=
+	RANDOM NORMAL(-100,100,0,50,1.23144e+007)
+	~	Units/Day
+	~	The rate of change in the random walk variable is a normally distributed \
+		random variable with mean 0  and standar d deviation of 50 units/day.
+	|
+
+"Input: Reported Value of Variable (X)"=
+	Random Walk
+	~	Units
+	~	The input to the adaptive expectations structure is a random walk (for \
+		testing purposes).
+	|
+
+"Output: Perceived Value of Input"= INTEG (
+	Change in Perceived Value,
+		"Input: Reported Value of Variable (X)")
+	~	Units
+	~	The output of adaptive expectations is a stock representing the perceived \
+		state of the system.
+	|
+
+Random Walk= INTEG (
+	Input to Random Walk,
+		1000)
+	~	Units
+	~	A random walk with normally distributed changes.  Used as a test input.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 100
+	~	Day
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Day
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Day
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Day
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,"Output: Perceived Value of Input",517,164,51,26,3,3,0,0,0,0,0,0
+12,2,48,363,163,8,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(441,163)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(388,163)|
+11,5,48,411,163,6,8,34,3,0,0,1,0,0,0
+10,6,Change in Perceived Value,411,195,37,24,40,3,0,0,-1,0,0,0
+10,7,"Input: Reported Value of Variable (X)",311,385,36,35,8,3,0,0,0,0,0,0
+10,8,"Error (Reported Value - Perceived Value)",463,321,63,26,8,3,0,0,0,0,0,0
+1,9,1,8,1,0,45,0,0,192,0,-1--1--1,,1|(571,252)|
+1,10,8,6,1,0,43,0,0,192,0,-1--1--1,,1|(379,240)|
+12,11,0,472,250,20,20,4,4,0,0,-1,0,0,0
+B
+10,12,Adjustment Time,295,211,40,20,8,3,0,0,0,0,0,0
+1,13,12,6,1,0,0,0,0,64,0,-1--1--1,,1|(366,186)|
+10,14,Random Walk,196,305,40,20,3,3,0,0,0,0,0,0
+12,15,48,79,306,8,8,0,3,0,0,-1,0,0,0
+1,16,18,14,4,0,0,22,0,0,0,-1--1--1,,1|(141,306)|
+1,17,18,15,100,0,0,22,0,0,0,-1--1--1,,1|(101,306)|
+11,18,48,121,306,6,8,34,3,0,0,1,0,0,0
+10,19,Input to Random Walk,121,342,40,28,40,3,0,0,-1,0,0,0
+1,20,14,7,1,0,43,0,0,192,0,-1--1--1,,1|(246,373)|
+1,21,7,8,1,0,43,0,0,192,0,-1--1--1,,1|(374,388)|
+///---\\\
+:L<%^E!@
+9:Current
+15:0,0,0,0
+19:100,0
+5:Input to Random Walk

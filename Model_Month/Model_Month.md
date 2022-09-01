@@ -1,1 +1,0 @@
-List of models is documented in [[eg(Generator)]].

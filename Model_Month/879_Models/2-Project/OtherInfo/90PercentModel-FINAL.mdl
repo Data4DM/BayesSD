@@ -1,0 +1,1568 @@
+{UTF-8}
+Ext Changes Discovered[Phase]=
+	 SUM(Phase Dependencies[Phase,Downstream Phase!]*
+	(Ext Changes Released[Phase]/(Work Released[Phase]+Delta work))*
+	Quality Assurance rate[Downstream Phase!]*
+	Phase Scope ratio[Phase,Downstream Phase!]*
+	Ref prob Disc Change[Downstream Phase!])
+	~	work packages/week
+	~	The rate at which released external changes are discovered and returned to \
+		the generating phase is the sum over the phase's downstream phases of each \
+		downstream phase's inspection rate, liklihood of discovering an error, and \
+		liklihood that an external error has been inherited, scaled for phase \
+		size. The Min prevents down from finding more changes than released due to \
+		massive inspection effort.
+	|
+
+Project scope basis for scaling phases=
+	1219
+	~	work packages
+	~		|
+
+Project Percent Released Scaled=
+	 Scaled Work Released/Project scope basis for scaling phases
+	~	dimensionless
+	~	Fraction of project released, scaled to project scale
+	|
+
+Int Changes Discovered[Phase]=
+	 SUM(Phase Dependencies[Phase,Downstream Phase!]*
+	(Int Changes Released[Phase]/(Work Released[Phase]+Delta work))*
+	Quality Assurance rate[Downstream Phase!]*
+	Phase Scope ratio[Phase,Downstream Phase!]*
+	Ref prob Disc Change[Downstream Phase!])
+	~	work packages/week
+	~	The average rate at which released internal changes are discovered by \
+		downstream phases and returned to the generating phase is the sum over the \
+		downstream phases of the downstream inspection rate, fraction corrupted by \
+		internal error from this phase, liklihood of discovery, scaled for phase \
+		scopes.
+	|
+
+Delta work=
+	0.001
+	~	work packages
+	~	Used to prevent division by zero when ZIDZ does not work because can only \
+		have one function in SUM or PROD functions.
+	|
+
+Min receive released time=
+	1
+	~	Weeks
+	~	The minimum time to receive returned work in case the amount of work \
+		released controls the flow of returned work.
+	|
+
+Base Case Project Duration=
+	69.75
+	~	Weeks
+	~	The project duration for the base case (calibration conditions).
+	|
+
+"Project Duration (fraction of Base Case)"=
+	Project Duration/Base Case Project Duration
+	~	dimensionless
+	~	The project duration relative to the base case project duration where 1.0 \
+		signifies that the durations are equal, values >1 indicate durations \
+		longer than the base case duration, and visa versa. Use final value only.
+	|
+
+Early Adjustment Int[Phase]=
+	Internal Concurrence Stretch*(Fraction Avail Int[Phase]-Fraction Perceived Satisfactory\
+		[Phase])
+	~	dimensionless
+	~	Fraction of internal availability fraction that is adjusted with \
+		concurrence stetch before 50% availability is reached.
+	|
+
+Late adjustment[Phase]=
+	Internal Concurrence Stretch*(1-Fraction Avail Int[Phase])
+	~	dimensionless
+	~	The adjustment to the internal availability fraction that is adjusted with \
+		stretch after 50% available fraction is reached.
+	|
+
+Adjusted Fraction Avail Internal[Phase]=
+	IF THEN ELSE(Fraction Avail Int[Phase]<=Fraction Perceived Satisfactory[Phase]+(1-Fraction Perceived Satisfactory\
+		[Phase
+	])/2,Fraction Avail Int[Phase]+(0*Internal Concurrence Stretch*(Fraction Avail Int[Phase\
+		]-Fraction Perceived Satisfactory
+	[Phase]))+Early Adjustment Int[Phase] , Fraction Avail Int[Phase]+(0*Internal Concurrence Stretch\
+		*(1--Fraction Avail Int[
+	Phase]))+Late adjustment[Phase])
+	~	dimensionless
+	~	The initial completion available fraction as stretched.
+	|
+
+Project Stranded Ext Changes=
+	SUM(Ext Changes Released[Phase!])
+	~	work packages
+	~	The project's external changes that are released. The value at the end of \
+		the simulation is the work stranded due to external changes.
+	|
+
+Add Ext Iterations=
+	SUM(Receive Released Work to Coord[Phase!])
+	~	work packages/week
+	~	The rate of discovery of project external changes is the sum over the \
+		phases of the discovery in each phase.
+	|
+
+Add Int Iterations=
+	SUM(Disc Changes[Phase!])
+	~	work packages/week
+	~	The project rate of discovering internal changes is the sum of the \
+		discoveries over the phases.
+	|
+
+Total Stranded Changes=
+	Project Stranded Ext Changes+Project Stranded Int Changes
+	~	work packages
+	~	The total number of released changes in the project. The final value is \
+		the number of stranded changes for the project.
+	|
+
+Project Stranded Int Changes=
+	SUM(Int Changes Released[Phase!])
+	~	work packages
+	~	The project's internal changes that are released. The value at the end of \
+		the simulation is the work stranded due to internal changes.
+	|
+
+Cumm Proj Int Iterations= INTEG (
+	Add Int Iterations,
+		0)
+	~	work packages
+	~	The  accumulated project  work that requires internal changes. This \
+		includes work that must be changed more than once.
+	|
+
+Project Fraction Stranded Changes=
+	Total Stranded Changes/SUM(Phase Scope[Phase!])
+	~	dimensionless
+	~	Project stranded changes relative to project scope.
+	|
+
+Project Fraction Iterated=
+	Total Project Iterations/SUM(Phase Scope[Phase!])
+	~	dimensionless
+	~	Project iteration relative to the project scope as a fraction.
+	|
+
+Total Project Iterations=
+	Cumm Proj Ext Iterations+Cumm Proj Int Iterations
+	~	work packages
+	~	The  accumulated project  work that requires internal or external  \
+		changes. This includes work that must be changed more than once.
+	|
+
+Add to Project Duration=
+	IF THEN ELSE(Project Percent Released Scaled<=Definition of Finished, 1, 0)
+	~	Weeks/week
+	~	The rate at which the duration of the project increases is one week per \
+		week of simulation that the project is active.
+	|
+
+prob Disc Change[Phase]=
+	MAX(0,MIN(1,Ref prob Disc Change[Phase]*(1-Project Concurrence Stretch)))
+	~	dimensionless
+	~	The liklihood of discovering a change is the reference except sometimes \
+		when impacted by the concurrence stretch. The Min functionis required when \
+		the concurrence stretch is small enough (large enough negative number) \
+		that the product exceeds 1, which is not reasonable.  The Max function is \
+		needed for when Stretch is large enough that the product is negative, \
+		which is unreasonable.
+	|
+
+External Concurrence Stretch=
+	Project Concurrence Stretch
+	~	dimensionless
+	~	See Project Concurrence Stretch.
+	|
+
+Add to Phase Duration[Phase]=
+	IF THEN ELSE(Phase Fraction Released[Phase]<=Definition of Finished, 1, 0)
+	~	Weeks/week
+	~	The rate of adding to the duration of a phase is one week for every week \
+		of the simulation that the phase is active.
+	|
+
+Adjusted Fraction Avail External[Upstream Phase,Phase]=
+	IF THEN ELSE(Fraction Avail Ext[Upstream Phase,Phase]<=0.5, Fraction Avail Ext[Upstream Phase\
+		,Phase]+(External Concurrence Stretch*Fraction Avail Ext[Upstream Phase,Phase]) , Fraction Avail Ext\
+		[Upstream Phase,Phase]+(External Concurrence Stretch*(1-Fraction Avail Ext[Upstream Phase\
+		,Phase])))
+	~	dimensionless
+	~	Externally constrained initial completion available fraction as stretched.
+	|
+
+Internal Concurrence Stretch=
+	Project Concurrence Stretch
+	~	dimensionless
+	~	See Project Concurrence Stretch.
+	|
+
+Definition of Finished=
+	0.99
+	~	dimensionless
+	~	The fraction of work to be released before the phase or project is \
+		considered complete.
+	|
+
+Average Phase Duration=
+	SUM(Phase Duration[Phase!])/Number of Phases
+	~	Weeks
+	~	The average phase duration.
+	|
+
+Number of Phases=
+	4
+	~	dimensionless
+	~	The number of phases modeled for the project (max of five).
+	|
+
+Fraction Avail Ext[Upstream Phase,Phase]=
+	External Process Concurrence[Upstream Phase,Phase](Phase Fraction Released[Upstream Phase\
+		])
+	~	dimensionless
+	~	The fraction of phase scope available due to the external concurrence \
+		relationship is based on the characteristic relationship of the phase with \
+		it's upstream phases and the fraction of work presumed to be completed \
+		correctly.
+	|
+
+Fraction Avail Int[Phase]=
+	 Internal Process Concurrence[Phase](Fraction Perceived Satisfactory[Phase])
+	~	dimensionless
+	~	The fraction of phase scope available for initial completion due to the \
+		internal concurrence relationship is based on the characteristic \
+		concurrence relationship of the phase and the fraction of work assumed to \
+		be compelted correctly.
+	|
+
+Phase Duration[Phase]= INTEG (
+	Add to Phase Duration[Phase],
+		0)
+	~	Weeks
+	~	The accumulated time that each phase has been active. Use only the  final \
+		simulation value.
+	|
+
+Project Duration= INTEG (
+	Add to Project Duration,
+		0)
+	~	Weeks
+	~	The accumulated time that the project has been active. The time required \
+		to complete the project.  Use only the  final simulation value.
+	|
+
+Cumm Proj Ext Iterations= INTEG (
+	Add Ext Iterations,
+		0)
+	~	work packages
+	~	The  accumulated project  work that requires external changes. This \
+		includes work that must be changed more than once.
+	|
+
+Project Concurrence Stretch=
+	0
+	~	dimensionless
+	~	The fraction of the fraction available that the concurrence relationship \
+		is reduced before 50% available or the fraction not yet available that the \
+		fraction is increased after 50% available. Used in model experiments. See \
+		paper text.
+	|
+
+Disc Int Ch in Int[Phase]=
+	 Quality Assurance rate[Phase]*
+	(Ref prob Disc Change[Phase]-Applied conceal fraction[Phase])*ZIDZ
+	(Int Changes not Discovered[Phase],Completed not Checked[Phase])
+	~	work packages/week
+	~	The average rate of discovery of internal changes is the inspection rate \
+		times the fraction that includes an internal change requirement times the \
+		liklihood that the change is discovered and acknowledged.
+	|
+
+Disc Ext Ch in Ext[Phase]=
+	 Quality Assurance rate[Phase]*
+	(Ref prob Disc Change[Phase]-Applied conceal fraction[Phase])*ZIDZ
+	(Ext Changes not Discovered[Phase],Completed not Checked[Phase])
+	~	work packages/week
+	~	The average rate of discovery and acknowledgement of external changes is \
+		the fraction of the inspectin rate that is acknowledged and has external \
+		change needs.
+	|
+
+Applied conceal fraction[ProdDef]=
+	Conceal fraction ~~|
+Applied conceal fraction[Design]=
+	Conceal fraction ~~|
+Applied conceal fraction[ProtoTest]=
+	Conceal fraction ~~|
+Applied conceal fraction[QualControl]=
+	0 ~~|
+Applied conceal fraction[NotUsed]=
+	0
+	~	dimensionless
+	~	The liklihood that discovered change work is concealed. This value is the \
+		Conceal fraction for all phases except the last one, in which it is \
+		assumed that no changes are concealed (value = 0).
+	|
+
+Conceal fraction=
+	1
+	~	dimensionless
+	~	Fraction of discovered changes that are concealed and approved for release.
+	|
+
+Rec Returned Int Changes[Phase]=Int Changes Discovered[Phase]
+	~	work packages/week
+	~	See Int Changes Discovered.
+	|
+
+Residual Design Fraction = 0.9
+	~	dimensionless
+	~	The fraction of design work that must have been approved or released to \
+		release the last package of design.
+	|
+
+Release Time[Design] = (0*IF THEN ELSE(
+Work Approved[Design]>=Release Package size[Design]*
+(Phase Scope[Design]-Work Released[Design]),Nominal Release Time,1e+10))
++(1*IF THEN ELSE(
+Work Approved[Design]>=MIN(Release Package size[Design]*
+Phase Scope[Design],(Residual Design Fraction*Phase Scope[Design])-Work Released[Design\
+		]),
+Nominal Release Time,1e+10)) ~~|
+Release Time[ProdDef] = IF THEN ELSE(
+Work Approved[ProdDef]>=Release Package size[ProdDef]*
+(Phase Scope[ProdDef]-Work Released[ProdDef]),Nominal Release Time,1e+10) ~~|
+Release Time[ProtoTest] = IF THEN ELSE(
+Work Approved[ProtoTest]>=Release Package size[ProtoTest]*
+(Phase Scope[ProtoTest]-Work Released[ProtoTest]),Nominal Release Time,1e+10) ~~|
+Release Time[QualControl] = IF THEN ELSE(
+Work Approved[QualControl]>=Release Package size[QualControl]*
+(Phase Scope[QualControl]-Work Released[QualControl]),Nominal Release Time,1e+10) ~~|
+Release Time[NotUsed] = IF THEN ELSE(
+Work Approved[NotUsed]>=Release Package size[NotUsed]*
+(Phase Scope[NotUsed]-Work Released[NotUsed]),Nominal Release Time,1e+10)
+	~	Weeks
+	~	The release time is very long when nothing is to be released and the \
+		nominal release time when work is to be released. The trigger is based on \
+		the fraction of unreleased work that has been approved.
+	|
+
+Approve Int Changes[Phase]=
+	 (Quality Assurance rate[Phase]*ZIDZ
+	(Int Changes not Discovered[Phase],Completed not Checked[Phase]))-
+	Disc Int Ch in Int[Phase]
+	~	work packages/week
+	~	The average rate that internal changes are approved is the rate that they \
+		are inspected less the rate that those changes are discovered and \
+		acknowledged.
+	|
+
+Aprove Ext Changes[Phase]=
+	 (Quality Assurance rate[Phase]*ZIDZ
+	(Ext Changes not Discovered[Phase],Completed not Checked[Phase]))-
+	Disc Ext Ch in Ext[Phase]
+	~	work packages/week
+	~	The average rate of approval of external changes  is the external change \
+		inspection rate  less the rate of external change discovery.
+	|
+
+Ext Changes not Discovered[Phase] = INTEG(+Gen Ext Changes[Phase]-
+Aprove Ext Changes[Phase]-Disc Ext Ch in Ext[Phase]+
+Gen Ext Ch during Change[Phase],0)
+	~	work packages
+	~	The backlog of externally generated change requirements in a phase to be \
+		inspected or tested by quality assurance.
+	|
+
+Int Changes Ready to Change[Phase] = INTEG(+Coord Int Changes[Phase]
+-Complete Int Changes[Phase]-Gen Int Changes during Changes[Phase],0)
+	~	work packages
+	~	The  backlog of internal changes in a phase to be changed.
+	|
+
+Rec Returned Ext Changes[Phase] = Ext Changes Discovered[Phase]
+	~	work packages/week
+	~	See Ext Changes Discovered.
+	|
+
+Int Changes not Discovered[Phase] = INTEG(+Gen Int Changes[Phase]+
+Gen Int Changes during Changes[Phase]-
+Approve Int Changes[Phase]-Disc Int Ch in Int[Phase],0)
+	~	work packages
+	~	The  backlog of internal changes in a phase to be inspected or tested by \
+		quality assurance.
+	|
+
+Ext Changes Ready to Change[Phase] = INTEG(+Ext Coord[Phase]-
+Gen Ext Ch during Change[Phase]
+-Complete Ext Changes[Phase],0)
+	~	work packages
+	~	The backlog of externally generated change requirements in a phase to be \
+		changed.
+	|
+
+Scaled Project Scope =(1219/466)*Phase Scope[ProdDef]+
+(1219/504)*Phase Scope[Design]+Phase Scope[ProtoTest]+Phase Scope[QualControl]
+	~	work packages
+	~	Project scope scaled to 1219 work packages.
+	|
+
+Scaled Work Released = ((1219/466)*(34/126)*Work Released[ProdDef])+
+((1219/504)*(51/126)*Work Released[Design])+
+((40/126)*Work Released[ProtoTest])+
+((1/126)*Work Released[QualControl])
+	~	work packages
+	~	Project work released scaled to 1219 work packages
+	|
+
+Project Fraction Released=
+	( (1219/466)*Work Released[ProdDef]+
+	Work Released[Design]+Work Released[ProtoTest]+
+	Work Released[QualControl])/((1219/466)*Phase Scope[ProdDef]+Phase Scope[Design]+
+	Phase Scope[ProtoTest]+Phase Scope[QualControl])
+	~	dimensionless
+	~	Fraction of project scope released, scaled for phase scopes.
+	|
+
+Project Fraction Satisfactory=
+	 SUM(Tasks Perceived Satisfactory[Phase!])/
+	SUM(Phase Scope[Phase!])
+	~	dimensionless
+	~	Project fraction assumed to be completed without change requirements.
+	|
+
+Tasks Avail for IC[Phase] = MAX(0,Total Work Avail for IC[Phase]-
+(Phase Scope[Phase]-Work not Completed[Phase]))
+	~	work packages
+	~	The backlog of work that can be initially completed is the phase's work \
+		that is aviable less the work that has already been initially completed.
+	|
+
+Phase Scope ratio[Upstream Phase,Downstream Phase] = 
+Phase Scope[Upstream Phase]/Phase Scope[Downstream Phase]
+	~	dimensionless
+	~	The scaling factor used in inheriting and returning changes. This is \
+		always upstream phase's scope divided by downstream phase's scope.
+	|
+
+Nominal Release Time = TIME STEP
+	~	Weeks
+	~	The normal or typical time required to release approved work.
+	|
+
+Potential Internal changes[Phase] = INTEG(-Gen Int Changes[Phase],Phase Scope[Phase])
+	~	work packages
+	~	The  work in a phase that has not been initially completed or has been \
+		completed without generating an internal change requirement.
+	|
+
+Work not Completed[Phase] = INTEG(-Initial Completion rate[Phase],Phase Scope[Phase])
+	~	work packages
+	~	The work in a phase that has not been initially completed.
+	|
+
+Potential External Changes[Phase] = INTEG(-Gen Ext Changes[Phase],Phase Scope[Phase])
+	~	work packages
+	~	The  work in a phase that has not been initially completed or has been \
+		completed without generating a external change requirement.
+	|
+
+prob Generate Int Change[ProdDef] = 0.65 ~~|
+prob Generate Int Change[Design] = 0.2 ~~|
+prob Generate Int Change[ProtoTest] = 0 ~~|
+prob Generate Int Change[QualControl] = 0 ~~|
+prob Generate Int Change[NotUsed] = 0
+	~	dimensionless
+	~	The characteristic liklihood of any phase that a change will be generated \
+		during initial completion or changes.
+	|
+
+Activity : Complete, Inspect, Change, Coord
+	~	
+	~		|
+
+Change Release Fraction[Phase] = Ext Change Released Fration[Phase]+
+Int Change Release Fraction[Phase]-
+(Ext Change Released Fration[Phase]*Int Change Release Fraction[Phase])
+	~	dimensionless
+	~	The liklihood that a work package contains either an internal or external \
+		change is the sum of the liklihoods for either less their overlap.
+	|
+
+Complete Ext Changes[Phase]=
+	ZIDZ (Ext Changes Ready to Change[Phase],Work to be Changed[Phase]
+	)*Change Tasks rate[Phase]*(1-prob Generate Int Change[Phase])
+	~	work packages/week
+	~	The average rate at which external changes are corrected without \
+		generating another error is the work change rate less the rate at which \
+		additional errors are generated.
+	|
+
+Complete Int Changes[Phase]=
+	ZIDZ (Int Changes Ready to Change[Phase],Work to be Changed[Phase])
+	*Change Tasks rate[Phase]*(1-prob Generate Int Change[Phase])
+	~	work packages/week
+	~	The average rate at which internal changes are changed without generating \
+		another change requirement is the change rate times the fraction needing \
+		internal changes less the rate that new change requirements are generated.
+	|
+
+Coord Int Changes[Phase]=
+	ZIDZ (Int Changes to Coord[Phase],Work to be Coord[Phase])*Coordination
+	[Phase]
+	~	work packages/week
+	~	The average rate at which internal changes are coordinated is the \
+		coordination rate times the fraction that need coordination.
+	|
+
+Downstream Phase <-> Upstream Phase
+	~	
+	~		|
+
+Ext Change Released Fration[Phase]=
+	ZIDZ(Ext Changes Released[Phase],Work Released[Phase])
+	~	dimensionless
+	~	Fraction of work released to downstream phases that contains an external \
+		change requirement.
+	|
+
+Ext Changes Approved[Phase] = INTEG(Aprove Ext Changes[Phase]-Rel Ext Changes[Phase]
+,0)
+	~	work packages
+	~	The externally generated change requirements in a phase that have been \
+		approved.
+	|
+
+Ext Changes Released[Phase] = INTEG(+Rel Ext Changes[Phase]-Rec Returned Ext Changes[\
+		Phase]
+,0)
+	~	work packages
+	~	The externally generated change requirements in a phase that have been \
+		released to downstream phases or customers.
+	|
+
+Ext Changes to be Coord[Phase] = INTEG(Disc Ext Ch in Ext[Phase]+Rec Returned Ext Changes\
+		[Phase]-Ext Coord
+[Phase],0)
+	~	work packages
+	~	The backlog of externally generated change requirements in a phase to be \
+		coordinated.
+	|
+
+Ext Coord[Phase]=
+	ZIDZ(Ext Changes to be Coord[Phase],Work to be Coord[Phase])* Coordination[
+	Phase]
+	~	work packages/week
+	~	The average rate at which external changes are coordinated is the fraction \
+		of the work coordination rate that requires coordination.
+	|
+
+External Process Concurrence[ProdDef,ProdDef](
+	[(0,0)-(1,1)],(0,1),(1,1)) ~~|
+External Process Concurrence[ProdDef,Design](
+	[(0,0)-(1,1)],(0,0.1),(0.05,0.1),(0.1,0.11),(0.15,0.12),(0.25,0.15),(0.35,0.2),(0.4,\
+		0.4),(0.45,0.75),(0.5,0.85),(0.67,0.97),(0.75,1),(1,1)) ~~|
+External Process Concurrence[ProdDef,ProtoTest](
+	[(0,0)-(1,1)],(0,0),(0.85,0),(0.9,1),(0.95,1),(1,1)) ~~|
+External Process Concurrence[ProdDef,QualControl](
+	[(0,0)-(1,1)],(0,1),(1,1)) ~~|
+External Process Concurrence[ProdDef,NotUsed](
+	[(0,0)-(1,1)],(0,1),(1,1)) ~~|
+External Process Concurrence[Design,ProdDef]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[Design,Design]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[Design,ProtoTest](
+	[(0,0)-(1,1)],(0,0),(0.1,0.35),(0.2,0.5),(0.3,0.6),(0.4,0.7),(0.5,0.78),(0.6,0.85),(\
+		0.7,0.9),(0.8,0.95),(0.9,0.98),(0.9,0.98),(1,1)) ~~|
+External Process Concurrence[Design,QualControl]       ([(0,0)-(1,1)],
+(0,0),(0.8,0),(0.85,1),(1,1) ) ~~|
+External Process Concurrence[Design,NotUsed]   ([(0,0)-(1,1)],(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[ProtoTest,ProdDef]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[ProtoTest,Design]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[ProtoTest,ProtoTest]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[ProtoTest,QualControl]                 (
+[(0,0)-(1,1)],(0,0),(0.39,0),(0.4,0),(0.79,0),(0.8,1),(0.98,1)
+,(0.99,1),(1,1) ) ~~|
+External Process Concurrence[ProtoTest,NotUsed]    ([(0,0)-(1,1)],(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[QualControl,ProdDef]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[QualControl,Design]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[QualControl,ProtoTest]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[QualControl,QualControl]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[QualControl,NotUsed]   ([(0,0)-(1,1)],(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[NotUsed,ProdDef]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[NotUsed,Design]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[NotUsed,ProtoTest]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[NotUsed,QualControl]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) ) ~~|
+External Process Concurrence[NotUsed,NotUsed]  ([(0,0)-(1,1)],
+(0,1)
+,(1,1) )
+	~	dimensionless
+	~	The characteristic concurrence relationship between each pair of phases \
+		relates the fraction of work released to the phase by its upstream phase \
+		and the fraction of the downstream phase that can be initially completed. .
+	|
+
+Phase Fraction Released[Phase] = Work Released[Phase]/Phase Scope[Phase]
+	~	dimensionless
+	~	The fraction of work that has been release by each phase.
+	|
+
+Gen Ext Ch during Change[Phase]=
+	ZIDZ (Ext Changes Ready to Change[Phase],Work to be Changed[Phase])*Change Tasks rate\
+		[Phase]*prob Generate Int Change[Phase]
+	~	work packages/week
+	~	The average rate of generating an external change while changing work due \
+		to an external change is the fraction of the work change rate that has \
+		external changes (100%) times the liklihood of generating another error \
+		during changes.  This liklihood is the probability of generating an \
+		internal change. Notice that internally generated changes made while \
+		correcting external errors are considered external changes.
+	|
+
+Gen Ext Changes[Phase] = Initial Completion rate[Phase]*
+(prob Gen Ext Change[Phase]-(prob Gen Ext Change
+[Phase]*prob Generate Int Change[Phase]))
+	~	work packages/week
+	~	The average rate of generating external changes is the fraction of work \
+		initial completion that is corrupted by upstream phase's releasing change \
+		requirements. That fraction is the probablility of generating an external \
+		change less the overlap with internal change generation. This formulatin \
+		puts all work requiring change requirements from both internal and \
+		external causes in internal coflow, not in this coflow structure.
+	|
+
+Gen Int Changes[Phase] = Initial Completion rate[Phase]*prob Generate Int Change[Phase\
+		]
+	~	work packages/week
+	~	The average rate of generating internal changes is the fraction of work \
+		initial completion that is corrupted by the phase's own processes. This \
+		formulatin puts all work requiring change requirements from both internal \
+		and external causes in this coflow.
+	|
+
+Gen Int Changes during Changes[Phase]=
+	ZIDZ (Int Changes Ready to Change[Phase],Work to be Changed[Phase
+	])*Change Tasks rate[Phase]*prob Generate Int Change[Phase]
+	~	work packages/week
+	~	The average rate at which internal changes are changed but generate \
+		another change requirement is the change rate times the fraction needing \
+		internal changes times the liklihood of generating an internal change.
+	|
+
+Int Change Release Fraction[Phase]=
+	ZIDZ( Int Changes Released[Phase],Work Released[Phase])
+	~	dimensionless
+	~	The liklihood that a released work package contains an internal change \
+		requirement.
+	|
+
+Int Changes Approved[Phase] = INTEG(Approve Int Changes[Phase]-Rel Int Changes[Phase]
+,0)
+	~	work packages
+	~	The  internal changes in a phase that have been approved.
+	|
+
+Int Changes Released[Phase] = INTEG(+Rel Int Changes[Phase]-Rec Returned Int Changes[\
+		Phase]
+,0)
+	~	work packages
+	~	The  internal changes in a phase that have been released to downstream \
+		phases or customers.
+	|
+
+Int Changes to Coord[Phase] = INTEG(+Disc Int Ch in Int[Phase]+
+Rec Returned Int Changes[Phase]
+-Coord Int Changes[Phase],0)
+	~	work packages
+	~	The  backlog of internal changes in a phase that have been released, \
+		discovered downstream, returned, and need to be coordinated.
+	|
+
+Phase : ProdDef, Design, ProtoTest, QualControl, NotUsed
+	~	
+	~		|
+
+Phase Dependencies[ProdDef,ProdDef] =  0 ~~|
+Phase Dependencies [ProdDef,Design] =  1 ~~|
+Phase Dependencies [ProdDef,ProtoTest] =  1 ~~|
+Phase Dependencies [ProdDef,QualControl] =  0 ~~|
+Phase Dependencies [ProdDef,NotUsed] =  0 ~~|
+Phase Dependencies[Design,ProdDef] =  0 ~~|
+Phase Dependencies[Design,Design] =  0 ~~|
+Phase Dependencies[Design,ProtoTest] =  1 ~~|
+Phase Dependencies[Design,QualControl] =  1 ~~|
+Phase Dependencies [Design,NotUsed] =  0 ~~|
+Phase Dependencies [ProtoTest,ProdDef] =  0 ~~|
+Phase Dependencies [ProtoTest,Design] =  0 ~~|
+Phase Dependencies [ProtoTest,ProtoTest] =  0 ~~|
+Phase Dependencies [ProtoTest,QualControl] =  1 ~~|
+Phase Dependencies [ProtoTest,NotUsed] =  0 ~~|
+Phase Dependencies [QualControl,ProdDef] =  0 ~~|
+Phase Dependencies [QualControl,Design] =  0 ~~|
+Phase Dependencies [QualControl,ProtoTest] =  0 ~~|
+Phase Dependencies [QualControl,QualControl] =  0 ~~|
+Phase Dependencies [QualControl,NotUsed] =  0 ~~|
+Phase Dependencies[NotUsed,ProdDef] =  0 ~~|
+Phase Dependencies [NotUsed,Design] =  0 ~~|
+Phase Dependencies [NotUsed,ProtoTest] =  0 ~~|
+Phase Dependencies [NotUsed,QualControl] =  0 ~~|
+Phase Dependencies [NotUsed,NotUsed] =  0
+	~	dimensionless
+	~	This two dimensional matrix defines the project's network of phases. 1 means \
+		Downstream Phase (2nd subscipt) is dependent on Upstream Phase (1st)
+		0 means Downstream Phase is not dependent on Upstream Phase
+		EXCEPTION:  Phases are called not dependent on themselves, although they \
+		arctually are.
+	|
+
+prob Gen Ext Change[Phase] =SUM(Phase Dependencies[Upstream Phase!,Phase]*
+Change Release Fraction[Upstream Phase!])
+	~	dimensionless
+	~	The liklihood of generating an external change is the sum of the  \
+		liklihoods due to a phase's upstream phases.
+	|
+
+Rel Ext Changes[Phase]=
+	 ZIDZ(Ext Changes Approved[Phase],Work Approved[Phase])*Release Work rate[Phase]
+	~	work packages/week
+	~	The average rate of release of external changes is the release rate times \
+		the fraction that contains external changes.
+	|
+
+Rel Int Changes[Phase]=
+	ZIDZ (Int Changes Approved[Phase],Work Approved[Phase])*Release Work rate[Phase]
+	~	work packages/week
+	~	The average rate of release of internal changes is the work release rate \
+		times the fraction that have internal changes.
+	|
+
+Release Package size[ProdDef] = 0 ~~|
+Release Package size[Design] = 0.5 ~~|
+Release Package size[ProtoTest] = 0 ~~|
+Release Package size[QualControl] = 0 ~~|
+Release Package size[NotUsed] = 0
+	~	dimensionless
+	~	The fraction of unreleased work that must be approved prior to its \
+		release. Zero simulated continuous releases. Large fractions simulate more \
+		discrete releases.
+	|
+
+Upstream Phase : ProdDef,Design,ProtoTest,QualControl,NotUsed
+	~	
+	~		|
+
+********************************************************
+	.DevTasks
+********************************************************~
+	|
+
+Receive Released Work to Coord[Phase]=
+	MIN(Work Released[Phase]/Min receive released time,Rec Returned Int Changes[Phase]+
+	Rec Returned Ext Changes[Phase])
+	~	work packages/week
+	~	The average rate at which work is returned after having been discovered by \
+		downstream phases to require changes is the sum of the external and \
+		internal changes discovered downstream. The Max function prevents the \
+		discovery of more work than has been released when a sharp increase in \
+		downstream inspection increases the discovery rates.
+	|
+
+Total Fraction Avail for IC[Phase]=
+	MIN(Adjusted Fraction Avail Internal[Phase],VMIN(Adjusted Fraction Avail External[Upstream Phase
+	!,Phase]))
+	~	dimensionless
+	~	The fraction available for initial completion is the minimum of the \
+		fraction due to internal concurrence and external concurrence.
+	|
+
+Total Work Avail for IC[Phase]=
+	 Phase Scope[Phase]*Total Fraction Avail for IC[Phase]
+	~	work packages
+	~	The phase's work that can be initially completed (including wirk that has \
+		already been initially completed) is the available fraction times the \
+		phase scope.
+	|
+
+Disc Changes[Phase]=
+	 Quality Assurance rate[Phase]*
+	(MAX(0,prob Disc Change[Phase]-Applied conceal fraction[Phase]))*
+	((prob Gen Ext Change[Phase]+prob Generate Int Change[Phase])-
+	(prob Gen Ext Change[Phase]*prob Generate Int Change[Phase]))
+	~	work packages/week
+	~	The average rate at which change requirements are discovered is the \
+		fraction of the inspection rate that both requires change and that change \
+		is discovered. The need fraction is the sum of the fractions for internal \
+		and external changes minus their overlap to not count work that requires \
+		change due to both internal and external causes more than once.  The  Max \
+		function is required  to prevent negative probabilities of change \
+		discovery and acknowledgement when the applied concealment fraction is \
+		very large.
+	|
+
+Release Work rate[Phase] =Work Approved[Phase]/Release Time[Phase]
+	~	work packages/week
+	~	The average rate that work is released is the amount of work released \
+		divided by the time needed to release that work.
+	|
+
+Approve Work[Phase] = (Quality Assurance rate[Phase]-
+Disc Changes[Phase])
+	~	work packages/week
+	~	The average rate of work approval is the work inspected but not discovered \
+		and acknowledged to have change requirements.
+	|
+
+Change Tasks rate[Phase] =Work to be Changed[Phase]/
+Change Process duration[Phase]
+	~	work packages/week
+	~	The average rate at which work is changed is the backlog of work to be \
+		changed divided by the average processing time for changing work.
+	|
+
+Completed not Checked[ProdDef] = INTEG(+Initial Completion rate[ProdDef]
+-Approve Work[ProdDef]+Change Tasks rate[ProdDef]-Disc Changes[ProdDef],0) ~~|
+Completed not Checked[Design] = INTEG(+Initial Completion rate[Design]
+-Approve Work[Design]+Change Tasks rate[Design]-Disc Changes[Design],0) ~~|
+Completed not Checked[ProtoTest] =INTEG(+Initial Completion rate[ProtoTest]
+-Approve Work[ProtoTest]+Change Tasks rate[ProtoTest]-Disc Changes[ProtoTest],0) ~~|
+Completed not Checked[QualControl] = INTEG(+Initial Completion rate[QualControl]
+-Approve Work[QualControl]+Change Tasks rate[QualControl]-
+Disc Changes[QualControl],0) ~~|
+Completed not Checked[NotUsed] =INTEG(+Initial Completion rate[NotUsed]
+-Approve Work[NotUsed]+Change Tasks rate[NotUsed]-Disc Changes[NotUsed],0)
+	~	work packages
+	~	The backlog of work in a phase to be inspected or tested by quality \
+		assurance.
+	|
+
+Coordination[Phase] = Work to be Coord[Phase]/Coord process duration[Phase]
+	~	work packages/week
+	~	The average rate at which work is coordinated is the backlog of work to be \
+		coordinated divided by the average processing time for coordination.
+	|
+
+Initial Completion rate[Phase] = Tasks Avail for IC[Phase]/IC process duration[Phase]
+	~	work packages/week
+	~	The average rate at which work is initially completed is the available \
+		backlog of work divided by the average processing time for initial \
+		completion.
+	|
+
+Work to be Changed[ProdDef] = INTEG(-Change Tasks rate[ProdDef]+
+Coordination[ProdDef],0) ~~|
+Work to be Changed[Design] = INTEG(-Change Tasks rate[Design]+
+Coordination[Design],0) ~~|
+Work to be Changed[ProtoTest] = INTEG(-Change Tasks rate[ProtoTest]+
+Coordination[ProtoTest],0) ~~|
+Work to be Changed[QualControl] = INTEG(-Change Tasks rate[QualControl]+
+Coordination[QualControl],0) ~~|
+Work to be Changed[NotUsed] = INTEG(-Change Tasks rate[NotUsed]+
+Coordination[NotUsed],0)
+	~	work packages
+	~	The backlog of work in a phase to be changed.
+	|
+
+Quality Assurance rate[Phase] = Completed not Checked[Phase]/
+QA process duration[Phase]
+	~	work packages/week
+	~	The average rate at which work is checked is the backlog of work to be \
+		checked divided by the average processing time for inspection.
+	|
+
+Change Process duration[ProdDef] = 2 ~~|
+Change Process duration[Design] = 1.2 ~~|
+Change Process duration[ProtoTest] = 1 ~~|
+Change Process duration[QualControl]=
+	 0.75 ~~|
+Change Process duration[NotUsed] = 1
+	~	Weeks
+	~	Average time required to change a work package.
+	|
+
+Fraction Perceived Satisfactory[Phase]=
+	ZIDZ( Tasks Perceived Satisfactory[Phase],Phase Scope[Phase])
+	~	dimensionless
+	~	Phase scope fraction assumed to be completed without change requirements.
+	|
+
+IC process duration[Design] = 9 ~~|
+IC process duration[ProdDef] = 4.5 ~~|
+IC process duration[ProtoTest] = 5 ~~|
+IC process duration[QualControl] = 4 ~~|
+IC process duration[NotUsed] = 1
+	~	Weeks
+	~	Average time required to initially complete a work package.
+	|
+
+Internal Process Concurrence[ProdDef](
+	[(0,0)-(1,1)],(0,0.2),(0.03,0.2),(0.05,0.25),(0.06,0.3),(0.1,0.85),(0.131443,0.9),(0.15\
+		,0.92),(0.2,0.95),(0.3,0.97),(0.399485,0.986014),(0.5,1),(0.6,1),(0.8,1),(1,1)) ~~|
+Internal Process Concurrence[Design](
+	[(0,0)-(1,1)],(0,0.2),(0.1,0.35),(0.125,0.4),(0.15,0.5),(0.18,0.75),(0.22,0.81),(0.3\
+		,0.85),(0.4,0.89),(0.5,0.93),(0.6,0.97),(0.7,1),(0.9,1),(1,1)) ~~|
+Internal Process Concurrence[ProtoTest](
+	[(0,0)-(1,1)],(0,0.2),(0.1,0.3),(0.2,0.5),(0.3,0.6),(0.4,0.7),(0.5,0.8),(0.6,0.85),(\
+		0.7,0.9),(0.8,0.95),(0.9,1),(1,1)) ~~|
+Internal Process Concurrence[QualControl](
+	[(0,0)-(1,1)],(0,1),(1,1)) ~~|
+Internal Process Concurrence[NotUsed]       ([(0,0)-(1,1)],(0,1)
+,(1,1) )
+	~	dimensionless
+	~	The characteristic concurrence relationship of each phase relates the \
+		fraction of work that is assumed to be completed correctly and the \
+		fraction of the phase's work that can be initially completed.
+	|
+
+Phase Scope[ProdDef] = 466 ~~|
+Phase Scope[Design] = 504 ~~|
+Phase Scope[ProtoTest] = 1219 ~~|
+Phase Scope[QualControl] = 1219 ~~|
+Phase Scope[NotUsed] = 1
+	~	work packages
+	~	The number of work packages in each phase.
+	|
+
+Ref prob Disc Change[ProdDef] = 0.8 ~~|
+Ref prob Disc Change[Design] = 0.95 ~~|
+Ref prob Disc Change[ProtoTest] = 0.95 ~~|
+Ref prob Disc Change[QualControl] = 1 ~~|
+Ref prob Disc Change[NotUsed] = 0
+	~	dimensionless
+	~	Reference liklihood that a change is discovered...a measure of quality \
+		assurance effectiveness.
+	|
+
+QA process duration[ProdDef] = 1 ~~|
+QA process duration[Design] = 1 ~~|
+QA process duration[ProtoTest] = 1 ~~|
+QA process duration[QualControl]=
+	 0.5 ~~|
+QA process duration[NotUsed] = 1
+	~	Weeks
+	~	Average time required to inspect a work package.
+	|
+
+Coord process duration[Phase]=
+	1.75
+	~	Weeks
+	~	Average time required to coordinate a work package.
+	|
+
+Work Approved[Phase] = INTEG(Approve Work[Phase]-Release Work rate[Phase],0)
+	~	work packages
+	~	The work in a phase that has been accepted and either does not require \
+		changes or those changes have been missed or purposefully released through \
+		concealment.
+	|
+
+Tasks Perceived Satisfactory[Phase] = Completed not Checked[Phase]+
+Work Approved[Phase]+Work Released[Phase]
+	~	work packages
+	~	The work assumed to be completed correctly and can be used as the basis \
+		for additional initial completion work.
+	|
+
+Work Released[ProdDef] = INTEG(-Receive Released Work to Coord[ProdDef]+Release Work rate\
+		[ProdDef
+]
+,0) ~~|
+Work Released[Design] = INTEG(-Receive Released Work to Coord[Design]+Release Work rate\
+		[Design]
+,0) ~~|
+Work Released[ProtoTest] = INTEG(-Receive Released Work to Coord[ProtoTest]+Release Work rate\
+		[ProtoTest
+]
+,0) ~~|
+Work Released[QualControl] =INTEG(-Receive Released Work to Coord[QualControl]+Release Work rate\
+		[
+QualControl]
+,0) ~~|
+Work Released[NotUsed] = INTEG(-Receive Released Work to Coord[NotUsed]+Release Work rate\
+		[NotUsed
+]
+,25)
+	~	work packages
+	~	The  work in a phase that has been released to downstream phases or \
+		customers.
+	|
+
+Work to be Coord[Phase] = INTEG(Disc Changes[Phase]-Coordination[Phase]
++Receive Released Work to Coord[Phase],0)
+	~	work packages
+	~	The backlog of work in a phase to be coordinated due to released work \
+		requiring changes having been discovered in downstream phases.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 150
+	~	Weeks
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Weeks
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP 
+	~	Weeks
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.25
+	~	Weeks
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Work Flows
+$192-192-192,0,Helvetica|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|72,72,75,0
+10,1,Completed not Checked,584,492,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,2,Work to be Changed,347,332,46,29,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,3,Work to be Coord,604,201,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,4,Work Approved,776,488,35,21,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,5,Work Released,994,492,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,6,Quality Assurance rate,759,359,56,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+11,7,376,676,491,6,8,37,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,8,Approve Work,676,509,52,10,40,3,0,0,0,0,0,0,0,0,0,0,0,0
+11,9,2994,610,335,8,6,34,3,0,0,2,0,0,0,0,0,0,0,0,0
+10,10,Disc Changes,559,335,40,7,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,11,970,886,488,6,8,37,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,12,Release Work rate,886,514,53,18,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,13,48,286,583,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,14,QA process duration,822,303,44,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+11,15,3082,411,495,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,16,Change Tasks rate,411,511,52,7,32,3,0,0,0,0,0,0,0,0,0,0,0,0
+11,17,2686,426,198,6,8,37,3,0,0,3,0,0,0,0,0,0,0,0,0
+10,18,Coordination,426,182,36,7,32,3,0,0,0,0,0,0,0,0,0,0,0,0
+11,19,2752,819,201,6,8,34,3,0,0,3,0,0,0,0,0,0,0,0,0
+10,20,Receive Released Work to Coord,819,185,91,7,32,3,0,0,0,0,0,0,0,0,0,0,0,0
+11,21,926,463,581,6,8,37,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,22,Initial Completion rate,463,596,60,7,32,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,23,Change Process duration,209,467,70,7,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,24,IC process duration,575,649,54,7,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,25,Coord process duration,416,100,55,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,26,Ref prob Disc Change,196,268,61,7,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,27,Nominal Release Time,1129,343,52,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,28,Tasks Perceived Satisfactory,807,560,79,7,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,29,Phase Scope,1081,643,38,7,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,30,Fraction Perceived Satisfactory,967,672,44,27,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,31,Internal Process Concurrence,818,713,59,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,32,Total Work Avail for IC,596,806,61,7,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,33,TIME STEP,1168,291,41,7,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,34,Total Fraction Avail for IC,763,893,69,7,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,35,Work not Completed,274,584,50,22,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,36,Release Package size,1167,446,50,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,37,Release Time,922,409,39,7,0,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,38,Phase Scope,929,352,59,10,8,2,0,3,0,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,39,Phase Fraction Released,1143,597,70,7,0,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,40,External Process Concurrence,1308,845,62,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,41,Fraction Avail Ext,1204,760,48,7,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,42,Fraction Avail Int,1027,774,47,7,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,43,Tasks Avail for IC,439,712,48,7,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,44,Residual Design Fraction,1167,396,61,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,45,prob Generate Int Change,712,252,58,18,8,2,0,3,0,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,46,Phase Scope,305,819,45,7,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,47,prob Gen Ext Change,498,423,50,25,8,2,0,3,0,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,48,Phase Scope ratio,1095,700,54,23,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,49,Rec Returned Int Changes,1067,147,65,18,8,2,0,3,0,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,50,Rec Returned Ext Changes,705,134,50,25,8,2,0,3,0,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+12,51,0,1741,921,282,404,3,4,1,58,3,3,0,0,-1--1--1,0-0-0,Helvetica|14|B|0-0-0,0,0,0,0,0,0
+Labor Sector
+12,52,0,658,1654,528,230,3,4,1,58,3,3,0,0,-1--1--1,0-0-0,Helvetica|14|B|0-0-0,0,0,0,0,0,0
+External Changes Sector
+12,53,0,787,1143,553,223,3,4,1,58,3,3,0,0,-1--1--1,0-0-0,Helvetica|14|B|0-0-0,0,0,0,0,0,0
+Internal Changes Sector
+12,54,0,716,452,570,387,3,4,1,58,3,3,0,0,-1--1--1,0-0-0,Helvetica|14|B|0-0-0,0,0,0,0,0,0
+Development Process Sector
+1,55,7,4,4,0,0,22,0,0,0,-1--1--1,,1|(711,491)|
+1,56,7,1,100,0,0,22,0,0,0,-1--1--1,,1|(647,491)|
+1,57,15,2,36,0,0,22,0,0,0,-1--1--1,,1|(347,495)|
+1,58,15,1,68,0,0,22,0,0,0,-1--1--1,,1|(480,495)|
+1,59,9,3,4,0,0,22,0,0,0,-1--1--1,,1|(610,275)|
+1,60,9,1,100,0,0,22,0,0,0,-1--1--1,,1|(610,406)|
+1,61,17,2,4,0,0,22,0,0,0,-1--1--1,,1|(347,198)|
+1,62,17,3,100,0,0,22,0,0,0,-1--1--1,,1|(498,198)|
+1,63,19,5,36,0,0,22,0,0,0,-1--1--1,,1|(994,201)|
+1,64,19,3,68,0,0,22,0,0,0,-1--1--1,,1|(728,201)|
+1,65,11,5,4,0,0,22,0,0,0,-1--1--1,,1|(923,488)|
+1,66,11,4,100,0,0,22,0,0,0,-1--1--1,,1|(845,488)|
+1,67,21,1,4,0,0,22,0,0,0,-1--1--1,,1|(584,581)|
+1,68,21,13,100,0,0,22,0,0,0,-1--1--1,,1|(376,581)|
+1,69,4,11,1,0,0,0,0,0,0,-1--1--1,,1|(837,465)|
+1,70,6,7,1,0,0,0,0,0,0,-1--1--1,,1|(745,437)|
+1,71,9,7,0,0,0,0,0,0,0,-1--1--1,,1|(639,406)|
+1,72,1,28,1,0,0,0,0,0,0,-1--1--1,,1|(668,556)|
+1,73,4,28,1,0,0,0,0,0,0,-1--1--1,,1|(749,534)|
+1,74,5,28,1,0,0,0,0,0,0,-1--1--1,,1|(918,552)|
+1,75,28,30,1,0,0,0,0,0,0,-1--1--1,,1|(911,612)|
+1,76,29,30,1,0,0,0,0,0,0,-1--1--1,,1|(1033,662)|
+1,77,34,32,1,0,0,0,0,0,0,-1--1--1,,1|(672,872)|
+1,78,49,19,1,0,0,0,0,0,0,-1--1--1,,1|(932,146)|
+1,79,50,19,1,0,0,0,0,0,0,-1--1--1,,1|(785,160)|
+1,80,38,37,0,0,0,0,0,0,0,-1--1--1,,1|(926,375)|
+1,81,4,37,1,0,0,0,0,0,0,-1--1--1,,1|(832,426)|
+1,82,37,11,0,0,0,0,0,0,0,-1--1--1,,1|(906,441)|
+1,83,29,39,1,0,0,0,0,0,0,-1--1--1,,1|(1111,617)|
+1,84,5,39,1,0,0,0,0,0,0,-1--1--1,,1|(1081,533)|
+1,85,30,42,1,0,0,0,0,0,0,-1--1--1,,1|(1032,695)|
+1,86,31,42,1,0,0,0,0,0,0,-1--1--1,,1|(937,719)|
+1,87,39,41,2,0,0,0,0,0,0,-1--1--1,,1|(1215,698)|
+1,88,40,41,1,0,0,0,0,0,0,-1--1--1,,1|(1289,793)|
+1,89,22,35,1,0,0,0,0,0,0,-1--1--1,,1|(360,616)|
+1,90,36,37,0,0,0,0,0,0,0,-1--1--1,,1|(1045,427)|
+1,91,5,37,0,0,0,0,0,0,0,-1--1--1,,1|(957,449)|
+1,92,27,37,0,0,0,0,0,0,0,-1--1--1,,1|(1016,378)|
+1,93,33,27,1,0,0,0,0,0,0,-1--1--1,,1|(1115,305)|
+1,94,32,43,1,0,0,0,0,0,0,-1--1--1,,1|(492,782)|
+1,95,46,43,1,0,0,0,0,0,0,-1--1--1,,1|(381,780)|
+1,96,35,43,1,0,0,0,0,0,0,-1--1--1,,1|(320,669)|
+1,97,29,48,0,0,0,0,0,0,0,-1--1--1,,1|(1083,656)|
+1,98,1,6,1,0,0,0,0,0,0,-1--1--1,,1|(679,442)|
+1,99,14,6,1,0,0,0,0,0,0,-1--1--1,,1|(769,334)|
+1,100,2,15,1,0,0,0,0,0,0,-1--1--1,,1|(408,411)|
+1,101,23,15,1,0,0,0,0,0,0,-1--1--1,,1|(348,448)|
+1,102,3,18,1,0,0,0,0,0,0,-1--1--1,,1|(542,168)|
+1,103,25,18,0,0,0,0,0,0,0,-1--1--1,,1|(420,139)|
+1,104,24,22,1,0,0,0,0,0,0,-1--1--1,,1|(511,630)|
+1,105,43,22,1,0,0,0,0,0,0,-1--1--1,,1|(424,653)|
+1,106,44,37,0,0,0,0,0,0,0,-1--1--1,,1|(1040,402)|
+1,107,6,9,1,0,0,0,0,0,0,-1--1--1,,1|(687,322)|
+10,108,prob Disc Change,237,196,40,24,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,109,26,108,1,0,0,0,0,64,0,-1--1--1,,1|(223,225)|
+1,110,108,10,1,0,0,0,0,64,0,-1--1--1,,1|(388,269)|
+10,111,Applied conceal fraction,528,265,66,7,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,112,Conceal fraction,441,229,46,7,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,113,112,111,0,0,0,0,0,64,0,-1--1--1,,1|(477,244)|
+1,114,111,10,0,0,0,0,0,64,0,-1--1--1,,1|(540,293)|
+1,115,47,10,1,0,0,0,0,64,0,-1--1--1,,1|(504,374)|
+1,116,45,10,1,0,0,0,0,64,0,-1--1--1,,1|(611,287)|
+10,117,Internal Concurrence Stretch,988,983,75,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,118,External Concurrence Stretch,1251,974,79,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,119,Adjusted Fraction Avail External,1102,906,65,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,120,Adjusted Fraction Avail Internal,931,843,65,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,121,119,34,1,0,0,0,0,64,0,-1--1--1,,1|(941,934)|
+1,122,42,120,0,0,0,0,0,64,0,-1--1--1,,1|(992,798)|
+1,123,41,119,1,0,0,0,0,64,0,-1--1--1,,1|(1185,853)|
+1,124,118,119,0,0,0,0,0,64,0,-1--1--1,,1|(1182,942)|
+1,125,117,120,0,0,0,0,0,64,0,-1--1--1,,1|(962,919)|
+1,126,46,32,0,0,0,0,0,64,0,-1--1--1,,1|(435,812)|
+10,127,Project Concurrence Stretch,1147,1076,75,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,128,127,117,0,0,0,0,0,64,0,-1--1--1,,1|(1073,1032)|
+1,129,127,118,0,0,0,0,0,64,0,-1--1--1,,1|(1193,1029)|
+1,130,120,34,0,0,0,0,0,64,0,-1--1--1,,1|(835,871)|
+10,131,Project Concurrence Stretch,163,109,85,29,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,132,131,108,0,0,0,0,0,64,0,-1--1--1,,1|(196,149)|
+1,133,30,120,0,0,0,0,0,64,0,-1--1--1,,1|(949,755)|
+10,134,Early Adjustment Int,824,782,56,7,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,135,30,134,0,0,0,0,0,64,0,-1--1--1,,1|(888,732)|
+1,136,42,134,0,0,0,0,0,64,0,-1--1--1,,1|(936,776)|
+1,137,117,134,0,0,0,0,0,64,0,-1--1--1,,1|(905,882)|
+1,138,134,120,0,0,0,0,0,64,0,-1--1--1,,1|(861,803)|
+10,139,Late adjustment,809,1025,45,7,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,140,117,139,0,0,0,0,0,64,0,-1--1--1,,1|(882,1007)|
+1,141,42,139,0,0,0,0,0,64,0,-1--1--1,,1|(922,894)|
+1,142,139,120,0,0,0,0,0,64,0,-1--1--1,,1|(861,945)|
+10,143,Min receive released time,935,233,50,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,144,143,20,0,0,0,0,0,64,0,-1--1--1,,1|(869,206)|
+1,145,5,19,1,0,0,0,0,64,0,-1--1--1,,1|(869,246)|
+1,146,29,35,0,0,0,0,0,64,1,-1--1--1,,1|(690,614)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*External Changes
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|72,72,75,0
+10,1,Ext Changes Discovered,1229,164,62,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,2,prob Gen Ext Change,688,565,54,8,0,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,3,Coordination,458,87,41,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,4,Work to be Coord,294,109,52,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,5,Phase Dependencies,873,566,58,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,6,Ext Change Released Fration,1234,444,72,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,7,Work Released,1308,303,45,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,8,Change Release Fraction,706,636,69,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,9,Potential External Changes,404,560,58,34,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,10,Phase Scope,381,633,39,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,11,Phase Scope ratio,1307,113,52,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,12,Ext Changes not Discovered,574,393,53,32,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,13,Ext Changes to be Coord,573,139,53,34,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,14,Ext Changes Ready to Change,324,293,50,31,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,15,Ext Changes Approved,841,388,57,38,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,16,Ext Changes Released,1115,388,47,30,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+11,17,310,580,271,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,18,Disc Ext Ch in Ext,646,271,48,8,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,19,1652,692,389,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,20,Aprove Ext Changes,692,416,37,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,21,1982,955,135,6,8,34,3,0,0,3,0,0,0,0,0,0,0,0,0
+10,22,Rec Returned Ext Changes,955,116,67,8,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,23,48,405,563,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,24,Work to be Changed,176,464,43,19,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,25,Change Tasks rate,251,370,50,19,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,26,prob Generate Int Change,133,516,62,19,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+12,27,48,114,291,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,28,48,201,294,6,8,34,3,0,0,3,0,0,0,0,0,0,0,0,0
+10,29,Complete Ext Changes,201,267,44,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,30,2224,988,384,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,31,Rel Ext Changes,988,400,43,8,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,32,2796,394,399,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,33,Gen Ext Ch during Change,394,415,68,8,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,34,2026,454,135,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,35,Ext Coord,454,154,27,8,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,36,2202,574,507,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,37,Gen Ext Changes,574,523,44,8,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,38,Quality Assurance rate,791,247,64,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,39,Ref prob Disc Change,673,192,63,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,40,Completed not Checked,513,273,53,19,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,41,Work Approved,1029,295,47,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,42,Release Work rate,945,325,53,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,43,Initial Completion rate,779,501,64,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,44,prob Generate Int Change,783,471,71,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,45,Ref prob Disc Change,1354,238,63,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,46,Phase Dependencies,1230,88,58,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,47,Quality Assurance rate,1376,192,64,8,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,48,17,13,4,0,0,22,0,0,0,-1--1--1,,1|(580,219)|
+1,49,17,12,100,0,0,22,0,0,0,-1--1--1,,1|(580,319)|
+1,50,34,14,4,0,0,22,0,0,0,-1--1--1,,1|(324,135)|
+1,51,34,13,100,0,0,22,0,0,0,-1--1--1,,1|(490,135)|
+1,52,19,15,4,0,0,22,0,0,0,-1--1--1,,1|(741,389)|
+1,53,19,12,100,0,0,22,0,0,0,-1--1--1,,1|(656,389)|
+1,54,30,16,4,0,0,22,0,0,0,-1--1--1,,1|(1031,384)|
+1,55,30,15,100,0,0,22,0,0,0,-1--1--1,,1|(940,384)|
+1,56,21,13,4,0,0,22,0,0,0,-1--1--1,,1|(787,135)|
+1,57,21,16,100,0,0,22,0,0,0,-1--1--1,,1|(1115,135)|
+1,58,28,27,4,0,0,22,0,0,0,-1--1--1,,1|(159,294)|
+1,59,28,14,100,0,0,22,0,0,0,-1--1--1,,1|(240,294)|
+1,60,36,12,4,0,0,22,0,0,0,-1--1--1,,1|(574,462)|
+1,61,36,23,100,0,0,22,0,0,0,-1--1--1,,1|(574,563)|
+1,62,32,12,4,0,0,22,0,0,0,-1--1--1,,1|(460,399)|
+1,63,32,14,100,0,0,22,0,0,0,-1--1--1,,1|(324,399)|
+1,64,14,28,1,0,0,0,0,0,0,-1--1--1,,1|(239,333)|
+1,65,24,28,0,0,0,0,0,0,0,-1--1--1,,1|(187,378)|
+1,66,25,28,0,0,0,0,0,0,0,-1--1--1,,1|(225,330)|
+1,67,25,32,1,0,0,0,0,0,0,-1--1--1,,1|(358,356)|
+1,68,24,32,1,0,0,0,0,0,0,-1--1--1,,1|(289,397)|
+1,69,14,32,1,0,0,0,0,0,0,-1--1--1,,1|(404,336)|
+1,70,38,17,1,0,0,0,0,0,0,-1--1--1,,1|(678,241)|
+1,71,12,17,1,0,0,0,0,0,0,-1--1--1,,1|(513,315)|
+1,72,40,17,1,0,0,0,0,0,0,-1--1--1,,1|(556,259)|
+1,73,26,28,1,0,0,0,0,0,0,-1--1--1,,1|(110,391)|
+1,74,26,32,1,0,0,0,0,0,0,-1--1--1,,1|(299,489)|
+1,75,38,19,1,0,0,0,0,0,0,-1--1--1,,1|(788,339)|
+1,76,41,30,1,0,0,0,0,0,0,-1--1--1,,1|(1034,315)|
+1,77,15,30,1,0,0,0,0,0,0,-1--1--1,,1|(929,347)|
+1,78,42,30,1,0,0,0,0,0,0,-1--1--1,,1|(982,350)|
+1,79,43,36,1,0,0,0,0,0,0,-1--1--1,,1|(637,491)|
+1,80,44,36,1,0,0,0,0,0,0,-1--1--1,,1|(648,469)|
+1,81,2,36,1,0,0,0,0,0,0,-1--1--1,,1|(648,525)|
+1,82,3,34,1,0,0,0,0,0,0,-1--1--1,,1|(465,105)|
+1,83,4,34,1,0,0,0,0,0,0,-1--1--1,,1|(400,115)|
+1,84,13,34,0,0,0,0,0,0,0,-1--1--1,,1|(496,136)|
+1,85,5,2,1,0,0,0,0,0,0,-1--1--1,,1|(785,565)|
+1,86,16,6,1,0,0,0,0,0,0,-1--1--1,,1|(1203,402)|
+1,87,7,6,1,0,0,0,0,0,0,-1--1--1,,1|(1301,380)|
+1,88,8,2,0,0,0,0,0,0,0,-1--1--1,,1|(698,607)|
+1,89,37,9,1,0,0,0,0,0,0,-1--1--1,,1|(497,520)|
+1,90,39,17,0,0,0,0,0,0,0,-1--1--1,,1|(630,227)|
+1,91,45,1,0,0,0,0,0,0,0,-1--1--1,,1|(1297,204)|
+1,92,11,1,1,0,0,0,0,0,0,-1--1--1,,1|(1248,125)|
+1,93,7,1,1,0,0,0,0,0,0,-1--1--1,,1|(1262,248)|
+1,94,47,1,1,0,0,0,0,0,0,-1--1--1,,1|(1331,172)|
+1,95,46,1,1,0,0,0,0,0,0,-1--1--1,,1|(1207,116)|
+1,96,16,1,1,0,0,0,0,0,0,-1--1--1,,1|(1194,286)|
+1,97,1,22,1,0,0,0,0,0,0,-1--1--1,,1|(1124,119)|
+1,98,12,20,1,0,0,0,0,0,0,-1--1--1,,1|(629,447)|
+1,99,40,19,1,0,0,0,0,0,0,-1--1--1,,1|(585,342)|
+1,100,18,19,0,0,0,0,0,0,0,-1--1--1,,1|(666,324)|
+10,101,Applied conceal fraction,740,293,36,18,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,102,101,18,0,0,0,0,0,64,0,-1--1--1,,1|(698,283)|
+10,103,Delta work,1208,46,29,8,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,104,103,1,0,0,0,0,0,64,0,-1--1--1,,1|(1216,98)|
+1,105,10,9,0,0,0,0,0,64,1,-1--1--1,,1|(385,616)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Internal Changes
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|72,72,0,0
+10,1,Int Changes Discovered,866,122,96,12,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,2,Work to be Coord,282,120,85,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,3,Coordination,447,104,65,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,4,Phase Dependencies,1067,80,83,12,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,5,Change Release Fraction,762,592,101,12,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,6,Work Released,896,664,74,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,7,Int Change Release Fraction,893,536,113,12,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,8,Ext Change Released Fration,607,644,128,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,9,Potential Internal changes,363,424,54,33,3,3,0,58,0,0,0,0,-1--1--1,0-0-0,Helvetica|14|B|0-0-0,0,0,0,0,0,0
+10,10,Phase Scope ratio,782,68,84,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,11,Int Changes not Discovered,539,331,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,12,Int Changes to Coord,556,163,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,13,Int Changes Ready to Change,353,234,52,34,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,14,Int Changes Approved,700,336,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,15,Int Changes Released,844,334,56,33,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+11,16,596,558,278,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,17,Disc Int Ch in Int,614,278,69,12,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,18,1542,768,336,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,19,Rel Int Changes,768,352,64,12,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,20,2884,267,232,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,21,Complete Int Changes,267,248,88,12,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,22,48,370,416,8,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,23,48,201,234,8,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,24,prob Generate Int Change,130,298,103,12,0,3,0,0,1,0,0,0,0,0,0,0,0,0
+11,25,2466,539,422,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,26,Gen Int Changes,539,438,66,12,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,27,Work to be Changed,136,346,94,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,28,Change Tasks rate,217,372,85,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+11,29,2686,736,164,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,30,Rec Returned Int Changes,736,182,104,12,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,31,1828,622,336,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,32,Approve Int Changes,622,352,85,12,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,33,Quality Assurance rate,703,260,103,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+11,34,376,431,165,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,35,Coord Int Changes,431,183,75,12,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,36,2070,367,335,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,37,Gen Int Changes during Changes,367,351,129,12,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,38,Completed not Checked,479,276,107,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,39,Ref prob Disc Change,632,230,101,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,40,Work Approved,706,429,78,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,41,Release Work rate,786,455,87,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,42,Initial Completion rate,566,477,103,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,43,prob Generate Int Change,428,494,114,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,44,Work Released,1008,302,74,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,45,Ref prob Disc Change,1074,231,101,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,46,Quality Assurance rate,1089,154,103,12,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,47,31,14,4,0,0,22,0,0,0,-1--1--1,,1|(644,336)|
+1,48,31,11,100,0,0,22,0,0,0,-1--1--1,,1|(597,336)|
+1,49,18,15,4,0,0,22,0,0,0,-1--1--1,,1|(781,336)|
+1,50,18,14,100,0,0,22,0,0,0,-1--1--1,,1|(751,336)|
+1,51,29,12,4,0,0,22,0,0,0,-1--1--1,,1|(663,164)|
+1,52,29,15,100,0,0,22,0,0,0,-1--1--1,,1|(844,164)|
+1,53,34,13,4,0,0,22,0,0,0,-1--1--1,,1|(353,165)|
+1,54,34,12,100,0,0,22,0,0,0,-1--1--1,,1|(476,165)|
+1,55,36,11,4,0,0,22,0,0,0,-1--1--1,,1|(436,335)|
+1,56,36,13,100,0,0,22,0,0,0,-1--1--1,,1|(367,297)|
+1,57,16,12,4,0,0,22,0,0,0,-1--1--1,,1|(558,227)|
+1,58,16,11,100,0,0,22,0,0,0,-1--1--1,,1|(558,297)|
+1,59,25,11,4,0,0,22,0,0,0,-1--1--1,,1|(539,382)|
+1,60,25,22,100,0,0,22,0,0,0,-1--1--1,,1|(455,422)|
+1,61,20,23,4,0,0,22,0,0,0,-1--1--1,,1|(235,232)|
+1,62,20,13,100,0,0,22,0,0,0,-1--1--1,,1|(287,232)|
+1,63,13,36,0,0,0,0,0,0,0,-1--1--1,,1|(360,291)|
+1,64,27,36,0,0,0,0,0,0,0,-1--1--1,,1|(288,338)|
+1,65,28,36,0,0,0,0,0,0,0,-1--1--1,,1|(306,349)|
+1,66,27,20,0,0,0,0,0,0,0,-1--1--1,,1|(200,289)|
+1,67,28,20,0,0,0,0,0,0,0,-1--1--1,,1|(240,305)|
+1,68,13,20,0,0,0,0,0,0,0,-1--1--1,,1|(293,232)|
+1,69,24,20,0,0,0,0,0,0,0,-1--1--1,,1|(201,263)|
+1,70,24,36,0,0,0,0,0,0,0,-1--1--1,,1|(276,320)|
+1,71,14,18,0,0,0,0,0,0,0,-1--1--1,,1|(744,336)|
+1,72,40,18,0,0,0,0,0,0,0,-1--1--1,,1|(735,384)|
+1,73,41,18,0,0,0,0,0,0,0,-1--1--1,,1|(777,398)|
+1,74,42,25,0,0,0,0,0,0,0,-1--1--1,,1|(554,452)|
+1,75,43,25,0,0,0,0,0,0,0,-1--1--1,,1|(483,457)|
+1,76,12,34,0,0,0,0,0,0,0,-1--1--1,,1|(482,163)|
+1,77,2,34,0,0,0,0,0,0,0,-1--1--1,,1|(366,145)|
+1,78,3,34,0,0,0,0,0,0,0,-1--1--1,,1|(439,130)|
+1,79,15,7,0,0,0,0,0,0,0,-1--1--1,,1|(869,438)|
+1,80,6,7,0,0,0,0,0,0,0,-1--1--1,,1|(894,606)|
+1,81,7,5,0,0,0,0,0,0,0,-1--1--1,,1|(833,561)|
+1,82,8,5,0,0,0,0,0,0,0,-1--1--1,,1|(677,620)|
+1,83,26,9,0,0,0,0,0,0,0,-1--1--1,,1|(451,431)|
+1,84,33,17,0,0,0,0,0,0,0,-1--1--1,,1|(651,270)|
+1,85,38,16,0,0,0,0,0,0,0,-1--1--1,,1|(574,277)|
+1,86,11,17,0,0,0,0,0,0,0,-1--1--1,,1|(576,304)|
+1,87,33,31,0,0,0,0,0,0,0,-1--1--1,,1|(663,296)|
+1,88,39,17,0,0,0,0,0,0,0,-1--1--1,,1|(625,247)|
+1,89,10,1,0,0,0,0,0,0,0,-1--1--1,,1|(817,91)|
+1,90,46,1,0,0,0,0,0,0,0,-1--1--1,,1|(984,138)|
+1,91,45,1,0,0,0,0,0,0,0,-1--1--1,,1|(976,179)|
+1,92,44,1,0,0,0,0,0,0,0,-1--1--1,,1|(941,217)|
+1,93,4,1,0,0,0,0,0,0,0,-1--1--1,,1|(973,99)|
+1,94,15,1,0,0,0,0,0,0,0,-1--1--1,,1|(854,224)|
+1,95,1,30,0,0,0,0,0,0,0,-1--1--1,,1|(807,149)|
+1,96,11,32,0,0,0,0,0,0,0,-1--1--1,,1|(583,341)|
+1,97,38,32,0,0,0,0,0,0,0,-1--1--1,,1|(543,310)|
+1,98,17,31,0,0,0,0,0,0,0,-1--1--1,,1|(616,303)|
+10,99,Phase Scope,186,435,58,21,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,100,Applied conceal fraction,733,292,36,18,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,101,100,17,0,0,0,0,0,64,0,-1--1--1,,1|(696,287)|
+10,102,Delta work,917,49,50,25,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,103,102,1,0,0,0,0,0,64,0,-1--1--1,,1|(891,86)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Control and Diagnostics
+$192-192-192,0,MS Sans Serif|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|72,72,75,0
+10,1,Project Percent Released Scaled,400,492,145,14,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,2,Scaled Project Scope,421,192,96,14,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,3,Scaled Work Released,427,395,102,14,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,4,Work Released,518,350,81,14,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,5,Project Fraction Released,420,302,113,14,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,6,Phase Scope,331,244,73,14,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,7,Project Fraction Satisfactory,607,264,123,14,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,8,Tasks Perceived Satisfactory,667,197,141,14,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,9,4,5,0,0,0,0,0,0,0,-1--1--1,,1|(475,329)|
+1,10,6,5,0,0,0,0,0,0,0,-1--1--1,,1|(369,269)|
+1,11,6,7,0,0,0,0,0,0,0,-1--1--1,,1|(437,251)|
+1,12,8,7,0,0,0,0,0,0,0,-1--1--1,,1|(641,225)|
+1,13,6,2,0,0,0,0,0,0,0,-1--1--1,,1|(369,221)|
+1,14,4,3,0,0,0,0,0,0,0,-1--1--1,,1|(478,369)|
+1,15,3,1,0,0,0,0,0,0,0,-1--1--1,,1|(415,436)|
+10,16,Project Concurrence Stretch,460,624,107,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,17,Conceal fraction,455,700,96,15,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,18,Project Duration,767,490,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,19,48,631,488,8,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,20,22,18,4,0,0,22,0,0,0,-1--1--1,,1|(708,488)|
+1,21,22,19,100,0,0,22,0,0,0,-1--1--1,,1|(658,488)|
+11,22,48,683,488,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,23,Add to Project Duration,683,514,53,18,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,24,Definition of Finished,779,423,44,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,25,24,22,0,0,0,0,0,64,0,-1--1--1,,1|(725,458)|
+10,26,Project Duration,717,625,84,15,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,27,Cumm Proj Ext Iterations,667,18,52,29,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,28,48,436,17,8,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,29,31,27,4,0,0,22,0,0,0,-1--1--1,,1|(575,16)|
+1,30,31,28,100,0,0,22,0,0,0,-1--1--1,,1|(483,16)|
+11,31,48,529,16,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,32,Add Ext Iterations,529,42,56,18,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,33,Project Fraction Iterated,999,46,64,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,34,Phase Scope,1151,-9,59,10,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,35,34,33,0,0,0,0,0,64,0,-1--1--1,,1|(1092,12)|
+10,36,Project Fraction Iterated,716,682,113,23,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,37,Phase Duration,858,323,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,38,48,706,319,8,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,39,41,37,4,0,0,22,0,0,0,-1--1--1,,1|(795,319)|
+1,40,41,38,100,0,0,22,0,0,0,-1--1--1,,1|(737,319)|
+11,41,48,766,319,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,42,Add to Phase Duration,766,345,52,18,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,43,24,42,0,0,0,0,0,64,0,-1--1--1,,1|(773,390)|
+10,44,Phase Fraction Released,625,398,61,18,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,45,44,42,0,0,0,0,0,64,0,-1--1--1,,1|(688,373)|
+10,46,Average Phase Duration,1005,336,57,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,47,Number of Phases,1001,408,39,18,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,48,37,46,0,0,0,0,0,64,0,-1--1--1,,1|(916,327)|
+1,49,47,46,0,0,0,0,0,64,0,-1--1--1,,1|(1002,378)|
+10,50,Average Phase Duration,716,750,99,23,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,51,Project Percent Released Scaled,727,818,130,28,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,52,Total Stranded Changes,714,895,121,31,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,53,1,23,0,0,0,0,0,64,0,-1--1--1,,1|(580,505)|
+10,54,Cumm Proj Int Iterations,669,-64,50,25,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,55,48,448,-61,8,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,56,58,54,4,0,0,22,0,0,0,-1--1--1,,1|(580,-61)|
+1,57,58,55,100,0,0,22,0,0,0,-1--1--1,,1|(494,-61)|
+11,58,48,537,-61,5,6,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,59,Add Int Iterations,537,-30,50,25,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,60,Disc Changes,369,-30,50,25,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,61,60,59,0,0,0,0,0,64,0,-1--1--1,,1|(446,-30)|
+10,62,Total Project Iterations,863,-29,99,14,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,63,54,62,0,0,0,0,0,64,0,-1--1--1,,1|(744,-50)|
+1,64,27,62,0,0,0,0,0,64,0,-1--1--1,,1|(754,-2)|
+1,65,62,33,0,0,0,0,0,64,0,-1--1--1,,1|(920,3)|
+10,66,Receive Released Work to Coord,696,85,50,25,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,67,66,32,0,0,0,0,0,64,0,-1--1--1,,1|(622,66)|
+10,68,Total Stranded Changes,722,-210,109,14,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,69,Ext Changes Released,896,-173,50,25,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,70,Project Fraction Stranded Changes,906,-314,155,14,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,71,Phase Scope,1006,-214,50,25,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,72,Project Stranded Int Changes,613,-264,130,14,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,73,Project Stranded Ext Changes,487,-172,134,14,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,74,69,73,0,0,0,0,0,64,0,-1--1--1,,1|(740,-172)|
+1,75,73,68,0,0,0,0,0,64,0,-1--1--1,,1|(597,-189)|
+1,76,72,68,0,0,0,0,0,64,0,-1--1--1,,1|(660,-240)|
+1,77,68,70,0,0,0,0,0,64,0,-1--1--1,,1|(807,-258)|
+1,78,71,70,0,0,0,0,0,64,0,-1--1--1,,1|(955,-264)|
+10,79,Int Changes Released,590,-326,50,25,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,80,79,72,0,0,0,0,0,64,0,-1--1--1,,1|(600,-296)|
+10,81,Base Case Project Duration,976,571,122,14,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,82,"Project Duration (fraction of Base Case)",1023,503,174,14,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,83,81,82,0,0,0,0,0,64,0,-1--1--1,,1|(994,542)|
+1,84,18,82,0,0,0,0,0,64,0,-1--1--1,,1|(821,492)|
+10,85,Project scope basis for scaling phases,258,562,168,14,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,86,85,1,0,0,0,0,0,64,0,-1--1--1,,1|(322,530)|
+///---\\\
+:GRAPH STRANDED_ERRORS
+:TITLE Stranded Errors
+:SCALE
+:VAR Total Stranded Changes
+:L<%^E!@
+1:020516testA.vdfx
+1:90PercentTest.vdf
+9:020516testA
+22:week,weeks,Week,Weeks
+23:0
+18:ConcealControl020328.vsc
+20:Save020327.lst
+15:0,0,0,0,0,0
+19:75,0
+27:2,
+34:0,
+42:0
+72:0
+73:0
+4:Time
+5:Work not Completed[Phase]
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+76:0
+77:0
+78:0
+79:0
+80:0
+81:0
+92:0
+24:0
+25:150
+26:150
+91:0
+90:0
+87:0
+75:
+43:
+6:Change
+6:Complete
+6:Coord
+6:Design
+6:Inspect
+6:NotUsed
+6:ProdDef
+6:ProtoTest
+6:QualControl
