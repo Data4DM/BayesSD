@@ -1,8 +1,8 @@
 import numpy as np
 from scipy.stats import norm
 
-from aria.core.models import Model
 
+from aria.core.models import Model
 ## Scalar distance
 def mape(a, b):
     return np.mean(np.abs(a - b) / (np.abs(a)))

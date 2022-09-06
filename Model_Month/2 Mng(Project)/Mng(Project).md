@@ -1,0 +1,1 @@
+![[Mng(project).excalidraw.svg]]
