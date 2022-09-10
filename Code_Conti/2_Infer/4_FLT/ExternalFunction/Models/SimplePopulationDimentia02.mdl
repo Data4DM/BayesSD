@@ -1,0 +1,181 @@
+{UTF-8}
+fraction population over 60=
+	reference fraction population over 60 * effect of age on fraction population
+	~	Dmnl
+	~		|
+
+average population age=
+	Total Population Age / Population
+	~	Year
+	~		|
+
+effect of age on fraction population= WITH LOOKUP (
+	average population age/average lifetime,
+		([(0,0)-(10,10)],(0,0),(1,1),(2,2) ))
+	~	Dmnl
+	~		|
+
+reference fraction population over 60=
+	0.25
+	~	Dmnl
+	~		|
+
+decrease from deaths=
+	deaths * average population age
+	~	Person
+	~		|
+
+Total Population Age= INTEG (
+	simple ageing-decrease from deaths,
+		Population * average lifetime)
+	~	Person*Year
+	~		|
+
+simple ageing=
+	Population
+	~	Person
+	~		|
+
+average lifetime=
+	80
+	~	Year
+	~		|
+
+births=
+	50000 + 5000*PULSE(5,5)
+	~	Person / Year
+	~		The total number of births.
+	|
+
+deaths=
+	Population/average lifetime
+	~	Person / Year
+	~		The worldwide number of deaths occurring.
+	|
+
+population over 60=
+	Population * fraction population over 60
+	~	Person
+	~		|
+
+Population= INTEG (
+	births-deaths,
+		births * average lifetime)
+	~	Person
+	~		  World population.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 500
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP 
+	~	Year [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.0625
+	~	Year [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Population,445,239,46,24,3,3,0,58,0,0,0,0,-1--1--1,0-0-0,Times New Roman|14|B|0-0-0
+11,2,236,342,235,6,8,34,3,0,0,1,0,0,0
+10,3,births,342,254,19,11,32,3,0,1,-1,0,0,0,128-128-128,0-0-0,|10||0-0-0
+11,4,172,543,235,6,8,34,3,0,0,1,0,0,0
+10,5,deaths,543,254,22,11,32,3,0,1,-1,0,0,0,128-128-128,0-0-0,|10||0-0-0
+1,6,2,1,4,0,0,22,1,0,0,0-0-0,|10||128-128-128,1|(373,235)|
+1,7,4,1,100,0,0,22,1,0,0,0-0-0,|10||128-128-128,1|(514,235)|
+1,8,1,4,2,0,0,0,1,0,0,0-0-255,|10||128-128-128,1|(485,204)|
+12,9,48,271,234,10,8,0,3,0,0,-1,0,0,0
+1,10,2,9,100,0,0,22,0,0,0,-1--1--1,,1|(308,235)|
+12,11,48,645,237,10,8,0,3,0,0,-1,0,0,0
+1,12,4,11,4,0,0,22,0,0,0,-1--1--1,,1|(592,235)|
+10,13,average lifetime,627,200,28,21,8,131,0,0,0,0,0,0
+1,14,13,4,1,0,0,0,0,64,0,-1--1--1,,1|(565,210)|
+10,15,population over 60,485,351,59,11,8,3,0,0,0,0,0,0
+1,16,1,15,1,0,0,0,0,64,0,-1--1--1,,1|(477,306)|
+1,17,13,1,0,0,0,0,0,64,1,-1--1--1,,1|(551,216)|
+10,18,fraction population over 60,709,309,59,19,8,3,0,0,-1,0,0,0
+1,19,18,15,0,0,0,0,0,64,0,-1--1--1,,1|(603,328)|
+10,20,Total Population Age,426,53,40,20,3,3,0,0,0,0,0,0
+12,21,48,228,53,10,8,0,3,0,0,-1,0,0,0
+1,22,24,20,4,0,0,22,0,0,0,-1--1--1,,1|(352,53)|
+1,23,24,21,100,0,0,22,0,0,0,-1--1--1,,1|(272,53)|
+11,24,48,312,53,6,8,34,3,0,0,1,0,0,0
+10,25,simple ageing,312,72,42,11,40,3,0,0,-1,0,0,0
+12,26,48,700,59,10,8,0,3,0,0,-1,0,0,0
+1,27,29,26,4,0,0,22,0,0,0,-1--1--1,,1|(631,59)|
+1,28,29,20,100,0,0,22,0,0,0,-1--1--1,,1|(513,59)|
+11,29,48,567,59,6,8,34,3,0,0,1,0,0,0
+10,30,decrease from deaths,567,86,46,19,40,3,0,0,-1,0,0,0
+10,31,average population age,532,139,47,19,8,3,0,0,0,0,0,0
+1,32,20,31,1,0,0,0,0,64,0,-1--1--1,,1|(475,84)|
+1,35,31,30,0,0,0,0,0,64,0,-1--1--1,,1|(545,118)|
+1,36,1,25,1,0,0,0,0,64,0,-1--1--1,,1|(352,154)|
+1,37,13,20,1,0,0,0,0,64,1,-1--1--1,,1|(639,79)|
+1,38,4,30,1,0,0,0,0,64,0,-1--1--1,,1|(572,191)|
+1,39,1,31,1,0,0,0,0,64,0,-1--1--1,,1|(431,178)|
+10,40,reference fraction population over 60,890,249,60,19,8,3,0,0,0,0,0,0
+1,41,40,18,1,0,0,0,0,64,0,-1--1--1,,1|(823,306)|
+1,42,31,45,1,0,0,0,0,64,0,-1--1--1,,1|(689,123)|
+1,43,13,45,1,0,0,0,0,64,0,-1--1--1,,1|(689,197)|
+1,44,1,20,0,0,0,0,0,64,1,-1--1--1,,1|(436,150)|
+10,45,effect of age on fraction population,764,169,59,19,8,3,0,0,0,0,0,0
+1,46,45,18,1,0,0,0,0,64,0,-1--1--1,,1|(755,240)|
+///---\\\
+:GRAPH Population
+:TITLE Births and population over 60
+:NO-LEGEND 2
+:SCALE
+:VAR births
+:Y-MIN 50000
+:Y-MAX 60000
+:SCALE
+:VAR population over 60
+:Y-MIN 1e+006
+:Y-MAX 1.02e+006
+:L<%^E!@
+1:Current.vdf
+9:Current
+22:$,Dollar,Dollars,$s
+22:Day,Days
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+15:0,0,0,0,0,0
+19:100,0
+27:2,
+34:0,
+4:Time
+5:population over 60
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:0
+41:0
+24:0
+25:500
+26:500

@@ -1,0 +1,13 @@
+Vensim error log starting Tue Jun 28 21:31:22 2022
+Loading SIS.vdf as SIS.  Origin is ...
+(Tue Jun 28 21:27:19 2022) From TestModel.vmf.
+             sim  SIS -c mdlcin.tmp.
+Loading SISvalidityTest2.vdf as SISvalidityTest2.  Origin is ...
+(Tue Jun 28 21:27:19 2022) From TestModel.vmf.
+             sim  SISvalidityTest2 -c mdlcin.tmp.
+Loading SIS.vdf as SIS.  Origin is ...
+(Tue Jun 28 21:27:19 2022) From TestModel.vmf.
+             sim  SIS -c mdlcin.tmp.
+Loading SISvalidityTest2.vdf as SISvalidityTest2.  Origin is ...
+(Tue Jun 28 21:27:19 2022) From TestModel.vmf.
+             sim  SISvalidityTest2 -c mdlcin.tmp.

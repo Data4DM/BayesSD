@@ -1,0 +1,121 @@
+function [shapedec,mxi,fitness]=testhy(y,i,eql)
+
+% TESTHY	Test hypothesis
+% 
+% [SHAPE_DECISION,MXI]=TESTHY(Y,CID,EQL) tests the hypothesis that
+% dynamic pattern Y is an instance of class id represented by CID.
+% If stated EQL=0 means converges to zero,
+% EQL=1 means convergence to non-zero.
+% 
+% SHAPE_DECISION is either 0(FAILE  D), 1(PASSED), 2(UNSURE).
+% MXI is the id of the class for to which the likelihood is greatest.
+% Final decision after convergence check is printed on the screen
+% after check for convergence.
+%
+% Calls CONST, LINEAR, CLASST, ID, CHCONV, MESSAGE
+%
+% 05.03.2006 - IsEmpty kullanildi.
+
+% ------------------------------------------------------
+MODEL_DOSYASI = 'model_12_7_AUGREV1';
+
+% Initializations  ------------------------------------
+normvec=[];						% Normalization vector
+table = -10*ones(1,id(0));				% Initialize table
+sub=0;
+
+% Test for CONST and LINEAR -----------------------------
+c=const(y);						% Check for constant pattern
+if c==1							% If a zero constant pattern is detected
+	table(id('zero0'))=10;		
+end
+if c==2 | c==3						% If a nonzero constant pattern is found
+	table(id('const'))=10;
+end
+
+% if c==0 | c==3						% If not a constant pattern
+% 	l=linear(y);					% Check for linear pattern
+% 	if l==1;
+% 		table(id('plinr'))=10;			% Positive linear found
+% 	elseif l==2;
+% 		table(id('nlinr'))=10;			% Negative linear found
+% 	end
+% end
+
+% HMM ile test edilenler ---------
+if c~=1 & c~=2
+   table = classt(y,MODEL_DOSYASI,table);
+end
+
+mx=-20;
+mxi=0;
+for j=1:id(0)
+     tj=table(j);
+     fprintf(2,'%8s %8.2f\n',id(j),-1*tj);
+     if tj>mx & tj>-3.0
+        mx=tj;
+        mxi=j;
+     end
+end
+							% *** Class Relations ***							%
+clrel=eye(id(0));
+							% *** Variant Definitions ***
+clrel([8 9 10 11],[8 9 10 11])=ones(4,4);		% growth & decline-to-sth
+clrel([17 18 19 20],[17 18 19 20])=ones(4,4);		% decline & growth-to-sth
+clrel([12 13],[12 13])=ones(2,2);			% decline & growth
+clrel([21 22],[21 22])=ones(2,2);			% growth & decline
+
+clrel(6,7)=2;						% Precedents
+
+							% *** Shape Decision ***
+
+relrow=clrel(i,:);
+hyplkd=max(table(relrow==1));			 	% Max of sibling class likelihoods
+
+if hyplkd >= -3.0				  	% If hyp'ed class lkd >= -3.0
+	otherlkd=table(find(relrow==1)); 	
+	if isempty(find(otherlkd>hyplkd)) 		% other cl lkd greater
+		shapedec=2;  		 		% PASSED
+	else
+		shapedec=1;	         		% UNSURE
+	end
+else
+	fslkd=table(find(relrow==2)); 		   	% Find precedent class lkds
+	if isempty(find(fslkd>=-3.0))			% If none >= -3.0
+		shapedec=0;  			   	% FAILED
+	else
+		shapedec=0;  			   	% FAILED - FURTHER SIMULATION REQD
+		sub=4;
+	end
+end
+dec=shapedec;
+							% *** CHECK FOR CONVERGENCE ***
+
+%  id	   01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+convtype=[ 0   0  1  -1  1  1  0 -1 -1 -1 -1  0  0 -1 -1  0 +1 +1 +1 +1 +1 +1  0  0  0];
+
+if dec==1 & convtype(i)~=0			  	% If shape PASSES and converging class
+	[endsl,endmean]=chconv(y)  ;		   	% find slope & mean at the end
+
+	if eql==0 & convtype(i)==-1			% Form decision matrices
+		D=[0 0 3; 0 1 0; 0 0 0];		% depending on eql hypothesis
+		DN=[0 1 0; 2 0 2; 0 1 0];		% and class type
+	elseif 	eql==0 & convtype(i)==+1
+		D=[0 0 0; 0 1 0; 3 0 0];
+		DN=[3 1 0; 2 0 2; 0 1 0];
+	elseif 	eql==1 & convtype(i)==-1
+		D=[0 0 0; 1 0 1; 0 0 0];
+		DN=[1 0 1; 0 4 0; 0 0 0];
+	elseif 	eql==1 & convtype(i)==+1
+		D=[0 0 0; 1 0 1; 0 0 0];
+		DN=[0 0 0; 0 4 0; 1 0 1];
+	end
+	dec=D(endsl+2,endmean+2);			% Decision
+	sub=DN(endsl+2,endmean+2);			% Explanation
+end
+
+message(dec,sub)					% Report results
+
+
+fitness = table(i);
+

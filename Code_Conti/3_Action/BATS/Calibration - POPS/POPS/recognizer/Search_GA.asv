@@ -1,0 +1,31 @@
+function [X,FVAL,REASON,OUTPUT,POPULATION,SCORES] =  Search_GA
+%%   This is an auto generated M file to do optimization with the Genetic Algorithm and
+%    Direct Search Toolbox. Use GAOPTIMSET for default GA options structure.
+
+%%Fitness function
+fitnessFunction = @Model_01;
+%%Number of Variables
+nvars = 3 ;
+%Linear inequality constraints
+Aineq = [];
+Bineq = [];
+%Linear equality constraints
+Aeq = [];
+Beq = [];
+%Bounds
+LB = [1  1];
+UB = [21  21];
+%Nonlinear constraints
+nonlconFunction = [];
+%Start with default options
+options = gaoptimset;
+%%Modify some parameters
+options = gaoptimset(options,'PopInitRange' ,[1  1; 21  21]);
+options = gaoptimset(options,'PopulationSize' ,10);
+options = gaoptimset(options,'StallGenLimit' ,30);
+options = gaoptimset(options,'StallTimeLimit' ,Inf);
+options = gaoptimset(options,'MutationFcn' ,@mutationadaptfeasible);
+options = gaoptimset(options,'Display' ,'off');
+%%Run GA
+
+[X,FVAL,REASON,OUTPUT,POPULATION,SCORES] = ga(fitnessFunction,nvars,Aineq,Bineq,Aeq,Beq,LB,UB,nonlconFunction,options);

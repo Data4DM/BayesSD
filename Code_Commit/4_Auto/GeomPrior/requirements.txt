@@ -1,6 +1,0 @@
-pandas_datareader
-pandas
-scipy
-deprecated
-sklearn
-yfinance

@@ -1,0 +1,402 @@
+{UTF-8}
+Adj Rate of BL=
+	Backlog/Delay from BL Adj
+	~	Widget/Month
+	~	As desired backlog is 0 and loop is couterclockwise, we have + arrow from \
+		state to adjustment. Desired Shipment Rate
+	|
+
+Desired SL=
+	Forecasted Demand Rate*Supply Lead Time
+	~	Widget
+	~		|
+
+Critical Ratio=
+	0.8
+	~	
+	~	Ratios are aggregated result and hence we don't need time delay for this \
+		information diffusion.
+	|
+
+Desired Backlog=
+	0
+	~	
+	~		|
+
+Max Shipment Rate=
+	Inventory/Shipment Lead Time
+	~	Widget/Month
+	~	John has Inventory/Minimum Order Processing Time but Min order PT = Shipment LT /
+		Symmetric with Adj Rate of Demand Forecast
+	|
+
+Order Fulfilment Ratio=A FUNCTION OF(Order Fulfilment Ratio,Adj Rate of BL,Max Shipment Rate\
+		) ~~|
+Order Fulfilment Ratio= INTEG (
+	Max Shipment Rate/Adj Rate of BL,
+		([(0,0)-(2,1)],(0,0),(0.5,0.5),(0.672783,0.657895),(1.04587,0.859649),(1.40061,0.942982\
+		),(2,1) ))
+	~	Dmnl
+	~	BLUE RATIO HAS PURPLE ELEMENTS. Perhaps recursion sd = max(sd, )
+	|
+
+Shipment Rate=
+	Adj Rate of BL * Order Fulfilment Ratio ~~|
+Shipment Rate=
+	Adj Rate of BL*Order Fulfilment Ratio
+	~	Widget/Month
+	~	WRONG: Desired Shipment*Fulfilment Ratio (has to be the rate), \
+		Inventory/Shipment Lead Time
+	|
+
+Safety Stock Coverage  = A FUNCTION OF( Critical Ratio) ~~|
+Safety Stock Coverage=
+	3
+	~	
+	~	proportional to CR? -> 10 * CR??
+	|
+
+Underage Cost=
+	Backlog *Unit Underage Cost
+	~	Dollar/Month
+	~		|
+
+Adj Rate of Demand Forecast=
+	(Forecasted Demand Rate - Demand Rate)/Delay from Demand Forecast Adj
+	~	(Widget/Month)/Month
+	~		|
+
+Desired Inven Coverage=
+	Shipment Lead Time + Safety Stock Coverage
+	~	Month
+	~		|
+
+Desired Supply Start Rate=
+	Desired Supply Rate + Adj Rate of SL
+	~	Widget/Month
+	~		|
+
+Desired Supply Rate=
+	Forecasted Demand Rate + Adj Rate of Inven
+	~	
+	~		|
+
+Unit Underage Cost=
+	(Critical Ratio * Unit Overage Cost)/(1-Critical Ratio)
+	~	
+	~	u = cr * (o+u), (1-cr) u = cr * o, u = cr * o / (1-cr)
+	|
+
+Demand Rate=
+	RANDOM NORMAL( 0, 200, 100, 10, 1111)
+	~	Widget/Month
+	~	= Desired Shipment. Exogenous. The generated value above does not have any \
+		affect as it will be replaced by time series data randomly generated on \
+		python platform.
+	|
+
+Forecasted Demand Rate= INTEG (
+	Adj Rate of Demand Forecast,
+		Demand Rate)
+	~	Widget/Month
+	~		|
+
+Delay from Inven Adj=
+	3 ~~|
+Delay from Inven Adj=
+	5
+	~	Month
+	~		|
+
+Delay from SL Adj=
+	3
+	~	
+	~		|
+
+Shipment Lead Time=A FUNCTION OF(Shipment Lead Time) ~~|
+Shipment Lead Time
+	3
+	~	Month
+	~	Min Shipment Time??
+	|
+
+Delay from BL Adj=
+	3
+	~	Month
+	~	Desired Shipment Delay by HR
+	|
+
+Adj Rate of Inven=
+	(Desired Inven-Inventory)/Delay from Inven Adj
+	~	Widget/Month
+	~	AR (Adj Rate) = Desired/Delay. Desired Inventory / Delay Inventory Adj; \
+		Not directly connected to Adjustment SL Start Rate; Only through Desired \
+		Supply Rate
+	|
+
+Adj Rate of SL=
+	(Desired SL-SupplyLine)/Delay from SL Adj
+	~	Widget/Month
+	~	AR (Adj Rate) = Desired/Delay; Desired SL / SL Delay
+	|
+
+Backlog= INTEG (
+	Order Rate-Order Fulfillment Rate,
+		100)
+	~	
+	~		|
+
+Order Rate=
+	Demand Rate
+	~	
+	~		|
+
+Order Fulfillment Rate=
+	Shipment Rate
+	~	
+	~		|
+
+Cost=
+	Underage Cost+Overage Cost
+	~	
+	~		|
+
+Supply Rate=
+	SupplyLine/Supply Lead Time
+	~	
+	~	can be modeled as DELAY3(Supply Start Rate, Lead Time) but as its stan \
+		transition is not implemented yet, we are using first order delay.
+	|
+
+Desired Inven=
+	Forecasted Demand Rate*Desired Inven Coverage
+	~	
+	~		|
+
+Delay from Demand Forecast Adj=
+	3
+	~	
+	~		|
+
+Inventory= INTEG (
+	Supply Rate-Shipment Rate,
+		Desired Inven)
+	~	Widget
+	~		|
+
+Supply Lead Time=
+	5
+	~	
+	~		|
+
+Overage Cost=
+	(Inventory + SupplyLine) * Unit Overage Cost
+	~	Dollar / Month
+	~		|
+
+Supply Start Rate=
+	MAX(0,Desired Supply Start Rate)
+	~	Widget/Month
+	~		|
+
+SupplyLine= INTEG (
+	Supply Start Rate-Supply Rate,
+		Desired SL)
+	~	
+	~		|
+
+Unit Overage Cost=
+	1
+	~	
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Month
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Month
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Month [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Month [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|255-255-255|255-255-255|96,96,71,0
+10,1,Inventory,870,201,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,2,48,1686,200,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,3,5,2,4,0,0,22,0,0,0,-1--1--1,,1|(1602,200)|
+1,4,5,1,100,0,0,22,1,0,0,253-128-8,|||0-0-0,1|(1213,200)|
+11,5,0,1523,200,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,6,Shipment Rate,1523,220,39,12,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,7,Desired Inven,923,288,39,12,8,3,0,18,0,0,0,0,0-0-0,0-0-0,||B|128-0-255,0,0,0,0,0,0
+10,8,Desired Supply Start Rate,356,397,57,21,8,3,0,18,0,0,0,0,0-0-0,0-0-0,||B|128-0-255,0,0,0,0,0,0
+10,9,Adj Rate of Inven,826,413,50,12,8,3,0,18,0,0,0,0,0-0-0,0-0-0,||B|17-128-2,0,0,0,0,0,0
+1,10,1,9,1,0,45,0,3,0,0,253-128-8,|||0-0-0,1|(869,309)|
+1,11,7,9,1,0,43,0,3,0,0,128-0-255,|||0-0-0,1|(911,356)|
+10,12,SupplyLine,612,192,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,13,48,210,198,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,14,16,12,4,0,0,22,1,0,0,15-128-255,|||0-0-0,1|(444,198)|
+1,15,16,13,100,0,0,22,0,0,0,-1--1--1,,1|(262,198)|
+11,16,0,311,198,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,17,Supply Start Rate,311,218,46,12,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,18,20,1,4,0,0,22,1,0,0,253-128-8,|||0-0-0,1|(775,198)|
+1,19,20,12,100,0,0,22,1,0,0,253-128-8,|||0-0-0,1|(680,198)|
+11,20,0,715,198,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,21,Supply Rate,715,218,33,12,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,22,Adj Rate of SL,557,339,42,12,8,3,0,18,0,0,0,0,0-0-0,0-0-0,||B|17-128-2,0,0,0,0,0,0
+1,23,22,8,1,0,43,0,1,64,0,15-128-255,|||0-0-0,1|(495,392)|
+1,24,12,22,1,0,45,0,3,0,0,15-128-255,|||0-0-0,1|(605,280)|
+1,25,8,17,1,0,43,0,3,0,0,0-0-255,|||0-0-0,1|(316,326)|
+10,26,Demand Rate,1282,287,39,12,8,3,0,18,0,0,0,0,0-0-0,0-0-0,||BU|128-0-255,0,0,0,0,0,0
+1,27,12,21,0,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,28,Supply Lead Time,788,285,48,12,8,3,0,18,-1,0,0,0,0-0-0,0-0-0,|||251-2-255,0,0,0,0,0,0
+1,29,28,21,1,0,0,0,1,64,0,251-2-255,|||0-0-0,1|(776,244)|
+10,30,Forecasted Demand Rate,925,557,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,31,Delay from Demand Forecast Adj,1288,881,56,21,8,3,0,18,-1,0,0,0,0-0-0,0-0-0,||B|251-2-7,0,0,0,0,0,0
+12,32,1,513,310,9,9,4,4,0,4,1,0,0,0,17-128-2,17-128-2,|||17-128-64,0,0,0,0,0,0
+SL Control
+1,33,7,1,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,34,30,7,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,35,Backlog,1243,161,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,36,48,1079,155,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,37,39,35,4,0,0,22,0,0,0,-1--1--1,,1|(1174,155)|
+1,38,39,36,100,0,0,22,0,0,0,-1--1--1,,1|(1111,155)|
+11,39,0,1140,155,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,40,Order Rate,1140,175,30,12,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,41,48,1470,157,12,7,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,42,44,41,4,0,0,22,0,0,0,-1--1--1,,1|(1406,157)|
+1,43,44,35,100,0,0,22,3,0,0,15-128-255,|||0-0-0,1|(1313,157)|
+11,44,0,1349,157,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,45,Order Fulfillment Rate,1349,177,59,12,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,46,26,40,0,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,47,6,45,0,0,43,0,3,0,0,0-0-255,|||0-0-0,1|(0,0)|
+10,48,Cost,1029,789,15,12,8,3,0,20,0,0,0,0,0-0-0,255-255-10,||B|128-0-128,0,0,0,0,0,0
+10,49,Overage Cost,664,728,37,12,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,50,Underage Cost,1374,736,40,12,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,51,49,48,0,0,32,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,52,50,48,0,0,32,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,53,12,49,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,54,Unit Overage Cost,915,728,49,12,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,55,54,49,0,0,32,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,56,1,49,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,57,Unit Underage Cost,1140,731,52,12,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,58,57,50,0,0,32,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,59,Desired Inven Coverage,1138,289,62,12,8,3,0,18,-1,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+1,60,59,7,0,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,61,Desired SL,668,285,32,12,8,3,0,18,-1,0,0,0,0-0-0,0-0-0,||B|128-0-255,0,0,0,0,0,0
+1,62,61,22,1,0,0,0,1,192,0,128-0-255,|||0-0-0,1|(648,316)|
+1,63,28,61,0,0,43,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,64,61,12,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,65,Adj Rate of BL,1217,4,43,12,8,3,0,18,0,0,0,0,0-0-0,0-0-0,||B|17-128-2,0,0,0,0,0,0
+1,66,35,65,1,0,43,0,1,128,0,15-128-255,|||0-0-0,1|(1181,105)|
+10,67,Delay from BL Adj,1131,66,52,12,8,3,0,18,-1,0,0,0,0-0-0,0-0-0,||B|251-2-7,0,0,0,0,0,0
+1,68,67,65,1,0,45,0,1,64,0,251-2-7,|||0-0-0,1|(1173,14)|
+1,69,65,6,1,0,43,0,1,128,0,15-128-255,|||0-0-0,1|(1438,49)|
+10,70,Max Shipment Rate,961,-9,55,12,8,3,0,18,0,0,0,0,0-0-0,0-0-0,||B|17-128-64,0,0,0,0,0,0
+1,71,1,70,1,0,43,0,1,128,0,253-128-8,|||0-0-0,1|(876,81)|
+10,72,Shipment Lead Time,1047,168,54,12,8,3,0,18,-1,0,0,0,0-0-0,0-0-0,|||251-2-255,0,0,0,0,0,0
+1,73,72,70,1,0,32,0,1,64,0,251-2-255,|||0-0-0,1|(996,131)|
+10,74,Order Fulfilment Ratio,1217,-114,64,12,8,3,0,18,0,0,0,0,0-0-0,0-0-0,||B|0-0-255,0,0,0,0,0,0
+1,75,70,74,1,0,43,0,1,128,0,253-128-8,|||0-0-0,1|(1085,-99)|
+1,76,74,6,1,0,43,0,1,128,0,251-2-128,|||0-0-0,1|(1417,-34)|
+10,77,Delay from Inven Adj,911,499,59,12,8,3,0,18,-1,0,0,0,0-0-0,0-0-0,||B|251-2-7,0,0,0,0,0,0
+1,78,77,9,1,0,45,0,1,64,0,251-2-7,|||0-0-0,1|(875,434)|
+10,79,Delay from SL Adj,676,417,52,12,8,3,0,18,-1,0,0,0,0-0-0,0-0-0,||B|251-2-7,0,0,0,0,0,0
+1,80,79,22,1,0,45,0,1,64,0,251-2-7,|||0-0-0,1|(649,376)|
+12,81,48,1082,561,12,7,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,82,84,81,100,0,0,22,0,192,0,-1--1--1,,1|(1058,561)|
+1,83,84,30,4,0,0,22,0,192,0,-1--1--1,,1|(999,561)|
+11,84,0,1040,561,6,8,34,3,0,2,1,0,0,0,0-0-0,0-0-0,|||17-128-2,0,0,0,0,0,0
+10,85,Adj Rate of Demand Forecast,1040,590,57,21,40,3,0,18,-1,0,0,0,0-0-0,0-0-0,||B|17-128-2,0,0,0,0,0,0
+1,86,30,85,1,0,43,0,1,192,0,0-0-0,|||0-0-0,1|(978,614)|
+1,87,31,85,1,0,45,0,1,192,0,251-2-7,|||0-0-0,1|(1147,611)|
+10,88,Desired Supply Rate,600,550,56,12,8,3,0,18,-1,0,0,0,0-0-0,0-0-0,||B|128-0-255,0,0,0,0,0,0
+1,89,88,8,1,0,43,0,1,192,0,251-2-128,|||0-0-0,1|(436,513)|
+1,90,30,88,0,0,43,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,91,Critical Ratio,1141,662,39,12,8,3,0,18,-1,0,0,0,0-0-0,0-0-0,||B|0-0-255,0,0,0,0,0,0
+1,92,91,57,0,0,32,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,93,54,57,0,0,32,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,94,9,88,1,0,43,0,1,192,0,253-128-8,|||0-0-0,1|(749,509)|
+1,95,26,30,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,96,Safety Stock Coverage,1139,510,59,12,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,97,96,59,0,0,43,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,98,72,59,0,0,43,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+12,99,0,2367,1,40,40,0,7,0,0,-1,0,0,0,0,0,0,0,0,0
+1. Adj = y-mean(Desired, State) = y-mean(Desired, Delay)
+1,100,26,85,1,0,45,0,1,192,0,128-0-255,|||0-0-0,1|(1224,526)|
+1,101,91,96,0,0,43,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+12,102,1,762,387,15,15,4,4,0,4,1,0,0,0,17-128-2,17-128-2,|||17-128-64,0,0,0,0,0,0
+Inven Control
+12,103,1,1260,24,14,14,5,4,0,4,1,0,0,0,17-128-2,17-128-2,|||17-128-64,0,0,0,0,0,0
+Backlog Control
+1,104,65,74,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1189,-93)|
+12,105,0,2096,559,40,40,0,7,0,0,-1,0,0,0,0,0,0,0,0,0
+Decision-based Estimation
+12,106,0,2082,374,40,40,0,7,0,0,-1,0,0,0,0,0,0,0,0,0
+SKU composition
+12,107,1,1022,1,15,15,5,4,0,4,1,0,0,0,17-128-2,17-128-2,|||17-128-64,0,0,0,0,0,0
+Shipment Control
+12,108,19,1034,840,40,40,8,7,0,0,1,0,0,0,0,0,0,0,0,0
+Retrodictive Control Overage / Predictive Control Underage
+10,109,Desired Backlog,1124,-68,45,12,8,3,0,18,-1,0,0,0,0-0-0,0-0-0,||B|128-0-255,0,0,0,0,0,0
+1,110,35,50,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,111,30,61,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+///---\\\
+:L<%^E!@
+4:Time
+5:Desired SL
+9:current
+19:71,0
+21:Overage Retrodictive / Underage Predictive Control
+24:0
+25:100
+26:100
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:1
+72:0
+73:0
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Courier|12||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1

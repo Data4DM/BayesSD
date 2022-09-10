@@ -1,0 +1,57 @@
+function [fitness]=simulation(Goal_1,AdjTime_1,Delay_1,Delay_2,AdjTime_3);
+
+%%Simulation Setup
+FinalTime = 100;
+CurrentTime = 0;
+ReportCounter = 1;
+dt = 0.25;
+ReportInt = 1;
+Output_1 = zeros(1,400);
+Output_2 = zeros(1,400);
+Output_3 = zeros(1,400);
+
+%% Initilialization of the model parameters
+Level_1 = 10;
+%Goal_1 = 23;
+%AdjTime_1 = 50;
+%Delay_1 = 10;
+
+Level_2 = 10;
+%Delay_2 = 10;
+
+Level_3 = 0;
+%AdjTime_3 = 50;
+
+
+%% Model run
+while CurrentTime < FinalTime
+    Inflow_1 = max((Goal_1 - Level_3) / AdjTime_1 , 0);
+    Outflow_1 = Level_1 / Delay_1;
+    Inflow_2 = Outflow_1;
+    Outflow_2 = Level_2 / Delay_2;
+    Netflow_3 = (Level_2 - Level_3) / AdjTime_3;
+    Level_1 = Level_1 + (Inflow_1 - Outflow_1)*dt;
+    Level_2 = Level_2 + (Inflow_2 - Outflow_2)*dt;
+    Level_3 = Level_3 + Netflow_3*dt;
+    
+    
+    Output_1 (1, ReportCounter)= Level_1;
+    Output_2 (1, ReportCounter)= Level_2;
+    Output_3 (1, ReportCounter)= Level_3;
+ 
+    CurrentTime = CurrentTime + dt;
+    ReportCounter = ReportCounter + 1;
+end
+
+
+x = 1:1:400;
+plot(x,Output_1(1, x),x,Output_2(1, x),x,Output_3(1, x));
+
+[a,b,fitness] = testhy(Output_1 , id('const'), 0)
+
+
+
+simulation(23,50,10,10,50)
+
+
+

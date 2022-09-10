@@ -1,0 +1,237 @@
+{UTF-8}
+Automatic workfolow in Vensim  = A FUNCTION OF( )
+	~	
+	~		|
+
+Basics of sensivity analysis  = A FUNCTION OF( )
+	~	
+	~		|
+
+Complining models  = A FUNCTION OF( )
+	~	
+	~		|
+
+"Kalman Filtering - Mechanics"  = A FUNCTION OF( "Kalman Fliterining - concept")
+	~	
+	~		|
+
+"Kalman Fliterining - concept"  = A FUNCTION OF( "Overview of methods & limitations")
+	~	
+	~		|
+
+Kalmand Filtering interpretting the results  = A FUNCTION OF( "Kalman Filtering - Mechanics"\
+		)
+	~	
+	~		|
+
+"MCMC - concept"  = A FUNCTION OF( "Overview of methods & limitations")
+	~	
+	~		|
+
+"MCMC - mechanics"  = A FUNCTION OF( "MCMC - concept")
+	~	
+	~		|
+
+MCMC interpretting the results  = A FUNCTION OF( "MCMC - mechanics")
+	~	
+	~		|
+
+"Model calibraton in Vensim -- Basics"  = A FUNCTION OF( "Model example: What is SIR"\
+		,Theoritical basis of calibration and optimization,"What is model calibration? Why needed"\
+		)
+	~	
+	~		|
+
+"Model example: What is SIR"  = A FUNCTION OF( )
+	~	
+	~		|
+
+"Overview of methods & limitations"  = A FUNCTION OF( "Model calibraton in Vensim -- Basics"\
+		)
+	~	
+	~		|
+
+"Scaling up - big data"  = A FUNCTION OF( Automatic workfolow in Vensim,Complining models\
+		,Kalmand Filtering interpretting the results,Simple methods limitations,Uncertainties and CI interpretations\
+		)
+	~	
+	~		|
+
+Simple methods  = A FUNCTION OF( "Overview of methods & limitations")
+	~	
+	~		|
+
+Simple methods limitations  = A FUNCTION OF( Simple methods mechanics)
+	~	
+	~		|
+
+Simple methods mechanics  = A FUNCTION OF( Simple methods)
+	~	
+	~		|
+
+Theoritical basis of calibration and optimization  = A FUNCTION OF( )
+	~	
+	~		|
+
+Uncertainties and CI interpretations  = A FUNCTION OF( Basics of sensivity analysis,MCMC interpretting the results\
+		)
+	~	
+	~		|
+
+"What is model calibration? Why needed"  = A FUNCTION OF( )
+	~	
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Month
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Month
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Month [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Month [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Arial|12||0-0-0|0-0-0|0-0-255|-1--1--1|255-255-255|96,96,82,0
+10,1,"What is model calibration? Why needed",165,389,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,2,"Model calibraton in Vensim -- Basics",391,393,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,3,1,2,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,4,"Kalman Fliterining - concept",787,513,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,5,"Kalman Filtering - Mechanics",972,561,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,6,Kalmand Filtering interpretting the results,1231,556,75,30,8,3,0,16,0,0,0,0,0-0-0,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,7,"MCMC - concept",740,322,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,8,"MCMC - mechanics",853,293,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,9,MCMC interpretting the results,1005,269,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,10,4,5,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,11,5,6,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,12,2,25,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,13,7,8,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,14,8,9,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,15,Basics of sensivity analysis,1084,345,75,30,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,16,Uncertainties and CI interpretations,1192,260,75,30,8,3,0,16,0,0,0,0,0-0-0,0-0-0,||B|0-0-0,0,0,0,0,0,0
+1,17,9,16,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,18,15,16,0,0,0,2,0,128,0,-1--1--1,,1|(0,0)|
+10,19,"Model example: What is SIR",304,265,75,30,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,20,19,2,0,0,0,2,2,128,0,-1--1--1,|||0-0-0,1|(0,0)|
+12,21,0,171,430,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+1
+12,22,0,408,437,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+2
+12,23,0,295,321,20,20,2,7,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+S1
+12,24,0,544,338,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+3
+10,25,"Overview of methods & limitations",559,393,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,26,25,4,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,27,25,7,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+12,28,0,797,461,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+4c
+12,29,0,971,498,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+5c
+12,30,0,1216,512,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+6c
+12,31,0,1176,222,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+7b
+12,32,0,736,278,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+4b
+12,33,0,845,252,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+5b
+12,34,0,997,225,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+6b
+12,35,0,593,273,7,11,8,7,0,18,-1,0,0,0,-1--1--1,0-0-0,||B|255-0-0,0,0,0,0,0,0
+a
+12,36,0,659,338,7,11,8,7,0,18,-1,0,0,0,-1--1--1,0-0-0,||B|255-0-0,0,0,0,0,0,0
+b
+12,37,0,1068,389,20,20,2,7,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+S3
+10,38,Theoritical basis of calibration and optimization,245,528,75,30,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,39,38,2,0,0,0,2,2,128,0,-1--1--1,|||0-0-0,1|(0,0)|
+12,40,0,239,574,20,20,2,7,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+S2
+10,41,"Scaling up - big data",1528,372,75,30,8,3,0,16,0,0,0,0,0-0-0,0-0-0,||B|0-0-0,0,0,0,0,0,0
+1,42,16,41,0,0,0,2,2,128,0,-1--1--1,|||0-0-0,1|(0,0)|
+1,43,6,41,0,0,0,2,2,128,0,-1--1--1,|||0-0-0,1|(0,0)|
+12,44,0,1496,309,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+8
+10,45,Simple methods,696,150,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,46,25,45,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+12,47,0,680,105,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+4a
+12,48,0,656,457,7,11,8,7,0,18,-1,0,0,0,-1--1--1,0-0-0,||B|255-0-0,0,0,0,0,0,0
+c
+10,49,Simple methods mechanics,925,124,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+12,50,0,937,77,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+5a
+10,51,Simple methods limitations,1175,125,75,30,8,131,0,16,0,0,0,0,0-0-0,0-0-0,||B|0-0-0,0,0,0,0,0,0
+12,52,0,1156,74,20,20,2,7,0,2,-1,0,0,0,-1--1--1,0-0-0,|||255-0-0,0,0,0,0,0,0
+6a
+1,53,45,49,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,54,49,51,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,55,51,41,1,0,0,2,2,128,0,-1--1--1,|||0-0-0,1|(1359,241)|
+10,56,Complining models,1289,349,75,30,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||128-128-128,0,0,0,0,0,0
+12,57,0,1244,369,20,20,2,7,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+S4
+1,58,56,41,0,0,0,2,2,128,0,-1--1--1,|||0-0-0,1|(0,0)|
+10,59,Automatic workfolow in Vensim,1353,401,75,30,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||128-128-128,0,0,0,0,0,0
+12,60,0,1341,436,20,20,2,7,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+S5
+1,61,59,41,0,0,0,2,2,128,0,-1--1--1,|||0-0-0,1|(0,0)|
+///---\\\
+:L<%^E!@
+4:Time
+5:Simple methods limitations
+9:Current
+19:82,0
+24:0
+25:100
+26:100
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:1
+72:0
+73:0
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Courier|12||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1

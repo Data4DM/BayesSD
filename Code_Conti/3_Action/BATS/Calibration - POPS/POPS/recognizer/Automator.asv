@@ -1,0 +1,14 @@
+function [a,b,c]= Automator(count);
+
+i = 0;
+while i < count
+    [a,b]=ThermoGa2;
+    disp(a);
+    disp(b);
+    disp(c);
+    
+    i = i+1;
+end
+
+
+

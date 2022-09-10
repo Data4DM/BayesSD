@@ -1,0 +1,292 @@
+{UTF-8}
+population shift=
+	COHORT SHIFT(Population by age[AgeUnder1])
+	~	Person
+	~		|
+
+total population2=
+	SUM(population for pyramid[PAge!])
+	~	
+	~		|
+
+smoothed total population= INTEG (
+	(total population - smoothed total population)/smooth time,
+		total population)
+	~	Person
+	~		|
+
+smooth time=
+	1
+	~	Year
+	~		|
+
+population growth rate in percent=
+	(total population - smoothed total population)/smoothed total population * 100
+	~	Dmnl
+	~		|
+
+total population=
+	SUM(Population by age[age!])
+	~	Person
+	~		|
+
+simulation pause=
+	0.001
+	~	Second
+	~		~	:SUPPLEMENTARY 
+	|
+
+PAge:
+	PA68,PA67,PA66,PA65,PA64,PA63,PA62,PA61,PA60,PA59,PA58,PA57,PA56,PA55,PA54,PA53,PA52\
+		,PA51,PA50,PA49,PA48,PA47,PA46,PA45,PA44,PA43,PA42,PA41,PA40,PA39,PA38,PA37,PA36,PA35\
+		,PA34,PA33,PA32,PA31,PA30,PA29,PA28,PA27,PA26,PA25,PA24,PA23,PA22,PA21,PA20,PA19,PA18\
+		,PA17,PA16,PA15,PA14,PA13,PA12,PA11,PA10,PA9,PA8,PA7,PA6,PA5,PA4,PA3,PA2,PA1,PA0
+	~	
+	~		|
+
+fraction population by age[age]=
+	Population by age[age]/total population
+	~	Dmnl
+	~		|
+
+population for pyramid[PAge]=
+	COHORT COUNT(Population by age[AgeUnder1], ELMCOUNT(PAge)-PAge , ELMCOUNT(PAge)-PAge\
+		+1)
+	~	Person
+	~		|
+
+age:
+	AgeUnder1,AgeOlder
+	~	
+	~		|
+
+cohort length[age]=
+	1,14,30,23,1
+	~	Year
+	~		|
+
+population control=
+	COHORT CONTROL(Population by age[AgeUnder1], cohort length[AgeUnder1], births, ELMCOUNT\
+		(age), 1)
+	~	Person
+	~		~	:SUPPLEMENTARY 
+	|
+
+initial population[age]=
+	0.0705,0.6082,0.3061,0.0151,0.000157
+	~	Person
+	~		|
+
+mortality by age[age]=
+	0.1,0.01,0.03,0.1,0.4
+	~	1/Year
+	~		|
+
+deaths[age]=
+	Population by age[age] * mortality by age[age]
+	~	Person/Year
+	~		|
+
+fertility by age[age]=
+	0,0,0.25,0,0
+	~	1/Year
+	~		|
+
+AgeOlder : Age1To14,Age15To44,Age45To67,Age68AndOver
+	~	
+	~		|
+
+births = SUM(Population by age[age!]*fertility by age[age!])
+	~	Person/Year
+	~		|
+
+Population by age[AgeUnder1]  = INTEG(births-deaths[AgeUnder1],initial population[AgeUnder1\
+		]) ~~|
+Population by age[AgeOlder]  = INTEG(-deaths[AgeOlder],initial population[AgeOlder])
+	~	Person
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 200
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Year [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.125
+	~	Year [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Population by age,495,200,40,20,3,3,0,0,0,0,0,0
+12,2,48,338,200,10,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(431,200)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(371,200)|
+11,5,48,401,200,6,8,34,3,0,0,1,0,0,0
+10,6,births,401,219,19,11,40,3,0,0,-1,0,0,0
+12,7,48,679,200,10,8,0,3,0,0,-1,0,0,0
+1,8,10,7,4,0,0,22,0,0,0,-1--1--1,,1|(638,200)|
+1,9,10,1,100,0,0,22,0,0,0,-1--1--1,,1|(565,200)|
+11,10,48,602,200,6,8,34,3,0,0,1,0,0,0
+10,11,deaths,602,219,22,11,40,3,0,0,-1,0,0,0
+10,12,mortality by age,660,146,50,11,8,3,0,0,0,0,0,0
+1,13,12,10,1,0,0,0,0,64,0,-1--1--1,,1|(615,170)|
+10,14,fertility by age,339,151,44,11,8,3,0,0,0,0,0,0
+1,15,14,5,1,0,0,0,0,64,0,-1--1--1,,1|(361,170)|
+1,16,1,10,1,0,0,0,0,64,0,-1--1--1,,1|(549,156)|
+10,17,initial population,495,239,56,11,8,3,0,0,-1,0,0,0
+1,18,17,1,0,0,0,0,0,64,1,-1--1--1,,1|(495,231)|
+1,19,1,5,1,0,0,0,0,64,0,-1--1--1,,1|(458,155)|
+10,20,population control,487,115,37,15,8,131,0,0,0,0,0,0
+1,21,1,20,1,0,0,0,0,64,0,-1--1--1,,1|(503,156)|
+1,22,5,20,1,0,0,0,0,64,0,-1--1--1,,1|(407,156)|
+10,23,cohort length,591,96,41,11,8,3,0,0,-1,0,0,0
+1,24,23,20,0,0,0,0,0,64,0,-1--1--1,,1|(543,104)|
+10,25,population shift,586,126,52,11,8,3,0,0,0,0,0,0
+1,26,1,25,1,0,0,0,0,64,0,-1--1--1,,1|(523,142)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 2
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,population for pyramid,375,165,45,19,8,3,0,0,0,0,0,0
+10,2,Population by age,264,219,49,19,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+1,3,2,1,0,0,0,0,0,64,0,-1--1--1,,1|(312,195)|
+12,4,0,737,440,292,355,3,188,0,0,1,0,0,0
+PopPyramid
+10,5,simulation pause,121,41,51,11,8,3,0,0,0,0,0,0
+10,6,total population,174,144,49,11,8,3,0,0,0,0,0,0
+1,7,2,6,0,0,0,0,0,64,0,-1--1--1,,1|(219,181)|
+10,8,fraction population by age,229,344,59,19,8,3,0,0,0,0,0,0
+1,9,2,8,1,0,0,0,0,64,0,-1--1--1,,1|(223,254)|
+1,10,6,8,1,0,0,0,0,64,0,-1--1--1,,1|(151,207)|
+10,11,smoothed total population,75,110,40,20,3,3,0,0,0,0,0,0
+1,12,6,11,1,0,0,0,0,64,0,-1--1--1,,1|(96,145)|
+10,13,smooth time,184,61,39,11,8,3,0,0,0,0,0,0
+1,14,13,11,1,0,0,0,0,64,0,-1--1--1,,1|(149,75)|
+10,15,population growth rate in percent,238,99,58,19,8,3,0,0,0,0,0,0
+1,16,11,15,0,0,0,0,0,64,0,-1--1--1,,1|(140,105)|
+1,17,6,15,0,0,0,0,0,64,0,-1--1--1,,1|(193,129)|
+10,18,total population2,343,113,53,11,8,3,0,0,0,0,0,0
+1,19,1,18,0,0,0,0,0,64,0,-1--1--1,,1|(360,140)|
+///---\\\
+:L<%^E!@
+1:Current.vdf
+8:PopPyramid.vgd
+9:Current
+22:$,Dollar,Dollars,$s
+22:Day,Days
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+15:0,0,0,0,0,0
+19:100,0
+27:2,
+34:0,
+4:Time
+5:population shift
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:0
+41:0
+24:0
+25:200
+26:200
+6:Age15To44
+6:Age1To14
+6:Age45To67
+6:Age68AndOver
+6:AgeUnder1
+6:PA0
+6:PA1
+6:PA10
+6:PA11
+6:PA12
+6:PA13
+6:PA14
+6:PA15
+6:PA16
+6:PA17
+6:PA18
+6:PA19
+6:PA2
+6:PA20
+6:PA21
+6:PA22
+6:PA23
+6:PA24
+6:PA25
+6:PA26
+6:PA27
+6:PA28
+6:PA29
+6:PA3
+6:PA30
+6:PA31
+6:PA32
+6:PA33
+6:PA34
+6:PA35
+6:PA36
+6:PA37
+6:PA38
+6:PA39
+6:PA4
+6:PA40
+6:PA41
+6:PA42
+6:PA43
+6:PA44
+6:PA45
+6:PA46
+6:PA47
+6:PA48
+6:PA49
+6:PA5
+6:PA50
+6:PA51
+6:PA52
+6:PA53
+6:PA54
+6:PA55
+6:PA56
+6:PA57
+6:PA58
+6:PA59
+6:PA6
+6:PA60
+6:PA61
+6:PA62
+6:PA63
+6:PA64
+6:PA65
+6:PA66
+6:PA67
+6:PA68
+6:PA7
+6:PA8
+6:PA9
