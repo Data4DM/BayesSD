@@ -1,0 +1,2 @@
+- taught by David Yao #DY 
+- summary in [[Stoch2_sum.pdf]] 

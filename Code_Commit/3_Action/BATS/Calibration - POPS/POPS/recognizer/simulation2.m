@@ -1,0 +1,50 @@
+function fitness = simulation2(x);
+
+%%Simulation Setup
+FinalTime = 100;
+CurrentTime = 0;
+dt = 0.25;
+
+ReportCounter = 1;
+ReportInt = 1;
+Output_1 = zeros(1,400);
+Output_2 = zeros(1,400);
+Output_3 = zeros(1,400);
+
+%% Initilialization of the model parameters
+PercState = 5;
+State = 25;
+AdjTime = x(1);
+Goal = 40;
+InfoDelay = x(2);
+
+
+%% Model run
+while CurrentTime < FinalTime
+    
+    PercAdjustment = (State-PercState)/InfoDelay ;
+    Adjustment = (Goal-PercState)/AdjTime;
+    
+    State = State + Adjustment*dt;
+    PercState = PercState + PercAdjustment*dt;
+ 
+    
+    Output_1 (1, ReportCounter)= State;
+    Output_2 (1, ReportCounter)= PercState;
+
+    CurrentTime = CurrentTime + dt;
+    ReportCounter = ReportCounter + 1;
+end
+
+
+k = 1:1:400;
+plot(k,Output_1(1, k));
+
+[a,b,fitness2] = testhy(Output_1 , id('gr1db'), 0);
+
+fitness = -1*fitness2;
+
+
+
+
+

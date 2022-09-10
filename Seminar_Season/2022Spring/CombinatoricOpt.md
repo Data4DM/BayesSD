@@ -1,0 +1,2 @@
+- taught by Daniel Bienstock #DB 
+- summary in [[CombOpt_sum.pdf]]

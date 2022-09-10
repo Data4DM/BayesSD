@@ -1,0 +1,23 @@
+Section 7, Exercise_Obeisty
+---------------------------
+SAMPLE SOLUTION
+
+
+Estimated parameters:
+
+Overfeeding 			= 0.2268 (0.29)*  
+Starvation 			= 0.4003 (0.78)
+Energy Intake Extra Trend 	= 0.0021 (0.0019)
+
+
+*Standard deviation
+
+
+
+-------------------------------------------------
+True values:
+
+Overfeeding 			= 0.2 
+Starvation 			= 0.5
+Energy Intake Extra Trend 	= 0.002
+

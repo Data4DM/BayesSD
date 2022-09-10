@@ -1,0 +1,534 @@
+{UTF-8}
+********************************************************
+	.Labor&Layoffs
+********************************************************~
+		
+		Labor with Layoffs
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This is the generic human resources sector developed in chapter 19,
+		including layoffs and vacancy cancellations.
+	|
+
+Adjustment for Labor=
+	(Desired Labor - Labor)/Labor Adjustment Time
+	~	People/week
+	~	Adjusts the desired hiring rate to bring labor in line with the desired \
+		level.
+	|
+
+Adjustment for Vacancies=
+	(Desired Vacancies - Vacancies)/Vacancy Adjustment Time
+	~	People/week
+	~	Adjusts vacancy creation so the firm has the desired number of vacancies.
+	|
+
+Average Duration of Employment=
+	100
+	~	Weeks
+	~	The average duration of employment is constant in this simple model, but \
+		in general depends on labor market and economic conditions, as well as \
+		employee satisfaction and other factors internal to the firm.
+	|
+
+Average Layoff Time=
+	8
+	~	Weeks
+	~	The average time required to lay off a worker.
+	|
+
+Average Time to Fill Vacancies=
+	8
+	~	Weeks
+	~	The average time required to fill a vacancy and bring a new employee into \
+		the workforce.
+	|
+
+Change in Pink Noise = (White Noise - Pink Noise)/Noise Correlation Time
+	~	1/week
+	~	Change in the pink noise value; Pink noise is a first order exponential smoothing \
+		delay of the white
+		         noise input.
+	|
+
+Desired Hiring Rate=
+	 Expected Attrition Rate + Adjustment for Labor
+	~	People/week
+	~	The firm seeks to hire enough people to replace expected attrition and \
+		adjust the labor force to the desired level.
+	|
+
+Desired Labor = Initial Desired Labor*Input
+	~	People
+	~	Desired Labor is exogenous.  A variety of test inputs allow users to try different \
+		patterns,
+		         including a step, pulse, sine wave, and random noise.
+	|
+
+Desired Lay Off Rate=
+	Willingness to Lay Off * MAX(0, -Desired Hiring Rate)
+	~	People/week
+	~	The firm desires to lay people off whenever the desired hiring rate is \
+		negative, modified by their willingness to lay off.  Willingness to Lay \
+		Off = 0 implies a no layoff policy.
+	|
+
+Desired Vacancies=
+	MAX(0,Expected Time to Fill Vacancies*Desired Hiring Rate)
+	~	People
+	~	The number of vacancies needed to generate the desired hiring rate, given \
+		the expected time required to fill a vacancy.
+	|
+
+Desired Vacancy Cancellation Rate=
+	MAX(0, -Desired Vacancy Creation Rate)
+	~	People/week
+	~	The desired rate of vacancy cancellation, given by the desired vacancy \
+		creation rate whenever that rate is negative.
+	|
+
+Desired Vacancy Creation Rate=
+	Desired Hiring Rate + Adjustment for Vacancies
+	~	People/week
+	~	The firm seeks to create enough vacancies to yield the desired hiring \
+		rate, adjusted to bring the stock of vacancies in line with the desired \
+		stock.
+	|
+
+Expected Attrition Rate=
+	Quit Rate
+	~	People/week
+	~	In this simple model expected attrition is set to the actual voluntary \
+		quit rate.
+	|
+
+Expected Time to Fill Vacancies=
+	Average Time to Fill Vacancies
+	~	Weeks
+	~	The expected time required to fill vacancies.  In this simple model, set \
+		to the actual time.  A better formulation would use an information delay \
+		to represent the delay in gathering information about hiring delays and \
+		changing procedures.
+	|
+
+Hiring Rate=
+	Vacancies/Average Time to Fill Vacancies
+	~	People/week
+	~	Hiring depends on the number of open vacancies and the average time \
+		required to fill a vacancy.
+	|
+
+Initial Desired Labor=
+	 1000
+	~	People
+	~	Initial value of Desired Labor
+	|
+
+Input=
+	1+STEP(Step Height,Step Time)+
+	(Pulse Quantity/TIME STEP)*PULSE(Pulse Time,TIME STEP)+
+	RAMP(Ramp Slope,Ramp Start Time,Ramp End Time)+
+	Sine Amplitude*SIN(2*3.14159*Time/Sine Period)+
+  	STEP(1,Noise Start Time)*Pink Noise
+	~	Dimensionless
+	~	Input is a dimensionless variable which provides a variety of test input patterns, \
+		including a step,
+		         pulse, sine wave, and random noise.
+	|
+
+Labor= INTEG (
+	Hiring Rate - Quit Rate - Layoff Rate,
+		Desired Labor)
+	~	People
+	~	The labor force of the firm.
+	|
+
+Labor Adjustment Time=
+	13
+	~	Weeks
+	~	The time period over which the firm seeks to bring the labor force in line \
+		with the desired level.
+	|
+
+Layoff Rate=
+	MIN(Desired Lay Off Rate, Maximum Layoff Rate)
+	~	People/week
+	~	The layoff rate is the lesser of the desired or maximum rate.
+	|
+
+Maximum Layoff Rate=
+	Labor/Average Layoff Time
+	~	People/week
+	~	The maximum layoff rate is determined by the number of workers and the \
+		layoff time.
+	|
+
+Maximum Vacancy Cancellation Rate=
+	Vacancies/Vacancy Cancellation Time
+	~	People/week
+	~	The maximum vacancy cancellation rate is determined by the numer of \
+		vacancies outstanding and the minimum cancellation time.
+	|
+
+Noise Correlation Time = 4
+	~	week
+	~	The correlation time constant for Pink Noise.
+	|
+
+Noise Standard Deviation = 0
+	~	Dimensionless
+	~	The standard deviation of the pink noise process.
+	|
+
+Noise Start Time = 5
+	~	week
+	~	Start time for the random input.
+	|
+
+Pink Noise = INTEG(Change in Pink Noise,0)
+	~	Dimensionless
+	~	Pink Noise is first-order autocorrelated noise.  Pink noise provides a realistic \
+		noise input to
+		        models in which the next random shock depends in part on the previous \
+		shocks.  The user
+		        can specify the correlation time.  The mean is 0 and the standard deviation \
+		is specified
+		         by the user.
+	|
+
+Pulse Quantity=0
+	~	Dimensionless*week
+	~	The quantity to be injected to customer orders, as a fraction of the base value of \
+		Input. 
+		        For example, to pulse in a quantity equal to 50% of the current value of \
+		input, set to
+		         .50.
+	|
+
+Pulse Time=5
+	~	week
+	~	Time at which the pulse in Input occurs.
+	|
+
+Quit Rate=
+	Labor/Average Duration of Employment
+	~	People/week
+	~	The rate at which employees voluntarily leave the firm.  Determined by the \
+		average duration of employment.
+	|
+
+Ramp End Time=1e+09
+	~	week
+	~	End time for the ramp input.
+	|
+
+Ramp Slope=0
+	~	1/week
+	~	Slope of the ramp input, as a fraction of the base value (per week).
+	|
+
+Ramp Start Time=5
+	~	week
+	~	Start time for the ramp input.
+	|
+
+Sine Amplitude=0
+	~	Dimensionless
+	~	Amplitude of sine wave in customer orders (fraction of mean).
+	|
+
+Sine Period=50
+	~	Weeks
+	~	Period of sine wave in customer demand.  Set initially to 50 weeks (1 \
+		year).
+	|
+
+Step Height=
+	0
+	~	Dimensionless
+	~	Height of step input to customer orders, as fraction of initial value.
+	|
+
+Step Time=5
+	~	week
+	~	Time for the step input.
+	|
+
+Vacancies= INTEG (
+	Vacancy Creation Rate - Vacancy Closure Rate - Vacancy Cancellation Rate,
+		Desired Vacancies)
+	~	People
+	~	The number of open positions the firm seeks to fill.
+	|
+
+Vacancy Adjustment Time=
+	4
+	~	Weeks
+	~	The average time over which the firm attempts to adjust the actual number \
+		of vacancies to the desired level.
+	|
+
+Vacancy Cancellation Rate=
+	 MIN(Desired Vacancy Cancellation Rate, Maximum Vacancy Cancellation Rate)
+	~	People/week
+	~	The rate at which the firm cancels existing vacancies prior to filling \
+		them.
+	|
+
+Vacancy Cancellation Time=
+	2
+	~	Weeks
+	~	The average time required to cancel a vacancy.
+	|
+
+Vacancy Closure Rate=
+	Hiring Rate
+	~	People/week
+	~	Hiring a new employee fills a vacancy.
+	|
+
+Vacancy Creation Rate=
+	MAX(0,Desired Vacancy Creation Rate)
+	~	People/week
+	~	The rate at which the firm authorizes new positions and begins to recruit \
+		for them.
+	|
+
+White Noise = Noise Standard Deviation*((24*Noise Correlation Time/TIME STEP)^0.5*(RANDOM 0 1\
+		() - 0.5
+))
+	~	Dimensionless
+	~	White noise input to the pink noise process.
+	|
+
+Willingness to Lay Off=
+	1
+	~	Dimensionless
+	~	The willingness to layoff employees.  Zero = no layoff policy; 1 implies \
+		the firm is just as willing to layoff employees when there are too many as \
+		to hire when there are too few.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 100
+	~	week
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	week
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	week
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.125
+	~	week
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Desired Labor
+$-1--1--1,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,100,0
+10,1,Desired Labor,557,199,40,20,8,3,0,32,0,0,0,0,-1--1--1,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,2,Input,464,184,75,30,0,2,0,35,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|128-128-128,0,0,0,0,0,0
+10,3,Input,521,394,75,30,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,4,Pink Noise,827,337,40,20,3,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+12,5,48,959,341,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,6,White Noise,854,440,40,20,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,7,Initial Desired Labor,464,243,40,20,8,3,0,32,0,0,0,0,-1--1--1,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,8,Noise Standard Deviation,747,468,40,20,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,9,TIME STEP,761,400,75,30,0,2,0,35,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|128-128-128,0,0,0,0,0,0
+10,10,Pink Noise,443,344,75,30,0,2,0,35,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|128-128-128,0,0,0,0,0,0
+10,11,Noise Start Time,535,325,75,30,0,3,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,12,Pulse Quantity,610,355,75,30,0,3,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,13,Pulse Time,617,391,75,30,0,3,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,14,Ramp End Time,458,483,75,30,0,3,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,15,Ramp Slope,422,425,75,30,0,3,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,16,Ramp Start Time,420,455,75,30,0,3,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,17,Sine Amplitude,627,419,75,30,0,3,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,18,Sine Period,614,457,75,30,0,3,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,19,Step Height,527,498,75,30,0,3,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,20,Step Time,580,478,75,30,0,3,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,21,Time,418,376,75,30,0,2,0,35,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|128-128-128,0,0,0,0,0,0
+10,22,TIME STEP,418,401,75,30,0,2,0,35,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|128-128-128,0,0,0,0,0,0
+11,23,0,917,341,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,24,Change in Pink Noise,917,369,40,20,40,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,25,Noise Correlation Time,984,421,40,20,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+1,26,7,1,1,0,0,0,0,0,0,-1--1--1,,1|(523,238)|
+1,27,11,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,28,12,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,29,13,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,30,14,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,31,15,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,32,16,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,33,17,3,1,0,0,0,0,0,0,-1--1--1,,1|(557,405)|
+1,34,18,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,35,19,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,36,20,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,37,21,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,38,22,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,39,2,1,1,0,0,0,0,0,0,-1--1--1,,1|(505,171)|
+1,40,23,4,4,0,0,22,0,0,0,-1--1--1,,1|(889,341)|
+1,41,23,5,100,0,0,22,0,0,0,-1--1--1,,1|(936,341)|
+1,42,4,24,2,0,0,0,0,0,0,-1--1--1,,1|(876,392)|
+1,43,6,24,2,0,0,0,0,0,0,-1--1--1,,1|(914,407)|
+1,44,25,24,2,0,0,0,0,0,0,-1--1--1,,1|(970,373)|
+1,45,25,6,1,0,0,0,0,0,0,-1--1--1,,1|(914,458)|
+1,46,9,6,1,0,0,0,0,0,0,-1--1--1,,1|(797,428)|
+1,47,8,6,1,0,0,0,0,0,0,-1--1--1,,1|(814,457)|
+1,48,10,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Labor
+$-1--1--1,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,100,0
+10,1,Labor,892,250,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,2,48,1037,249,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,3,5,2,4,0,0,22,0,0,0,-1--1--1,,1|(1004,249)|
+1,4,5,1,100,0,0,22,0,0,0,-1--1--1,,1|(951,249)|
+11,5,0,976,249,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,6,Quit Rate,976,270,34,13,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,7,Adjustment for Labor,892,425,45,15,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,8,Expected Attrition Rate,958,497,40,20,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,9,Average Time to Fill Vacancies,813,351,40,20,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,10,1,6,1,0,43,0,0,192,0,-1--1--1,,1|(930,290)|
+1,11,26,7,1,0,43,0,0,192,0,-1--1--1,,1|(1082,395)|
+1,12,1,7,1,0,45,0,0,192,0,-1--1--1,,1|(909,383)|
+1,13,6,8,1,0,43,0,0,192,0,-1--1--1,,1|(1001,412)|
+10,14,Desired Hiring Rate,787,587,40,20,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,15,8,14,1,0,43,0,0,192,0,-1--1--1,,1|(825,578)|
+1,16,7,14,1,0,43,0,0,192,0,-1--1--1,,1|(838,532)|
+10,17,Labor Adjustment Time,760,418,40,20,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,18,17,7,1,0,45,0,0,192,0,-1--1--1,,1|(849,414)|
+10,19,Average Duration of Employment,1065,348,49,28,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,20,48,765,250,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,21,23,1,4,0,0,22,0,0,0,-1--1--1,,1|(835,250)|
+1,22,23,20,100,0,0,22,0,0,0,-1--1--1,,1|(790,250)|
+11,23,0,812,250,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,24,Hiring Rate,812,278,40,20,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,25,9,24,1,0,45,0,0,192,0,-1--1--1,,1|(792,295)|
+10,26,Desired Labor,1185,213,31,17,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,27,19,6,1,0,45,0,0,192,0,-1--1--1,,1|(1021,298)|
+12,28,48,1037,178,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,29,31,28,4,0,0,22,0,0,0,-1--1--1,,1|(1003,178)|
+1,30,31,1,100,0,0,22,0,0,0,-1--1--1,,1|(892,178)|
+11,31,0,974,178,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,32,Layoff Rate,974,201,47,15,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,33,Maximum Layoff Rate,801,131,40,20,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,34,Average Layoff Time,676,137,40,20,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,35,1,33,1,0,43,0,0,192,0,-1--1--1,,1|(800,178)|
+1,36,33,31,1,0,43,0,0,192,0,-1--1--1,,1|(917,126)|
+1,37,34,33,1,0,45,0,0,192,0,-1--1--1,,1|(740,114)|
+10,38,Desired Lay Off Rate,1085,507,36,26,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,39,14,38,1,0,43,0,0,192,0,-1--1--1,,1|(895,597)|
+1,40,38,32,1,0,43,0,0,192,0,-1--1--1,,1|(1134,354)|
+10,41,Willingness to Lay Off,1048,606,40,20,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,42,41,38,1,0,43,0,0,192,0,-1--1--1,,1|(1098,563)|
+10,43,Desired Vacancy Creation Rate,346,479,47,27,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,44,Adjustment for Vacancies,493,460,54,22,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,45,Desired Vacancies,635,477,45,19,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+1,46,44,43,1,0,43,0,32,64,0,-1--1--1,Helvetica||B|0-0-0,1|(424,487)|
+1,47,45,44,1,0,43,0,32,192,0,-1--1--1,Helvetica||B|0-0-0,1|(566,451)|
+12,48,0,395,376,20,20,4,4,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+B
+12,49,0,396,409,40,20,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0,0,0,0,0,0,0
+Vacancy Creation
+1,50,14,43,1,0,43,0,32,192,0,-1--1--1,Helvetica||B|0-0-0,1|(444,569)|
+10,51,Vacancy Adjustment Time,529,548,43,21,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+1,52,51,44,1,0,45,0,32,192,0,-1--1--1,Helvetica||B|0-0-0,1|(542,477)|
+1,53,14,45,1,0,43,0,32,192,0,-1--1--1,Helvetica||B|0-0-0,1|(659,515)|
+10,54,Expected Time to Fill Vacancies,677,378,44,25,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+1,55,9,54,1,0,43,0,32,192,0,-1--1--1,Helvetica||B|0-0-0,1|(718,359)|
+1,56,54,45,1,0,43,0,32,192,0,-1--1--1,Helvetica||B|0-0-0,1|(647,422)|
+10,57,Vacancies,420,261,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,58,48,289,261,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+1,59,61,57,4,0,0,22,0,0,0,-1--1--1,,1|(362,261)|
+1,60,61,58,100,0,0,22,0,0,0,-1--1--1,,1|(315,261)|
+11,61,0,338,261,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,62,Vacancy Creation Rate,338,298,39,29,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+12,63,48,554,261,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+1,64,66,63,4,0,0,22,0,0,0,-1--1--1,,1|(526,261)|
+1,65,66,57,100,0,0,22,0,0,0,-1--1--1,,1|(478,261)|
+11,66,0,503,261,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,67,Vacancy Closure Rate,503,298,43,29,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,68,43,62,1,0,43,0,32,192,0,-1--1--1,Helvetica||B|0-0-0,1|(284,382)|
+1,69,57,44,1,0,45,0,32,192,0,-1--1--1,Helvetica||B|0-0-0,1|(485,360)|
+12,70,48,287,180,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+1,71,73,70,4,0,0,22,0,0,0,-1--1--1,,1|(323,180)|
+1,72,73,57,100,0,0,22,0,0,0,-1--1--1,,1|(420,180)|
+11,73,0,355,180,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,74,Vacancy Cancellation Rate,355,211,46,23,40,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,75,Maximum Vacancy Cancellation Rate,456,127,54,33,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,76,Vacancy Cancellation Time,320,97,49,23,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+1,77,57,75,1,0,43,0,32,192,0,-1--1--1,Helvetica||B|0-0-0,1|(474,155)|
+1,78,75,73,1,0,43,0,32,192,0,-1--1--1,Helvetica||B|0-0-0,1|(375,136)|
+1,79,76,75,1,0,45,0,32,192,0,-1--1--1,Helvetica||B|0-0-0,1|(394,80)|
+10,80,Desired Vacancy Cancellation Rate,220,343,46,32,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,81,43,80,1,0,43,0,0,192,0,-1--1--1,,1|(236,427)|
+1,82,80,74,1,0,43,0,0,192,0,-1--1--1,,1|(264,236)|
+1,83,57,23,1,0,43,0,0,192,0,-1--1--1,,1|(592,201)|
+1,84,24,67,1,0,43,0,0,192,0,-1--1--1,,1|(565,314)|
+12,85,0,750,482,20,20,4,4,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+B
+12,86,0,751,515,40,20,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0,0,0,0,0,0,0
+Labor Adjustment
+10,87,Initial Desired Labor,1169,114,50,25,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+1,88,87,26,1,0,0,0,0,0,0,-1--1--1,,1|(1199,157)|
+10,89,Input,1067,114,50,25,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+1,90,89,26,1,0,0,0,0,0,0,-1--1--1,,1|(1130,156)|
+1,91,26,1,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,92,45,57,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 3
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,100,0
+///---\\\
+:L<%^E!@
+5:Adjustment for Labor
+9:Current
+19:5,1
+24:0
+25:0
+26:0
+22:$,Dollar,Dollars,$s
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+22:Day,Days
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:0
+72:0
+73:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Courier|12||0-0-0|0-0-0|-1--1--1|0-0-0|192-192-192|-1--1--1

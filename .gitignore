@@ -1,0 +1,16 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.vdfx
+.vmfx
+
+*.pyc
+.ipynb_checkpoints/
+build/
+*.vdf
+*.2mdl
+*.swp
+.vscode/
+venv/
+.png

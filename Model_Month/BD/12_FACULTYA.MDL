@@ -1,0 +1,282 @@
+********************************************************
+	.Faculty
+********************************************************~
+		
+		Faculty Aging Chain Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		A simple model of the aging chain for faculty at a university (chapter 12).
+		Based on a model originally developed by David Peterson.
+		Data from MIT.
+		Hiring and promotion are exogenous.
+	|
+
+Total Faculty=
+	 Assistant Professors + Associate Professors + Full Professors
+	~	people
+	~	The total faculty is the sum of the faculty at each rank.
+	|
+
+Full Professor Retirement Rate=
+	DELAY3(Associate Promotion Rate,Average Full Professor Service Time)
+	~	people/Year
+	~	Full professors are assumed to retire after an average service time; a \
+		third-order delay is assumed.
+	|
+
+Assistant Departure Rate=
+	 Assistant Review Rate * ( 1 - Assistant Promotion Fraction )
+	~	people/Year
+	~	A fraction of the assistant professors reviewed are promoted; the rest \
+		leave.
+	|
+
+Assistant Hire Rate=
+	Historic Assistant Hire Rate ( Time )
+	~	people/Year
+	~	The assistant professor hire rate.  Determined by historic data
+	|
+
+Assistant Professors= INTEG (
+	Assistant Hire Rate - Assistant Promotion Rate - Assistant Departure Rate,
+		80)
+	~	people
+	~	The number of assistant professors.  80 in 1930
+	|
+
+Fraction Associate Professors=
+	Associate Professors/Total Faculty
+	~	Dimensionless
+	~	The fraction of the total faculty consisting of associate professors.
+	|
+
+Assistant Promotion Rate=
+	 Assistant Review Rate * Assistant Promotion Fraction
+	~	people/Year
+	~	A fraction of the assistant professors reviewed are promoted; the rest \
+		leave.
+	|
+
+Associate Departure Rate=
+	 Associate Review Rate* ( 1 - Associate Promotion Fraction )
+	~	people/Year
+	~	A fraction of the associate professors reviewed are promoted; the rest \
+		leave.
+	|
+
+Associate Professors= INTEG (
+	Assistant Promotion Rate - Associate Promotion Rate - Associate Departure Rate,
+		63)
+	~	people
+	~	The number of associate professors.  63 in 1930.
+	|
+
+Associate Promotion Fraction=
+	 Historic Associate Promotion Fraction ( Time )
+	~	fraction
+	~	The fraction of assistant professors promoted to full professor is \
+		determined exogenously.
+	|
+
+Associate Promotion Rate=
+	 Associate Review Rate * Associate Promotion Fraction
+	~	people/Year
+	~	A fraction of the associate professors reviewed are promoted; the rest \
+		leave.
+	|
+
+Associate Review Rate=
+	 Associate Professors / Average Associate Review Time
+	~	people/Year
+	~	Associate professors are reviewed for promotion after an average review \
+		time.
+	|
+
+Fraction Assistant Professors=
+	Assistant Professors/Total Faculty
+	~	Dimensionless
+	~	The fraction of the total faculty consisting of assistant professors.
+	|
+
+Full Professors= INTEG (
+	Associate Promotion Rate - Full Professor Retirement Rate,
+		86)
+	~	people
+	~	The number of full professors.  86 in 1930.
+	|
+
+Fraction Full Professors=
+	Full Professors/Total Faculty
+	~	Dimensionless
+	~	The fraction of the total faculty consisting of full professors.
+	|
+
+Historic Associate Promotion Fraction(
+	[(1930,0)-(1990,1)],(1930,0.4),(1940,0.4),(1950,0.4),(1960,0.6),(1970,0.65),(1971,0.5\
+		),(1980,0.5),(1990,0.5))
+	~	fraction
+	~	The approximate imputed associate professor promotionfraction.
+	|
+
+Historic Assistant Promotion Fraction        ([(1930,0)-(2010,1)],(1930,0.7)
+,(1940,0.7),(1961,0.7),(1962,0.5),(1969,0.5),(1970,0.7),(1980,0.65)
+,(1990,0.6),(2010,0.6) )
+	~	fraction
+	~	The approximate imputed assistant professor promotionfraction.
+	|
+
+Historic Assistant Hire Rate(
+	[(1930,0)-(2010,200)],(1930,27),(1940,27),(1957,75),(1962,75),(1963,120),(1967,90),(\
+		1968,70),(1969,50),(1970,70),(1990,55),(2010,55))
+	~	people/Year
+	~	The approximate historic hire rate for assistant professors.
+	|
+
+Assistant Review Rate = Assistant Professors / Average Assistant Review Time
+	~	people/Year
+	~	Assistant professors are reviewed for promotion after an average review \
+		time.
+	|
+
+Average Full Professor Service Time = 35
+	~	Year
+	~	The average time full professors serve prior to retirement.
+	|
+
+Average Associate Review Time = 5
+	~	Year
+	~	The average review time for promotion from associate to full professor.
+	|
+
+Average Assistant Review Time = 3
+	~	Year
+	~	The average review time for promotion from assistant to associate.
+	|
+
+Assistant Promotion Fraction = Historic Assistant Promotion Fraction ( Time )
+	~	fraction
+	~	The fraction of assistant professors promoted to associate is determined \
+		exogenously.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 2010
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 1930
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Year
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Year
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|0,0
+10,1,Assistant Professors,295,149,40,20,3,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,2,Associate Professors,512,150,40,20,3,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,3,Full Professors,736,146,40,20,3,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,4,Historic Assistant Hire Rate,181,272,40,20,8,3,1,0,-1,0,0,0
+10,5,Assistant Review Rate,423,275,35,25,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,6,Assistant Promotion Fraction,371,437,49,22,8,3,0,0,0,0,0,0
+10,7,Average Assistant Review Time,394,366,47,23,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,8,Associate Review Rate,657,273,40,20,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,9,Associate Promotion Fraction,637,443,56,20,8,3,0,0,0,0,0,0
+10,10,Average Associate Review Time,643,359,43,26,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,11,Average Full Professor Service Time,841,392,63,28,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,12,Total Faculty,511,60,30,14,8,3,0,0,0,0,0,0
+10,13,Historic Associate Promotion Fraction,548,475,42,35,8,3,1,0,-1,0,0,0
+10,14,Time,690,519,30,11,0,2,1,51,-1,0,0,0,128-128-128,0-0-0,Helvetica|12|B|128-128-128
+10,15,Historic Assistant Promotion Fraction,271,471,42,29,8,3,1,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,16,Time,383,524,30,11,0,2,1,51,-1,0,0,0,128-128-128,0-0-0,Helvetica|12|B|128-128-128
+1,17,1,5,1,0,43,0,0,192,0,-1--1--1,,1|(351,204)|
+1,18,7,5,1,0,45,0,0,192,0,-1--1--1,,1|(432,312)|
+1,19,1,12,1,0,43,0,0,192,0,-1--1--1,,1|(396,92)|
+1,20,2,12,0,0,43,0,0,192,0,-1--1--1,,1|(511,108)|
+1,21,3,12,1,0,43,0,0,192,0,-1--1--1,,1|(633,88)|
+1,22,14,9,0,1,0,0,0,0,0,-1--1--1,,1|(670,491)|
+1,23,15,6,1,1,43,0,0,192,0,-1--1--1,,1|(342,470)|
+1,24,16,6,0,1,0,0,0,0,0,-1--1--1,,1|(379,492)|
+12,25,48,162,150,8,8,0,3,0,0,-1,0,0,0
+1,26,28,1,4,0,0,22,0,0,0,-1--1--1,,1|(235,151)|
+1,27,28,25,100,0,0,22,0,0,0,-1--1--1,,1|(187,151)|
+11,28,48,210,151,6,8,34,3,0,0,1,0,0,0
+10,29,Assistant Hire Rate,210,179,40,20,40,3,0,0,-1,0,0,0
+1,30,4,29,1,1,43,0,0,192,0,-1--1--1,,1|(183,210)|
+12,31,48,296,332,8,8,0,3,0,0,-1,0,0,0
+1,32,34,31,4,0,0,22,0,0,0,-1--1--1,,1|(295,294)|
+1,33,34,1,100,0,0,22,0,0,0,-1--1--1,,1|(295,211)|
+11,34,48,295,259,8,6,33,3,0,0,4,0,0,0
+10,35,Assistant Departure Rate,343,259,40,20,40,3,0,0,-1,0,0,0
+1,36,5,35,1,0,43,0,0,192,0,-1--1--1,,1|(373,292)|
+1,37,6,35,1,0,45,0,0,192,0,-1--1--1,,1|(323,348)|
+1,38,40,2,4,0,0,22,0,0,0,-1--1--1,,1|(438,148)|
+1,39,40,1,100,0,0,22,0,0,0,-1--1--1,,1|(363,148)|
+11,40,380,398,148,6,8,34,3,0,0,1,0,0,0
+10,41,Assistant Promotion Rate,398,184,37,28,40,3,0,0,-1,0,0,0
+1,42,6,41,1,0,43,0,0,192,0,-1--1--1,,1|(495,312)|
+1,43,5,41,1,0,43,0,0,192,0,-1--1--1,,1|(427,228)|
+12,44,48,513,336,8,8,0,3,0,0,-1,0,0,0
+1,45,47,44,4,0,0,22,0,0,0,-1--1--1,,1|(513,291)|
+1,46,47,2,100,0,0,22,0,0,0,-1--1--1,,1|(513,206)|
+11,47,48,513,249,8,6,33,3,0,0,4,0,0,0
+10,48,Associate Departure Rate,561,249,40,20,40,3,0,0,-1,0,0,0
+1,49,51,3,4,0,0,22,0,0,0,-1--1--1,,1|(663,148)|
+1,50,51,2,100,0,0,22,0,0,0,-1--1--1,,1|(585,148)|
+11,51,508,624,148,6,8,34,3,0,0,1,0,0,0
+10,52,Associate Promotion Rate,624,183,42,27,40,3,0,0,-1,0,0,0
+12,53,48,740,320,8,8,0,3,0,0,-1,0,0,0
+1,54,56,53,4,0,0,22,0,0,0,-1--1--1,,1|(740,278)|
+1,55,56,3,100,0,0,22,0,0,0,-1--1--1,,1|(740,199)|
+11,56,48,740,239,8,6,33,3,0,0,4,0,0,0
+10,57,Full Professor Retirement Rate,796,239,48,30,40,3,0,0,-1,0,0,0
+1,58,13,9,1,1,43,0,0,192,0,-1--1--1,,1|(615,480)|
+1,59,9,52,1,0,43,0,0,192,0,-1--1--1,,1|(717,299)|
+1,60,8,48,1,0,43,0,0,192,0,-1--1--1,,1|(611,287)|
+1,61,8,52,1,0,43,0,0,192,0,-1--1--1,,1|(651,222)|
+1,62,2,8,1,0,43,0,0,192,0,-1--1--1,,1|(578,206)|
+1,63,9,48,1,0,45,0,0,192,0,-1--1--1,,1|(556,327)|
+1,64,11,57,1,0,45,0,0,192,0,-1--1--1,,1|(835,303)|
+1,65,10,8,1,0,45,0,0,192,0,-1--1--1,,1|(663,304)|
+10,66,Fraction Assistant Professors,280,588,40,20,8,3,0,0,0,0,0,0
+10,67,Fraction Associate Professors,280,656,40,20,8,3,0,0,0,0,0,0
+10,68,Fraction Full Professors,282,733,40,20,8,3,0,0,0,0,0,0
+10,69,Assistant Professors,129,584,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,70,Associate Professors,128,652,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,71,Full Professors,126,732,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,72,69,66,0,0,43,0,0,192,0,-1--1--1,,1|(197,585)|
+1,73,70,67,0,0,43,0,0,192,0,-1--1--1,,1|(197,653)|
+1,74,71,68,0,0,43,0,0,192,0,-1--1--1,,1|(197,732)|
+10,75,Total Faculty,416,661,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,76,75,66,0,0,45,0,0,192,0,-1--1--1,,1|(354,627)|
+1,77,75,67,0,0,45,0,0,192,0,-1--1--1,,1|(354,658)|
+1,78,75,68,0,0,45,0,0,192,0,-1--1--1,,1|(355,693)|
+10,79,Time,109,228,29,11,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,80,79,29,0,1,0,0,0,0,0,-1--1--1,,1|(144,210)|
+1,81,52,56,1,0,43,0,0,64,0,-1--1--1,,1|(689,191)|
+///---\\\
+:L<%^E!@
+1:current.vdf
+9:current
+15:0,0,0,0
+19:100,0
+4:Time
+5:Assistant Professors

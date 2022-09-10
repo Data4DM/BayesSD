@@ -1,0 +1,520 @@
+********************************************************
+	.Coflow
+********************************************************~
+		
+		Coflow for Labor Requirements of Capital
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This model illutrates a coflow with the labor requirements of a firm's 
+		capital stock.  Chapter 12.
+	|
+
+Exponential Growth Time=
+	5
+	~	Year
+	~	Time for exponential growth in the input to start
+	|
+
+Exponential Growth Time 0=
+	5
+	~	Year
+	~	Time for exponential growth in the input to start
+	|
+
+Exponential Growth Rate 0=
+	0
+	~	1/Year
+	~	Exogenous exponential growth rate of the test input
+	|
+
+Exponential Growth Rate=
+	0
+	~	1/Year
+	~	Exogenous exponential growth rate of the test input
+	|
+
+Labor Requirements of New Capital=
+	Exogenous Labor Requirements of Capital
+	~	People/Capital Unit
+	~	The labor required to operate each unit of capital is exogenous in this \
+		test model.
+	|
+
+Capital Acquisition=
+	Exogenous Capital Acquisition Rate
+	~	Capital Units/Year
+	~	Capital acquisition is exogenous for testing purposes.
+	|
+
+Noise Start Time 0 = 5
+	~	Year
+	~	Start time for the random input.
+	|
+
+Pink Noise = INTEG(Change in Pink Noise,0)
+	~	Dimensionless
+	~	Pink Noise is first-order autocorrelated noise.  Pink noise provides a realistic \
+		noise input to
+		        models in which the next random shock depends in part on the previous \
+		shocks.  The user
+		        can specify the correlation time.  The mean is 0 and the standard deviation \
+		is specified
+		         by the user.
+	|
+
+Pulse Quantity=0
+	~	Dimensionless*Year
+	~	The quantity to be injected to customer orders, as a fraction of the base value of \
+		Input. 
+		        For example, to pulse in a quantity equal to 50% of the current value of \
+		input, set to
+		         .50.
+	|
+
+Pulse Quantity 0=0
+	~	Dimensionless*Year
+	~	The quantity to be injected to customer orders, as a fraction of the base value of \
+		Input. 
+		        For example, to pulse in a quantity equal to 50% of the current value of \
+		input, set to
+		         .50.
+	|
+
+Change in Pink Noise = (White Noise - Pink Noise)/Noise Correlation Time
+	~	1/Year
+	~	Change in the pink noise value; Pink noise is a first order exponential smoothing \
+		delay of the white
+		         noise input.
+	|
+
+Change in Pink Noise 0 = (White Noise 0 - Pink Noise 0)/Noise Correlation Time 0
+	~	1/Year
+	~	Change in the pink noise value; Pink noise is a first order exponential smoothing \
+		delay of the white
+		         noise input.
+	|
+
+Ramp End Time=1e+009
+	~	Year
+	~	End time for the ramp input.
+	|
+
+Exogenous Capital Acquisition Rate = Initial Capital Acquisition Rate*Input
+	~	Capital Units/Year
+	~	Capital acquisition is exogenous.  A variety of test inputs allow users to try \
+		different patterns,
+		         including a step, pulse, sine wave, and random noise.
+	|
+
+Exogenous Labor Requirements of Capital = Initial Labor Requirements of Capital*Input 0
+	~	People/Capital Unit
+	~	The labor required to operate each unit of capital is exogenous.  A variety of test \
+		inputs allow users to try different patterns,
+		         including a step, pulse, sine wave, and random noise.
+	|
+
+Ramp Slope 0=0
+	~	1/Year
+	~	Slope of the ramp input, as a fraction of the base value (per week).
+	|
+
+Initial Capital Acquisition Rate=
+	100
+	~	Capital Units/Year
+	~	Initial capital acquisition rate, set to 100 units/year.
+	|
+
+Initial Labor Requirements of Capital=
+	100
+	~	People/Capital Unit
+	~	Initial value of customer orders, set to 10,000 widgets per week.
+	|
+
+Input=
+	1+STEP(Step Height,Step Time)+
+	(Pulse Quantity/TIME STEP)*PULSE(Pulse Time,TIME STEP)+
+	RAMP(Ramp Slope,Ramp Start Time,Ramp End Time)+(STEP(1, Exponential Growth Time)*(exp\
+		(Exponential Growth Rate*(Time - Exponential Growth Time))-1))+
+	Sine Amplitude*SIN(2*3.14159*Time/Sine Period)+
+	  	STEP(1,Noise Start Time)*Pink Noise
+	~	Dimensionless
+	~	Input is a dimensionless variable which provides a variety of test input patterns, \
+		including a step,
+		         pulse, sine wave, and random noise.
+	|
+
+Input 0=
+	1+STEP(Step Height 0,Step Time 0)+
+	(Pulse Quantity 0/TIME STEP)*PULSE(Pulse Time 0,TIME STEP)+
+	RAMP(Ramp Slope 0,Ramp Start Time 0,Ramp End Time 0)+(STEP(1, Exponential Growth Time 0\
+		)*(exp(Exponential Growth Rate 0*(Time - Exponential Growth Time 0))-1))+
+	Sine Amplitude 0*SIN(2*3.14159*Time/Sine Period 0)+
+	  	STEP(1,Noise Start Time 0)*Pink Noise 0
+	~	Dimensionless
+	~	Input is a dimensionless variable which provides a variety of test input patterns, \
+		including a step,
+		         pulse, sine wave, and random noise.
+	|
+
+Sine Period=50
+	~	Year
+	~	Period of sine wave in customer demand.  Set initially to 50 weeks (1 \
+		year).
+	|
+
+Sine Period 0=50
+	~	Year
+	~	Period of sine wave in customer demand.  Set initially to 50 weeks (1 \
+		year).
+	|
+
+Noise Correlation Time = 4
+	~	Year
+	~	The correlation time constant for Pink Noise.
+	|
+
+Noise Correlation Time 0 = 4
+	~	Year
+	~	The correlation time constant for Pink Noise.
+	|
+
+Noise Standard Deviation = 0
+	~	Dimensionless
+	~	The standard deviation of the pink noise process.
+	|
+
+Noise Standard Deviation 0 = 0
+	~	Dimensionless
+	~	The standard deviation of the pink noise process.
+	|
+
+Noise Start Time = 5
+	~	Year
+	~	Start time for the random input.
+	|
+
+White Noise 0 = Noise Standard Deviation 0*((24*Noise Correlation Time 0/TIME STEP)^0.5\
+		*(RANDOM 0 1() - 0.5
+))
+	~	Dimensionless
+	~	White noise input to the pink noise process.
+	|
+
+Ramp Start Time 0=5
+	~	Year
+	~	Start time for the ramp input.
+	|
+
+Pink Noise 0 = INTEG(Change in Pink Noise 0,0)
+	~	Dimensionless
+	~	Pink Noise is first-order autocorrelated noise.  Pink noise provides a realistic \
+		noise input to
+		        models in which the next random shock depends in part on the previous \
+		shocks.  The user
+		        can specify the correlation time.  The mean is 0 and the standard deviation \
+		is specified
+		         by the user.
+	|
+
+Sine Amplitude 0=0
+	~	Dimensionless
+	~	Amplitude of sine wave in customer orders (fraction of mean).
+	|
+
+Ramp Slope=0
+	~	1/Year
+	~	Slope of the ramp input, as a fraction of the base value (per week).
+	|
+
+Pulse Time=5
+	~	Year
+	~	Time at which the pulse in Input occurs.
+	|
+
+Pulse Time 0=5
+	~	Year
+	~	Time at which the pulse in Input occurs.
+	|
+
+Step Height 0=0
+	~	Dimensionless
+	~	Height of step input to customer orders, as fraction of initial value.
+	|
+
+Ramp End Time 0=1e+009
+	~	Year
+	~	End time for the ramp input.
+	|
+
+Step Time=5
+	~	Year
+	~	Time for the step input.
+	|
+
+White Noise = Noise Standard Deviation*((24*Noise Correlation Time/TIME STEP)^0.5*(RANDOM 0 1\
+		() - 0.5
+))
+	~	Dimensionless
+	~	White noise input to the pink noise process.
+	|
+
+Ramp Start Time=5
+	~	Year
+	~	Start time for the ramp input.
+	|
+
+Step Height=0
+	~	Dimensionless
+	~	Height of step input to customer orders, as fraction of initial value.
+	|
+
+Sine Amplitude=0
+	~	Dimensionless
+	~	Amplitude of sine wave in customer orders (fraction of mean).
+	|
+
+Step Time 0=5
+	~	Year
+	~	Time for the step input.
+	|
+
+Average Labor Requirements=
+	Labor Requirements/Capital Stock
+	~	People/Capital Unit
+	~	The average number of workers needed to operate each unit of capital.
+	|
+
+Average Life of Capital=
+	20
+	~	Year
+	~	The average life of capital is assumed to be 20 years, a good compromise \
+		for the aggregate of plant and equipment for the economy as a whole.
+	|
+
+Capital Discards=
+	Capital Stock/Average Life of Capital
+	~	Capital Units/Year
+	~	The discard process is first-order with an average life of capital \
+		specified by the user.
+	|
+
+Capital Stock= INTEG (
+	Capital Acquisition-Capital Discards,
+		Capital Acquisition*Average Life of Capital)
+	~	Capital Units
+	~	Capital stock is increased by acquisitions and decreased by discards.
+	|
+
+Decrease in Labor Requirements=
+	Capital Discards*Average Labor Requirements
+	~	People/Year
+	~	Each unit of capital discarded reduces the labor required to operate the \
+		existing capital stock by the average labor requirements.
+	|
+
+Increase in Labor Requirements=
+	Capital Acquisition*Labor Requirements of New Capital
+	~	People/Year
+	~	Each unit of capital added to the stock increases labor requirements by a \
+		certain number of jobs per unit of capital.
+	|
+
+Labor Requirements= INTEG (
+	+Increase in Labor Requirements-Decrease in Labor Requirements,
+		Capital Stock*Labor Requirements of New Capital)
+	~	People
+	~	The total number of workers needed to operate the capital stock.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 100
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Year
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.25
+	~	Year
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Capital Stock
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Labor Requirements,399,333,47,27,3,3,0,0,0,0,0,0
+12,2,48,232,332,8,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(328,332)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(266,332)|
+11,5,48,299,332,6,8,34,3,0,0,1,0,0,0
+10,6,Increase in Labor Requirements,299,362,53,22,40,3,0,0,-1,0,0,0
+12,7,48,575,334,8,8,0,3,0,0,-1,0,0,0
+1,8,10,7,4,0,0,22,0,0,0,-1--1--1,,1|(539,334)|
+1,9,10,1,100,0,0,22,0,0,0,-1--1--1,,1|(472,334)|
+11,10,48,505,334,6,8,34,3,0,0,1,0,0,0
+10,11,Decrease in Labor Requirements,505,364,52,22,40,3,0,0,-1,0,0,0
+10,12,Capital Stock,399,127,47,27,3,3,0,0,0,0,0,0
+12,13,48,232,126,8,8,0,3,0,0,-1,0,0,0
+1,14,16,12,4,0,0,22,0,0,0,-1--1--1,,1|(328,126)|
+1,15,16,13,100,0,0,22,0,0,0,-1--1--1,,1|(266,126)|
+11,16,48,299,126,6,8,34,3,0,0,1,0,0,0
+10,17,Capital Acquisition,299,156,53,22,40,3,0,0,-1,0,0,0
+12,18,48,575,128,8,8,0,3,0,0,-1,0,0,0
+1,19,21,18,4,0,0,22,0,0,0,-1--1--1,,1|(539,128)|
+1,20,21,12,100,0,0,22,0,0,0,-1--1--1,,1|(472,128)|
+11,21,48,505,128,6,8,34,3,0,0,1,0,0,0
+10,22,Capital Discards,505,159,43,23,40,3,0,0,-1,0,0,0
+10,23,Labor Requirements of New Capital,98,321,55,23,8,3,0,0,0,0,0,0
+10,24,Average Labor Requirements,401,239,55,22,8,3,0,0,0,0,0,0
+1,25,23,6,1,0,43,0,0,192,0,-1--1--1,,1|(158,380)|
+1,26,1,24,1,0,43,0,0,192,0,-1--1--1,,1|(386,288)|
+1,27,12,24,1,0,45,0,0,192,0,-1--1--1,,1|(388,187)|
+1,28,24,10,1,0,43,0,0,192,0,-1--1--1,,1|(484,250)|
+1,29,22,11,1,0,43,0,0,192,0,-1--1--1,,1|(633,295)|
+1,30,17,6,1,0,43,0,0,192,0,-1--1--1,,1|(169,246)|
+1,31,12,22,1,0,43,0,0,192,0,-1--1--1,,1|(439,177)|
+10,32,Average Life of Capital,471,47,40,20,8,3,0,0,0,0,0,0
+1,33,32,21,1,0,45,0,0,192,0,-1--1--1,,1|(510,72)|
+10,34,Exogenous Capital Acquisition Rate,223,55,49,29,8,3,0,0,-1,0,0,0
+1,35,34,16,1,0,43,0,0,192,0,-1--1--1,,1|(290,88)|
+10,36,Exogenous Labor Requirements of Capital,80,216,66,33,8,2,1,1,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,37,36,23,1,1,43,0,0,192,0,-1--1--1,,1|(65,250)|
+10,38,Initial Capital Acquisition Rate,74,149,51,26,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,39,38,34,0,1,0,0,0,0,0,-1--1--1,,1|(140,107)|
+10,40,Input,50,73,40,20,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,41,40,34,0,1,0,0,0,0,0,-1--1--1,,1|(125,65)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Exogenous Inputs
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Exogenous Capital Acquisition Rate,279,12,63,25,8,3,0,0,0,0,0,0
+10,2,Input,125,-14,31,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,3,Input,254,212,22,11,0,3,0,0,-1,0,0,0
+10,4,Pink Noise,606,147,40,20,3,3,0,0,0,0,0,0
+12,5,48,738,150,8,8,0,3,0,0,-1,0,0,0
+10,6,White Noise,633,250,40,20,8,3,0,0,0,0,0,0
+10,7,Initial Capital Acquisition Rate,132,38,47,24,8,3,0,0,0,0,0,0
+10,8,Noise Standard Deviation,526,278,40,20,8,3,0,0,0,0,0,0
+10,9,TIME STEP,540,210,54,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,10,Pink Noise,175,162,52,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,11,Noise Start Time,222,133,65,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,12,Pulse Quantity,311,118,58,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,13,Pulse Time,364,142,44,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,14,Ramp End Time,190,301,63,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,15,Ramp Slope,154,243,49,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,16,Ramp Start Time,152,273,65,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,17,Sine Amplitude,367,247,60,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,18,Sine Period,346,275,46,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,19,Step Height,259,316,47,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,20,Step Time,312,296,40,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,21,Time,150,194,30,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,22,TIME STEP,150,219,54,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+11,23,156,696,151,6,8,34,3,0,0,1,0,0,0
+10,24,Change in Pink Noise,696,179,40,20,40,3,0,0,0,0,0,0
+10,25,Noise Correlation Time,763,231,40,20,8,3,0,0,0,0,0,0
+1,26,7,1,0,0,0,0,0,0,0,-1--1--1,,1|(190,27)|
+1,27,11,3,0,0,0,0,0,0,0,-1--1--1,,1|(234,166)|
+1,28,12,3,0,0,0,0,0,0,0,-1--1--1,,1|(286,159)|
+1,29,13,3,0,0,0,0,0,0,0,-1--1--1,,1|(314,173)|
+1,30,14,3,0,0,0,0,0,0,0,-1--1--1,,1|(217,262)|
+1,31,15,3,0,0,0,0,0,0,0,-1--1--1,,1|(203,227)|
+1,32,16,3,0,0,0,0,0,0,0,-1--1--1,,1|(196,246)|
+1,33,17,3,1,0,0,0,0,0,0,-1--1--1,,1|(291,227)|
+1,34,18,3,0,0,0,0,0,0,0,-1--1--1,,1|(305,247)|
+1,35,19,3,0,0,0,0,0,0,0,-1--1--1,,1|(256,270)|
+1,36,20,3,0,0,0,0,0,0,0,-1--1--1,,1|(287,259)|
+1,37,21,3,0,0,0,0,0,0,0,-1--1--1,,1|(198,202)|
+1,38,22,3,0,0,0,0,0,0,0,-1--1--1,,1|(211,215)|
+1,39,2,1,0,0,0,0,0,0,0,-1--1--1,,1|(179,-5)|
+1,40,23,4,4,0,0,22,0,0,0,-1--1--1,,1|(668,151)|
+1,41,23,5,100,0,0,22,0,0,0,-1--1--1,,1|(716,151)|
+1,42,4,24,2,0,0,0,0,0,0,-1--1--1,,1|(655,202)|
+1,43,6,24,2,0,0,0,0,0,0,-1--1--1,,1|(693,217)|
+1,44,25,24,2,0,0,0,0,0,0,-1--1--1,,1|(749,183)|
+1,45,25,6,1,0,0,0,0,0,0,-1--1--1,,1|(693,268)|
+1,46,9,6,1,0,0,0,0,0,0,-1--1--1,,1|(576,238)|
+1,47,8,6,1,0,0,0,0,0,0,-1--1--1,,1|(593,267)|
+1,48,10,3,0,0,0,0,0,0,0,-1--1--1,,1|(208,183)|
+10,49,Exogenous Labor Requirements of Capital,275,416,69,25,8,3,0,0,0,0,0,0
+10,50,Input 0,116,395,37,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,51,Input 0,245,621,28,11,0,3,0,0,-1,0,0,0
+10,52,Pink Noise 0,597,556,40,20,3,3,0,0,0,0,0,0
+12,53,48,729,559,8,8,0,3,0,0,-1,0,0,0
+10,54,White Noise 0,624,659,40,20,8,3,0,0,0,0,0,0
+10,55,Initial Labor Requirements of Capital,113,446,56,24,8,3,0,0,0,0,0,0
+10,56,Noise Standard Deviation 0,517,687,40,20,8,3,0,0,0,0,0,0
+10,57,TIME STEP,531,619,54,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,58,Pink Noise 0,166,571,59,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,59,Noise Start Time 0,217,542,71,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,60,Pulse Quantity 0,318,519,64,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,61,Pulse Time 0,340,618,51,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,62,Ramp End Time 0,181,710,69,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,63,Ramp Slope 0,145,652,55,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,64,Ramp Start Time 0,143,682,72,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,65,Sine Amplitude 0,350,646,66,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,66,Sine Period 0,337,684,53,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,67,Step Height 0,250,725,53,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,68,Step Time 0,303,705,47,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,69,Time,141,603,30,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,70,TIME STEP,141,628,54,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+11,71,156,687,560,6,8,34,3,0,0,1,0,0,0
+10,72,Change in Pink Noise 0,687,588,40,20,40,3,0,0,0,0,0,0
+10,73,Noise Correlation Time 0,754,640,40,20,8,3,0,0,0,0,0,0
+1,74,55,49,0,0,0,0,0,0,0,-1--1--1,,1|(180,433)|
+1,75,59,51,0,0,0,0,0,0,0,-1--1--1,,1|(228,574)|
+1,76,60,51,0,0,0,0,0,0,0,-1--1--1,,1|(285,564)|
+1,77,61,51,0,0,0,0,0,0,0,-1--1--1,,1|(287,619)|
+1,78,62,51,0,0,0,0,0,0,0,-1--1--1,,1|(208,671)|
+1,79,63,51,0,0,0,0,0,0,0,-1--1--1,,1|(191,637)|
+1,80,64,51,0,0,0,0,0,0,0,-1--1--1,,1|(187,655)|
+1,81,65,51,1,0,0,0,0,0,0,-1--1--1,,1|(280,632)|
+1,82,66,51,0,0,0,0,0,0,0,-1--1--1,,1|(296,656)|
+1,83,67,51,0,0,0,0,0,0,0,-1--1--1,,1|(247,679)|
+1,84,68,51,0,0,0,0,0,0,0,-1--1--1,,1|(278,668)|
+1,85,69,51,0,0,0,0,0,0,0,-1--1--1,,1|(186,610)|
+1,86,70,51,0,0,0,0,0,0,0,-1--1--1,,1|(199,624)|
+1,87,50,49,0,0,0,0,0,0,0,-1--1--1,,1|(172,401)|
+1,88,71,52,4,0,0,22,0,0,0,-1--1--1,,1|(659,560)|
+1,89,71,53,100,0,0,22,0,0,0,-1--1--1,,1|(707,560)|
+1,90,52,72,2,0,0,0,0,0,0,-1--1--1,,1|(646,611)|
+1,91,54,72,2,0,0,0,0,0,0,-1--1--1,,1|(684,626)|
+1,92,73,72,2,0,0,0,0,0,0,-1--1--1,,1|(740,592)|
+1,93,73,54,1,0,0,0,0,0,0,-1--1--1,,1|(684,677)|
+1,94,57,54,1,0,0,0,0,0,0,-1--1--1,,1|(567,647)|
+1,95,56,54,1,0,0,0,0,0,0,-1--1--1,,1|(584,676)|
+1,96,58,51,0,0,0,0,0,0,0,-1--1--1,,1|(199,592)|
+10,97,Exponential Growth Rate,400,178,40,20,8,3,0,0,-1,0,0,0
+1,98,97,3,0,0,0,0,0,0,0,-1--1--1,,1|(324,194)|
+10,99,Exponential Growth Time,442,220,40,20,8,3,0,0,-1,0,0,0
+1,100,99,3,0,0,0,0,0,0,0,-1--1--1,,1|(345,215)|
+10,101,Exponential Growth Rate 0,375,551,40,20,8,3,0,0,-1,0,0,0
+1,102,101,51,0,0,0,0,0,0,0,-1--1--1,,1|(307,587)|
+10,103,Exponential Growth Time 0,428,591,40,20,8,3,0,0,-1,0,0,0
+1,104,103,51,0,0,0,0,0,0,0,-1--1--1,,1|(337,605)|
+///---\\\
+:L<%^E!@
+9:neg growth
+22:$,Dollar,Dollars,$s
+22:Capital Unit,Capital Units
+22:Person,People,Persons
+22:Unit,Units
+22:Year,Years
+15:0,0,0,0
+19:100,0
+5:Increase in Labor Requirements

@@ -1,0 +1,110 @@
+********************************************************
+	.NonlinerSmoothing
+********************************************************~
+		
+		Nonlinear Smoothing Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		First-order adaptive expectations with nonlinear time constant.
+		Adapted here to model the memory of layoffs by workers in a firm.
+		Workers adapt to new layoffs very fast, but remember layoffs a long time.
+		Chapter 11.
+	|
+
+Change in Layoff Memory=
+	(Layoff Fraction -  Memory of Layoffs)/Memory Adjustment Time
+	~	(1/Week)/Week
+	~	The memory of layoffs adjusts by first-order exponential smoothing to the \
+		actual fractional layoff rate.
+	|
+
+Layoff Fraction=
+	STEP(0.1,0)-STEP(0.1,4)
+	~	1/Week
+	~	The actual fractional rate of layoffs, exogenous for testing purposes here.
+	|
+
+Memory Adjustment Time=
+	IF THEN ELSE(Layoff Fraction>=Memory of Layoffs,Time to Increase,Time to Decrease)
+	~	Week
+	~	The memory adjustment time is one value when the actual layoff fraction \
+		exceeds the memory and a different (longer, in this case) value when the \
+		actual layoff fraction is less than the memory.  Thus workers adapt to \
+		layoffs very fast but remember them a long time.
+	|
+
+Memory of Layoffs= INTEG (
+	Change in Layoff Memory,
+		0)
+	~	1/Week
+	~	The memory of layoffs.  Initially 0 (no layoffs in memory)
+	|
+
+Time to Decrease=
+	25
+	~	Week
+	~	Workers remember layoffs a long time - and average of 25 weeks in this \
+		test case.
+	|
+
+Time to Increase=
+	1
+	~	Week
+	~	Workers adapt to new layoffs very fast - in one week.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 100
+	~	Week
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = -1
+	~	Week
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Week
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.25
+	~	Week
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96
+10,1,Memory of Layoffs,477,161,40,20,3,3,0,0,0,0,0,0
+12,2,48,334,159,8,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(416,159)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(362,159)|
+11,5,48,389,159,6,8,34,3,0,0,1,0,0,0
+10,6,Change in Layoff Memory,389,196,44,29,40,3,0,0,-1,0,0,0
+10,7,Layoff Fraction,208,239,40,20,8,3,0,0,0,0,0,0
+1,8,7,6,1,0,43,0,0,192,0,-1--1--1,,1|(356,215)|
+1,9,1,6,1,0,45,0,0,192,0,-1--1--1,,1|(448,230)|
+10,10,Memory Adjustment Time,377,282,43,26,8,3,0,0,0,0,0,0
+1,11,10,6,1,0,0,0,0,64,0,-1--1--1,,1|(388,231)|
+1,12,7,10,1,0,0,0,0,64,0,-1--1--1,,1|(297,290)|
+1,13,1,10,1,0,0,0,0,64,0,-1--1--1,,1|(456,273)|
+10,14,Time to Increase,313,349,31,17,8,3,0,0,0,0,0,0
+10,15,Time to Decrease,451,349,38,18,8,3,0,0,0,0,0,0
+1,16,14,10,1,0,0,0,0,64,0,-1--1--1,,1|(350,338)|
+1,17,15,10,1,0,0,0,0,64,0,-1--1--1,,1|(386,313)|
+///---\\\
+:L<%^E!@
+9:Current
+15:0,0,0,0
+19:100,0
+5:Memory of Layoffs

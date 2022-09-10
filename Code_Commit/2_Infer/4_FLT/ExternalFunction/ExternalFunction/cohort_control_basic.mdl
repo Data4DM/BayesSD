@@ -1,0 +1,148 @@
+{UTF-8}
+population shift=
+	COHORT SHIFT(Population by age[AgeUnder1])
+	~	Person
+	~		|
+
+age:
+	AgeUnder1,AgeOlder
+	~	
+	~		|
+
+cohort length[age]=
+	1,14,30,23,1
+	~	Year
+	~		|
+
+population control=
+	COHORT CONTROL(Population by age[AgeUnder1], cohort length[AgeUnder1], births, ELMCOUNT\
+		(age), 1)
+	~	Person
+	~		~	:SUPPLEMENTARY 
+	|
+
+initial population[age]=
+	1.69869,14.622,7.30558,0.352629,0.00406711
+	~	Person
+	~		|
+
+mortality by age[age]=
+	0.1,0.01,0.03,0.1,0.4
+	~	1/Year
+	~		|
+
+deaths[age]=
+	Population by age[age] * mortality by age[age]
+	~	Person/Year
+	~		|
+
+fertility by age[age]=
+	0,0,0.25,0,0
+	~	1/Year
+	~		|
+
+AgeOlder : Age1To14,Age15To44,Age45To67,Age68AndOver
+	~	
+	~		|
+
+births = SUM(Population by age[age!]*fertility by age[age!])
+	~	Person/Year
+	~		|
+
+Population by age[AgeUnder1]  = INTEG(births-deaths[AgeUnder1],initial population[AgeUnder1\
+		]) ~~|
+Population by age[AgeOlder]  = INTEG(-deaths[AgeOlder],initial population[AgeOlder])
+	~	Person
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP 
+	~	Year [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.0625
+	~	Year [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Population by age,495,200,40,20,3,3,0,0,0,0,0,0
+12,2,48,338,200,10,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(431,200)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(371,200)|
+11,5,48,401,200,6,8,34,3,0,0,1,0,0,0
+10,6,births,401,219,19,11,40,3,0,0,-1,0,0,0
+12,7,48,679,200,10,8,0,3,0,0,-1,0,0,0
+1,8,10,7,4,0,0,22,0,0,0,-1--1--1,,1|(638,200)|
+1,9,10,1,100,0,0,22,0,0,0,-1--1--1,,1|(565,200)|
+11,10,48,602,200,6,8,34,3,0,0,1,0,0,0
+10,11,deaths,602,219,22,11,40,3,0,0,-1,0,0,0
+10,12,mortality by age,660,146,50,11,8,3,0,0,0,0,0,0
+1,13,12,10,1,0,0,0,0,64,0,-1--1--1,,1|(615,170)|
+10,14,fertility by age,339,151,44,11,8,3,0,0,0,0,0,0
+1,15,14,5,1,0,0,0,0,64,0,-1--1--1,,1|(361,170)|
+1,16,1,10,1,0,0,0,0,64,0,-1--1--1,,1|(549,156)|
+10,17,initial population,495,239,56,11,8,3,0,0,-1,0,0,0
+1,18,17,1,0,0,0,0,0,64,1,-1--1--1,,1|(495,231)|
+1,19,1,5,1,0,0,0,0,64,0,-1--1--1,,1|(458,155)|
+10,20,population control,487,115,37,15,8,131,0,0,0,0,0,0
+1,21,1,20,1,0,0,0,0,64,0,-1--1--1,,1|(503,156)|
+1,22,5,20,1,0,0,0,0,64,0,-1--1--1,,1|(407,156)|
+10,23,cohort length,591,96,41,11,8,3,0,0,-1,0,0,0
+1,24,23,20,0,0,0,0,0,64,0,-1--1--1,,1|(543,104)|
+10,25,population shift,584,125,34,16,8,131,0,0,0,0,0,0
+1,26,1,25,1,0,0,0,0,64,0,-1--1--1,,1|(516,151)|
+///---\\\
+:L<%^E!@
+1:Current.vdf
+8:PopPyramid.vgd
+9:Current
+22:$,Dollar,Dollars,$s
+22:Day,Days
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+15:0,0,0,0,0,0
+19:100,0
+27:2,
+34:0,
+4:Time
+5:Population by age[age]
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:0
+41:0
+24:1.25
+25:100
+26:62.25
+6:Age15To44
+6:Age1To14
+6:Age45To67
+6:Age68AndOver
+6:AgeUnder1

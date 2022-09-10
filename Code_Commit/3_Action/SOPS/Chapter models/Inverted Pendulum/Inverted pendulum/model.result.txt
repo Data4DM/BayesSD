@@ -1,0 +1,15 @@
+InvertedPendulum.cpp
+InvertedPendulumInfo.cpp
+InvertedPendulumSim.cpp
+Generating Code...
+Microsoft (R) Incremental Linker Version 10.00.30319.01
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:InvertedPendulum.dll 
+/dll 
+/implib:InvertedPendulum.lib 
+/OUT:InvertedPendulum.csim 
+InvertedPendulum.obj 
+InvertedPendulumInfo.obj 
+InvertedPendulumSim.obj 
+   Creating library InvertedPendulum.lib and object InvertedPendulum.exp

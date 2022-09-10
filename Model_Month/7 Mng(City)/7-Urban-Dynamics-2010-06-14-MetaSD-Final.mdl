@@ -1,0 +1,3327 @@
+{UTF-8}
+new enterprise initial=
+	200
+	~	production unit
+	~		|
+
+worker housing obsolescence=
+	Worker Housing*worker housing obsolescense norm*worker housing obsolescense mult
+	~	housing unit/year
+	~		|
+
+worker housing construction=
+	worker housing const des*labor construction ratio
+	~	housing unit/year
+	~		|
+
+declining industry demise=
+	(Declining Industry*declining industry demise norm*declining industry demise mult)+declining industry demolition program
+	~	productive units/year
+	~		|
+
+declining industry initial=
+	100
+	~	production unit
+	~		|
+
+underemployed housing initial=
+	1100
+	~	housing units
+	~		|
+
+underemployed initial=
+	1200
+	~	workers
+	~		|
+
+slum housing demolition=
+	(Underemp Housing*slum housing demolition norm*slum housing demolition mult)+slum housing demolition program
+	~	housing unit/year
+	~		|
+
+underemp departures=
+	Underemployed*underemp departures mult*underemp departures norm
+	~	worker/year
+	~		|
+
+underemployed arrivals=
+	(Underemployed+Labor)*underemp arrivals normal*Attract Migr Mult Perc
+	~	worker/year
+	~		|
+
+underemp births=
+	Underemployed*underemp birth rate
+	~	person/year
+	~		|
+
+********************************************************
+	.1urban
+********************************************************~
+		
+		
+		      Urban dynamics model from the book appendix
+		      Copyright 1974 Jay W. Forrester
+	|
+
+********************************************************
+	.City
+********************************************************~
+		
+		
+		           City Development Programs
+	|
+
+underemp to labor net=underemp to labor-labor to underemp
+	~	worker/year
+	~	  Underemployed to Labor Net
+	~	:SUPPLEMENTARY 
+	|
+
+declining industry demolition program=
+       declining industry demolition rate*Declining Industry*
+       IF THEN ELSE(Time >= SWITCH TIME 7,1,0)
+	~	production unit/year
+	~	  Declining Industry Demolition Program
+	|
+
+declining industry demolition rate=GAME(0)
+	~	fraction/year
+	~	  Declining Industry Demolition Ratio
+	|
+
+labor training prog=LABOR TRAINING RATE*Labor*
+         IF THEN ELSE(Time >= SWITCH TIME 2,1,0)
+	~	worker/year
+	~	  Labor Training ProGram
+	|
+
+LABOR TRAINING RATE=0
+	~	fraction/year
+	~	  Labor Training Rate
+	|
+
+low cost hous prog=low cost housing constr des*labor construction ratio
+	~	housing unit/year
+	~	  Low Cost Housing Program
+	|
+
+low cost housing constr des=
+      low cost housing prog coeff*Underemployed*worker housing land mult*
+      IF THEN ELSE(Time >= SWITCH TIME 10,1,0)
+	~	housing unit/year
+	~	   Low Cost Housing Construction Desired
+	|
+
+low cost housing prog coeff=GAME(0)
+	~	housing unit/worker/year
+	~	  Low Cost Housing Program Coefficient
+	|
+
+NEW ENTERPRISE CONSTR RATE=GAME(0)
+	~	fraction/year
+	~	  New Enterprise Construction Rate
+	|
+
+new enterprise construction program=
+    NEW ENTERPRISE CONSTR RATE*production units total*
+    enterprise land mult*
+    IF THEN ELSE(Time >= SWITCH TIME 6,1,0)
+	~	production unit/year
+	~	   New Enterprise Construction Program
+	|
+
+premium housing const prog=
+     premium housing construction ratio*
+        Premium Housing*premium housing land mult*
+     IF THEN ELSE(Time >= SWITCH TIME 3,1,0)
+	~	housing unit/year
+	~	  Premium Housing Construction Program
+	|
+
+premium housing construction ratio=0
+	~	fraction/year
+	~	  Premium Housing Construction Ratio
+	|
+
+SLUM HOUSING DEMOLITION RATE=GAME(0)
+	~	fraction/year
+	~	  Slum Housing Demolition Rate
+	|
+
+slum housing demolition program=
+        SLUM HOUSING DEMOLITION RATE*Underemp Housing*
+        IF THEN ELSE(Time >= SWITCH TIME 5,1,0)
+	~	housing unit/year
+	~	  Slum Housing Demolition Program
+	|
+
+SWITCH TIME 1=0
+	~	year
+	~	  SWitch Time 1
+	|
+
+SWITCH TIME 10=0
+	~	year
+	~	  Switch Time 10
+	|
+
+SWITCH TIME 2=0
+	~	year
+	~	  SWitch Time 2
+	|
+
+SWITCH TIME 3=0
+	~	year
+	~	  SWitch Time 3
+	|
+
+SWITCH TIME 4=0
+	~	year
+	~	  SWitch Time 4
+	|
+
+SWITCH TIME 5=0
+	~	year
+	~	  SWitch Time 5
+	|
+
+SWITCH TIME 6=0
+	~	year
+	~	  SWitch Time 6
+	|
+
+SWITCH TIME 7=0
+	~	year
+	~	  SWitch Time 7
+	|
+
+SWITCH TIME 8=0
+	~	year
+	~	  SWitch Time 8
+	|
+
+SWITCH TIME 9=0
+	~	year
+	~	  SWitch Time 9
+	|
+
+tax per cap subsidy=tax per cap subsidy size*
+        IF THEN ELSE(Time >= SWITCH TIME 8,1,0)
+	~	$/person/year
+	~	  Tax Per Capita Subsidy Program
+	|
+
+tax per cap subsidy size=0
+	~	$/person/year
+	~	  Tax Per Capita Subsidy
+	|
+
+underemp job program coeff=GAME(0)
+	~	dimensionless
+	~	  Underemployed Job Program Coefficient
+	|
+
+underemp training prog=underemp training rate*Underemployed*
+           IF THEN ELSE(Time >= SWITCH TIME 1,1,0)
+	~	worker/year
+	~	  Underemployed Training Program
+	|
+
+underemp training rate=GAME(0)
+	~	fraction/year
+	~	  Underemployed Training Rate
+	|
+
+underemployed job program=
+        underemp job program coeff*Underemployed*
+        IF THEN ELSE(Time >= SWITCH TIME 9,1,0)
+	~	worker
+	~	  Underemployed Job Program
+	|
+
+worker housing const prog=
+           WORKER HOUSING CONSTR RATIO*housing units total*
+           worker housing land mult*
+           IF THEN ELSE(Time >= SWITCH TIME 4,1,0)
+	~	housing unit/year
+	~	   Worker Housing Construction Program
+	|
+
+WORKER HOUSING CONSTR RATIO=0
+	~	fraction/year
+	~	  Worker Housing Construction Ratio
+	|
+
+********************************************************
+	.Condition
+********************************************************~
+		
+		
+		  Supplementary measurements of the condition of the city
+		         used as 
+		  aids for presentation
+	|
+
+percent underemp = 100 * Underemployed*underemp family size/population
+	~	Dmnl
+	~	   The percentage of the population that is underemployed.
+	~	:SUPPLEMENTARY 
+	|
+
+underemployed crowding = 100*underemp housing ratio
+	~	Dmnl
+	~	   The level of crowding among the unemployed.
+	~	:SUPPLEMENTARY 
+	|
+
+unemployment rate = 100 * (1 - (labor jobs + underemployed jobs + Manager Prof Jobs)/
+               (Labor + Manager Professional + Underemployed))
+	~	Dmnl
+	~	   The unemployment rate.
+	~	:SUPPLEMENTARY 
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		
+		
+		         Control Cards
+	|
+
+FINAL TIME  = 250
+	~	year
+	~	   End of simulation
+	|
+
+INITIAL TIME  = 0
+	~	year
+	~	   Initial year of simulation.
+	|
+
+SAVEPER  = 5
+	~	year
+	~	   Frequency with which data are saved
+	|
+
+TIME STEP  = 1
+	~	year
+	~	   Solution interval.
+	|
+
+********************************************************
+	.Decline
+********************************************************~
+		
+		
+		         DecliningIUndustry Sector
+	|
+
+Declining Industry= INTEG (
+	mature business decline-declining industry demise,
+		declining industry initial)
+	~	production unit
+	~	  Declining Industry
+	|
+
+declining industry decline factor=1
+	~	dimensionless
+	~	  Declining Industry Decline Factor
+	|
+
+declining industry demise mult=
+        declining industry from enterprise mult*
+        declining industry from land mult*
+        declining industry decline factor
+	~	dimensionless
+	~	  Declining Industry Decline Multiplier
+	|
+
+declining industry demise norm=0.03
+	~	fraction/year
+	~	  Declining Industry Decline Normal
+	|
+
+declining industry from enterprise mult=
+       declining industry from enterprise mult tab(
+             1.44*LN(enterprise multiplier))
+	~	dimensionless
+	~	  Declining Undustry from Enterprise Multiplier
+	|
+
+declining industry from enterprise mult tab(-3,-2,-1,0,1,2,3,
+0.4,0.5,0.7,1,1.6,2.4,4)
+	~	dimensionless
+	~	  Declining Industry from Enterprise Multiplier 
+		      Table
+	|
+
+declining industry from land mult=declining industry from land mult tab(
+            land fraction occupied)
+	~	dimensionless
+	~	  Declining Industry from Land Multiplier
+	|
+
+declining industry from land mult tab(0.8,0.85,0.9,0.95,1,
+1,1.2,1.6,2.2,6)
+	~	dimensionless
+	~	  Declining Industry from Land Multiplier
+		      Table
+	|
+
+********************************************************
+	.Enterprise
+********************************************************~
+		
+		
+		    New Enterprise
+	|
+
+New Enterprise= INTEG (
+	(new enterprise Construction-
+	       new enterprise decline),
+		new enterprise initial)
+	~	production unit
+	~	  New Enterprise
+	|
+
+declining industry construction factor=0.3
+	~	dimensionless
+	~	  Declining Industry Construction Factor
+	|
+
+enterprise factor=1
+	~	dimensionless
+	~	  Enterprise Factor
+	|
+
+enterprise growth mult=enterprise growth mult tab(
+            new enterprise growth rate)
+	~	dimensionless
+	~	  Enterprise from Growth Multiplier
+	|
+
+enterprise growth mult tab(-0.1,-0.05,0,0.05,0.1,0.15,
+0.2,0.6,1,1.4,1.8,2.2)
+	~	dimensionless
+	~	  Enterprise from growth Multiplier Table
+	|
+
+enterprise labor job mult tab(0,0.25,0.5,0.75,1,1.25,1.5,1.75,2,
+0,0.05,0.15,0.4,1,1.5,1.7,1.8,1.8)
+	~	dimensionless
+	~	  Enterprise from Labor Job
+		      Multiplier Table
+	|
+
+enterprise labor job mult=enterprise labor job mult tab(Labor Ratio Perc)
+	~	dimensionless
+	~	  Enterprise from Labor Job
+		      Multiplier
+	|
+
+enterprise land mult=enterprise land mult tab(land fraction occupied)
+	~	dimensionless
+	~	  Enterprise from Land Multiplier
+	|
+
+enterprise land mult tab(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,
+1,1.15,1.3,1.4,1.45,1.4,1.3,1,0.7,0.4,0)
+	~	dimensionless
+	~	  Enterprise from Land Multiplier Table
+	|
+
+enterprise manager prof job mult=enterprise manager prof job mult tab(
+            manager job ratio)
+	~	dimensionless
+	~	  Enterprise from Manager-professional job
+		      Multiplier
+	|
+
+enterprise manager prof job mult tab(0,0.25,0.5,0.75,1,1.25,1.5,1.75,2,
+0.1,0.15,0.3,0.5,1,1.4,1.7,1.9,2)
+	~	dimensionless
+	~	  Enterprise from Manager-professional job
+		      Multiplier Table
+	|
+
+enterprise multiplier=enterprise manager prof job mult*
+        enterprise land mult*
+        enterprise labor job mult*
+        enterprise tax mult*
+        enterprise growth mult*
+        enterprise factor
+	~	dimensionless
+	~	  Enterprise Multiplier
+	|
+
+enterprise tax mult=enterprise tax mult tab(1.44*LN(tax ratio))
+	~	dimensionless
+	~	  Enterprise from Tax Multiplier
+	|
+
+enterprise tax mult tab(-2,-1,0,1,2,3,4,
+1.3,1.2,1,0.8,0.5,0.25,0.1)
+	~	dimensionless
+	~	  Enterprise from Tax Multiplier Table
+	|
+
+mature business construction factor=0.5
+	~	dimensionless
+	~	  Mature Business Construction Factor
+	|
+
+New Enterprise Average= INTEG (
+	(New Enterprise-New Enterprise Average)/new enterprise average time,
+		New Enterprise*(1-new enterprise growth rate initial*new enterprise average time))
+	~	production unit
+	~	Creates a postive feedback loop in which the growth of new enterprise \
+		stimulates the growth of further new enteprise via the enterprise \
+		multiplier
+	|
+
+new enterprise average time=10
+	~	year
+	~	  New Industry Average Time
+	|
+
+new enterprise Construction=new enterprise construction desired*
+             labor construction ratio
+	~	production unit/year
+	~	  New Enterprise Construction
+	|
+
+new enterprise construction desired=new enterprise construction norm*
+       (new enterprise construction factor*New Enterprise+
+        mature business construction factor*Mature Business+
+        declining industry construction factor*Declining Industry)*
+        enterprise multiplier+new enterprise construction program
+	~	production unit/year
+	~	  New Enterprise Construction Desired
+	|
+
+new enterprise construction factor=1
+	~	dimensionless
+	~	  New Enterprise Construction Factor
+	|
+
+new enterprise construction norm=0.05
+	~	fraction/year
+	~	  New Enterprise construction Normal
+	|
+
+new enterprise growth rate=(New Enterprise-New Enterprise Average)/
+      (New Enterprise Average*new enterprise average time)
+	~	fraction/year
+	~	  New Enterprise Growth Rate
+	|
+
+new enterprise growth rate initial=0.03
+	~	fraction/year
+	~	  New Industry Growth Rate Initial
+	|
+
+********************************************************
+	.Job
+********************************************************~
+		
+		
+		           Job Sector
+	|
+
+declining industry labor=10
+	~	worker/production unit
+	~	  Declining Enterprise Labor
+	|
+
+labor construction ratio=labor construction ratio tab(labor ratio)
+	~	dimensionless
+	~	  Labor Construction Ratio
+	|
+
+labor construction ratio tab(0,0.5,1,1.5,2,
+0,0.5,0.9,1.1,1.15)
+	~	dimensionless
+	~	  Labor Construction Ratio Table
+	|
+
+labor desired construct=premium housing construct desired*
+             premium housing constr labor+
+             worker housing const des*
+             worker housing constr labor+
+               new enterprise construction desired*
+               new enterprise constr labor+
+            low cost housing constr des*
+             low cost housing constr labor
+	~	worker
+	~	  Labor Desired for Construction
+	|
+
+labor desired industry=New Enterprise*new enterprise labor+
+    Mature Business*mature business labor+
+    Declining Industry*declining industry labor
+	~	worker
+	~	  Labor Desired for Industry
+	|
+
+labor jobs=labor desired construct+labor desired industry
+	~	worker
+	~	  Labor Jobs
+	|
+
+labor ratio=Labor/labor jobs
+	~	dimensionless
+	~	  Labor Ratio
+	|
+
+Labor Ratio Perc=INTEG((labor ratio-Labor Ratio Perc)/
+              labor ratio perception time,1)
+	~	dimensionless
+	~	  Labor Ratio Perceived
+	|
+
+labor ratio perception time=5
+	~	year
+	~	  Labor Ratio Perception Time
+	|
+
+low cost housing constr labor=0.6
+	~	worker*year/housing unit
+	~	  Low Cost Housing Constrtuction Labor
+	|
+
+mature business labor=15
+	~	worker/production unit
+	~	  Mature Business Labor
+	|
+
+new enterprise constr labor=20
+	~	worker*year/production unit
+	~	  New Enterprise Construction Labor
+	|
+
+new enterprise labor=20
+	~	worker/production unit
+	~	  New Enterprise Labor
+	|
+
+premium housing constr labor=2
+	~	worker*year/housing unit
+	~	  Premium Housing Constrtuction Labor
+	|
+
+underemp ratio=Underemployed/underemployed jobs
+	~	dimensionless
+	~	  Underemployed Ratio
+	|
+
+underemployed jobs=labor jobs*underemployed labor job ratio+
+       underemployed job program
+	~	worker
+	~	  Underemployed Jobs
+	|
+
+underemployed labor job ratio=underemployed labor job ratio tab(labor ratio)
+	~	dimensionless
+	~	  Underemployed Labor Job Ratio
+	|
+
+underemployed labor job ratio tab(0,0.5,1,1.5,2,
+1.15,0.8,0.5,0.25,0.1)
+	~	dimensionless
+	~	  Underemployed Labor Job Ratio Table
+	|
+
+worker housing constr labor=1
+	~	worker*year/housing unit
+	~	  Worker Housing Constrtuction Labor
+	|
+
+********************************************************
+	.Labor
+********************************************************~
+		
+		
+		               Labor Sector
+	|
+
+Labor= INTEG (
+	(underemp to labor+labor birth-labor to manager+
+	           labor arrival-labor departure-labor to underemp),
+		14000)
+	~	worker
+	~	  Labor
+	|
+
+labor arrival=
+	labor arrival normal*Labor*
+	        Labor Arrival Mult Perc
+	~	worker/year
+	~	  Labor Arrivals
+	|
+
+Underemp to Labor Perc=INTEG(
+            (underemp to labor-Underemp to Labor Perc)/
+              underemp to labor perc time,75)
+	~	worker/year
+	~	  Underemployed to Labor Perceived
+	|
+
+declining industry management=1
+	~	worker/production unit
+	~	  Declining Industry Management
+	|
+
+labor arrival factor=1
+	~	dimensionless
+	~	  Labor Arrival Factor
+	|
+
+labor arrival housing mult=labor arrival housing mult tab(
+         labor housing ratio)
+	~	dimensionless
+	~	  Labor Arrival from Housing Multiplier
+	|
+
+labor arrival housing mult tab(0,0.5,1,1.5,2,2.5,3,
+1.3,1.2,1,0.5,0.2,0.1,0.05)
+	~	dimensionless
+	~	  Labor Arrival from Housing Multiplier
+	|
+
+labor arrival jobs mult=labor arrival jobs mult tab(labor ratio)
+	~	dimensionless
+	~	  Labor Arrival from Jobs Multiplier
+	|
+
+labor arrival mult=labor arrival jobs mult*labor arrival underemp mult*
+             labor arrival tax mult*labor arrival housing mult*
+             labor arrival factor
+	~	dimensionless
+	~	  Labor Arrival Multiplier
+	|
+
+labor arrival jobs mult tab(0,0.25,0.5,0.75,1,1.25,1.5,1.75,2,
+2.6,2.6,2.4,1.8,1,0.4,0.2,0.1,0.05)
+	~	dimensionless
+	~	  Labor Arrival from Jobs Multiplier Table
+	|
+
+Labor Arrival Mult Perc=INTEG((labor arrival mult-Labor Arrival Mult Perc)
+           /labor arrival mult perc tab,1)
+	~	dimensionless
+	~	  Labor Arrival Multiplier Perceived
+	|
+
+labor arrival normal=0.03
+	~	fraction/year
+	~	  Labor Arrivals Normal
+	|
+
+labor arrival mult perc tab=15
+	~	year
+	~	  Labor Arrival Multiplier Perception Time
+	|
+
+labor arrival tax mult=labor arrival tax mult tab(1.44*LN(tax ratio))
+	~	dimensionless
+	~	  Labor Arrivals from Tax Multiplier
+	|
+
+labor arrival underemp mult=labor arrival underemp mult Tab(labor underemp ratio)
+	~	dimensionless
+	~	  Labor Arrivals from Underembloyed Multiplier
+	|
+
+labor arrival tax mult tab(-2,0,2,4,
+1.2,1,0.7,0.3)
+	~	dimensionless
+	~	  Labor Arrivals from Tax Multiplier Table
+	|
+
+labor arrival underemp mult Tab(0,1,2,3,4,5,
+0.4,0.8,1,1.2,1.3,1.3)
+	~	dimensionless
+	~	  Labor Arrivals from Underembloyed Multiplier
+		      Table
+	|
+
+labor birth=Labor*labor birth rate
+	~	worker/year
+	~	  Labor Births
+	|
+
+labor birth rate=0.01
+	~	fraction/year
+	~	  Labor Birth Rate
+	|
+
+labor daparture mult=labor daparture mult tab(1.44*LN(labor arrival mult))
+	~	dimensionless
+	~	  Labor Departure Multiplier
+	|
+
+labor daparture mult tab(-3,-2,-1,0,1,2,3,
+8,4,2,1,0.5,0.25,0.125)
+	~	dimensionless
+	~	  Labor Departure Multiplier Table.
+	|
+
+labor daparture normal=0.02
+	~	fraction/year
+	~	  Labor departure Normal
+	|
+
+labor departure=labor daparture normal*Labor*labor daparture mult
+	~	worker/year
+	~	  Labor Departure
+	|
+
+labor edu mult=labor edu mult tab(tax per cap ratio)
+	~	dimensionless
+	~	  Labor Educational Multiplier
+	|
+
+labor edu mult tab(0,0.5,1,1.5,2,2.5,3,
+0.2,0.7,1,1.3,1.5,1.6,1.7)
+	~	dimensionless
+	~	  Labor Educational Multiplier Table
+	|
+
+labor housing ratio=(Labor*labor family size)/(Worker Housing*
+            worker housing pop density)
+	~	dimensionless
+	~	  Labor Housing Ratio
+	|
+
+labor layoff frac=labor layoff frac Tab(labor ratio)
+	~	fraction/year
+	~	  Labor Layoff Fraction
+	|
+
+labor layoff frac Tab(0,0.5,1,1.5,2,
+0,0.01,0.03,0.1,0.3)
+	~	fraction/year
+	~	  Labor Layoff Fraction Table
+	|
+
+labor mob fact=1
+	~	dimensionless
+	~	  Labor Mobility Factor
+	|
+
+labor mob mult=manage supply mult*manage labor mult*
+            labor edu mult*labor mob fact
+	~	dimensionless
+	~	  Labor Mobility Multiplier
+	|
+
+Labor Mob Mult Perc=INTEG((labor mob mult-Labor Mob Mult Perc)/
+        labor mob mult perc time,1)
+	~	dimensionless
+	~	  Labor Mobility Multiplier Perceived
+	|
+
+labor mob mult perc time=15
+	~	year
+	~	  Labor Mobility Multiplier Perception Time
+	|
+
+labor supply mult=labor supply mult tab(labor ratio)
+	~	dimensionless
+	~	  Labor Supply Multiplier
+	|
+
+labor to manager=labor to manager norm*Labor*
+         Labor Mob Mult Perc+labor training prog
+	~	worker/year
+	~	  Labor To Manager
+	|
+
+labor supply mult tab(0,0.5,1,1.5,2,
+2.4,2,1,0.4,0.2)
+	~	dimensionless
+	~	  Labor Supply Multiplier Table
+	|
+
+labor to manager norm=0.02
+	~	fraction/year
+	~	  Labor to Manager Normal
+	|
+
+labor to underemp=Labor*labor layoff frac
+	~	worker/year
+	~	  Labor To Underemployed
+	|
+
+labor unedermp mult=labor underemp mult tab(labor underemp ratio)
+	~	dimensionless
+	~	  Labor Underemployed Multiplier
+	|
+
+labor underemp mult tab(0,1,2,3,4,5,
+0.2,0.7,1,1.2,1.3,1.4)
+	~	dimensionless
+	~	  Labor Underemployed Multiplier Table
+	|
+
+labor underemp ratio=Labor/Underemployed
+	~	dimensionless
+	~	  Labor Underemployed Ration
+	|
+
+manage labor mult=manage labor mult tab(manager labor ratio)
+	~	dimensionless
+	~	  Manager Labor Multiplier
+	|
+
+manage labor mult tab(0,0.05,0.1,0.15,0.2,
+0.2,0.7,1,1.2,1.3)
+	~	dimensionless
+	~	  Manager Labor Multiplier Table
+	|
+
+manage supply mult=manage supply mult tab(manager job ratio)
+	~	dimensionless
+	~	  Managment Supply Multiplier
+	|
+
+manage supply mult tab(0,0.25,0.5,0.75,1,1.25,1.5,1.75,2,
+2.3,2.2,2,1.6,1,0.5,0.2,0.1,0.05)
+	~	dimensionless
+	~	  Manager Supply Multiplier Table
+	|
+
+manager job ratio=Manager Professional/Manager Prof Jobs
+	~	dimensionless
+	~	  Manager job Ratio
+	|
+
+manager labor ratio=Manager Professional/Labor
+	~	dimensionless
+	~	  Manager Labor Ration
+	|
+
+Manager Prof Jobs=(New Enterprise*new enterprise management)+
+            (Mature Business*mature business management)+
+            (Declining Industry*declining industry management)
+	~	worker
+	~	  Managerial and professional Jobs
+	|
+
+mature business management=2
+	~	worker/production unit
+	~	  Mature Business Management
+	|
+
+new enterprise management=4
+	~	worker/production unit
+	~	  New Enterprise Management
+	|
+
+underemp edu mult=underemp edu mult tab(tax per cap ratio)
+	~	dimensionless
+	~	  Underemployed Educational Multiplier
+	|
+
+underemp edu mult tab(0,0.5,1,1.5,2,2.5,3,
+0.2,0.7,1,1.3,1.5,1.6,1.7)
+	~	dimensionless
+	~	  Underemployed Educational Multiplier Table
+	|
+
+underemp fract working=underemp fract working tab(underemp ratio)
+	~	fraction
+	~	  Underemployed Fraction Working
+	|
+
+underemp fract working tab(0,1,2,3,4,
+0.9,0.8,0.5,0.33,0.25)
+	~	fraction
+	~	  Underemployed Fraction Working Table
+	|
+
+underemp mob factor=1
+	~	dimensionless
+	~	  Underemployed Mobility Factor
+	|
+
+underemp mob mult=labor supply mult*labor unedermp mult*
+           underemp edu mult*underemp mob factor
+	~	dimensionless
+	~	  Underemployed Mobility Multiplier
+	|
+
+underemp mob mult perc time=10
+	~	year
+	~	  Underemployed Mobility Multiplier Perception
+		      Time
+	|
+
+Underemp Mob Mult Perc=INTEG((underemp mob mult-Underemp Mob Mult Perc)/
+         underemp mob mult perc time,1)
+	~	dimensionless
+	~	  Underemployed Mobility Multiplier Percieved
+	|
+
+underemp mobility=Underemp to Labor Perc/Underemployed
+	~	fraction/year
+	~	  Underemployed Mobility
+	|
+
+underemp mobility norm=0.1
+	~	fraction/year
+	~	  Underemployed Mobility Normal
+	|
+
+underemp to labor=(underemp mobility norm*
+        underemp working*Underemp Mob Mult Perc)+
+        underemp training prog
+	~	worker/year
+	~	  Underemployed to Labor
+	|
+
+underemp to labor perc time=10
+	~	year
+	~	  Underemployed to Labor Perception Time
+	|
+
+underemp working=Underemployed*underemp fract working
+	~	worker
+	~	  Underemployed Working
+	|
+
+worker housing pop density=6
+	~	person/housing unit
+	~	  Worker Housing Population Density
+	|
+
+********************************************************
+	.Land
+********************************************************~
+		
+		
+		              Land Utilization
+	|
+
+housing units total=Premium Housing+Worker Housing+Underemp Housing
+	~	housing unit
+	~	  Housing Units Total
+	|
+
+land fraction occupied=(housing units total*land per house+
+          production units total*land per production unit)/
+           TOTAL LAND AREA
+	~	fraction
+	~	  Land Fraction Occupied
+	|
+
+land per house=0.1
+	~	acres/housing unit
+	~	  Land Per House
+	|
+
+land per production unit=0.2
+	~	acres/production unit
+	~	  Land Per Production unit
+	|
+
+production units total=New Enterprise+Mature Business+Declining Industry
+	~	production unit
+	~	  Production Units Total
+	|
+
+TOTAL LAND AREA=100000
+	~	acres
+	~	  total land AREA
+	|
+
+********************************************************
+	.Manager
+********************************************************~
+		
+		
+		             Manager-Professional Sector
+	|
+
+manager prof arrivals=
+	manager prof arrival norm*Manager Professional*
+	        Manager Prof Arriv Mult Perc
+	~	worker/year
+	~	  Manager-professional Arrivals
+	|
+
+Manager Professional= INTEG (
+	(labor to manager+manager prof birth+
+	        manager prof arrivals-manager prof depart),
+		3900)
+	~	worker
+	~	  Manager-Professionals
+	|
+
+manager prof arriv factor=1
+	~	dimensionless
+	~	  Manager-professional Arrival Factor
+	|
+
+manager prof arriv hous mult=manager prof arriv housing mult tab
+          (manager prof hous ratio)
+	~	dimensionless
+	~	  Manager-professional Arrivals from Housing
+		      Multiplier
+	|
+
+manager prof arriv housing mult tab(0,0.5,1,1.5,2,2.5,3,
+1.3,1.2,1,0.5,0.2,0.1,0.05)
+	~	dimensionless
+	~	  Manager-professional Arrivals from Housing
+		      Multiplier Table
+	|
+
+manager prof arriv job mult=manager prof arriv job mult tab(manager job ratio)
+	~	dimensionless
+	~	  Manager-professional Arrival from Jobs 
+		      Multiplier
+	|
+
+manager prof arriv job mult tab(0,0.25,0.5,0.75,1,1.25,1.5,1.75,2,
+2.7,2.6,2.4,2,1,0.4,0.2,0.1,0.05)
+	~	dimensionless
+	~	  Manager-professional Arrival from Jobs 
+		      Multiplier Table
+	|
+
+manager prof arriv mult=manager prof arriv job mult*
+        manager prof arriv pop mult*
+        manager prof arriv tax mult*
+        manager prof arriv hous mult*
+        manager prof arriv factor
+	~	dimensionless
+	~	  Manager-professional Arrival Multiplier
+	|
+
+Manager Prof Arriv Mult Perc=
+    INTEG((manager prof arriv mult-Manager Prof Arriv Mult Perc)/
+        manager prof arriv mult perc time,1)
+	~	dimensionless
+	~	  Manager-professional Arrival Multiplied 
+		      Percieved
+	|
+
+manager prof arriv pop mult=manager prof arriv pop mult tab(
+               manager prof ratio)
+	~	dimensionless
+	~	  Manager-professional Arrivals from
+		      Population Multiplier
+	|
+
+manager prof arriv mult perc time=10
+	~	year
+	~	  Manager-professional Arrival Multiplier
+		      Perception Time
+	|
+
+manager prof arriv pop mult tab(0,0.02,0.04,0.06,0.08,0.1,
+0.3,0.7,1,1.2,1.3,1.3)
+	~	dimensionless
+	~	  Manager-professional Arrivals from
+		      Population Multiplier Table
+	|
+
+manager prof arriv tax mult=manager prof arriv tax mult tab(
+             1.44*LN(tax ratio))
+	~	dimensionless
+	~	  Manager-professional Arrival from Tax 
+		      Multiplier
+	|
+
+manager prof arriv tax mult tab(-2,0,2,4,
+1.4,1,0.7,0.3)
+	~	dimensionless
+	~	  Manager-professional Arrival from Tax 
+		      Multiplier Table
+	|
+
+manager prof arrival norm=0.03
+	~	fraction/year
+	~	  Manager-professional Arrivals Normal
+	|
+
+manager prof birth=Manager Professional*manager prof birth rate
+	~	worker/year
+	~	  Manager-Professional Births
+	|
+
+manager prof birth rate=0.0075
+	~	fraction/year
+	~	  Manager-Professional Birth Rate
+	|
+
+manager prof depart=manager prof depart norm*Manager Professional*
+            manager prof depart mult
+	~	worker/year
+	~	  Manaeger-professional Departures
+	|
+
+manager prof depart mult=manager prof depart mult tab(1.44*LN(manager prof arriv mult\
+		))
+	~	dimensionless
+	~	  Manager-professional Departures Multiplier
+	|
+
+manager prof depart mult tab(-3,-2,-1,0,1,2,3,
+8,4,2,1,0.5,0.25,0.125)
+	~	dimensionless
+	~	  Manager-professional Departures Multiplier
+		      Table
+	|
+
+manager prof depart norm=0.02
+	~	fraction/year
+	~	  Manager Departures Normal
+	|
+
+manager prof hous ratio=(Manager Professional*manager prof family size)/
+        (Premium Housing*premium housing pop dens)
+	~	dimensionless
+	~	  Manager-professional Housing Ration
+	|
+
+manager prof ratio=Manager Professional/(Labor+Underemployed)
+	~	dimensionless
+	~	  Manager-professional Population Ratio
+	|
+
+premium housing pop dens=3
+	~	person/housing unit
+	~	  Premium Housing Population Density
+	|
+
+********************************************************
+	.Mature
+********************************************************~
+		
+		
+		                 Mature Business
+	|
+
+Mature Business= INTEG (
+	(new enterprise decline-mature business decline),
+		1000)
+	~	production unit
+	~	  Mature Business
+	|
+
+business decline mult=business decline mult tab(
+             1.44*LN(enterprise multiplier))
+	~	dimensionless
+	~	  Business Decline Multiplier
+	|
+
+business decline mult tab(-3,-2,-1,0,1,2,3,
+2,1.8,1.5,1,0.7,0.5,0.4)
+	~	dimensionless
+	~	  Business Decline Multipler Table
+	|
+
+enterprise decline mult=enterprise decline mult tab(
+           1.44*LN(enterprise multiplier))
+	~	dimensionless
+	~	  Enterprise Decline Multiplier
+	|
+
+enterprise decline mult tab(-3,-2,-1,0,1,2,3,
+2,1.8,1.5,1,0.7,0.5,0.5)
+	~	dimensionless
+	~	  Enterprise Decline Multipler Table
+	|
+
+mature business decline=mature business decline norm*Mature Business*
+              business decline mult
+	~	production unit/year
+	~	  Mature Business Decline
+	|
+
+mature business decline norm=0.05
+	~	fraction/year
+	~	  Mature Business Decline Normal
+	|
+
+new enterprise decline=new enterprise decline normal*New Enterprise*
+       enterprise decline mult
+	~	production unit/year
+	~	  New Enterprise Decline
+	|
+
+new enterprise decline normal=0.08
+	~	fraction/year
+	~	  New Enterprise Decline Normal
+	|
+
+********************************************************
+	.Premium.Housing
+********************************************************~
+		
+		
+		               Premium Housing
+	|
+
+Premium Housing= INTEG (
+	(premium housing contruction-
+	                  premium housing obsolescence),
+		5000)
+	~	housing unit
+	~	  Premium Housing
+	|
+
+premium housing adeq mult tab(0,0.25,0.5,0.75,1,1.25,1.5,1.75,2,
+0,0.001,0.01,0.2,1,3,4.6,5.6,6)
+	~	dimensionless
+	~	  Premium Housing from Adequacy Multipler
+		      Table
+	|
+
+premium housing adeq mult=premium housing adeq mult tab(manager prof hous ratio)
+	~	dimensionless
+	~	  Premium Housing from Adequacy Multipler
+	|
+
+Premium Housing Average=INTEG((Premium Housing-Premium Housing Average)/
+              premium housing average time,
+                 Premium Housing*(1-premium housing growth rate init*
+                  premium housing average time))
+	~	housing unit
+	~	  Premium Housing Average
+	|
+
+premium housing average time=10
+	~	year
+	~	  Premium Housing Averaging Time
+	|
+
+premium housing construct desired=(premium housing construction norm*
+            Premium Housing*premium housing mult)+
+            premium housing const prog
+	~	housing unit/year
+	~	  Premium Housing Construction Desired
+	|
+
+premium housing construction norm=0.03
+	~	fraction/year
+	~	  Premium Housing Construction Normal
+	|
+
+premium housing contruction=premium housing construct desired*
+          labor construction ratio
+	~	housing unit/year
+	~	  Premium Housing Construction
+	|
+
+premium housing enterprise mult=premium housing enterprise mult tab(
+           new enterprise growth rate)
+	~	dimensionless
+	~	  Premium Housing from Enterprize Multiplier.
+	|
+
+premium housing enterprise mult tab(-0.1,-0.05,0,0.05,0.1,0.15,
+0.2,0.6,1,1.4,1.8,2.2)
+	~	dimensionless
+	~	  Premium Housing from Enterprize Multiplier 
+		      Table
+	|
+
+premium housing factor=1
+	~	dimensionless
+	~	  Premium Housing factor
+	|
+
+premium housing growth mult=premium housing growth mult tab(
+           premium housing growth rate)
+	~	dimensionless
+	~	  Premium Housing from Growth Multiplier
+	|
+
+premium housing growth mult tab(-0.1,-0.05,0,0.05,0.1,0.15,
+0.2,0.6,1,1.4,1.8,2.2)
+	~	dimensionless
+	~	  Premium Housing from Growth Multiplier 
+		      Table
+	|
+
+premium housing growth rate=(Premium Housing-Premium Housing Average)/
+            (Premium Housing Average*premium housing average time)
+	~	fraction/year
+	~	  Premium Housing Growth Rate
+	|
+
+premium housing growth rate init=0.03
+	~	fraction/year
+	~	  Premium Housing Growth Rate Initial
+	|
+
+premium housing land mult=premium housing land mult tab(land fraction occupied)
+	~	dimensionless
+	~	  Premium Housing from Land Multiplier
+	|
+
+premium housing mult=premium housing adeq mult*
+          premium housing land mult*
+          premium housing pop mult*
+          premium housing tax mult*
+          premium housing enterprise mult*
+          premium housing growth mult*
+          premium housing factor
+	~	dimensionless
+	~	  Premium Housing Multiplier
+	|
+
+premium housing land mult tab(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,
+0.4,0.9,1.3,1.6,1.8,1.9,1.8,1.4,0.7,0.2,0)
+	~	dimensionless
+	~	  Premium Housing from Land Multiplier 
+		      Table
+	|
+
+premium housing obsolescence=premium housing obsolescence normal*
+             Premium Housing*premium housing obsolescence mult
+	~	housing unit/year
+	~	  Premium Housing Obsolescence
+	|
+
+premium housing obsolescense mult tab(-3,-2,-1,0,1,2,3,
+2.8,2.6,2,1,0.5,0.3,0.2)
+	~	dimensionless
+	~	  Premium Housing Obsolescence Multipier
+		      Table
+	|
+
+premium housing obsolescence mult=premium housing obsolescense mult tab(
+                     1.44*LN(premium housing mult))
+	~	dimensionless
+	~	  Premium Housing Obsolescence Multiplier
+	|
+
+premium housing obsolescence normal=0.03
+	~	fraction/year
+	~	  Premium Housing Obsolescence Normal
+	|
+
+premium housing pop mult=premium housing pop mult tab(manager prof ratio)
+	~	dimensionless
+	~	  Premium Housing from Population Multiplier
+	|
+
+premium housing pop mult tab(0,0.02,0.04,0.06,0.08,0.1,
+0.3,0.7,1,1.2,1.3,1.3)
+	~	dimensionless
+	~	  Premium Housing from Population Multiplier
+		      Table
+	|
+
+premium housing tax mult=premium housing tax mult tab(1.44*LN(tax ratio))
+	~	dimensionless
+	~	  Premium Housing From Tax Multiplier
+	|
+
+premium housing tax mult tab(-2,0,2,4,
+1.2,1,0.7,0.3)
+	~	dimensionless
+	~	  Premium Housing From Tax Multiplier Table
+	|
+
+********************************************************
+	.Tax
+********************************************************~
+		
+		
+		                Tax Sector
+	|
+
+assessed value=(housing assessed value+business assessed value)
+	~	THOU $
+	~	  Assessed Value
+	|
+
+business assessed value=
+      new enterprise assessed value*New Enterprise+
+      maturre business assessed value*Mature Business+
+      declining industry assessed value*Declining Industry
+	~	THOU $
+	~	  Business Assessed Value
+	|
+
+declining industry assessed value=100
+	~	THOU $/production unit
+	~	  Declining Industry Assessed Value
+	|
+
+housing assessed value=
+       premium housing assessed value*Premium Housing+
+       worker housing assessed value*Worker Housing+
+       underemp housing assessed value*Underemp Housing
+	~	THOU $
+	~	  Housing Assessed value
+	|
+
+maturre business assessed value=300
+	~	THOU $/production unit
+	~	  Mature Business Assessed Value
+	|
+
+new enterprise assessed value=500
+	~	THOU $/production unit
+	~	  New enterprise Assessed Value
+	|
+
+premium housing assessed value=30
+	~	THOU $/housing unit
+	~	  Premium Housing Assessed Value
+	|
+
+tax assessment indicated=tax needed/assessed value
+	~	($/year)/THOU $
+	~	  Tax Assessment Indicated
+	|
+
+tax assessment norm=50
+	~	($/year)/(THOU $)
+	~	   Tax Assessment Normal
+	|
+
+tax collection mult=tax collection mult tab(labor underemp ratio)
+	~	dimensionless
+	~	  Tax Collection Multiplier
+	|
+
+tax collection mult tab(0,0.5,1,1.5,2,2.5,3,
+2,1.6,1.3,1.1,1,0.9,0.8)
+	~	dimensionless
+	~	  Tax Collection Multiplier Table
+	|
+
+tax needed=(tax spending per manager*manager prof family size*
+            Manager Professional+
+           tax spending per labor*labor family size*Labor+
+            tax spending per underemp*underemp family size*Underemployed)*
+            tax collection mult
+	~	$/year
+	~	  Tax Needed
+	|
+
+tax collections=assessed value*tax assessment norm*tax ratio
+	~	$/year
+	~	  Tax Collections
+	|
+
+tax ratio needed=tax assessment indicated/tax assessment norm
+	~	dimensionless
+	~	  Tax Ratio Needed
+	|
+
+tax ratio=tax ratio table(1.44*LN(Tax Ratio Needed Perc))
+	~	dimensionless
+	~	  Tax Ratio
+	|
+
+Tax Ratio Needed Perc=INTEG((tax ratio needed-Tax Ratio Needed Perc)/
+           tax ratio needed perception time,tax ratio needed)
+	~	dimensionless
+	~	  Tax Ratio Needed Perceived
+	|
+
+tax ratio needed perception time=30
+	~	year
+	~	  Tax Ratio Needed Perception Time
+	|
+
+tax ratio table(-2,-1,0,1,2,3,4,
+0.3,0.5,1,1.8,2.8,3.6,4)
+	~	dimensionless
+	~	  Tax Ratio Table
+	|
+
+tax spending per labor=200
+	~	$/year/person
+	~	  Tax spending per Labor Person
+	|
+
+tax spending per manager=150
+	~	$/year/person
+	~	  Tax spending per Manager-professional Person
+	|
+
+tax spending per underemp=300
+	~	$/year/person
+	~	  Tax spending per Underemployed Person
+	|
+
+underemp housing assessed value=5
+	~	THOU $/housing unit
+	~	  Underemployed Housing Assessed Value
+	|
+
+worker housing assessed value=15
+	~	THOU $/housing unit
+	~	  Worker Housing Assessed Value
+	|
+
+********************************************************
+	.Underemployed
+********************************************************~
+		
+		
+		       Underemployed sector
+	|
+
+Underemployed= INTEG (
+	labor to underemp+underemp births+underemployed arrivals-underemp departures-underemp to labor\
+		,
+		underemployed initial)
+	~	workers
+	~	  Underemployed
+	|
+
+public expenditure mult=
+	public exp mult tab(tax per cap ratio)
+	~	dimensionless
+	~	  Public Expenditure Multiplier
+	|
+
+attract migr factor=1
+	~	dimensionless
+	~	  Attractoveness for Migration Factor
+	|
+
+attract migr mult=underemp arr mob mult*
+        underemp housing mult*
+        public expenditure mult*
+        underemp job mult*
+        underemp hous prog mult*
+        attract migr factor
+	~	dimensionless
+	~	  Attractiveness for Migration Multiplier
+	|
+
+Attract Migr Mult Perc=INTEG((attract migr mult-Attract Migr Mult Perc)/
+            attract migr mult perc time,1)
+	~	dimensionless
+	~	  Attractiveness for Migration Multiplier 
+		      Perceived
+	|
+
+attract migr mult perc time=20
+	~	year
+	~	  Attractiveness for Migration Multiplier
+		      Perception Time
+	|
+
+labor family size=6
+	~	person/worker
+	~	  Labor Family Size
+	|
+
+manager prof family size=5
+	~	person/worker
+	~	  Managerial/Professional Family Size
+	|
+
+population=Manager Professional*manager prof family size+
+          Labor*labor family size+
+          Underemployed*underemp family size
+	~	person
+	~	  Population
+	|
+
+public exp mult tab(0,0.5,1,1.5,2,2.5,3,
+0.2,0.6,1,1.6,2.4,3.2,4)
+	~	dimensionless
+	~	  Public Expenditure Multiplier Table
+	|
+
+tax per cap norm=250
+	~	$/year/person
+	~	  Tax Per Capita Normal
+	|
+
+tax per cap ratio=((tax collections/population)+tax per cap subsidy)/
+           tax per cap norm
+	~	dimensionless
+	~	  Tax Per Capita Ratio
+	|
+
+underemp arr mob mult=underemp arr mob mult tab(underemp mobility)
+	~	dimensionless
+	~	  Underemployed Arrivals Mobility Multiplier
+	|
+
+underemp arr mob mult tab(0,0.025,0.05,0.075,0.1,0.125,0.15,
+0.3,0.7,1,1.2,1.3,1.4,1.5)
+	~	dimensionless
+	~	  Underemployed Arrivals Mobility Multiplier 
+		      Table
+	|
+
+underemp arrivals normal=
+	0.05
+	~	1/year
+	~	  Underemployed Arrivals Normal
+	|
+
+underemp birth rate=0.015
+	~	fraction/year
+	~	  Underemployed Birth Rate
+	|
+
+underemp depart mult tab(-3,-2,-1,0,1,2,3,
+8,4,2,1,0.5,0.25,0.125)
+	~	dimensionless
+	~	  Underemployed Departures Multiplier Table
+	|
+
+underemp departures mult=underemp depart mult tab(1.44*LN(attract migr mult))
+	~	dimensionless
+	~	  Underemployed Departures Multiplier
+	|
+
+underemp departures norm=0.02
+	~	fraction/year
+	~	  Underemployed Departures Normal
+	|
+
+underemp family size=8
+	~	person/worker
+	~	  Underemployed Family Size
+	|
+
+underemp hous mult table(0,0.25,0.5,0.75,1,1.25,1.5,1.75,2,
+2.5,2.4,2.2,1.7,1,0.4,0.2,0.1,0.05)
+	~	dimensionless
+	~	  Underemployed Housing Multiplier Table
+	|
+
+underemp hous prog mult=underemp hous prog mult tab(underemp hous prog rate)
+	~	dimensionless
+	~	  Underemployed Housing Program Multiplier
+	|
+
+underemp hous prog mult tab(0,0.01,0.02,0.03,0.04,0.05,
+1,1.2,1.5,1.9,2.4,3)
+	~	dimensionless
+	~	  Underemployed Housing Program Multiplier 
+		      Table
+	|
+
+underemp hous prog rate=low cost hous prog/Underemployed
+	~	housing unit/year/worker
+	~	  Underemployed Housing Program Rate
+	|
+
+underemp housing mult=underemp hous mult table(underemp housing ratio)
+	~	dimensionless
+	~	  Underemployed Housing Multiplier
+	|
+
+underemp housing ratio=(Underemployed*underemp family size)/
+          (Underemp Housing*underemp pop density)
+	~	dimensionless
+	~	  Underemployed Housing Ratio
+	|
+
+underemp job mult=
+	underemp job mult tab(underemp ratio)
+	~	dimensionless
+	~	  Underemployed Job Multiplier
+	|
+
+underemp job mult tab(
+	[(0,0)-(3,2)],(0,2),(0.25,2),(0.5,1.9),(0.75,1.6),(1,1),(1.25,0.6),(1.5,0.4),(1.75,0.3\
+		),(2,0.2),(2.25,0.15),(2.5,0.1),(2.75,0.05),(3,0.02))
+	~	dimensionless
+	~	  Underemployed Job Multiplier Table.
+	|
+
+underemp pop density=12
+	~	person/housing unit
+	~	  Underemployed Population Density
+	|
+
+********************************************************
+	.Underemployed.Housing
+********************************************************~
+		
+		
+		               Underemployed Housing
+	|
+
+Underemp Housing= INTEG (
+	worker housing obsolescence-slum housing demolition+low cost hous prog,
+		underemployed housing initial)
+	~	housing units
+	~	  Underemployed Housing
+	|
+
+slum housing abandomed mult tab(0,0.5,1,1.5,2,
+3.6,2,1,0.6,0.4)
+	~	dimensionless
+	~	  Slum Housing Abandoned Multiplier Table
+	|
+
+slum housing abandoned mult=slum housing abandomed mult tab(
+               underemp housing ratio)
+	~	dimensionless
+	~	  Slum Housing Abandoned Multiplier
+	|
+
+slum housing demolitin factor=1
+	~	dimensionless
+	~	  Slum Housing Demolition Factor
+	|
+
+slum housing demolition mult=slum housing abandoned mult*
+          slum housing land mult*
+          slum housing demolitin factor
+	~	dimensionless
+	~	  Slum Housing Demolition Multiplier
+	|
+
+slum housing demolition norm=0.02
+	~	fraction/year
+	~	  Slum Housing Demolition Normal
+	|
+
+slum housing land mult=slum housing land mult tab(land fraction occupied)
+	~	dimensionless
+	~	  Slum Housing from Land Multiplier
+	|
+
+slum housing land mult tab(0.8,0.85,0.9,0.95,1,
+1,1.2,1.6,2.2,6)
+	~	dimensionless
+	~	  Slum Housing from Land Multiplier Table
+	|
+
+********************************************************
+	.Worker.Housing
+********************************************************~
+		
+		
+		               Worker Housing
+	|
+
+Worker Housing= INTEG (
+	premium housing obsolescence+worker housing construction-worker housing obsolescence\
+		,
+		21000)
+	~	housing unit
+	~	  Worker Housing
+	|
+
+worker housing adequacy mult=worker housing adequacy mult tab(labor housing ratio)
+	~	dimensionless
+	~	  Worker Housing from Adequacy Multipler
+	|
+
+worker housing adequacy mult tab(0,0.25,0.5,0.75,1,1.25,1.5,1.75,2,
+0,0.05,0.1,0.3,1,1.8,2.4,2.8,3)
+	~	dimensionless
+	~	  Worker Housing from Adequacy Multipler
+		      Table
+	|
+
+Worker Housing Average= INTEG (
+	(Worker Housing-Worker Housing Average)/
+	
+	      worker housing average time,
+		Worker Housing*(1-worker housing growth rate initial*
+		worker housing average time))
+	~	housing unit
+	~	  Worker Housing Average
+	|
+
+worker housing average time=10
+	~	year
+	~	  Worker Housing Averaging Time
+	|
+
+worker housing const des=(worker housing const norm*Worker Housing*
+            worker housing mult)+worker housing const prog
+	~	housing unit/year
+	~	  Worker Housing Construction Desired
+	|
+
+worker housing const norm=0.03
+	~	fraction/year
+	~	  Worker Housing Construction Normal
+	|
+
+worker housing enterprise mult=worker housing enterprise mult tab(
+              new enterprise growth rate)
+	~	dimensionless
+	~	  Worker Housing from Enterprise Multiplier
+	|
+
+worker housing enterprise mult tab(-0.2,-0.1,0,0.1,0.2,0.3,
+0.3,0.7,1,1.2,1.3,1.4)
+	~	dimensionless
+	~	  Worker Housing from Enterprize Multiplier 
+		      Table
+	|
+
+worker housing factor=1
+	~	dimensionless
+	~	  Worker Housing factor
+	|
+
+worker housing growth mult=worker housing growth mult tab(
+               worker housing growth rate)
+	~	dimensionless
+	~	  Worker Housing from Growth Multiplier
+	|
+
+worker housing growth mult tab(-0.1,-0.05,0,0.05,0.1,0.15,
+0.2,0.6,1,1.4,1.8,2.2)
+	~	dimensionless
+	~	  Worker Housing from Growth Multiplier 
+		      Table
+	|
+
+worker housing growth rate=(Worker Housing-Worker Housing Average)/
+            (Worker Housing Average*worker housing average time)
+	~	fraction/year
+	~	  Worker Housing Growth Rate
+	|
+
+worker housing land mult=worker housing land mult tab(
+               land fraction occupied)
+	~	dimensionless
+	~	  Worker Housing from Land Multiplier
+	|
+
+worker housing growth rate initial=0.03
+	~	fraction/year
+	~	  Worker Housing Growth Rate Initial
+	|
+
+worker housing land mult tab(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,
+0.4,0.9,1.3,1.6,1.8,1.9,1.8,1.4,0.7,0.2,0)
+	~	dimensionless
+	~	  Worker Housing from Land Multiplier 
+		      Table
+	|
+
+worker housing mult=worker housing adequacy mult*
+        worker housing land mult*
+        worker housing underemp mult*
+        worker housing tax mult*
+        worker housing enterprise mult*
+        worker housing growth mult*
+        worker housing factor
+	~	dimensionless
+	~	  Worker Housing Multiplier
+	|
+
+worker housing obsolescense mult=worker housing obsolescense mult tab(
+          1.44*LN(worker housing mult))
+	~	dimensionless
+	~	  Worker Housing Obsolescence Multiplier
+	|
+
+worker housing obsolescense norm=0.02
+	~	fraction/year
+	~	  Worker Housing Obsolescence Normal
+	|
+
+worker housing obsolescense mult tab(-3,-2,-1,0,1,2,3,
+2.2,2,1.6,1,0.7,0.5,0.4)
+	~	dimensionless
+	~	  Worker Housing Obsolescence Multipier
+		      Table
+	|
+
+worker housing tax mult tab(-2,0,2,4,
+1.2,1,0.7,0.3)
+	~	dimensionless
+	~	  Worker Housing From Tax Multiplier Table
+	|
+
+worker housing tax mult=worker housing tax mult tab(1.44*LN(tax ratio))
+	~	dimensionless
+	~	  Worker Housing From Tax Multiplier
+	|
+
+worker housing underemp mult=worker housing underemp mult tab(
+                    labor underemp ratio)
+	~	dimensionless
+	~	  Worker Housing from Underemployed Multiplier
+	|
+
+worker housing underemp mult tab(0,1,2,3,4,5,
+0.5,0.8,1,1.2,1.3,1.3)
+	~	dimensionless
+	~	  Worker Housing from Underemployed Multiplier
+		      Table
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Title Page
+$0-0-0,0,Times New Roman|12||0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,295,127,74,11,0,4,0,8,0,0,0,0,0-0-0,0-0-0,|14||0-0-0,0,0,0,0,0,0
+by Jay W. Forrester
+12,2,0,284,168,2,11,0,0,0,0,-1,0,0,0,0,0,0,0,0,0
+12,3,0,295,55,148,19,0,4,0,58,-1,0,0,0,0-0-0,0-0-0,Arial|24|U|0-0-255,0,0,0,0,0,0
+Urban Growth Model
+12,4,0,91,288,2,11,0,0,0,0,-1,0,0,0,0,0,0,0,0,0
+12,5,0,295,337,193,10,0,4,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+Use Page Down / Page Up keys to move through views
+12,6,0,299,392,148,10,0,4,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|||0-0-0,0,0,0,0,0,0
+(or button at bottom that says "Title Page")
+12,7,0,285,156,39,11,0,4,0,0,-1,0,0,0,0,0,0,0,0,0
+(and others)
+12,8,0,284,228,124,38,8,7,0,0,-1,0,0,0,0,0,0,0,0,0
+From the Vensim distribution; diagrams upgraded by John Richardson, 2010; units errors fixed by Tom Fiddaman, 2010
+12,9,0,285,295,87,17,8,135,0,18,-1,0,253,253,0-0-0,0-0-0,||U|0-0-255,0,0,0,0,0,0
+http://models.metasd.com|http://models.metasd.com
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Underemployed Sector
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,687,26,85,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+Underemployed Sector
+10,2,attract migr mult,907,475,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,3,attract migr factor,1020,398,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|255-0-0,0,0,0,0,0,0
+10,4,public expenditure mult,1081,439,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,5,underemp arr mob mult,864,555,37,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,6,underemp hous prog mult,835,370,44,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,7,underemp housing mult,885,700,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,8,underemp job mult,1057,572,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,9,Attract Migr Mult Perc,672,476,45,23,3,131,0,16,0,0,0,0,0-0-0,0-0-0,||I|0-0-255,0,0,0,0,0,0
+10,10,attract migr mult perc time,667,590,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|255-0-0,0,0,0,0,0,0
+10,11,population,313,408,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,12,labor family size,156,422,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|255-0-0,0,0,0,0,0,0
+10,13,manager prof family size,220,543,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|255-0-0,0,0,0,0,0,0
+10,14,Manager Professional,153,478,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,15,underemp family size,381,552,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,16,Underemployed,415,254,76,43,3,131,0,59,0,0,0,0,0-0-0,0-0-0,Times New Roman|12|B|0-0-0,0,0,0,0,0,0
+10,17,public exp mult tab,1129,539,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,18,tax per cap norm,196,627,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||B|255-0-0,0,0,0,0,0,0
+10,19,tax per cap ratio,313,583,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,20,tax collections,225,676,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,21,tax per cap subsidy,297,710,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,22,underemp arr mob mult tab,753,618,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,23,underemp mobility,837,660,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,24,underemp arrivals normal,559,483,36,22,8,3,0,16,0,0,0,0,0-0-0,0-0-0,||B|255-0-0,0,0,0,0,0,0
+10,25,underemp birth rate,171,171,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||B|255-0-0,0,0,0,0,0,0
+10,26,underemp departures mult,881,199,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,27,underemp departures norm,736,182,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|255-0-0,0,0,0,0,0,0
+10,28,underemp depart mult tab,1004,268,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|255-0-255,0,0,0,0,0,0
+10,29,labor to underemp,327,127,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,30,underemp to labor,544,134,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,31,underemp hous mult table,679,744,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|255-0-255,0,0,0,0,0,0
+10,32,underemp housing ratio,596,640,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,33,underemp hous prog mult tab,731,430,44,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,34,underemp hous prog rate,661,315,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,35,low cost hous prog,663,391,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,36,Underemp Housing,405,679,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,37,underemp pop density,511,700,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|255-0-0,0,0,0,0,0,0
+10,38,underemp job mult tab,1120,644,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|255-0-255,0,0,0,0,0,0
+10,39,underemp ratio,1045,666,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,40,Labor,469,510,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,41,3,2,1,0,0,0,0,0,0,-1--1--1,,1|(977,434)|
+1,42,4,2,1,0,0,0,0,0,0,-1--1--1,,1|(1009,470)|
+1,43,5,2,1,0,0,0,0,0,0,-1--1--1,,1|(897,518)|
+1,44,6,2,1,0,0,0,0,0,0,-1--1--1,,1|(883,410)|
+1,45,7,2,1,0,0,0,0,0,0,-1--1--1,,1|(963,583)|
+1,46,8,2,1,0,0,0,0,0,0,-1--1--1,,1|(981,500)|
+1,47,2,9,1,0,0,0,0,0,0,-1--1--1,,1|(797,495)|
+1,48,10,9,1,0,0,0,0,0,0,-1--1--1,,1|(656,543)|
+1,49,40,11,1,0,0,0,0,0,0,-1--1--1,,1|(400,411)|
+1,50,12,11,1,0,0,0,0,0,0,-1--1--1,,1|(229,398)|
+1,51,13,11,1,0,0,0,0,0,0,-1--1--1,,1|(248,470)|
+1,52,14,11,1,0,0,0,0,0,0,-1--1--1,,1|(220,434)|
+1,53,15,11,1,0,0,0,0,0,0,-1--1--1,,1|(341,492)|
+1,54,16,11,1,0,0,0,0,0,0,-1--1--1,,1|(348,319)|
+1,55,17,4,1,0,0,0,0,0,0,-1--1--1,,1|(1111,483)|
+1,56,11,19,1,0,0,0,0,0,0,-1--1--1,,1|(300,479)|
+1,57,20,19,1,0,0,0,0,0,0,-1--1--1,,1|(256,624)|
+1,58,18,19,1,0,0,0,0,0,0,-1--1--1,,1|(235,596)|
+1,59,21,19,1,0,0,0,0,0,0,-1--1--1,,1|(293,648)|
+1,60,22,5,1,0,0,0,0,0,0,-1--1--1,,1|(792,583)|
+1,61,23,5,1,0,0,0,0,0,0,-1--1--1,,1|(864,615)|
+1,62,27,101,1,0,0,0,0,0,0,-1--1--1,,1|(627,198)|
+1,63,2,26,1,0,0,0,0,0,0,-1--1--1,,1|(924,338)|
+1,64,28,26,1,0,0,0,0,0,0,-1--1--1,,1|(944,222)|
+1,65,29,83,1,0,0,0,0,0,0,-1--1--1,,1|(347,147)|
+1,66,31,7,1,0,0,0,0,0,0,-1--1--1,,1|(781,744)|
+1,67,32,7,1,0,0,0,0,0,0,-1--1--1,,1|(719,694)|
+1,68,33,6,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,69,34,6,1,0,0,0,0,0,0,-1--1--1,,1|(723,348)|
+1,70,35,34,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,71,16,34,1,0,0,0,0,0,0,-1--1--1,,1|(516,283)|
+1,72,15,32,1,0,0,0,0,0,0,-1--1--1,,1|(467,611)|
+1,73,36,32,1,0,0,0,0,0,0,-1--1--1,,1|(476,651)|
+1,74,37,32,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,75,16,32,1,0,0,0,0,0,0,-1--1--1,,1|(375,422)|
+1,76,38,8,1,0,0,0,0,0,0,-1--1--1,,1|(1101,602)|
+1,77,39,8,1,0,0,0,0,0,0,-1--1--1,,1|(1025,622)|
+1,78,9,108,1,0,0,0,0,0,0,-1--1--1,,1|(551,392)|
+1,79,24,108,1,0,0,0,0,0,0,-1--1--1,,1|(500,406)|
+10,80,tax per cap ratio,1199,503,51,9,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,81,80,4,1,0,0,0,0,64,0,-1--1--1,,1|(1144,462)|
+12,82,48,397,86,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,83,0,399,163,11,8,1,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,84,83,16,4,0,0,22,0,0,0,-1--1--1,,1|(399,191)|
+1,85,83,82,100,0,0,22,0,0,0,-1--1--1,,1|(399,125)|
+12,86,48,184,247,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,87,89,16,4,0,0,22,0,0,0,-1--1--1,,1|(307,247)|
+1,88,89,86,100,0,0,22,0,0,0,-1--1--1,,1|(226,247)|
+11,89,0,267,247,8,11,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,90,underemp births,267,274,36,16,40,131,0,0,-1,0,0,0,0,0,0,0,0,0
+1,91,25,89,1,0,0,0,0,64,0,-1--1--1,,1|(189,198)|
+1,92,16,89,1,0,0,0,0,64,0,-1--1--1,,1|(273,224)|
+12,93,48,444,91,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,94,0,444,156,11,8,1,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,95,94,93,4,0,0,22,0,0,0,-1--1--1,,1|(444,124)|
+1,96,94,16,100,0,0,22,0,0,0,-1--1--1,,1|(444,188)|
+1,97,30,94,1,0,0,0,0,64,0,-1--1--1,,1|(455,158)|
+12,98,48,627,239,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,99,101,98,4,0,0,22,0,0,0,-1--1--1,,1|(584,239)|
+1,100,101,16,100,0,0,22,0,0,0,-1--1--1,,1|(513,239)|
+11,101,0,544,239,8,11,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,102,underemp departures,544,259,59,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,103,26,101,1,0,0,0,0,64,0,-1--1--1,,1|(609,167)|
+1,104,16,101,1,0,0,0,0,64,0,-1--1--1,,1|(537,230)|
+12,105,48,443,403,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,106,108,16,4,0,0,22,0,0,0,-1--1--1,,1|(444,319)|
+1,107,108,105,100,0,0,22,0,0,0,-1--1--1,,1|(444,376)|
+11,108,0,444,350,11,8,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,109,underemployed arrivals,503,350,48,13,40,131,0,0,-1,0,0,0,0,0,0,0,0,0
+1,110,40,108,1,0,0,0,0,64,0,-1--1--1,,1|(467,394)|
+1,111,16,108,1,0,0,0,0,64,0,-1--1--1,,1|(409,334)|
+10,112,underemployed initial,223,330,44,15,8,131,0,16,0,0,0,0,0-0-0,0-0-0,||B|255-0-0,0,0,0,0,0,0
+1,113,112,16,1,0,0,0,0,64,1,-1--1--1,,1|(303,315)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Labor Sector
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,948,89,49,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+Labor Sector
+10,2,Labor,395,169,51,27,3,3,0,24,0,0,0,0,-1--1--1,0-0-0,|12|B|0-0-0,0,0,0,0,0,0
+10,3,labor arrival,293,99,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,4,labor birth,289,261,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,5,labor departure,491,98,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,6,labor to manager,490,225,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,7,labor to underemp,523,122,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,8,underemp to labor,137,278,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,9,Labor Arrival Mult Perc,152,92,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,10,labor arrival normal,132,127,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,11,labor arrival housing mult,49,536,47,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,12,labor arrival housing mult tab,105,479,48,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,13,labor housing ratio,47,170,40,20,8,3,0,1,0,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,14,labor arrival jobs mult,95,597,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,15,labor arrival jobs mult tab,177,628,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,16,labor ratio,852,200,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,17,labor arrival mult,199,546,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,18,labor arrival factor,275,582,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,19,labor arrival tax mult,419,584,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,20,labor arrival underemp mult,251,604,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,21,Labor Arrival Mult Perc,340,536,44,17,3,131,0,16,0,0,0,0,0-0-0,0-0-0,||I|0-0-0,0,0,0,0,0,0
+10,22,labor arrival mult perc tab,488,563,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,23,labor arrival tax mult tab,663,605,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,24,tax ratio,627,576,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,25,labor arrival underemp mult Tab,484,629,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,26,labor underemp ratio,481,610,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,27,labor daparture mult,660,128,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,28,labor daparture normal,666,98,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,29,labor edu mult,679,336,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,30,labor edu mult tab,624,365,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,31,tax per cap ratio,687,536,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,32,labor family size,179,208,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,33,Worker Housing,144,226,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,34,worker housing pop density,223,181,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,35,labor layoff frac,680,160,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,36,labor layoff frac Tab,837,156,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,37,labor to manager norm,565,293,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,38,labor mob fact,682,199,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,39,Labor Mob Mult Perc,641,240,40,21,3,131,0,16,0,0,0,0,0-0-0,0-0-0,||I|0-0-0,0,0,0,0,0,0
+10,40,labor mob mult,773,248,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,41,labor mob mult perc time,628,315,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,42,labor supply mult,531,485,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,43,labor training prog,498,267,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,44,labor supply mult tab,563,442,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,45,labor unedermp mult,551,383,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,46,labor underemp mult tab,587,416,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,47,labor underemp ratio,384,282,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,48,Underemployed,432,330,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,49,manage labor mult,789,296,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,50,manage labor mult tab,749,369,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,51,manager labor ratio,767,399,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,52,manage supply mult,867,278,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,53,manage supply mult tab,857,226,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,54,manager job ratio,889,311,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,55,Manager Prof Jobs,932,406,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,56,Manager Professional,835,351,49,16,8,2,0,3,0,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,57,Declining Industry,838,563,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,58,declining industry management,776,486,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,59,Mature Business,791,532,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,60,mature business management,797,434,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,61,New Enterprise,789,507,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,62,new enterprise management,804,455,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,63,underemp edu mult,469,536,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,64,underemp fract working,260,322,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,65,underemp edu mult tab,602,510,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,66,underemp fract working tab,331,351,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,67,underemp ratio,309,390,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,68,underemp mob factor,355,506,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,69,underemp mob mult,316,472,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,70,Underemp Mob Mult Perc,111,395,45,18,3,131,0,16,0,0,0,0,0-0-0,0-0-0,||I|0-0-0,0,0,0,0,0,0
+10,71,underemp mob mult perc time,201,504,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,72,underemp mobility,423,389,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,73,Underemp to Labor Perc,392,425,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,74,underemp mobility norm,124,245,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,75,underemp training prog,100,332,41,23,8,2,0,3,0,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,76,underemp working,315,293,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,77,Underemp to Labor Perc,213,386,31,20,3,131,0,16,0,0,0,0,0-0-0,0-0-0,||I|0-0-0,0,0,0,0,0,0
+10,78,underemp to labor perc time,296,450,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,79,labor ratio,51,565,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,80,labor ratio,632,458,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+1,81,3,167,1,0,0,0,0,0,0,-1--1--1,,1|(334,92)|
+1,82,4,183,1,0,0,0,0,0,0,-1--1--1,,1|(338,255)|
+1,83,5,171,1,0,0,0,0,0,0,-1--1--1,,1|(445,93)|
+1,84,6,179,1,0,0,0,0,0,0,-1--1--1,,1|(492,200)|
+1,85,7,175,1,0,0,0,0,0,0,-1--1--1,,1|(495,141)|
+1,86,8,2,1,0,0,0,0,0,0,-1--1--1,,1|(263,248)|
+1,87,2,3,1,0,0,0,0,0,0,-1--1--1,,1|(318,130)|
+1,88,9,3,1,0,0,0,0,0,0,-1--1--1,,1|(191,77)|
+1,89,10,3,1,0,0,0,0,0,0,-1--1--1,,1|(197,124)|
+1,90,12,11,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,91,13,11,1,0,0,0,0,0,0,-1--1--1,,1|(33,342)|
+1,92,15,14,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,93,18,17,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,94,11,17,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,95,14,17,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,96,19,17,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,97,20,17,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,98,17,21,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,99,22,21,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,100,23,19,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,101,24,19,1,0,0,0,0,0,0,-1--1--1,,1|(545,585)|
+1,102,25,20,1,0,0,0,0,0,0,-1--1--1,,1|(367,627)|
+1,103,26,20,1,0,0,0,0,0,0,-1--1--1,,1|(373,597)|
+1,104,2,5,1,0,0,0,0,0,0,-1--1--1,,1|(427,122)|
+1,105,27,5,1,0,0,0,0,0,0,-1--1--1,,1|(561,106)|
+1,106,28,5,1,0,0,0,0,0,0,-1--1--1,,1|(570,81)|
+1,107,30,29,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,108,31,29,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,109,2,13,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,110,32,13,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,111,33,13,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,112,34,13,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,113,36,35,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,114,16,35,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,115,40,39,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,116,41,39,1,0,0,0,0,0,0,-1--1--1,,1|(644,287)|
+1,117,44,42,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,118,2,6,1,0,0,0,0,0,0,-1--1--1,,1|(444,189)|
+1,119,39,6,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,120,37,6,1,0,0,0,0,0,0,-1--1--1,,1|(546,247)|
+1,121,43,6,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,122,2,7,1,0,0,0,0,0,0,-1--1--1,,1|(470,123)|
+1,123,35,7,1,0,0,0,0,0,0,-1--1--1,,1|(599,147)|
+1,124,46,45,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,125,47,45,1,0,0,0,0,0,0,-1--1--1,,1|(466,297)|
+1,126,2,47,1,0,0,0,0,0,0,-1--1--1,,1|(433,208)|
+1,127,48,47,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,128,50,49,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,129,51,49,1,0,0,0,0,0,0,-1--1--1,,1|(779,352)|
+1,130,53,52,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,131,54,52,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,132,55,54,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,133,56,54,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,134,57,55,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,135,58,55,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,136,59,55,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,137,60,55,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,138,61,55,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,139,62,55,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,140,31,63,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,141,65,63,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,142,66,64,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,143,67,64,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,144,42,69,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,145,45,69,1,0,0,0,0,0,0,-1--1--1,,1|(448,442)|
+1,146,63,69,1,0,0,0,0,0,0,-1--1--1,,1|(400,493)|
+1,147,68,69,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,148,69,70,1,0,0,0,0,0,0,-1--1--1,,1|(205,454)|
+1,149,71,70,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,150,73,72,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,151,48,72,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,152,70,8,1,0,0,0,0,0,0,-1--1--1,,1|(133,342)|
+1,153,74,8,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,154,75,8,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,155,76,8,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,156,8,77,1,0,0,0,0,0,0,-1--1--1,,1|(168,334)|
+1,157,78,77,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,158,64,76,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,159,48,76,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,160,79,14,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,161,29,40,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,162,38,40,1,0,0,0,0,0,0,-1--1--1,,1|(719,203)|
+1,163,49,40,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,164,52,40,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,165,80,42,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+12,166,48,363,75,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,167,0,362,101,8,6,1,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,168,167,2,4,0,0,22,0,0,0,-1--1--1,,1|(362,124)|
+1,169,167,166,100,0,0,22,0,0,0,-1--1--1,,1|(362,89)|
+12,170,48,399,70,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,171,0,399,109,8,6,1,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,172,171,170,4,0,0,22,0,0,0,-1--1--1,,1|(399,90)|
+1,173,171,2,100,0,0,22,0,0,0,-1--1--1,,1|(399,128)|
+12,174,48,537,152,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,175,0,486,152,6,8,2,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,176,175,174,4,0,0,22,0,0,0,-1--1--1,,1|(509,152)|
+1,177,175,2,100,0,0,22,0,0,0,-1--1--1,,1|(463,152)|
+12,178,48,539,174,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,179,0,488,175,6,8,2,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,180,179,178,4,0,0,22,0,0,0,-1--1--1,,1|(511,175)|
+1,181,179,2,100,0,0,22,0,0,0,-1--1--1,,1|(464,175)|
+12,182,48,379,264,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,183,0,378,231,8,6,1,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,184,183,2,4,0,0,22,0,0,0,-1--1--1,,1|(378,210)|
+1,185,183,182,100,0,0,22,0,0,0,-1--1--1,,1|(378,246)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Manager Prof Sector
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,524,26,106,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+Manager Professional Sector
+10,2,manager prof arriv hous mult,213,382,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,3,manager prof arriv housing mult tab,143,488,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,4,manager prof hous ratio,203,199,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,5,manager prof arriv job mult,381,519,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,6,manager job ratio,265,568,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,7,manager prof arriv job mult tab,176,540,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,8,manager prof arriv mult,539,447,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,9,manager prof arriv factor,756,414,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,10,manager prof arriv pop mult,301,454,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,11,Manager Prof Arriv Mult Perc,530,307,45,21,3,131,0,16,0,0,0,0,0-0-0,0-0-0,||I|0-0-0,0,0,0,0,0,0
+10,12,manager prof arriv mult perc time,391,385,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,13,manager prof arriv pop mult,773,118,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,14,manager prof arriv pop mult tab,745,183,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,15,manager prof ratio,581,85,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,16,manager prof arriv tax mult,615,510,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,17,manager prof arriv tax mult tab,528,571,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,18,tax ratio,685,563,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,19,manager prof arrival norm,360,314,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,20,manager prof arrivals,404,226,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,21,manager prof birth,218,89,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,22,manager prof birth rate,84,52,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,23,Manager Professional,348,133,51,27,3,3,0,59,0,0,0,0,0-0-0,0-0-0,Times New Roman|12|B|0-0-0,0,0,0,0,0,0
+10,24,manager prof depart,472,170,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,25,manager prof depart mult,729,321,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,26,manager prof depart norm,543,243,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,27,manager prof depart mult tab,747,222,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,28,manager prof family size,87,274,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,29,Labor,737,42,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,30,Premium Housing,121,355,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,31,premium housing pop dens,107,316,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,32,labor to manager,241,44,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,33,Underemployed,792,81,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+1,34,3,2,1,0,0,0,0,0,0,-1--1--1,,1|(181,439)|
+1,35,4,2,1,0,0,0,0,0,0,-1--1--1,,1|(231,274)|
+1,36,6,5,1,0,0,0,0,0,0,-1--1--1,,1|(320,559)|
+1,37,7,5,1,0,0,0,0,0,0,-1--1--1,,1|(269,512)|
+1,38,9,8,1,0,0,0,0,0,0,-1--1--1,,1|(653,441)|
+1,39,2,8,1,0,0,0,0,0,0,-1--1--1,,1|(358,421)|
+1,40,5,8,1,0,0,0,0,0,0,-1--1--1,,1|(465,494)|
+1,41,10,8,1,0,0,0,0,0,0,-1--1--1,,1|(421,465)|
+1,42,16,8,1,0,0,0,0,0,0,-1--1--1,,1|(563,482)|
+1,43,8,11,1,0,0,0,0,0,0,-1--1--1,,1|(550,383)|
+1,44,12,11,1,0,0,0,0,0,0,-1--1--1,,1|(449,368)|
+1,45,14,13,1,0,0,0,0,0,0,-1--1--1,,1|(770,153)|
+1,46,15,13,1,0,0,0,0,0,0,-1--1--1,,1|(661,110)|
+1,47,17,16,1,0,0,0,0,0,0,-1--1--1,,1|(577,552)|
+1,48,18,16,1,0,0,0,0,0,0,-1--1--1,,1|(667,541)|
+1,49,11,20,1,0,0,0,0,0,0,-1--1--1,,1|(451,270)|
+1,50,19,20,1,0,0,0,0,0,0,-1--1--1,,1|(394,282)|
+1,51,22,21,1,0,0,0,0,0,0,-1--1--1,,1|(131,81)|
+1,52,23,21,1,0,0,0,0,0,0,-1--1--1,,1|(282,87)|
+1,53,25,24,1,0,0,0,0,0,0,-1--1--1,,1|(610,213)|
+1,54,26,24,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,55,23,24,1,0,0,0,0,0,0,-1--1--1,,1|(399,170)|
+1,56,8,25,1,0,0,0,0,0,0,-1--1--1,,1|(633,400)|
+1,57,27,25,1,0,0,0,0,0,0,-1--1--1,,1|(750,268)|
+1,58,28,4,1,0,0,0,0,0,0,-1--1--1,,1|(123,229)|
+1,59,23,4,1,0,0,0,0,0,0,-1--1--1,,1|(272,183)|
+1,60,30,4,1,0,0,0,0,0,0,-1--1--1,,1|(164,286)|
+1,61,31,4,1,0,0,0,0,0,0,-1--1--1,,1|(143,250)|
+1,62,29,15,1,0,0,0,0,0,0,-1--1--1,,1|(637,48)|
+1,63,23,15,1,0,0,0,0,0,0,-1--1--1,,1|(431,72)|
+1,64,33,15,1,0,0,0,0,0,0,-1--1--1,,1|(685,66)|
+1,65,32,70,1,0,0,0,0,0,0,-1--1--1,,1|(296,62)|
+1,66,20,74,1,0,0,0,0,0,0,-1--1--1,,1|(371,196)|
+1,67,21,83,1,0,0,0,0,0,0,-1--1--1,,1|(252,113)|
+1,68,24,78,1,0,0,0,0,0,0,-1--1--1,,1|(454,148)|
+12,69,48,336,23,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,70,0,337,66,8,6,1,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,71,70,23,4,0,0,22,0,0,0,-1--1--1,,1|(337,89)|
+1,72,70,69,100,0,0,22,0,0,0,-1--1--1,,1|(337,45)|
+12,73,48,332,237,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,74,0,335,207,8,6,1,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,75,74,23,4,0,0,22,0,0,0,-1--1--1,,1|(335,180)|
+1,76,74,73,100,0,0,22,0,0,0,-1--1--1,,1|(335,221)|
+12,77,48,501,132,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,78,0,445,132,6,8,2,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,79,78,77,4,0,0,22,0,0,0,-1--1--1,,1|(471,132)|
+1,80,78,23,100,0,0,22,0,0,0,-1--1--1,,1|(419,132)|
+1,81,23,20,1,0,0,0,0,64,0,-1--1--1,,1|(378,176)|
+12,82,48,215,135,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,83,0,261,135,6,8,2,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,84,83,23,4,0,0,22,0,0,0,-1--1--1,,1|(282,135)|
+1,85,83,82,100,0,0,22,0,0,0,-1--1--1,,1|(240,135)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Premium Housing
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,355,33,93,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+Premium Housing Sector
+10,2,Premium Housing,315,212,51,27,3,3,0,58,0,0,0,0,-1--1--1,0-0-0,Times New Roman|12|B|0-0-0,0,0,0,0,0,0
+10,3,premium housing contruction,138,161,44,23,8,3,0,1,0,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,4,premium housing obsolescence,459,258,51,21,8,3,0,1,0,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,5,labor construction ratio,112,94,75,30,0,2,0,19,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,6,premium housing construct desired,180,283,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,7,premium housing obsolescence mult,409,318,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,8,premium housing obsolescence normal,563,212,60,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,9,premium housing adeq mult,540,462,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,10,manager prof hous ratio,596,512,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,11,premium housing adeq mult tab,745,485,75,30,0,2,0,19,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,12,Premium Housing Average,426,101,41,25,3,131,0,16,0,0,0,0,0-0-0,0-0-0,||I|0-0-0,0,0,0,0,0,0
+10,13,premium housing average time,651,99,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,14,premium housing growth rate init,671,64,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,15,premium housing const prog,105,378,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,16,premium housing construction norm,180,416,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,17,premium housing mult,76,339,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,18,premium housing enterprise mult,283,454,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,19,new enterprise growth rate,120,504,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,20,premium housing enterprise mult tab,147,550,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,21,premium housing growth mult,648,319,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,22,premium housing growth mult tab,733,209,49,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,23,premium housing growth rate,599,160,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,24,premium housing land mult,643,394,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,25,land fraction occupied,789,372,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,26,premium housing land mult tab,782,421,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,27,premium housing mult,417,407,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,28,premium housing factor,407,498,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,29,premium housing pop mult,371,524,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,30,premium housing tax mult,533,541,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,31,premium housing obsolescense mult tab,302,378,63,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,32,manager prof ratio,457,579,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,33,premium housing pop mult tab,336,598,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,34,premium housing tax mult tab,681,576,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,35,tax ratio,599,607,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+1,36,3,75,1,0,0,0,0,0,0,-1--1--1,,1|(201,165)|
+1,37,4,79,1,0,0,0,0,0,0,-1--1--1,,1|(438,242)|
+1,38,5,3,1,0,0,0,0,0,0,-1--1--1,,1|(104,120)|
+1,39,6,3,1,0,0,0,0,0,0,-1--1--1,,1|(140,227)|
+1,40,2,4,1,0,0,0,0,0,0,-1--1--1,,1|(379,245)|
+1,41,7,4,1,0,0,0,0,0,0,-1--1--1,,1|(430,300)|
+1,42,8,4,1,0,0,0,0,0,0,-1--1--1,,1|(563,243)|
+1,43,10,9,1,0,0,0,0,0,0,-1--1--1,,1|(558,490)|
+1,44,11,9,1,0,0,0,0,0,0,-1--1--1,,1|(668,453)|
+1,45,2,12,1,0,0,0,0,0,0,-1--1--1,,1|(355,146)|
+1,46,13,12,1,0,0,0,0,0,0,-1--1--1,,1|(525,82)|
+1,47,14,12,1,0,0,0,0,0,1,-1--1--1,,1|(542,54)|
+1,48,2,6,1,0,0,0,0,0,0,-1--1--1,,1|(251,264)|
+1,49,15,6,1,0,0,0,0,0,0,-1--1--1,,1|(148,345)|
+1,50,16,6,1,0,0,0,0,0,0,-1--1--1,,1|(195,329)|
+1,51,17,6,1,0,0,0,0,0,0,-1--1--1,,1|(118,296)|
+1,52,19,18,1,0,0,0,0,0,0,-1--1--1,,1|(194,489)|
+1,53,20,18,1,0,0,0,0,0,0,-1--1--1,,1|(232,519)|
+1,54,22,21,1,0,0,0,0,0,0,-1--1--1,,1|(710,263)|
+1,55,23,21,1,0,0,0,0,0,0,-1--1--1,,1|(637,226)|
+1,56,2,23,1,0,0,0,0,0,0,-1--1--1,,1|(416,170)|
+1,57,12,23,1,0,0,0,0,0,0,-1--1--1,,1|(519,110)|
+1,58,13,23,1,0,0,0,0,0,0,-1--1--1,,1|(639,123)|
+1,59,25,24,1,0,0,0,0,0,0,-1--1--1,,1|(721,354)|
+1,60,26,24,1,0,0,0,0,0,0,-1--1--1,,1|(669,420)|
+1,61,9,27,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,62,18,27,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,63,28,27,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,64,21,27,1,0,0,0,0,0,0,-1--1--1,,1|(555,364)|
+1,65,24,27,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,66,29,27,1,0,0,0,0,0,0,-1--1--1,,1|(374,470)|
+1,67,30,27,1,0,0,0,0,0,0,-1--1--1,,1|(461,481)|
+1,68,27,7,1,0,0,0,0,0,0,-1--1--1,,1|(430,358)|
+1,69,31,7,1,0,0,0,0,0,0,-1--1--1,,1|(356,361)|
+1,70,32,29,1,0,0,0,0,0,0,-1--1--1,,1|(407,559)|
+1,71,33,29,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,72,34,30,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,73,35,30,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+12,74,48,170,206,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,75,0,220,205,6,8,2,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,76,75,2,4,0,0,22,0,0,0,-1--1--1,,1|(245,205)|
+1,77,75,74,100,0,0,22,0,0,0,-1--1--1,,1|(197,205)|
+12,78,48,467,211,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,79,0,411,211,6,8,2,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,80,79,78,4,0,0,22,0,0,0,-1--1--1,,1|(437,211)|
+1,81,79,2,100,0,0,22,0,0,0,-1--1--1,,1|(385,211)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Worker Housing
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,907,53,87,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+Worker Housing Sector
+10,2,Worker Housing,393,219,54,32,3,131,0,58,0,0,0,0,-1--1--1,0-0-0,Times New Roman|12|B|0-0-0,0,0,0,0,0,0
+10,3,premium housing obsolescence,484,83,59,16,8,2,0,3,0,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,4,worker housing adequacy mult,772,481,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,5,labor housing ratio,955,534,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,6,worker housing adequacy mult tab,978,502,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,7,Worker Housing Average,553,160,47,24,3,131,0,16,0,0,0,0,0-0-0,0-0-0,||I|0-0-0,0,0,0,0,0,0
+10,8,worker housing average time,793,181,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,9,worker housing growth rate initial,731,91,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,10,worker housing const des,236,387,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,11,worker housing const norm,143,301,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,12,worker housing const prog,298,508,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,13,worker housing mult,166,473,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,14,labor construction ratio,265,129,75,30,0,2,0,19,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,15,worker housing enterprise mult,413,471,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,16,new enterprise growth rate,385,425,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,17,worker housing enterprise mult tab,303,561,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,18,worker housing factor,872,381,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,19,worker housing growth mult,851,283,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,20,worker housing growth mult tab,909,334,45,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,21,worker housing growth rate,679,229,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,22,worker housing land mult,851,417,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,23,land fraction occupied,997,405,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,24,worker housing land mult tab,969,451,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,25,worker housing obsolescense mult,629,334,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,26,worker housing obsolescense norm,677,267,51,19,8,3,0,1,0,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,27,worker housing mult,668,403,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,28,worker housing tax mult,567,467,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,29,worker housing underemp mult,672,505,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,30,worker housing obsolescense mult tab,496,378,63,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,31,tax ratio,460,525,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,32,worker housing tax mult tab,515,554,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,33,labor underemp ratio,595,589,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,34,worker housing underemp mult tab,845,578,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+1,35,3,75,1,0,0,0,0,0,0,-1--1--1,,1|(452,114)|
+1,36,5,4,1,0,0,0,0,0,0,-1--1--1,,1|(853,526)|
+1,37,6,4,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,38,2,7,1,0,0,0,0,0,0,-1--1--1,,1|(463,162)|
+1,39,8,7,1,0,0,0,0,0,0,-1--1--1,,1|(663,157)|
+1,40,9,7,1,0,0,0,0,0,1,-1--1--1,,1|(645,107)|
+1,41,2,10,1,0,0,0,0,0,0,-1--1--1,,1|(331,317)|
+1,42,11,10,1,0,0,0,0,0,0,-1--1--1,,1|(167,341)|
+1,43,12,10,1,0,0,0,0,0,0,-1--1--1,,1|(275,436)|
+1,44,13,10,1,0,0,0,0,0,0,-1--1--1,,1|(179,429)|
+1,45,14,72,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,46,10,73,1,0,0,0,0,0,0,-1--1--1,,1|(257,309)|
+1,47,16,15,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,48,17,15,1,0,0,0,0,0,0,-1--1--1,,1|(374,542)|
+1,49,20,19,1,0,0,0,0,0,0,-1--1--1,,1|(891,307)|
+1,50,21,19,1,0,0,0,0,0,0,-1--1--1,,1|(775,234)|
+1,51,2,21,1,0,0,0,0,0,0,-1--1--1,,1|(511,203)|
+1,52,7,21,1,0,0,0,0,0,0,-1--1--1,,1|(624,187)|
+1,53,8,21,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,54,23,22,1,0,0,0,0,0,0,-1--1--1,,1|(949,398)|
+1,55,24,22,1,0,0,0,0,0,0,-1--1--1,,1|(867,444)|
+1,56,4,27,1,0,0,0,0,0,0,-1--1--1,,1|(724,433)|
+1,57,15,27,1,0,0,0,0,0,0,-1--1--1,,1|(517,422)|
+1,58,18,27,1,0,0,0,0,0,0,-1--1--1,,1|(772,373)|
+1,59,19,27,1,0,0,0,0,0,0,-1--1--1,,1|(768,347)|
+1,60,22,27,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,61,28,27,1,0,0,0,0,0,0,-1--1--1,,1|(597,433)|
+1,62,29,27,1,0,0,0,0,0,0,-1--1--1,,1|(677,457)|
+1,63,27,25,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,64,30,25,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,65,31,28,1,0,0,0,0,0,0,-1--1--1,,1|(489,501)|
+1,66,32,28,1,0,0,0,0,0,0,-1--1--1,,1|(548,521)|
+1,67,33,29,1,0,0,0,0,0,0,-1--1--1,,1|(633,557)|
+1,68,34,29,1,0,0,0,0,0,0,-1--1--1,,1|(757,551)|
+12,69,48,188,209,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,70,72,2,4,0,0,22,0,0,0,-1--1--1,,1|(304,209)|
+1,71,72,69,100,0,0,22,0,0,0,-1--1--1,,1|(225,209)|
+11,72,0,261,209,8,11,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,73,worker housing construction,261,229,79,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,74,48,399,77,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,75,0,399,137,11,8,1,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,76,75,2,4,0,0,22,0,0,0,-1--1--1,,1|(399,166)|
+1,77,75,74,100,0,0,22,0,0,0,-1--1--1,,1|(399,107)|
+12,78,48,399,394,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,79,81,78,4,0,0,22,0,0,0,-1--1--1,,1|(397,356)|
+1,80,81,2,100,0,0,22,0,0,0,-1--1--1,,1|(397,281)|
+11,81,0,397,319,11,8,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,82,worker housing obsolescence,457,319,44,16,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,83,25,82,1,0,0,0,0,64,0,-1--1--1,,1|(580,309)|
+1,84,2,82,1,0,0,0,0,64,0,-1--1--1,,1|(472,262)|
+1,85,26,82,1,0,0,0,0,64,0,-1--1--1,,1|(532,263)|
+12,86,0,203,67,99,24,8,7,0,16,-1,0,0,0,0-0-0,0-0-0,||I|0-0-0,0,0,0,0,0,0
+Housing  constructed depends on amount of housing desired, but constrained by  labor avaialability.
+12,87,0,309,635,167,44,8,135,0,16,-1,0,0,0,0-0-0,0-0-0,||I|0-0-0,0,0,0,0,0,0
+Both construction and obsolescence depend on the busines climate, taxation burden, worker housing shortages and the presence of blght due to an excess of underemployed housing. Note that the complex worker housing const mull is a shadow var affecting worker housing const.
+12,88,0,129,741,53,27,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,89,0,928,138,121,32,8,7,0,16,-1,0,0,0,0-0-0,0-0-0,||I|0-0-0,0,0,0,0,0,0
+The compex 'averaging time' structure allows an intial growth rate to be set (3%) and uses worker housing growh rate as an  'economic climate' measure.
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Underemployed  Housing
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,609,-45,117,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+Underemployed Housing Sector
+10,2,slum housing abandoned mult,891,292,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,3,slum housing abandomed mult tab,1004,377,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|128-0-128,0,0,0,0,0,0
+10,4,underemp housing ratio,944,173,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,5,slum housing demolition mult,737,416,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,6,slum housing demolition norm,567,429,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|255-0-0,0,0,0,0,0,0
+10,7,slum housing demolition program,463,341,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,8,Underemp Housing,513,177,76,55,3,131,0,59,0,0,0,0,0-0-0,0-0-0,Times New Roman|12|B|0-0-0,0,0,0,0,0,0
+10,9,slum housing demolitin factor,997,469,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,10,slum housing land mult,667,513,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,11,land fraction occupied,679,691,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,12,slum housing land mult tab,509,585,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,13,low cost hous prog,304,275,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+1,14,3,2,1,0,0,0,0,0,0,-1--1--1,,1|(932,347)|
+1,15,4,2,1,0,0,0,0,0,0,-1--1--1,,1|(941,215)|
+1,16,5,33,1,0,0,0,0,0,0,-1--1--1,,1|(732,289)|
+1,17,6,33,1,0,0,0,0,0,0,-1--1--1,,1|(623,371)|
+1,18,7,33,1,0,0,0,0,0,0,-1--1--1,,1|(619,275)|
+1,19,2,5,1,0,0,0,0,0,0,-1--1--1,,1|(829,360)|
+1,20,9,5,1,0,0,0,0,0,0,-1--1--1,,1|(857,471)|
+1,21,10,5,1,0,0,0,0,0,0,-1--1--1,,1|(708,479)|
+1,22,11,10,1,0,0,0,0,0,0,-1--1--1,,1|(636,608)|
+1,23,12,10,1,0,0,0,0,0,0,-1--1--1,,1|(547,533)|
+12,24,48,261,215,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,25,0,368,212,8,11,2,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,26,25,8,4,0,0,22,0,0,0,-1--1--1,,1|(406,212)|
+1,27,25,24,100,0,0,22,0,0,0,-1--1--1,,1|(315,212)|
+1,28,13,25,1,0,0,0,0,64,0,-1--1--1,,1|(356,256)|
+12,29,48,773,184,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,30,32,29,4,0,0,22,0,0,0,-1--1--1,,1|(725,181)|
+1,31,32,8,100,0,0,22,0,0,0,-1--1--1,,1|(630,181)|
+11,32,0,679,181,8,11,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,33,slum housing demolition,679,201,69,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,34,8,32,1,0,0,0,0,64,0,-1--1--1,,1|(647,91)|
+10,35,underemployed housing initial,411,25,44,15,8,131,0,16,0,0,0,0,0-0-0,0-0-0,||B|0-0-0,0,0,0,0,0,0
+1,36,35,8,1,0,0,0,0,64,1,-1--1--1,,1|(468,60)|
+12,37,48,265,153,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,38,0,357,153,8,11,2,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,39,38,8,4,0,0,22,0,0,0,-1--1--1,,1|(401,153)|
+1,40,38,37,100,0,0,22,0,0,0,-1--1--1,,1|(312,153)|
+10,41,worker housing obsolescence,284,68,48,16,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,42,41,38,1,0,0,0,0,64,0,-1--1--1,,1|(332,111)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*New Enterprise
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,458,31,84,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+New Enterprise Sector
+10,2,declining industry construction factor,117,292,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,3,enterprise factor,520,246,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,4,enterprise growth mult,685,265,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,5,enterprise growth mult tab,825,205,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,6,new enterprise growth rate,585,186,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,7,enterprise labor job mult,512,457,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,8,enterprise labor job mult tab,346,518,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,9,Labor Ratio Perc,265,482,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,10,enterprise land mult,678,410,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,11,enterprise land mult tab,849,433,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,12,land fraction occupied,796,470,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,13,enterprise manager prof job mult,800,297,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,14,enterprise manager prof job mult tab,787,369,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,15,manager job ratio,918,335,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,16,enterprise multiplier,518,339,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,17,enterprise tax mult,630,482,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,18,enterprise tax mult tab,591,552,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,19,tax ratio,499,518,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,20,mature business construction factor,124,330,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,21,New Enterprise,340,111,51,27,3,3,0,58,0,0,0,0,-1--1--1,0-0-0,Times New Roman|12|B|0-0-0,0,0,0,0,0,0
+10,22,new enterprise Construction,147,152,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,23,new enterprise decline,422,187,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,24,New Enterprise Average,570,104,48,23,3,131,0,16,0,0,0,0,0-0-0,0-0-0,||I|0-0-0,0,0,0,0,0,0
+10,25,new enterprise average time,793,147,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,26,new enterprise growth rate initial,815,99,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,27,labor construction ratio,112,208,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,28,new enterprise construction desired,304,253,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,29,Declining Industry,403,393,75,30,0,2,0,3,0,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,30,Mature Business,345,419,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,31,new enterprise construction factor,141,406,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,32,new enterprise construction norm,129,365,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,33,new enterprise construction program,259,445,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+1,34,5,4,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,35,6,4,1,0,0,0,0,0,0,-1--1--1,,1|(622,227)|
+1,36,8,7,1,0,0,0,0,0,0,-1--1--1,,1|(421,501)|
+1,37,9,7,1,0,0,0,0,0,0,-1--1--1,,1|(374,479)|
+1,38,11,10,1,0,0,0,0,0,0,-1--1--1,,1|(768,409)|
+1,39,12,10,1,0,0,0,0,0,0,-1--1--1,,1|(730,444)|
+1,40,14,13,1,0,0,0,0,0,0,-1--1--1,,1|(773,341)|
+1,41,15,13,1,0,0,0,0,0,0,-1--1--1,,1|(851,321)|
+1,42,3,16,1,0,0,0,0,0,0,-1--1--1,,1|(507,282)|
+1,43,4,16,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,44,7,16,1,0,0,0,0,0,0,-1--1--1,,1|(493,401)|
+1,45,10,16,1,0,0,0,0,0,0,-1--1--1,,1|(597,382)|
+1,46,13,16,1,0,0,0,0,0,0,-1--1--1,,1|(660,329)|
+1,47,17,16,1,0,0,0,0,0,0,-1--1--1,,1|(564,415)|
+1,48,18,17,1,0,0,0,0,0,0,-1--1--1,,1|(631,528)|
+1,49,19,17,1,0,0,0,0,0,0,-1--1--1,,1|(558,508)|
+1,50,22,70,1,0,0,0,0,0,0,-1--1--1,,1|(190,132)|
+1,51,23,74,1,0,0,0,0,0,0,-1--1--1,,1|(388,166)|
+1,52,21,24,1,0,0,0,0,0,0,-1--1--1,,1|(444,115)|
+1,53,25,24,1,0,0,0,0,0,0,-1--1--1,,1|(681,138)|
+1,54,26,24,0,0,0,0,0,0,1,-1--1--1,,1|(0,0)|
+1,55,27,22,1,0,0,0,0,0,0,-1--1--1,,1|(129,187)|
+1,56,28,22,1,0,0,0,0,0,0,-1--1--1,,1|(223,213)|
+1,57,29,28,1,0,0,0,0,0,0,-1--1--1,,1|(366,325)|
+1,58,2,28,1,0,0,0,0,0,0,-1--1--1,,1|(204,277)|
+1,59,16,28,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,60,30,28,1,0,0,0,0,0,0,-1--1--1,,1|(330,341)|
+1,61,20,28,1,0,0,0,0,0,0,-1--1--1,,1|(207,299)|
+1,62,21,28,1,0,0,0,0,0,0,-1--1--1,,1|(305,183)|
+1,63,31,28,1,0,0,0,0,0,0,-1--1--1,,1|(223,353)|
+1,64,32,28,1,0,0,0,0,0,0,-1--1--1,,1|(211,322)|
+1,65,33,28,1,0,0,0,0,0,0,-1--1--1,,1|(282,359)|
+1,66,21,6,1,0,0,0,0,0,0,-1--1--1,,1|(460,157)|
+1,67,24,6,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,68,25,6,1,0,0,0,0,0,0,-1--1--1,,1|(697,179)|
+12,69,48,162,102,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,70,0,218,101,6,8,2,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,71,70,21,4,0,0,22,0,0,0,-1--1--1,,1|(256,101)|
+1,72,70,69,100,0,0,22,0,0,0,-1--1--1,,1|(192,101)|
+12,73,48,356,224,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,74,0,357,163,8,6,1,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,75,74,73,4,0,0,22,0,0,0,-1--1--1,,1|(357,192)|
+1,76,74,21,100,0,0,22,0,0,0,-1--1--1,,1|(357,147)|
+10,77,new enterprise initial,188,49,43,15,8,3,0,16,0,0,0,0,0-0-0,0-0-0,||B|0-0-0,0,0,0,0,0,0
+1,78,77,21,1,0,0,0,0,64,1,-1--1--1,,1|(308,44)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Mature Business
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,466,66,88,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+Mature Business Sector
+10,2,business decline mult,653,324,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,3,business decline mult tab,794,366,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,4,enterprise multiplier,495,372,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,5,enterprise decline mult,252,365,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,6,enterprise decline mult tab,207,433,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,7,Mature Business,491,258,51,27,3,3,0,58,0,0,0,0,-1--1--1,0-0-0,Times New Roman|12|B|0-0-0,0,0,0,0,0,0
+10,8,mature business decline,602,203,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,9,new enterprise decline,367,291,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,10,mature business decline norm,741,152,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,11,New Enterprise,175,304,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,12,new enterprise decline normal,234,212,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+1,13,3,2,1,0,0,0,0,0,0,-1--1--1,,1|(721,356)|
+1,14,4,2,1,0,0,0,0,0,0,-1--1--1,,1|(582,376)|
+1,15,6,5,1,0,0,0,0,0,0,-1--1--1,,1|(197,402)|
+1,16,4,5,1,0,0,0,0,0,0,-1--1--1,,1|(388,393)|
+1,17,9,25,1,0,0,0,0,0,0,-1--1--1,,1|(389,257)|
+1,18,2,8,1,0,0,0,0,0,0,-1--1--1,,1|(698,264)|
+1,19,7,8,1,0,0,0,0,0,0,-1--1--1,,1|(508,208)|
+1,20,10,8,1,0,0,0,0,0,0,-1--1--1,,1|(646,171)|
+1,21,5,9,1,0,0,0,0,0,0,-1--1--1,,1|(319,341)|
+1,22,11,9,1,0,0,0,0,0,0,-1--1--1,,1|(253,308)|
+1,23,12,9,1,0,0,0,0,0,0,-1--1--1,,1|(284,255)|
+12,24,48,330,254,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,25,0,390,254,6,8,2,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,26,25,7,4,0,0,22,0,0,0,-1--1--1,,1|(418,254)|
+1,27,25,24,100,0,0,22,0,0,0,-1--1--1,,1|(362,254)|
+12,28,48,667,255,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,29,0,585,255,6,8,2,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,30,29,28,4,0,0,22,0,0,0,-1--1--1,,1|(624,255)|
+1,31,29,7,100,0,0,22,0,0,0,-1--1--1,,1|(560,255)|
+1,32,8,29,1,0,0,0,0,64,0,-1--1--1,,1|(589,231)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Declining Industry
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,547,35,94,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+Declining Industry Sector
+10,2,Declining Industry,535,212,63,39,3,131,0,58,0,0,0,0,-1--1--1,0-0-0,Times New Roman|12|B|0-0-0,0,0,0,0,0,0
+10,3,mature business decline,347,157,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,4,declining industry demise mult,599,434,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,5,declining industry demise norm,277,313,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|255-0-0,0,0,0,0,0,0
+10,6,declining industry demolition program,348,386,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,7,declining industry decline factor,752,337,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|255-0-0,0,0,0,0,0,0
+10,8,declining industry from enterprise mult,336,460,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,9,declining industry from land mult,889,368,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,10,declining industry from enterprise mult tab,269,540,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-0-128,0,0,0,0,0,0
+10,11,enterprise multiplier,572,522,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,12,declining industry from land mult tab,747,489,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-0-128,0,0,0,0,0,0
+10,13,land fraction occupied,971,429,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+1,14,3,26,1,0,0,0,0,0,0,-1--1--1,,1|(376,179)|
+1,15,4,32,1,0,0,0,0,0,0,-1--1--1,,1|(604,354)|
+1,16,5,32,1,0,0,0,0,0,0,-1--1--1,,1|(413,279)|
+1,17,6,32,1,0,0,0,0,0,0,-1--1--1,,1|(420,327)|
+1,18,7,4,1,0,0,0,0,0,0,-1--1--1,,1|(719,383)|
+1,19,8,4,1,0,0,0,0,0,0,-1--1--1,,1|(444,423)|
+1,20,9,4,1,0,0,0,0,0,0,-1--1--1,,1|(771,435)|
+1,21,10,8,1,0,0,0,0,0,0,-1--1--1,,1|(265,502)|
+1,22,11,8,1,0,0,0,0,0,0,-1--1--1,,1|(481,473)|
+1,23,12,9,1,0,0,0,0,0,0,-1--1--1,,1|(844,445)|
+1,24,13,9,1,0,0,0,0,0,0,-1--1--1,,1|(944,401)|
+12,25,48,315,214,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,26,0,400,214,8,11,2,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,27,26,2,4,0,0,22,0,0,0,-1--1--1,,1|(440,214)|
+1,28,26,25,100,0,0,22,0,0,0,-1--1--1,,1|(358,214)|
+12,29,48,531,358,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,30,32,29,4,0,0,22,0,0,0,-1--1--1,,1|(523,327)|
+1,31,32,2,100,0,0,22,0,0,0,-1--1--1,,1|(523,270)|
+11,32,0,523,297,11,8,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,33,declining industry demise,592,297,59,20,40,131,0,0,-1,0,0,0,0,0,0,0,0,0
+1,34,2,33,1,0,0,0,0,64,0,-1--1--1,,1|(624,268)|
+10,35,declining industry initial,511,106,44,15,8,131,0,16,0,0,0,0,0-0-0,0-0-0,||B|0-0-0,0,0,0,0,0,0
+1,36,35,2,1,0,0,0,0,64,1,-1--1--1,,1|(556,149)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Tax Sector
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,419,40,42,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+Tax Sector
+10,2,assessed value,440,180,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,3,business assessed value,529,78,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,4,housing assessed value,347,78,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,5,Declining Industry,603,281,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,6,declining industry assessed value,697,177,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,7,Mature Business,633,241,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,8,maturre business assessed value,715,150,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,9,New Enterprise,636,217,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,10,new enterprise assessed value,731,117,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,11,Premium Housing,135,201,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|64-128-128,0,0,0,0,0,0
+10,12,premium housing assessed value,123,97,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-255-128,0,0,0,0,0,0
+10,13,Underemp Housing,215,258,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,14,underemp housing assessed value,136,167,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,15,Worker Housing,168,232,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,16,worker housing assessed value,119,137,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,17,tax assessment indicated,389,261,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,18,tax needed,376,348,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,19,tax assessment norm,675,422,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,20,tax collection mult,217,328,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,21,labor underemp ratio,79,364,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,22,tax collection mult tab,80,292,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,23,Labor,244,532,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,24,labor family size,460,531,75,30,0,2,0,19,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,25,manager prof family size,409,502,75,30,0,2,0,19,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,26,Manager Professional,212,505,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,27,tax spending per labor,163,439,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,28,tax spending per manager,111,414,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,29,tax spending per underemp,173,472,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,30,underemp family size,542,556,75,30,0,2,0,19,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,31,Underemployed,280,555,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,32,tax collections,553,347,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,33,tax ratio needed,483,400,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,34,tax ratio,672,345,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,35,Tax Ratio Needed Perc,755,287,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,36,tax ratio table,763,381,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,37,Tax Ratio Needed Perc,589,462,44,20,3,131,0,16,0,0,0,0,0-0-0,0-0-0,||I|0-0-0,0,0,0,0,0,0
+10,38,tax ratio needed perception time,737,466,45,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+1,39,3,2,1,0,0,0,0,0,0,-1--1--1,,1|(472,116)|
+1,40,4,2,1,0,0,0,0,0,0,-1--1--1,,1|(378,131)|
+1,41,5,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,42,6,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,43,7,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,44,8,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,45,9,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,46,10,3,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,47,11,4,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,48,12,4,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,49,13,4,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,50,14,4,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,51,15,4,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,52,16,4,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,53,2,17,1,0,0,0,0,0,0,-1--1--1,,1|(405,209)|
+1,54,18,17,1,0,0,0,0,0,0,-1--1--1,,1|(368,309)|
+1,55,21,20,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,56,22,20,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,57,23,18,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,58,24,18,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,59,25,18,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,60,26,18,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,61,20,18,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,62,27,18,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,63,28,18,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,64,29,18,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,65,30,18,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,66,31,18,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,67,2,32,1,0,0,0,0,0,0,-1--1--1,,1|(502,243)|
+1,68,19,32,1,0,0,0,0,0,0,-1--1--1,,1|(620,375)|
+1,69,34,32,1,0,0,0,0,0,0,-1--1--1,,1|(623,335)|
+1,70,35,34,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,71,36,34,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,72,17,33,1,0,0,0,0,0,0,-1--1--1,,1|(462,309)|
+1,73,19,33,1,0,0,0,0,0,0,-1--1--1,,1|(580,397)|
+1,74,33,37,1,0,0,0,0,0,0,-1--1--1,,1|(502,432)|
+1,75,38,37,1,0,0,0,0,0,0,-1--1--1,,1|(659,459)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Job Sector
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,355,71,40,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+Job Sector
+10,2,labor construction ratio,702,288,75,30,0,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,3,labor construction ratio tab,736,347,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,4,labor ratio,503,274,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|255-0-0,0,0,0,0,0,0
+10,5,labor desired construct,392,362,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,6,low cost housing constr des,677,376,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,7,low cost housing constr labor,675,404,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,8,new enterprise constr labor,325,559,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,9,new enterprise construction desired,424,591,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,10,premium housing constr labor,552,534,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,11,premium housing construct desired,647,505,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,12,worker housing const des,718,437,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,13,worker housing constr labor,662,462,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,14,labor desired industry,199,301,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,15,Declining Industry,68,358,75,30,0,2,0,3,0,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,16,declining industry labor,85,434,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,17,Mature Business,214,467,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,18,mature business labor,155,514,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,19,New Enterprise,312,392,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,20,new enterprise labor,283,440,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,21,labor jobs,354,248,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,22,Labor,519,342,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,23,Labor Ratio Perc,638,201,51,27,3,3,0,58,0,0,0,0,-1--1--1,0-0-0,Times New Roman|12|B|0-0-0,0,0,0,0,0,0
+10,24,labor ratio perception time,607,118,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,25,underemp ratio,128,132,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,26,Underemployed,99,204,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,27,underemployed jobs,268,180,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,28,underemployed job program,152,243,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,29,underemployed labor job ratio,478,196,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,30,underemployed labor job ratio tab,354,117,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+1,31,3,2,1,0,0,0,0,0,0,-1--1--1,,1|(731,325)|
+1,32,4,2,1,0,0,0,0,0,0,-1--1--1,,1|(575,265)|
+1,33,6,5,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,34,7,5,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,35,8,5,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,36,9,5,1,0,0,0,0,0,0,-1--1--1,,1|(412,481)|
+1,37,10,5,1,0,0,0,0,0,0,-1--1--1,,1|(468,457)|
+1,38,11,5,1,0,0,0,0,0,0,-1--1--1,,1|(519,451)|
+1,39,12,5,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,40,13,5,1,0,0,0,0,0,0,-1--1--1,,1|(557,418)|
+1,41,15,14,1,0,0,0,0,0,0,-1--1--1,,1|(97,326)|
+1,42,16,14,1,0,0,0,0,0,0,-1--1--1,,1|(134,370)|
+1,43,17,14,1,0,0,0,0,0,0,-1--1--1,,1|(201,388)|
+1,44,18,14,1,0,0,0,0,0,0,-1--1--1,,1|(163,408)|
+1,45,19,14,1,0,0,0,0,0,0,-1--1--1,,1|(261,337)|
+1,46,20,14,1,0,0,0,0,0,0,-1--1--1,,1|(247,371)|
+1,47,5,21,1,0,0,0,0,0,0,-1--1--1,,1|(363,311)|
+1,48,14,21,1,0,0,0,0,0,0,-1--1--1,,1|(265,262)|
+1,49,22,4,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,50,21,4,1,0,0,0,0,0,0,-1--1--1,,1|(418,271)|
+1,51,4,23,1,0,0,0,0,0,0,-1--1--1,,1|(540,237)|
+1,52,24,23,1,0,0,0,0,0,0,-1--1--1,,1|(631,151)|
+1,53,26,25,1,0,0,0,0,0,0,-1--1--1,,1|(100,170)|
+1,54,27,25,1,0,0,0,0,0,0,-1--1--1,,1|(205,146)|
+1,55,21,27,1,0,0,0,0,0,0,-1--1--1,,1|(322,210)|
+1,56,28,27,1,0,0,0,0,0,0,-1--1--1,,1|(208,220)|
+1,57,29,27,1,0,0,0,0,0,0,-1--1--1,,1|(361,174)|
+1,58,4,29,1,0,0,0,0,0,0,-1--1--1,,1|(479,239)|
+1,59,30,29,1,0,0,0,0,0,0,-1--1--1,,1|(409,142)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Urban Development Programs
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,declining industry demolition program,261,340,75,30,0,3,0,8,-1,0,0,0,0-0-0,0-0-0,|12|B|0-0-0,0,0,0,0,0,0
+10,2,Declining Industry,343,508,75,30,0,2,0,3,0,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,3,declining industry demolition rate,160,416,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,4,SWITCH TIME 7,353,395,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,5,labor training prog,952,39,75,30,0,3,0,8,-1,0,0,0,0-0-0,0-0-0,|12|B|0-0-0,0,0,0,0,0,0
+10,6,Labor,923,159,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,7,LABOR TRAINING RATE,1015,148,52,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,8,SWITCH TIME 2,1092,89,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,9,low cost hous prog,761,-171,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,10,labor construction ratio,608,-227,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,11,low cost housing constr des,587,-128,75,30,0,3,0,9,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128,0,0,0,0,0,0
+10,12,low cost housing prog coeff,675,-65,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,13,SWITCH TIME 10,829,-107,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,14,Underemployed,319,-225,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,15,worker housing land mult,533,-47,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,16,new enterprise construction program,724,307,75,30,0,3,0,24,-1,0,0,0,0-0-0,0-0-0,|12|B|0-0-0,0,0,0,0,0,0
+10,17,enterprise land mult,713,416,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,18,NEW ENTERPRISE CONSTR RATE,884,425,57,15,8,131,0,17,0,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,19,production units total,724,444,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,20,SWITCH TIME 6,867,360,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,21,premium housing const prog,517,377,75,30,0,3,0,24,-1,0,0,0,0-0-0,0-0-0,|12|B|0-0-0,0,0,0,0,0,0
+10,22,Premium Housing,477,470,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,23,premium housing construction ratio,575,498,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,24,premium housing land mult,397,438,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||64-128-128,0,0,0,0,0,0
+10,25,SWITCH TIME 3,599,432,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,26,Time,525,-17,75,30,0,2,0,1,-1,0,0,0,128-128-128,0-0-0,|||255-0-0,0,0,0,0,0,0
+12,27,0,427,-253,112,11,0,4,0,26,-1,0,0,0,0-0-0,0-0-0,|14|U|255-0-0,0,0,0,0,0,0
+Urban Development Programs
+10,28,slum housing demolition program,400,51,75,30,0,3,0,8,-1,0,0,0,0-0-0,0-0-0,|12|B|0-0-0,0,0,0,0,0,0
+10,29,SLUM HOUSING DEMOLITION RATE,411,183,61,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,30,SWITCH TIME 5,503,120,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,31,Time,367,-172,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,32,Underemp Housing,312,123,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,33,tax per cap subsidy,971,285,75,30,0,3,0,24,-1,0,0,0,0-0-0,0-0-0,|12|B|0-0-0,0,0,0,0,0,0
+10,34,SWITCH TIME 8,1056,367,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,35,tax per cap subsidy size,973,395,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,36,Time,599,260,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,37,underemp to labor net,105,29,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,38,labor to underemp,144,171,40,20,8,2,0,3,0,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,39,underemp to labor,59,136,40,20,8,2,0,3,0,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,40,underemp training prog,125,-120,75,30,0,3,0,8,-1,0,0,0,0-0-0,0-0-0,|12|B|0-0-0,0,0,0,0,0,0
+10,41,SWITCH TIME 1,212,-71,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,42,underemp training rate,123,-37,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,43,worker housing const prog,651,24,75,30,0,3,0,8,-1,0,0,0,0-0-0,0-0-0,|12|B|0-0-0,0,0,0,0,0,0
+10,44,underemployed job program,323,-121,75,30,0,3,0,8,-1,0,0,0,0-0-0,0-0-0,|12|B|0-0-0,0,0,0,0,0,0
+10,45,SWITCH TIME 9,429,-81,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,46,underemp job program coeff,332,-47,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,47,housing units total,586,144,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,48,SWITCH TIME 4,831,76,75,30,0,3,0,17,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,49,WORKER HOUSING CONSTR RATIO,812,128,62,15,8,3,0,17,0,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,50,worker housing land mult,699,172,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,51,2,1,1,0,0,0,0,0,0,-1--1--1,,1|(273,437)|
+1,52,3,1,1,0,0,0,0,0,0,-1--1--1,,1|(176,355)|
+1,53,4,1,1,0,0,0,0,0,0,-1--1--1,,1|(319,357)|
+1,54,6,5,1,0,0,0,0,0,0,-1--1--1,,1|(912,104)|
+1,55,7,5,1,0,0,0,0,0,0,-1--1--1,,1|(995,83)|
+1,56,8,5,1,0,0,0,0,0,0,-1--1--1,,1|(1049,49)|
+1,57,10,9,1,0,0,0,0,0,0,-1--1--1,,1|(677,-221)|
+1,58,11,9,1,0,0,0,0,0,0,-1--1--1,,1|(677,-139)|
+1,59,12,11,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,60,13,11,1,0,0,0,0,0,0,-1--1--1,,1|(725,-104)|
+1,61,31,11,1,0,0,0,0,0,0,-1--1--1,,1|(447,-167)|
+1,62,14,11,1,0,0,0,0,0,0,-1--1--1,,1|(447,-204)|
+1,63,15,11,1,0,0,0,0,0,0,-1--1--1,,1|(537,-87)|
+1,64,17,16,1,0,0,0,0,0,0,-1--1--1,,1|(683,367)|
+1,65,18,16,1,0,0,0,0,0,0,-1--1--1,,1|(795,383)|
+1,66,19,16,1,0,0,0,0,0,0,-1--1--1,,1|(753,383)|
+1,67,20,16,1,0,0,0,0,0,0,-1--1--1,,1|(843,335)|
+1,68,22,21,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,69,23,21,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,70,24,21,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,71,25,21,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,72,29,28,1,0,0,0,0,0,0,-1--1--1,,1|(392,117)|
+1,73,30,28,1,0,0,0,0,0,0,-1--1--1,,1|(461,79)|
+1,74,32,28,1,0,0,0,0,0,0,-1--1--1,,1|(332,84)|
+1,75,34,33,1,0,0,0,0,0,0,-1--1--1,,1|(1041,316)|
+1,76,35,33,1,0,0,0,0,0,0,-1--1--1,,1|(935,345)|
+1,77,36,33,1,0,0,0,0,0,0,-1--1--1,,1|(739,228)|
+1,78,38,37,1,0,0,0,0,0,0,-1--1--1,,1|(144,99)|
+1,79,39,37,1,0,0,0,0,0,0,-1--1--1,,1|(63,79)|
+1,80,41,40,1,0,0,0,0,0,0,-1--1--1,,1|(181,-101)|
+1,81,31,40,1,0,0,0,0,0,0,-1--1--1,,1|(255,-165)|
+1,82,42,40,1,0,0,0,0,0,0,-1--1--1,,1|(101,-73)|
+1,83,14,40,1,0,0,0,0,0,0,-1--1--1,,1|(221,-192)|
+1,84,45,44,1,0,0,0,0,0,0,-1--1--1,,1|(383,-105)|
+1,85,31,44,1,0,0,0,0,0,0,-1--1--1,,1|(359,-152)|
+1,86,46,44,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,87,14,44,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,88,47,43,1,0,0,0,0,0,0,-1--1--1,,1|(624,86)|
+1,89,48,43,1,0,0,0,0,0,0,-1--1--1,,1|(755,40)|
+1,90,49,43,1,0,0,0,0,0,0,-1--1--1,,1|(733,63)|
+1,91,50,43,1,0,0,0,0,0,0,-1--1--1,,1|(695,101)|
+1,92,26,5,1,0,0,0,0,0,0,-1--1--1,,1|(708,-21)|
+1,93,26,28,1,0,0,0,0,0,0,-1--1--1,,1|(453,-4)|
+1,94,26,43,1,0,0,0,0,0,0,-1--1--1,,1|(577,-15)|
+1,95,36,16,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,96,36,21,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,97,36,1,1,0,0,0,0,0,0,-1--1--1,,1|(435,259)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Conditions - Unemployment and Crowding
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,515,46,157,11,0,4,0,26,-1,0,0,0,0-0-0,0-0-0,|14|U|255-0-0,0,0,0,0,0,0
+Conditions - Unemployment and Crowding
+10,2,percent underemp,489,110,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,3,population,336,234,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,4,underemp family size,477,262,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,5,Underemployed,641,238,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,6,underemployed crowding,736,132,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,7,underemp housing ratio,780,271,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,8,unemployment rate,456,383,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,9,Labor,296,464,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,10,labor jobs,484,544,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,11,Manager Prof Jobs,697,372,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,12,Manager Professional,769,464,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,13,Underemployed,361,534,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,14,underemployed jobs,605,532,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+1,15,3,2,1,0,0,0,0,0,0,-1--1--1,,1|(391,167)|
+1,16,4,2,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,17,5,2,1,0,0,0,0,0,0,-1--1--1,,1|(581,152)|
+1,18,7,6,1,0,0,0,0,0,0,-1--1--1,,1|(777,206)|
+1,19,9,8,1,0,0,0,0,0,0,-1--1--1,,1|(353,416)|
+1,20,10,8,1,0,0,0,0,0,0,-1--1--1,,1|(444,471)|
+1,21,11,8,1,0,0,0,0,0,0,-1--1--1,,1|(576,362)|
+1,22,12,8,1,0,0,0,0,0,0,-1--1--1,,1|(617,410)|
+1,23,13,8,1,0,0,0,0,0,0,-1--1--1,,1|(385,456)|
+1,24,14,8,1,0,0,0,0,0,0,-1--1--1,,1|(544,454)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Land Utilization
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+12,1,0,384,32,60,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+Land Utilization
+10,2,housing units total,264,74,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,3,Premium Housing,124,136,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,4,Underemp Housing,129,174,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,5,Worker Housing,186,222,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,6,land fraction occupied,498,77,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,7,land per house,350,136,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,8,land per production unit,752,146,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,9,production units total,363,179,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,10,TOTAL LAND AREA,610,191,75,30,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,11,Declining Industry,536,285,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,12,Mature Business,268,279,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+10,13,New Enterprise,404,322,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,||U|128-128-128,0,0,0,0,0,0
+1,14,3,2,1,0,0,0,0,0,0,-1--1--1,,1|(187,113)|
+1,15,4,2,1,0,0,0,0,0,0,-1--1--1,,1|(198,143)|
+1,16,5,2,1,0,0,0,0,0,0,-1--1--1,,1|(239,159)|
+1,17,2,6,1,0,0,0,0,0,0,-1--1--1,,1|(366,61)|
+1,18,7,6,1,0,0,0,0,0,0,-1--1--1,,1|(414,100)|
+1,19,8,6,1,0,0,0,0,0,0,-1--1--1,,1|(633,92)|
+1,20,9,6,1,0,0,0,0,0,0,-1--1--1,,1|(456,149)|
+1,21,10,6,1,0,0,0,0,0,0,-1--1--1,,1|(594,129)|
+1,22,11,9,1,0,0,0,0,0,0,-1--1--1,,1|(481,228)|
+1,23,12,9,1,0,0,0,0,0,0,-1--1--1,,1|(303,224)|
+1,24,13,9,1,0,0,0,0,0,0,-1--1--1,,1|(399,261)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Business Sector
+$192-192-192,0,Times New Roman|10||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Mature Business,475,168,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,2,enterprise decline mult,371,312,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,3,New Enterprise,216,168,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,4,new enterprise decline normal,257,336,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,5,business decline mult,577,387,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,6,mature business decline norm,491,360,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,7,Declining Industry,729,169,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,8,declining industry demise mult,799,321,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,9,declining industry demise norm,843,371,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,10,declining industry demolition program,879,444,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,11,labor construction ratio,159,256,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,12,new enterprise construction desired,115,281,75,30,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+12,13,48,19,169,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,14,0,603,168,7,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,15,mature business decline,603,196,40,20,40,3,0,1,0,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+12,16,48,952,167,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,17,0,101,169,7,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,18,new enterprise Construction,101,197,40,20,40,3,0,1,0,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+11,19,0,345,168,7,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,20,new enterprise decline,345,196,40,20,40,3,0,1,0,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+12,21,0,475,43,59,11,0,4,0,58,-1,0,0,0,-1--1--1,0-0-0,Times New Roman|14|U|255-0-0,0,0,0,0,0,0
+Business Sector
+1,22,2,20,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,23,3,19,1,0,0,0,0,0,0,-1--1--1,,1|(321,143)|
+1,24,4,20,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,25,5,15,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,26,1,14,1,0,0,0,0,0,0,-1--1--1,,1|(543,135)|
+1,27,6,15,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,28,11,18,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,29,12,18,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,30,17,3,4,0,0,22,0,0,0,-1--1--1,,1|(142,169)|
+1,31,17,13,100,0,0,22,0,0,0,-1--1--1,,1|(61,169)|
+1,32,19,1,4,0,0,22,0,0,0,-1--1--1,,1|(393,168)|
+1,33,19,3,100,0,0,22,0,0,0,-1--1--1,,1|(297,168)|
+1,34,14,7,4,0,0,22,0,0,0,-1--1--1,,1|(649,168)|
+1,35,14,1,100,0,0,22,0,0,0,-1--1--1,,1|(555,168)|
+10,36,declining industry demise,705,253,80,9,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,37,36,7,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,38,declining industry initial,906,255,76,9,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,39,38,7,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,40,new enterprise initial,216,203,45,15,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,41,40,3,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+///---\\\
+:GRAPH HISTORY
+:TITLE History of Conditions
+:WIP
+:X-LABEL Years
+:X-MIN 100
+:X-MAX 250
+:SCALE
+:VAR population|Total Population
+:Y-MIN 0
+:Y-MAX 1e+07
+:DATASET *
+:LINE-WIDTH 2
+:SCALE
+:VAR underemployed crowding|Underemployed crowding
+:UNITS /100
+:Y-MIN 0
+:Y-MAX 200
+:DATASET *
+:LINE-WIDTH 2
+:SCALE
+:VAR percent underemp|% of population underemployed
+:DATASET *
+:LINE-WIDTH 2
+:VAR unemployment rate|Unemployment rate
+:UNITS %
+:Y-MIN 0
+:Y-MAX 100
+:DATASET *
+:LINE-WIDTH 2
+
+:REPORT COMM1
+:TITLE COMM1
+:FONT Times New Roman|12||0-0-0
+This game allows you to play with and understand a model through 
+interaction and analysis.  Most screens have menu items.  To select
+a menu item you can click on it, type the first letter, or highlight
+it using the up and down arrow keys and press the enter key.  
+
+The main gaming screen has buttons rather than menu selections.  Use
+the mouse to click on a button and activate the associated action.
+
+Additional functionality available in the software is described in 
+places where it can be used.  To conserve space, later commentaries
+will be kept small, and you will need to scroll them to read all the
+information they contain.
+
+The model used for this application is the Urban Dynamics model as 
+published in the book Urban Dynamics by Jay W. Forrester (MIT Press,
+Cambridge, MA 1969).
+:END-OF-REPORT
+
+:REPORT COMM3
+:TITLE COMM3
+:FONT Times New Roman|12||0-0-0
+You can do analysis of the model by first loading in scenarios of 
+interest, and then reviewing the output or doing causal tracing.  
+The Load and reorder command will put up a small window with two lists.  
+On the left is a list of loaded scenarios, on the right a list of 
+scenarios that have been run.  The << button loads scenarios.  Click 
+on the scenario you want to load in the right hand list, and then 
+click the << button.  The >> button unloads scenarios.  Click on the 
+scenario you want to unload in the left hand list, and the click on 
+the >> button.
+
+You can load up to 8 scenarios at a time, but it is difficult to read
+graphs with more than 4 scenarios loaded.
+
+If the list on the right is empty, you will need to run some 
+scenarios.  Exit back to the main menu and do this.  You can run
+the scenarios described in "Beyond the Limits" by choosing one
+of the named scenarios to base your scenario on, and running the
+scenario without making any additional changes.
+
+Causal tracing is a process the allows you to determine the underlying
+causes of behavior, and differences in behavior between different
+scenarios.  There are two options for doing causal tracing available.
+The first uses tree diagrams and single graphs.  The second uses
+equations and multiple graphs.  Try them both out to see which you
+prefer.
+:END-OF-REPORT
+
+:REPORT COMM4
+:TITLE COMM4
+:FONT Times New Roman|12||0-0-0
+The cause and use screens show lists of
+different variables.  The graphs allows
+your to compare different scenarios.
+The trees allow you to investigate the
+structure of the model.
+
+You can double click on a variable name
+in the graphs, trees or documentation to
+view the same analysis screen for that
+variable.  You can also use the S
+command to select a new variable to work
+with.
+
+You can print the contents of the graphs
+and trees using the P command.  Output
+will be directed to your default printer.
+
+During causal tracing you can switch
+between the Tree and Graph represen-
+tations of causes.  This can be
+useful as means of understanding both
+structure and behavior.
+:END-OF-REPORT
+
+:REPORT EXP1
+:TITLE EXP1
+:FONT Times New Roman|12||0-0-0
+Build low cost housing in order to improve the 
+condition of the underemployed.  This is housing
+units/person/year so that .2 means everyone should
+have a new house in five year.
+:END-OF-REPORT
+
+:REPORT EXP2
+:TITLE EXP2
+:FONT Times New Roman|12||0-0-0
+Demolish slum housing.  Encourages new higher quality
+housing and business growth, but at the expense of
+available housing for the underemployed.  Measure in 
+fraction/year destroyed.
+:END-OF-REPORT
+
+:REPORT EXP3
+:TITLE EXP3
+:FONT Times New Roman|12||0-0-0
+Programs to make jobs available to the underemployed.
+Measured as the % of unemployed offered jobs.
+:END-OF-REPORT
+
+:REPORT EXP4
+:TITLE EXP4
+:FONT Times New Roman|12||0-0-0
+Job training programs.  Measured as the fraction/year of
+underemployed trained.
+:END-OF-REPORT
+
+:REPORT EXP5
+:TITLE EXP5
+:FONT Times New Roman|12||0-0-0
+Construction of new business subsidized and/or directed
+by the government.  Measures in fraction/year of existing
+business the is created.
+:END-OF-REPORT
+
+:REPORT EXP6
+:TITLE EXP6
+:FONT Times New Roman|12||0-0-0
+Demolition of ailing businesses.  Buyouts and accelerated
+shutdowns.  Measures in fraction/year removed.
+:END-OF-REPORT
+:L<%^E!@
+4:Time
+5:assessed value
+9:base
+19:100,0
+24:0
+25:250
+26:250
+22:$,Dollar,Dollars,$s
+22:Day,Days
+22:Hour,Hours
+22:housing unit,housing units
+22:Month,Months
+22:Person,People,Persons,worker,workers
+22:production units,productive units,productive unit,production unit
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+23:0
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:0
+72:0
+73:0
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Courier|12||0-0-0|0-0-0|-1--1--1|0-0-0|192-192-192|-1--1--1

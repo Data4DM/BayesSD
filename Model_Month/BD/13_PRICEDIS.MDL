@@ -1,0 +1,232 @@
+********************************************************
+	.PriceDiscovery
+********************************************************~
+		
+		Price Discovery Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This is a simple model of price discovery in a competitive market (chapter 13).
+		The process of price discoveryis modeled as a hill-climbing search
+		using the demand/supply balance as a measure of the gradient.
+		
+		In this simple test model, there are no delays in the response of demand
+		or supply to price.
+	|
+
+Change in Price=
+	(Indicated Price - Price)/Price Adjustment Time
+	~	$/unit/Period
+	~	Price adjusts to the indicated level over the Price Adjustment Time.
+	|
+
+Change in Reference Demand=
+	0.2
+	~	Dimensionless
+	~	The fractional change in reference demand
+	|
+
+Demand=
+	Reference Demand*(Price/Reference Price)^Demand Elasticity
+	~	Units/Period
+	~	Demand is given by a constant elasticity demand curve.  Demand equals the \
+		reference level at the reference price.
+	|
+
+Demand Curve Shift Time=
+	0
+	~	Period
+	~	The time at which the demand curve shifts
+	|
+
+Demand Elasticity=
+	-0.25
+	~	Dimensionless
+	~	The elasticity of demand (the fractional change in demand for a given \
+		fractional change in price)
+	|
+
+"Demand/Supply Balance"=
+	Demand/Supply
+	~	Dimensionless
+	~	The balance between demand and supply, expressed as a dimensionless ratio.
+	|
+
+"Effect of Demand/Supply Balance on Price"=
+	"Demand/Supply Balance"^"Sensitivity of Price to Demand/Supply Balance"
+	~	Dimensionless
+	~	The effect of the demand/supply balance on price is a power function of \
+		the demand/supply balance.  The higher the sensitivity of price to the \
+		demand/supply balance, the greater the change in price induced by any \
+		imbalance.
+	|
+
+Indicated Price=
+	Price*"Effect of Demand/Supply Balance on Price"
+	~	$/unit
+	~	Market makers raise the indicated price above the current level when \
+		demand exceeds supply, and lower it when supply exceeds demand.
+	|
+
+Initial Reference Demand=
+	100
+	~	Units/Period
+	~	The initial reference demand is 100 units/period
+	|
+
+Price= INTEG (
+	Change in Price,
+		100)
+	~	$/unit
+	~	The price of the product.  Initially equal to $100/unit.
+	|
+
+Price Adjustment Time=
+	1
+	~	Period
+	~	Price adjusts to the indicated level over this interval.
+	|
+
+Reference Demand=
+	Initial Reference Demand*(1+STEP(Change in Reference Demand, Demand Curve Shift Time\
+		))
+	~	Units/Period
+	~	Reference Demand is the demand generated at the reference price.
+	|
+
+Reference Price=
+	100
+	~	$/unit
+	~	The reference price is $100/unit.
+	|
+
+Reference Supply=
+	100
+	~	Units/Period
+	~	Reference supply is 100 units/period.
+	|
+
+"Sensitivity of Price to Demand/Supply Balance"=
+	1
+	~	Dimensionless
+	~	Determines the response of the indicated price to imbalances between \
+		demand and supply.
+	|
+
+Supply=
+	Reference Supply * (Price/Reference Price)^Supply Elasticity
+	~	Units/Period
+	~	Supply is given by a constant elasticity supply curve.  Supply equals the \
+		reference supply at the reference price.
+	|
+
+Supply Elasticity=
+	0.5
+	~	Dimensionless
+	~	The elasticity of supply (the fractional change in supply for a given \
+		fractional change in price)
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 10
+	~	Period
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = -2
+	~	Period
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Period
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.0625
+	~	Period
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Price,347,223,40,20,3,3,0,0,0,0,0,0
+12,2,48,192,224,8,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(279,223)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(219,223)|
+11,5,48,245,223,6,8,34,3,0,0,1,0,0,0
+10,6,Change in Price,245,252,37,21,40,3,0,0,-1,0,0,0
+10,7,Indicated Price,305,432,35,17,8,3,0,0,0,0,0,0
+10,8,"Effect of Demand/Supply Balance on Price",448,485,63,27,8,3,0,0,0,0,0,0
+1,9,1,6,1,0,45,0,0,192,0,-1--1--1,,1|(342,330)|
+1,10,7,6,1,0,43,0,0,192,0,-1--1--1,,1|(198,355)|
+1,11,1,7,1,0,43,0,0,192,0,-1--1--1,,1|(427,346)|
+10,12,Price Adjustment Time,135,298,41,24,8,3,0,0,0,0,0,0
+1,13,12,6,1,0,0,0,0,64,0,-1--1--1,,1|(160,265)|
+12,14,0,309,271,20,20,4,4,0,0,-1,0,0,0
+B
+12,15,0,308,305,36,22,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Price Adjustment
+1,16,8,7,1,0,43,0,0,192,0,-1--1--1,,1|(386,479)|
+10,17,Demand,675,294,36,11,8,3,0,0,0,0,0,0
+10,18,Supply,821,315,31,13,8,3,0,0,0,0,0,0
+10,19,Supply Elasticity,904,360,37,16,8,3,0,0,0,0,0,0
+10,20,Demand Elasticity,634,355,44,19,8,3,0,0,0,0,0,0
+12,21,0,316,364,20,20,4,4,0,0,-1,0,0,0
+R
+12,22,0,315,398,36,22,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Price Discovery
+1,23,1,17,1,0,45,0,0,192,0,-1--1--1,,1|(448,196)|
+10,24,Reference Demand,576,319,38,17,8,3,0,0,0,0,0,0
+1,25,24,17,1,0,43,0,0,192,0,-1--1--1,,1|(640,315)|
+1,26,20,17,1,0,0,0,0,64,0,-1--1--1,,1|(669,325)|
+10,27,"Demand/Supply Balance",646,473,50,25,8,3,0,0,0,0,0,0
+1,28,17,27,1,0,43,0,0,192,0,-1--1--1,,1|(692,331)|
+1,29,27,8,1,0,43,0,0,192,0,-1--1--1,,1|(554,501)|
+10,30,"Sensitivity of Price to Demand/Supply Balance",287,544,72,31,8,3,0,0,0,0,0,0
+1,31,30,8,1,0,0,0,0,64,0,-1--1--1,,1|(396,530)|
+10,32,Reference Supply,905,302,36,19,8,3,0,0,0,0,0,0
+1,33,1,18,1,0,43,0,0,192,0,-1--1--1,,1|(649,178)|
+1,34,32,18,1,0,43,0,0,192,0,-1--1--1,,1|(882,325)|
+1,35,19,18,1,0,0,0,0,64,0,-1--1--1,,1|(848,345)|
+1,36,18,27,1,0,45,0,0,192,0,-1--1--1,,1|(781,436)|
+12,37,0,580,393,20,20,4,4,0,0,-1,0,0,0
+B
+12,38,0,579,427,36,22,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Demand Response
+12,39,0,751,341,20,20,4,4,0,0,-1,0,0,0
+B
+12,40,0,750,375,36,22,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Supply Response
+10,41,Change in Reference Demand,485,247,40,20,8,3,0,0,-1,0,0,0
+1,42,41,24,0,0,0,0,0,0,0,-1--1--1,,1|(526,280)|
+10,43,Demand Curve Shift Time,485,301,40,20,8,3,0,0,-1,0,0,0
+1,44,43,24,0,0,0,0,0,0,0,-1--1--1,,1|(524,307)|
+10,45,Initial Reference Demand,499,360,40,20,8,3,0,0,-1,0,0,0
+1,46,45,24,1,0,0,0,0,0,0,-1--1--1,,1|(550,349)|
+10,47,Reference Price,580,268,34,15,8,3,0,0,-1,0,0,0
+1,48,47,17,1,0,45,0,0,64,0,-1--1--1,,1|(623,293)|
+10,49,Reference Price,850,267,41,17,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,50,49,18,1,0,45,0,0,192,0,-1--1--1,,1|(852,283)|
+///---\\\
+:L<%^E!@
+9:current
+22:$,Dollar,Dollars,$s
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+22:Day,Days
+15:0,0,0,0
+19:100,0
+5:Reference Demand

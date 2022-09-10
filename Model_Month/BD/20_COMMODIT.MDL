@@ -1,0 +1,1357 @@
+********************************************************
+	.Commodity1
+********************************************************~
+		
+		Generic Commodity Market Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This is the generic price-mediated commodity market model developed in
+		chapter 20.  Includes capacity and investment, utilization of existing
+		capacity, price, and demand.  Parameters of the base case correspond
+		roughly to the paper industry.
+	|
+
+Expected Production Costs=
+	SMOOTH(Unit Costs,Time to Adjust Expected Costs)
+	~	$/Unit
+	~	Expected Production Costs represent beliefs among market participants \
+		about the unit costs of production (variable and fixed, including normal \
+		profit margins).  Expected Costs therefore represent beliefs about what a \
+		'fair' price would be, or the long-run equilibrium price.  Expected costs \
+		adjust to the actual costs with a delay representing the time required for \
+		gain information and adjust beliefs about costs.
+	|
+
+Long Run Expected Price=
+	SMOOTH(Price,Time to Adjust Long Run Price Expectations)
+	~	$/Unit
+	~	Long run price expectations are formed by first-order exponential \
+		smoothing (adaptive expectations).
+	|
+
+Expected Variable Costs=
+	SMOOTH(Unit Variable Cost,Time to Adjust Expected Variable Costs)
+	~	$/Unit
+	~	Expected variable costs per unit are formed by adaptive expectations.
+	|
+
+Pulse Duration=
+	1
+	~	Year
+	~	Duration of pulse input.  Set to Time Step for an impulse.
+	|
+
+Short Run Expected Price=
+	SMOOTH(Price,"Time to Adjust Short-Run Price Expectations")
+	~	$/Unit
+	~	Short run price expectations are formed by first-order exponential \
+		smoothing (adaptive expectations).
+	|
+
+Input 0=
+	1+STEP(Step Height 0,Step Time 0)+
+	(Pulse Quantity 0/Pulse Duration 0)*PULSE(Pulse Time 0,Pulse Duration 0)+
+	RAMP(Ramp Slope 0,Ramp Start Time 0,Ramp End Time 0)+
+	Sine Amplitude 0*SIN(2*3.14159*Time/Sine Period 0)+
+	  	STEP(1,Noise Start Time 0)*Pink Noise 0
+	~	Dimensionless
+	~	Input is a dimensionless variable which provides a variety of test input patterns, \
+		including a step,
+		         pulse, sine wave, and random noise.
+	|
+
+Input=
+	1+STEP(Step Height,Step Time)+
+	(Pulse Quantity/Pulse Duration)*PULSE(Pulse Time,Pulse Duration)+
+	RAMP(Ramp Slope,Ramp Start Time,Ramp End Time)+
+	Sine Amplitude*SIN(2*3.14159*Time/Sine Period)+
+	  	STEP(1,Noise Start Time)*Pink Noise
+	~	Dimensionless
+	~	Input is a dimensionless variable which provides a variety of test input patterns, \
+		including a step,
+		         pulse, sine wave, and random noise.
+	|
+
+Pulse Duration 0=
+	1
+	~	Year
+	~	Duration of pulse input.  Set to Time Step for an impulse.
+	|
+
+Minimum Price=
+	Expected Variable Costs
+	~	$/Unit
+	~	Trader's do not believe prices can fall below the variable cost per unit \
+		of production.
+	|
+
+Time to Adjust Expected Variable Costs=
+	1
+	~	Years
+	~	The time required to update expectations of unit variable costs.
+	|
+
+Expected Markup=
+	Short Run Expected Price/Expected Variable Costs
+	~	Dimensionless
+	~	Expected markup is the ratio of expected price to expected unit variable \
+		costs.  Provides a dimensionless measure of gross profit.
+	|
+
+Capital Stock= INTEG (
+	Acquisition Rate-Discard Rate,
+		(Reference Industry Demand/Indicated Capacity Utilization)/Capital Productivity)
+	~	Capital Units
+	~	The capital stock accumulates acquisitions less discards.  Initialized to \
+		the initial equilibrium level.
+	|
+
+Capacity Utilization=
+	SMOOTH(Indicated Capacity Utilization,Utilization Adjustment Time)
+	~	Dimensionless
+	~	Utilization adjusts with a delay to the indicated level (the level \
+		indicated by the expected operating margin).  The delay includes delays in \
+		the recognition of changes in operating profit by producers, the time \
+		required to decide that output must be changed, and the time required to \
+		implement any changes.
+	|
+
+Indicated Capacity Utilization=
+	Table for Effect of Markup on Utilization(Expected Markup)
+	~	Dimensionless
+	~	Utilization is a nonlinear function of the expected markup ratio.  For \
+		high markups, producers seek to operate at maximum utilization.  As the \
+		markup ratio falls, expensive measures to boost short-run output are \
+		discontinued, and eventually,  high-cost producers are forced to drop out \
+		of the market.  The function represents the short-run supply curve for the \
+		industry.  Because there is a distribution of costs, the aggregate curve \
+		for the industry as a whole is smooth, and some producers continue to \
+		operate even when the markup ratio is less than one.
+	|
+
+Utilization Adjustment Time=
+	0.5
+	~	Years
+	~	The average time between a change in the expected gross margin and a \
+		change in capacity utilization, including the time required to assess \
+		changes in gross margin, to decide that a change in profitability will be \
+		enduring enough to justify changes in utilization, and to implement the \
+		change.
+	|
+
+Production Start Rate=
+	Production Capacity*Capacity Utilization
+	~	Units/Year
+	~	The production start rate is determined by production capacity and \
+		capacity utilization.
+	|
+
+Relative Inventory Coverage=
+	Perceived Inventory Coverage/Reference Inventory Coverage
+	~	Dimensionless
+	~	Perceived inventory coverage relative to the normal level needed to ensure \
+		desired service levels in the market.
+	|
+
+Coverage Perception Time=
+	0.167
+	~	Years
+	~	The average time required to perceive and react to inventory coverage.
+	|
+
+Perceived Inventory Coverage=
+	SMOOTH(Inventory Coverage,Coverage Perception Time)
+	~	Years
+	~	Perceived coverage is formed by smoothing actual coverage.  It takes time \
+		to recognize changes in coverage.
+	|
+
+Sensitivity of Investment to Exp Profit=
+	1
+	~	Dimensionless
+	~	The Sensitivity of Desired Capacity to expected profit.
+	|
+
+Desired Capital=
+	Capital Stock*(1+Sensitivity of Investment to Exp Profit*((Effect of Expected Profit on Desired Capacity\
+		)-1))
+	~	Capital Units
+	~	Desired capital stock is based on current capital, adjusted up or down \
+		according to the expected profitability of new investment.
+	|
+
+Capital Productivity=
+	1
+	~	Unit/Year/Capital Unit
+	~	The productivity of capital is assumed exogenous and constant.  One unit \
+		of capital is defined as the capital stock required to generate one unit \
+		of output per year (at normal utilization), so productivity =1.
+	|
+
+Production Capacity=
+	Capital Stock*Capital Productivity
+	~	Units/Year
+	~	Production capacity is determined by total capital stock in service and \
+		its productivity.
+	|
+
+Work in Process Inventory= INTEG (
+	Production Start Rate - Production Rate,
+		Manufacturing Cycle Time * Customer Orders)
+	~	Units
+	~	WIP inventory accumulates the difference between production starts and \
+		completions.
+	|
+
+Reference Inventory Coverage=
+	0.2
+	~	Years
+	~	The normal inventory coverage required to ensure desired levels of service \
+		(the desired ability to fill orders).
+	|
+
+Inventory= INTEG (
+	Production Rate-Shipment Rate,
+		Reference Inventory Coverage * Customer Orders)
+	~	Units
+	~	The level of finished goods inventory in the plant.  Increased by production and \
+		decreased by
+		         shipments.  Initially set to the desired inventory level.
+	|
+
+Acquisition Rate=
+	DELAY3(Order Rate,Capacity Acquisition Delay )
+	~	Capital Units/Year
+	~	A third order capacity acquisition delay is assumed for the ordering and \
+		construction process.
+	|
+
+Adjustment for Capacity=
+	(Desired Capital - Capital Stock)/Capacity Adjustment Time
+	~	Capital Units/Year
+	~	Producers seek to close the gap between desired and actual capacity over \
+		the Capacity Adjustment Time
+	|
+
+Adjustment for Supply Line=
+	(Desired Supply Line - Capital on Order)/Supply Line Adjustment Time
+	~	Capital Units/Year
+	~	The supply line is adjusted towards its goal over the Supply Line \
+		Adjustment Time.
+	|
+
+Expected Acquisition Delay=
+	Capacity Acquisition Delay
+	~	Years
+	~	The expected acquisition delay for new capacity.  Here assumed to equal \
+		the actual delay.
+	|
+
+Average Life of Capacity=
+	20
+	~	Years
+	~	The average life of capacity.
+	|
+
+Capacity Acquisition Delay=
+	4
+	~	Years
+	~	The average time required to acquire new capacity.
+	|
+
+Capacity Adjustment Time=
+	3
+	~	Years
+	~	The average time over which producers seek to close the gap between \
+		desired and actual capacity.
+	|
+
+Capital on Order= INTEG (
+	Order Rate-Acquisition Rate,
+		Capacity Acquisition Delay*Discard Rate)
+	~	Capital Units
+	~	The supply line of capacity on order includes orders and units under \
+		construction.
+	|
+
+Expected Profitability of New Investment=
+	(Long Run Expected Price - Expected Production Costs)/Long Run Expected Price
+	~	Dimensionless
+	~	The expected profitabilty of new investment is the difference between long \
+		run price expectations and expectations for the unit costs of new \
+		investment, including fixed and variable costs.  Fixed cost includes the \
+		normal profit margin required.  The expected profit is normalized by price \
+		to give a dimensionless measure of profit, analogous to the percentage \
+		return per unit.
+	|
+
+Discard Rate=
+	Capital Stock/Average Life of Capacity
+	~	Capital Units/Year
+	~	The average life of capacity determines the rate at which it decays and is \
+		discarded.
+	|
+
+Supply Line Adjustment Time=
+	1
+	~	Years
+	~	The time period over which the supply line of capacity on order or under \
+		construction is adjusted to its goal.
+	|
+
+Table for Effect of Expected Profit on Desired Capacity(
+	[(-1,0)-(1,2)],(-1,0),(-0.75,0.1),(-0.5,0.3),(-0.25,0.67),(0,1),(0.25,1.25),(0.5,1.45\
+		),(0.75,1.6),(1,1.7))
+	~	Dimensionless
+	~	The adjustment of desired capacity above or below the current level \
+		depends on this function of the expected profitability of new \
+		investment.\!\!\!
+	|
+
+Effect of Expected Profit on Desired Capacity=
+	Table for Effect of Expected Profit on Desired Capacity(Expected Profitability of New Investment\
+		)
+	~	Dimensionless
+	~	Desired capacity is adjusted above or below current capacity in response \
+		to the expected profitability of new investment.
+	|
+
+Desired Acquisition Rate=
+	MAX(0, Expected Discard Rate + Adjustment for Capacity)
+	~	Capital Units/Year
+	~	The rate at which new capacity should be acquired, given the expected \
+		discard rate and the adjustment to bring the stock of capacity in line \
+		with the desired stock.
+	|
+
+Indicated Orders=
+	Desired Acquisition Rate + Adjustment for Supply Line
+	~	Capital Units/Year
+	~	Indicated orders are the sum of the desired acquisition rate and the \
+		adjustment for the supply line, which keeps the supply line of capacity on \
+		order in line with the level required to yield the desired acquisition \
+		rate.
+	|
+
+Order Rate=
+	MAX(0, Indicated Orders)
+	~	Capital Units/Year
+	~	Orders are constrained to be nonnegative (order cancellations are not \
+		permitted).
+	|
+
+Time to Adjust Long Run Price Expectations=
+	2
+	~	Years
+	~	The time required to update long-run price expectations.
+	|
+
+Expected Discard Rate=
+	Discard Rate
+	~	Capital Units/Year
+	~	The expected discard rate is assumed to equal the actual discard rate.
+	|
+
+Desired Supply Line=
+	Expected Acquisition Delay*Desired Acquisition Rate
+	~	Capital Units
+	~	The required supply line of capacity on order and under construction, \
+		given the desired acquisition rate and the expected delay in acquiring \
+		capacity.
+	|
+
+Initial Variable Cost Fraction=
+	0.4
+	~	Dimensionless
+	~	The initial fraction of total costs (and therefore initial price) arising \
+		from variable inputs.
+	|
+
+Industry Demand=
+	SMOOTHI(Indicated Industry Demand,Demand Adjustment Delay,Reference Industry Demand)
+	~	Units/Year
+	~	Industry demand adjusts to the indicated demand with a delay, representing \
+		the time required for consumers of the good to find substitutes or change \
+		their consumption after a change in price.
+	|
+
+Reference Price=
+	 100
+	~	$/Unit
+	~	Price at which industry demand equals reference demand.
+	|
+
+Demand Adjustment Delay=
+	0.5
+	~	Years
+	~	The average time required for consumer demand to respond to a change in \
+		price.
+	|
+
+Demand Curve Slope=
+	 (-Reference Industry Demand*Reference Industry Demand Elasticity)/(Reference Price)
+	~	Unit*Units/($*Year)
+	~	The slope of the industry demand curve, as a function of the price \
+		elasticity at the reference price level
+	|
+
+Reference Industry Demand Elasticity=
+	0.5
+	~	Dimensionless
+	~	Demand elasticity at the reference price
+	|
+
+Customer Orders=
+	Industry Demand*Other Factors Affecting Demand
+	~	Units/Year
+	~	Orders equal industry demand modified by other factors exogenous to the \
+		model.  These factors might include noise or other test inputs.
+	|
+
+Desired Shipment Rate=
+	Customer Orders
+	~	Units/Year
+	~	The desired shipment rate equals the customer order rate.  In this model \
+		there is no backlog of unfilled orders:  unfilled orders are lost as \
+		customers seek alternate sources of supply.
+	|
+
+Indicated Industry Demand=
+	 MIN(Maximum Consumption,Reference Industry Demand*MAX(0,1+Demand Curve Slope*(Price
+	-Reference Price)/Reference Industry Demand))
+	~	Units/Year
+	~	The indicated demand for the commodity given the current price.  Indicated \
+		demand is the demand consumers would like given the current price.  Actual \
+		demand adjusts to indicated demand with a delay.  The demand curve is \
+		linear, with slope set so that the elasticity of demand at the reference \
+		price is equal to the reference industry demand elasticity, set by the \
+		user.
+	|
+
+Maximum Consumption = 1e+008
+	~	Units/Year
+	~	The maximum demand for the commodity, no matter how low price goes.
+	|
+
+Other Factors Affecting Demand=
+	Input
+	~	Dimensionless
+	~	Demand is affected by this exogenous input, which can be set by the user \
+		to a step, pulse, ramp, sine wave, or noise.
+	|
+
+Price=
+	Traders' Expected Price*Effect of Inventory Coverage on Price*Effect of Costs on Price
+	~	$/Unit
+	~	Trader's set prices by adjusting their belief about the underlying \
+		equilibrium price in response to market pressures such as the \
+		supply/demand balance, here represented by inventory coverage relative to \
+		the normal level, and unit costs.
+	|
+
+Step Height 0=
+	0
+	~	Dimensionless
+	~	Height of step input to customer orders, as fraction of initial value.
+	|
+
+Initial Unit Variable Costs=
+	Initial Variable Cost Fraction*Reference Price
+	~	$/Unit
+	~	Initial unit variable costs are a specified fraction of the reference \
+		price.
+	|
+
+Sine Amplitude 0=0
+	~	Dimensionless
+	~	Amplitude of sine wave in customer orders (fraction of mean).
+	|
+
+Change in Pink Noise 0 = (White Noise 0 - Pink Noise 0)/Noise Correlation Time 0
+	~	1/Year
+	~	Change in the pink noise value; Pink noise is a first order exponential smoothing \
+		delay of the white
+		         noise input.
+	|
+
+Ramp Slope 0=0
+	~	1/Year
+	~	Slope of the ramp input, as a fraction of the base value (per year).
+	|
+
+Pulse Time 0=
+	1
+	~	Year
+	~	Time at which the pulse in Input occurs.
+	|
+
+Step Time 0=
+	1
+	~	Year
+	~	Time for the step input.
+	|
+
+Ramp End Time 0=1e+009
+	~	Year
+	~	End time for the ramp input.
+	|
+
+White Noise 0 = Noise Standard Deviation 0*((24*Noise Correlation Time 0/TIME STEP)^0.5\
+		*(RANDOM 0 1() - 0.5
+))
+	~	Dimensionless
+	~	White noise input to the pink noise process.
+	|
+
+Noise Start Time 0=
+	1
+	~	Year
+	~	Start time for the random input.
+	|
+
+Noise Standard Deviation 0=
+	 0
+	~	Dimensionless
+	~	The standard deviation of the pink noise process.
+	|
+
+Ramp Start Time 0=
+	1
+	~	Year
+	~	Start time for the ramp input.
+	|
+
+Noise Correlation Time 0=
+	0.25
+	~	Year
+	~	The correlation time constant for Pink Noise.
+	|
+
+Noise Seed 0 = 1
+	~	Dimensionless
+	~	Random number generator seed.  Vary to generate a different sequence of \
+		random numbers.
+	|
+
+Pulse Quantity 0=
+	0
+	~	Dimensionless*Year
+	~	The quantity to be injected to customer orders, as a fraction of the base value of \
+		Input. 
+		        For example, to pulse in a quantity equal to 50% of the current value of \
+		input, set to
+		         .50.
+	|
+
+Pink Noise 0 = INTEG(Change in Pink Noise 0,0)
+	~	Dimensionless
+	~	Pink Noise is first-order autocorrelated noise.  Pink noise provides a realistic \
+		noise input to
+		        models in which the next random shock depends in part on the previous \
+		shocks.  The user
+		        can specify the correlation time.  The mean is 0 and the standard deviation \
+		is specified
+		         by the user.
+	|
+
+Unit Variable Cost=
+	Initial Unit Variable Costs*Input 0
+	~	$/Unit
+	~	Unit Variable Costs of production are exogenous.  A variety of test inputs \
+		allow users to try different patterns, including a step, pulse, sine wave, \
+		and random noise.
+	|
+
+Sine Period 0=
+	4
+	~	Years
+	~	Period of sine wave in customer demand.  Set initially to 4 years to \
+		simulate the business cycle
+	|
+
+Unit Fixed Cost= INITIAL(
+	Initial Price - Unit Variable Cost)
+	~	$/Unit
+	~	Fixed costs of production per unit of output.
+	|
+
+Initial Price=
+	100
+	~	$/Unit
+	~	The initial price of the commodity.  Used to initialize unit costs and \
+		price expectations so the system begins in equilibrium.
+	|
+
+Effect of Costs on Price=
+	1+Sensitivity of Price to Costs*((Expected Production Costs/Traders' Expected Price)\
+		-1)
+	~	Dimensionless
+	~	Price responds to the gap between traders' beliefs about the underlying \
+		equilibrium price and their beliefs about the costs of production.  When \
+		expected costs rise above the expected price, prices tend to rise, and \
+		vice versa.
+	|
+
+Sensitivity of Price to Costs=
+	0.25
+	~	Dimensionless
+	~	Controls the response of price to discrepancies between the expected price \
+		and the expected cost of production.
+	|
+
+Effect of Inventory Coverage on Price=
+	Relative Inventory Coverage^Sensitivity of Price to Inventory Coverage
+	~	Dimensionless
+	~	Price rises when inventory coverage is less than normal, and falls when it \
+		is greater.  The Sensitivity of Price to Inventory Coverage controls the \
+		magnitude of the response.
+	|
+
+Time to Adjust Expected Costs=
+	2
+	~	Year
+	~	The time required for market participants to glean information about costs \
+		and adjust their beliefs to the new information.  Since cost information \
+		is difficult to get, unreliable, and differs from producer to producer, \
+		expected costs adjust slowly.
+	|
+
+Unit Costs=
+	Unit Variable Cost + Unit Fixed Cost
+	~	$/Unit
+	~	Unit costs including fixed and variable costs.
+	|
+
+Sensitivity of Price to Inventory Coverage=
+	-1
+	~	Dimensionless
+	~	Controls the response of price to inventory coverage.  Must be negative \
+		for high inventory to lead to lower prices.  Higher absolute values lead \
+		to greater price changes for any given inventory coverage level.
+	|
+
+Indicated Price=
+	MAX(Minimum Price,Price)
+	~	$/Unit
+	~	Beliefs about the underlying equilibrium price are never less than a \
+		minimum price level capturing the variable costs of goods.
+	|
+
+Time to Adjust Traders' Expected Price=
+	1
+	~	Years
+	~	Trader's belief about the underlying equilibrium price adjust to actual \
+		prices over this period.
+	|
+
+Change in Traders' Expected Price=
+	(Indicated Price - Traders' Expected Price)/Time to Adjust Traders' Expected Price
+	~	$/Unit/Year
+	~	Traders' beliefs about the underlying equilibrium price adjust in response \
+		to the gap between the indicated price and the current belief.  Expected \
+		underlying price adjusts via first-order adaptive expectations to the \
+		actual price, constrained to be greater than a minimum level.
+	|
+
+Traders' Expected Price= INTEG (
+	Change in Traders' Expected Price,
+		Initial Price)
+	~	$/Unit
+	~	The price market makers and traders believe would clear the market if \
+		demand and supply were in balance, and no other pressures to change price \
+		existed.
+	|
+
+"Time to Adjust Short-Run Price Expectations"=
+	1
+	~	Years
+	~	The time required to update short-run price expectations.
+	|
+
+Table for Effect of Markup on Utilization(
+	[(0,0)-(5,1.2)],(0,0),(0.5,0),(0.75,0.05),(1,0.5),(1.25,0.68),(1.5,0.75),(1.75,0.8),\
+		(2,0.84),(2.25,0.87),(2.5,0.9),(2.75,0.93),(3,0.96),(3.25,0.985),(3.5,0.995),(4,1),\
+		(4.5,1),(5,1))
+	~	Dimensionless
+	~	Utilization varies with expected profitability.  Around the normal \
+		operating point, utilization is quite high and unresponsive to changes in \
+		margins.  As margins fall, the high cost producers are forced to shut \
+		down.  The curve is gradual to reflect the distribution of costs among \
+		producers.  Utilization is nominally one when the margin is normal, and \
+		rises slightly above 1 when margins are higher than normal.\!\!\!
+	|
+
+Ratio of Maximum to Desired Shipments=
+	Maximum Shipment Rate/Desired Shipment Rate
+	~	Dimensionless
+	~	The ratio of the maximum to desired shipment rate.  Ratios less than one \
+		indicate shipments are constrained below the desired level.
+	|
+
+Order Fulfillment Ratio=
+	 Table for Order Fulfillment(Maximum Shipment Rate/Desired Shipment Rate)
+	~	Dimensionless
+	~	The Fraction of customer orders filled is determined by the ratio of the \
+		normal shipment rate to the desired rate.  The normal rate is the rate \
+		current inventory permits under normal circumstances.  Low inventory \
+		availability reduces shipments below customer orders.  Unfilled customer \
+		orders are lost.
+	|
+
+Shipment Rate=
+	Desired Shipment Rate*Order Fulfillment Ratio
+	~	Units/Year
+	~	The shipment rate is the desired shipment rate multiplied by the fraction \
+		of orders filled (the order fulfillment ratio.   Shipments fall below \
+		desired shipments when the feasible shipment rate falls below the desired \
+		rate, indicating that some products are unavailable.
+	|
+
+Inventory Coverage=
+	Inventory/Shipment Rate
+	~	Years
+	~	Inventory coverage is given by the ratio of inventory to shipments.
+	|
+
+Maximum Shipment Rate=
+	Inventory/Minimum Order Processing Time
+	~	Units/Year
+	~	The maximum rate of shipments the firm can achieve given their current \
+		inventory level and the minimum order processing time.
+	|
+
+Minimum Order Processing Time=
+	0.1
+	~	Years
+	~	The minimum time required to process and ship an order.
+	|
+
+Table for Order Fulfillment(
+	[(0,0)-(4,1)],(0,0),(0.2,0.2),(0.4,0.4),(0.6,0.58),(0.8,0.73),(1,0.85),(1.2,0.93),(1.4\
+		,0.97),(1.6,0.99),(1.8,1),(2,1),(2,1),(4,1))
+	~	Dimensionless
+	~	The ability to ship is constrained by inventory availability.  As the inventory \
+		level drops, the 
+		        fraction of customer orders that can be filled decreases.  When inventory is \
+		zero, shipments
+		         cease.  Unfilled customer orders are lost.\!\!\!
+	|
+
+Production Rate = DELAY3(Production Start Rate,Manufacturing Cycle Time)
+	~	Units/Year
+	~	Production is a third order delay of the production start rate, with the delay time \
+		determined by
+		         the manufacturing cycle time.
+	|
+
+Manufacturing Cycle Time=
+	0.5
+	~	Years
+	~	The average delay between the start and completion of production
+	|
+
+Reference Industry Demand=
+	 100
+	~	Units/Year
+	~	Initial value of customer orders.
+	|
+
+Step Height=
+	0
+	~	Dimensionless
+	~	Height of step input to customer orders, as fraction of initial value.
+	|
+
+Step Time=
+	1
+	~	Year
+	~	Time for the step input.
+	|
+
+Pulse Quantity=
+	0
+	~	Dimensionless*Year
+	~	The quantity to be injected to customer orders, as a fraction of the base value of \
+		Input. 
+		        For example, to pulse in a quantity equal to 50% of the current value of \
+		input, set to
+		         .50.
+	|
+
+Pulse Time=
+	1
+	~	Year
+	~	Time at which the pulse in Input occurs.
+	|
+
+Ramp Slope=0
+	~	1/Year
+	~	Slope of the ramp input, as a fraction of the base value (per year).
+	|
+
+Ramp Start Time=
+	1
+	~	Year
+	~	Start time for the ramp input.
+	|
+
+Ramp End Time=1e+009
+	~	Year
+	~	End time for the ramp input.
+	|
+
+Sine Amplitude=0
+	~	Dimensionless
+	~	Amplitude of sine wave in customer orders (fraction of mean).
+	|
+
+Sine Period=
+	4
+	~	Years
+	~	Period of sine wave in customer demand.  Set initially to 4 years to \
+		simulate the business cycle
+	|
+
+Noise Start Time=
+	1
+	~	Year
+	~	Start time for the random input.
+	|
+
+Pink Noise = INTEG(Change in Pink Noise,0)
+	~	Dimensionless
+	~	Pink Noise is first-order autocorrelated noise.  Pink noise provides a realistic \
+		noise input to
+		        models in which the next random shock depends in part on the previous \
+		shocks.  The user
+		        can specify the correlation time.  The mean is 0 and the standard deviation \
+		is specified
+		         by the user.
+	|
+
+Change in Pink Noise = (White Noise - Pink Noise)/Noise Correlation Time
+	~	1/Year
+	~	Change in the pink noise value; Pink noise is a first order exponential smoothing \
+		delay of the white
+		         noise input.
+	|
+
+Noise Correlation Time=
+	1
+	~	Year
+	~	The correlation time constant for Pink Noise.
+	|
+
+White Noise = Noise Standard Deviation*((24*Noise Correlation Time/TIME STEP)^0.5*(RANDOM 0 1\
+		() - 0.5
+))
+	~	Dimensionless
+	~	White noise input to the pink noise process.
+	|
+
+Noise Standard Deviation=
+	0
+	~	Dimensionless
+	~	The standard deviation of the pink noise process.
+	|
+
+Noise Seed=
+	 2
+	~	Dimensionless
+	~	Random number generator seed.  Vary to generate a different sequence of \
+		random numbers.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 160
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Year
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.03125
+	~	Year
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Test input for demand
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Other Factors Affecting Demand,210,107,55,27,8,3,0,0,0,0,0,0
+10,2,Input,117,116,31,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,3,Input,174,326,22,11,0,3,0,0,-1,0,0,0
+10,4,Pink Noise,489,253,40,20,3,3,0,0,0,0,0,0
+12,5,48,621,256,8,8,0,3,0,0,-1,0,0,0
+10,6,White Noise,516,356,40,20,8,3,0,0,0,0,0,0
+10,7,Noise Standard Deviation,409,384,40,20,8,3,0,0,0,0,0,0
+10,8,TIME STEP,423,316,54,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,9,Pink Noise,96,276,52,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,10,Noise Start Time,188,257,65,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,11,Pulse Quantity,263,283,58,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,12,Pulse Time,295,337,44,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,13,Ramp End Time,87,401,63,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,14,Ramp Slope,58,349,49,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,15,Ramp Start Time,58,375,65,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,16,Sine Amplitude,296,362,60,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,17,Sine Period,262,391,46,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,18,Step Height,152,427,47,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,19,Step Time,212,407,40,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,20,Time,71,308,30,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+11,21,108,579,257,6,8,34,3,0,0,1,0,0,0
+10,22,Change in Pink Noise,579,285,40,20,40,3,0,0,0,0,0,0
+10,23,Noise Correlation Time,646,337,40,20,8,3,0,0,0,0,0,0
+1,24,10,3,0,0,0,0,0,0,0,-1--1--1,,1|(182,284)|
+1,25,11,3,0,0,0,0,0,0,0,-1--1--1,,1|(224,301)|
+1,26,12,3,0,0,0,0,0,0,0,-1--1--1,,1|(230,331)|
+1,27,13,3,0,0,0,0,0,0,0,-1--1--1,,1|(124,368)|
+1,28,14,3,0,0,0,0,0,0,0,-1--1--1,,1|(122,336)|
+1,29,15,3,0,0,0,0,0,0,0,-1--1--1,,1|(111,352)|
+1,30,16,3,1,0,0,0,0,0,0,-1--1--1,,1|(215,342)|
+1,31,17,3,0,0,0,0,0,0,0,-1--1--1,,1|(223,362)|
+1,32,18,3,0,0,0,0,0,0,0,-1--1--1,,1|(161,383)|
+1,33,19,3,0,0,0,0,0,0,0,-1--1--1,,1|(196,372)|
+1,34,20,3,0,0,0,0,0,0,0,-1--1--1,,1|(119,316)|
+1,35,2,1,1,0,0,0,0,0,0,-1--1--1,,1|(153,93)|
+1,36,21,4,4,0,0,22,0,0,0,-1--1--1,,1|(551,257)|
+1,37,21,5,100,0,0,22,0,0,0,-1--1--1,,1|(599,257)|
+1,38,4,22,2,0,0,0,0,0,0,-1--1--1,,1|(538,308)|
+1,39,6,22,2,0,0,0,0,0,0,-1--1--1,,1|(576,323)|
+1,40,23,22,2,0,0,0,0,0,0,-1--1--1,,1|(632,289)|
+1,41,23,6,1,0,0,0,0,0,0,-1--1--1,,1|(576,374)|
+1,42,8,6,1,0,0,0,0,0,0,-1--1--1,,1|(459,344)|
+1,43,7,6,1,0,0,0,0,0,0,-1--1--1,,1|(476,373)|
+1,44,9,3,0,0,0,0,0,0,0,-1--1--1,,1|(128,297)|
+10,45,Noise Seed,516,442,40,20,8,3,0,0,-1,0,0,0
+10,46,Pulse Duration,309,309,57,10,8,3,0,0,-1,0,0,0
+1,47,46,3,0,0,0,0,0,64,0,-1--1--1,,1|(230,318)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Unit Costs
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Unit Variable Cost,368,55,52,25,8,3,0,0,0,0,0,0
+10,2,Input 0,251,25,32,9,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,3,Input 0,193,294,24,9,0,3,0,0,-1,0,0,0
+10,4,Pink Noise 0,490,306,40,20,3,3,0,0,0,0,0,0
+12,5,48,622,309,8,8,0,3,0,0,-1,0,0,0
+10,6,White Noise 0,517,409,40,20,8,3,0,0,0,0,0,0
+10,7,Initial Unit Variable Costs,240,92,49,23,8,3,0,50,0,0,0,0,-1--1--1,0-0-0,Helvetica|12|B|0-0-0
+10,8,Noise Standard Deviation 0,410,437,40,20,8,3,0,0,0,0,0,0
+10,9,TIME STEP,424,369,45,9,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,10,Pink Noise 0,115,244,49,9,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,11,Noise Start Time 0,207,225,60,9,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,12,Pulse Quantity 0,277,254,54,9,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,13,Pulse Time 0,312,305,43,9,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,14,Ramp End Time 0,90,367,58,9,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,15,Ramp Slope 0,59,309,47,9,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,16,Ramp Start Time 0,59,339,61,9,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,17,Sine Amplitude 0,317,332,57,9,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,18,Sine Period 0,273,357,45,9,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,19,Step Height 0,157,391,45,9,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,20,Step Time 0,218,373,40,9,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,21,Time,74,272,26,9,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+11,22,108,580,310,6,8,34,3,0,0,1,0,0,0
+10,23,Change in Pink Noise 0,580,338,40,20,40,3,0,0,0,0,0,0
+10,24,Noise Correlation Time 0,647,390,40,20,8,3,0,0,0,0,0,0
+1,25,11,3,0,0,0,0,0,0,0,-1--1--1,,1|(201,252)|
+1,26,12,3,0,0,0,0,0,0,0,-1--1--1,,1|(241,271)|
+1,27,13,3,0,0,0,0,0,0,0,-1--1--1,,1|(249,299)|
+1,28,14,3,0,0,0,0,0,0,0,-1--1--1,,1|(135,334)|
+1,29,15,3,0,0,0,0,0,0,0,-1--1--1,,1|(130,300)|
+1,30,16,3,0,0,0,0,0,0,0,-1--1--1,,1|(120,318)|
+1,31,17,3,1,0,0,0,0,0,0,-1--1--1,,1|(235,310)|
+1,32,18,3,0,0,0,0,0,0,0,-1--1--1,,1|(238,329)|
+1,33,19,3,0,0,0,0,0,0,0,-1--1--1,,1|(172,349)|
+1,34,20,3,0,0,0,0,0,0,0,-1--1--1,,1|(207,340)|
+1,35,21,3,0,0,0,0,0,0,0,-1--1--1,,1|(127,281)|
+1,36,22,4,4,0,0,22,0,0,0,-1--1--1,,1|(552,310)|
+1,37,22,5,100,0,0,22,0,0,0,-1--1--1,,1|(600,310)|
+1,38,4,23,2,0,0,0,0,0,0,-1--1--1,,1|(539,361)|
+1,39,6,23,2,0,0,0,0,0,0,-1--1--1,,1|(577,376)|
+1,40,24,23,2,0,0,0,0,0,0,-1--1--1,,1|(633,342)|
+1,41,24,6,1,0,0,0,0,0,0,-1--1--1,,1|(577,427)|
+1,42,9,6,1,0,0,0,0,0,0,-1--1--1,,1|(460,397)|
+1,43,8,6,1,0,0,0,0,0,0,-1--1--1,,1|(477,426)|
+1,44,10,3,0,0,0,0,0,0,0,-1--1--1,,1|(147,265)|
+10,45,Noise Seed 0,517,495,50,20,8,3,0,0,-1,0,0,0
+1,46,2,1,1,0,43,0,0,192,0,-1--1--1,,1|(315,18)|
+1,47,7,1,1,0,43,0,0,192,0,-1--1--1,,1|(341,81)|
+10,48,Initial Variable Cost Fraction,68,136,53,23,8,3,0,0,-1,0,0,0
+1,49,48,7,1,0,43,0,0,192,0,-1--1--1,,1|(147,129)|
+10,50,Reference Price,72,60,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,51,50,7,1,0,43,0,0,192,0,-1--1--1,,1|(142,82)|
+10,52,Pulse Duration 0,333,277,57,10,8,3,0,0,-1,0,0,0
+1,53,52,3,0,0,0,0,0,64,0,-1--1--1,,1|(253,286)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Production and Inventory
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Inventory,664,211,40,20,3,3,0,50,0,0,0,0,-1--1--1,0-0-0,Helvetica|12|B|0-0-0
+12,2,48,353,210,8,8,0,3,0,0,-1,0,0,0
+11,3,48,576,213,6,8,34,3,0,0,1,0,0,0
+10,4,Production Rate,576,239,44,18,40,3,0,50,0,0,0,0,-1--1--1,0-0-0,Helvetica|12|B|0-0-0
+12,5,48,817,213,8,8,0,3,0,50,-1,0,0,0,-1--1--1,0-0-0,Helvetica|12|B|0-0-0
+11,6,48,761,211,6,8,34,3,0,0,1,0,0,0
+10,7,Shipment Rate,761,237,36,18,40,3,0,50,0,0,0,0,-1--1--1,0-0-0,Helvetica|12|B|0-0-0
+10,8,Order Fulfillment Ratio,793,106,36,20,8,3,0,0,0,0,0,0
+10,9,Table for Order Fulfillment,889,41,46,22,8,3,0,0,0,0,0,0
+10,10,Work in Process Inventory,487,212,40,20,3,3,0,0,0,0,0,0
+11,11,1356,397,211,6,8,34,3,0,0,1,0,0,0
+10,12,Production Start Rate,397,239,40,20,40,3,0,0,0,0,0,0
+10,13,Manufacturing Cycle Time,535,303,48,15,8,3,0,0,0,0,0,0
+12,14,0,716,131,20,20,5,4,0,50,0,0,0,0,-1--1--1,0-0-0,Helvetica|12|B|0-0-0
+B
+12,15,0,719,168,39,13,8,4,0,8,0,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Order Fulfillment
+1,16,3,1,4,0,0,22,0,0,0,-1--1--1,,1|(603,213)|
+1,17,3,10,100,0,0,22,0,0,0,-1--1--1,,1|(548,213)|
+1,18,6,5,4,0,0,22,0,0,0,-1--1--1,,1|(788,211)|
+1,19,6,1,100,0,0,22,0,0,0,-1--1--1,,1|(729,211)|
+1,20,9,8,1,0,0,0,0,0,0,-1--1--1,,1|(824,52)|
+1,21,11,10,4,0,0,22,0,0,0,-1--1--1,,1|(425,211)|
+1,22,11,2,100,0,0,22,0,0,0,-1--1--1,,1|(376,211)|
+1,23,11,3,2,0,43,0,0,192,0,-1--1--1,,1|(511,176)|
+1,24,13,4,2,0,45,0,0,192,0,-1--1--1,,1|(580,253)|
+10,25,Desired Shipment Rate,897,210,40,20,8,3,0,0,0,0,0,0
+10,26,Maximum Shipment Rate,641,104,40,20,8,3,0,0,0,0,0,0
+10,27,Minimum Order Processing Time,579,38,51,23,8,3,0,0,0,0,0,0
+1,28,1,26,1,0,43,0,0,192,0,-1--1--1,,1|(634,137)|
+1,29,26,8,1,0,43,0,0,192,0,-1--1--1,,1|(703,66)|
+1,30,25,8,1,0,45,0,0,192,0,-1--1--1,,1|(864,142)|
+1,31,27,26,1,0,45,0,0,192,0,-1--1--1,,1|(582,68)|
+10,32,Inventory Coverage,735,303,40,20,8,3,0,0,0,0,0,0
+1,33,1,32,1,0,43,0,0,192,0,-1--1--1,,1|(678,274)|
+10,34,Indicated Capacity Utilization,483,485,46,24,8,3,0,0,0,0,0,0
+10,35,Table for Effect of Markup on Utilization,453,592,53,30,8,3,0,0,0,0,0,0
+1,36,35,34,1,0,0,0,0,64,0,-1--1--1,,1|(455,546)|
+10,37,Unit Variable Cost,1015,550,31,26,8,2,0,0,0,0,0,0
+10,38,Short Run Expected Price,761,478,40,20,3,3,0,0,0,0,0,0
+10,39,Expected Markup,602,537,51,25,8,3,0,0,0,0,0,0
+1,40,39,34,1,0,43,0,0,192,0,-1--1--1,,1|(591,539)|
+1,41,38,39,1,0,43,0,0,192,0,-1--1--1,,1|(676,523)|
+10,42,"Time to Adjust Short-Run Price Expectations",882,508,54,28,8,3,0,0,0,0,0,0
+10,43,Price,1018,406,34,20,8,2,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,44,Customer Orders,1015,255,40,20,8,2,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,45,44,25,1,0,43,0,0,192,0,-1--1--1,,1|(963,224)|
+1,46,7,32,1,0,45,0,0,192,0,-1--1--1,,1|(769,248)|
+1,47,8,6,1,0,43,0,0,64,0,-1--1--1,,1|(804,141)|
+1,48,25,7,1,0,43,0,0,192,0,-1--1--1,,1|(853,233)|
+10,49,Production Capacity,250,289,48,17,8,2,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,50,49,12,1,0,43,0,0,192,0,-1--1--1,,1|(293,250)|
+10,51,Capacity Utilization,398,388,40,20,3,3,0,0,0,0,0,0
+10,52,Utilization Adjustment Time,363,470,40,20,8,3,0,0,0,0,0,0
+1,53,52,51,1,0,0,0,0,64,0,-1--1--1,,1|(373,432)|
+1,54,51,12,1,0,43,0,0,192,0,-1--1--1,,1|(387,269)|
+1,55,34,51,1,0,0,0,0,64,0,-1--1--1,,1|(425,449)|
+10,56,Expected Variable Costs,765,587,40,20,3,3,0,0,0,0,0,0
+10,57,Time to Adjust Expected Variable Costs,884,633,54,28,8,3,0,0,0,0,0,0
+1,58,56,39,1,0,45,0,0,192,0,-1--1--1,,1|(698,578)|
+1,59,42,38,1,0,0,0,0,64,0,-1--1--1,,1|(799,519)|
+1,60,43,38,1,0,43,0,0,192,0,-1--1--1,,1|(918,449)|
+1,61,57,56,1,0,0,0,0,64,0,-1--1--1,,1|(803,630)|
+1,62,37,56,1,0,43,0,0,192,0,-1--1--1,,1|(912,580)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Price
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Price,600,400,30,16,8,3,0,0,0,0,0,0
+10,2,Traders' Expected Price,496,184,40,20,3,3,0,0,0,0,0,0
+12,3,48,345,184,8,8,0,3,0,0,-1,0,0,0
+1,4,6,2,4,0,0,22,0,0,0,-1--1--1,,1|(433,184)|
+1,5,6,3,100,0,0,22,0,0,0,-1--1--1,,1|(375,184)|
+11,6,48,404,184,6,8,34,3,0,0,1,0,0,0
+10,7,Change in Traders' Expected Price,404,223,47,31,40,3,0,0,-1,0,0,0
+1,8,2,7,1,0,45,0,0,192,0,-1--1--1,,1|(495,301)|
+10,9,Indicated Price,344,377,40,20,8,3,0,0,0,0,0,0
+1,10,9,7,1,0,43,0,0,192,0,-1--1--1,,1|(333,289)|
+10,11,Time to Adjust Traders' Expected Price,222,254,64,32,8,3,0,0,0,0,0,0
+1,12,11,7,1,0,0,0,0,64,0,-1--1--1,,1|(300,220)|
+1,13,2,1,1,0,43,0,0,192,0,-1--1--1,,1|(588,243)|
+10,14,Effect of Inventory Coverage on Price,664,471,72,22,8,3,0,0,0,0,0,0
+10,15,Minimum Price,233,481,40,20,8,3,0,0,0,0,0,0
+1,16,15,9,1,0,43,0,0,192,0,-1--1--1,,1|(256,422)|
+1,17,1,9,1,0,43,0,0,192,0,-1--1--1,,1|(444,454)|
+1,18,14,1,1,0,43,0,0,192,0,-1--1--1,,1|(612,426)|
+10,19,Relative Inventory Coverage,761,536,42,28,8,3,0,0,0,0,0,0
+1,20,19,14,1,0,45,0,0,192,0,-1--1--1,,1|(715,528)|
+10,21,Reference Inventory Coverage,868,589,40,20,8,3,0,0,0,0,0,0
+1,22,21,19,1,0,45,0,0,192,0,-1--1--1,,1|(785,580)|
+10,23,Inventory Coverage,979,412,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+12,24,0,473,366,20,20,4,4,0,0,0,0,0,0
+R
+12,25,0,475,403,39,13,8,4,0,8,0,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Price Adjustment
+12,26,0,474,237,20,20,4,4,0,0,0,0,0,0
+B
+12,27,0,476,274,39,13,8,4,0,8,0,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Expectation Adjustment
+10,28,Sensitivity of Price to Inventory Coverage,515,525,67,33,8,3,0,0,0,0,0,0
+1,29,28,14,1,0,43,0,0,192,0,-1--1--1,,1|(630,523)|
+10,30,Effect of Costs on Price,747,290,40,20,8,3,0,0,0,0,0,0
+1,31,30,1,1,0,43,0,0,192,0,-1--1--1,,1|(694,370)|
+1,32,2,30,1,0,45,0,0,192,0,-1--1--1,,1|(621,183)|
+10,33,Sensitivity of Price to Costs,729,164,40,20,8,3,0,0,0,0,0,0
+1,34,33,30,1,0,43,0,0,192,0,-1--1--1,,1|(775,240)|
+10,35,Initial Price,218,105,40,20,8,3,0,0,-1,0,0,0
+12,36,0,658,278,20,20,4,4,0,0,0,0,0,0
+B
+12,37,0,660,315,39,13,8,4,0,0,0,0,0,0
+Cost Pressure
+10,38,Expected Production Costs,976,246,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,39,38,30,1,0,43,0,0,192,0,-1--1--1,,1|(916,284)|
+10,40,Perceived Inventory Coverage,864,482,40,20,3,3,0,0,0,0,0,0
+10,41,Coverage Perception Time,830,403,40,20,8,3,0,0,0,0,0,0
+1,42,41,40,1,0,0,0,0,64,0,-1--1--1,,1|(857,434)|
+1,43,23,40,1,0,43,0,0,192,0,-1--1--1,,1|(940,468)|
+1,44,40,19,1,0,43,0,0,192,0,-1--1--1,,1|(841,520)|
+10,45,Expected Variable Costs,269,636,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,46,45,15,1,0,43,0,0,192,0,-1--1--1,,1|(242,577)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Demand
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Price,118,384,40,20,8,2,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,2,Demand Curve Slope,507,403,40,20,8,3,0,0,-1,0,0,0
+10,3,Reference Industry Demand Elasticity,617,346,49,30,8,3,0,0,-1,0,0,0
+1,4,3,2,1,0,0,0,0,0,0,-1--1--1,,1|(577,395)|
+1,5,19,2,1,0,0,0,0,0,0,-1--1--1,,1|(527,359)|
+10,6,Reference Price,453,481,40,20,8,3,0,0,-1,0,0,0
+1,7,6,2,1,0,0,0,0,0,0,-1--1--1,,1|(505,460)|
+10,8,Indicated Industry Demand,340,356,40,20,8,3,0,0,-1,0,0,0
+1,9,2,8,1,0,0,0,0,0,0,-1--1--1,,1|(419,402)|
+10,10,Maximum Consumption,235,468,51,18,8,3,0,0,-1,0,0,0
+1,11,19,8,1,0,0,0,0,0,0,-1--1--1,,1|(429,356)|
+1,12,6,8,1,0,0,0,0,192,0,-1--1--1,,1|(390,433)|
+1,13,10,8,1,0,43,0,0,192,0,-1--1--1,,1|(296,420)|
+1,14,1,8,1,0,45,0,0,192,0,-1--1--1,,1|(225,392)|
+10,15,Industry Demand,403,211,40,20,3,3,0,0,0,0,0,0
+10,16,Demand Adjustment Delay,548,228,40,20,8,3,0,0,0,0,0,0
+1,17,16,15,1,0,0,0,0,64,0,-1--1--1,,1|(474,200)|
+1,18,8,15,1,0,43,0,0,192,0,-1--1--1,,1|(400,286)|
+10,19,Reference Industry Demand,514,314,40,20,8,3,0,0,0,0,0,0
+10,20,Customer Orders,353,109,40,20,8,3,0,0,0,0,0,0
+1,21,15,20,1,0,43,0,0,192,0,-1--1--1,,1|(387,157)|
+1,22,23,20,1,0,43,0,0,192,0,-1--1--1,,1|(428,50)|
+10,23,Other Factors Affecting Demand,518,30,56,28,8,2,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,24,19,15,1,0,0,0,0,0,0,-1--1--1,,1|(480,250)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Production Capacity
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Capital on Order,170,131,40,20,3,3,0,0,0,0,0,0
+10,2,Capital Stock,445,132,40,20,3,3,0,0,0,0,0,0
+12,3,48,24,130,8,8,0,3,0,0,-1,0,0,0
+1,4,6,1,4,0,0,22,0,0,0,-1--1--1,,1|(108,130)|
+1,5,6,3,100,0,0,22,0,0,0,-1--1--1,,1|(53,130)|
+11,6,48,80,130,6,8,34,3,0,0,1,0,0,0
+10,7,Order Rate,80,158,40,20,40,3,0,0,-1,0,0,0
+1,8,10,2,4,0,0,22,0,0,0,-1--1--1,,1|(357,131)|
+1,9,10,1,100,0,0,22,0,0,0,-1--1--1,,1|(253,131)|
+11,10,1468,303,131,6,8,34,3,0,0,1,0,0,0
+10,11,Acquisition Rate,303,159,40,20,40,3,0,0,-1,0,0,0
+12,12,48,590,134,8,8,0,3,0,0,-1,0,0,0
+1,13,15,12,4,0,0,22,0,0,0,-1--1--1,,1|(558,132)|
+1,14,15,2,100,0,0,22,0,0,0,-1--1--1,,1|(503,132)|
+11,15,48,528,132,6,8,34,3,0,0,1,0,0,0
+10,16,Discard Rate,528,161,33,21,40,3,0,0,-1,0,0,0
+10,17,Indicated Orders,40,323,40,20,8,3,0,0,0,0,0,0
+10,18,Adjustment for Supply Line,203,319,40,20,8,3,0,0,0,0,0,0
+10,19,Desired Supply Line,309,322,34,21,8,3,0,0,0,0,0,0
+10,20,Adjustment for Capacity,460,344,40,20,8,3,0,0,0,0,0,0
+10,21,Expected Discard Rate,528,461,40,20,8,3,0,0,0,0,0,0
+10,22,Capacity Acquisition Delay,269,46,40,20,8,3,0,0,0,0,0,0
+1,23,2,16,1,0,43,0,0,192,0,-1--1--1,,1|(494,176)|
+1,24,17,7,1,0,43,0,0,192,0,-1--1--1,,1|(40,187)|
+1,25,18,17,1,0,43,0,0,64,0,-1--1--1,,1|(125,343)|
+1,26,19,18,1,0,43,0,0,192,0,-1--1--1,,1|(258,309)|
+1,27,22,10,1,0,45,0,0,192,0,-1--1--1,,1|(310,98)|
+1,28,1,18,1,0,45,0,0,192,0,-1--1--1,,1|(217,186)|
+1,29,2,20,1,0,45,0,0,192,0,-1--1--1,,1|(473,291)|
+1,30,16,21,1,0,43,0,0,192,0,-1--1--1,,1|(653,343)|
+12,31,0,125,224,20,20,4,4,0,0,-1,0,0,0
+B
+12,32,0,299,224,20,20,4,4,0,0,-1,0,0,0
+B
+12,33,0,126,257,40,20,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Supply Line Control
+12,34,0,300,258,34,24,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|8|B|0-0-0
+Stock Control
+10,35,Desired Acquisition Rate,274,451,40,20,8,3,0,0,0,0,0,0
+1,36,21,35,1,0,43,0,0,192,0,-1--1--1,,1|(400,482)|
+1,37,20,35,1,0,43,0,0,192,0,-1--1--1,,1|(385,426)|
+1,38,35,17,1,0,43,0,0,192,0,-1--1--1,,1|(119,421)|
+10,39,Capacity Adjustment Time,485,404,40,20,8,3,0,0,0,0,0,0
+10,40,Supply Line Adjustment Time,223,392,43,21,8,3,0,0,0,0,0,0
+1,41,40,18,1,0,45,0,0,192,0,-1--1--1,,1|(250,338)|
+1,42,39,20,1,0,45,0,0,192,0,-1--1--1,,1|(511,355)|
+10,43,Average Life of Capacity,688,190,40,20,8,3,0,0,0,0,0,0
+1,44,35,19,1,0,43,0,0,192,0,-1--1--1,,1|(312,377)|
+10,45,Expected Acquisition Delay,394,261,40,20,8,3,0,0,0,0,0,0
+1,46,22,45,1,0,43,0,0,192,0,-1--1--1,,1|(360,116)|
+1,47,45,19,1,0,43,0,0,192,0,-1--1--1,,1|(365,317)|
+10,48,Desired Capital,799,409,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,49,48,20,1,0,43,0,0,192,0,-1--1--1,,1|(692,357)|
+1,50,6,10,1,0,43,0,0,192,0,-1--1--1,,1|(167,88)|
+1,51,43,16,1,0,45,0,0,192,0,-1--1--1,,1|(609,167)|
+10,52,Production Capacity,602,43,40,20,8,3,0,0,0,0,0,0
+10,53,Capital Productivity,799,131,40,20,8,3,0,0,0,0,0,0
+1,54,2,52,1,0,43,0,0,192,0,-1--1--1,,1|(477,74)|
+1,55,53,52,1,0,43,0,0,192,0,-1--1--1,,1|(732,82)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Desired Capacity
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Desired Capital,311,200,32,19,8,3,0,0,0,0,0,0
+10,2,Expected Profitability of New Investment,628,284,60,29,8,3,0,0,0,0,0,0
+10,3,Long Run Expected Price,799,260,40,20,3,3,0,0,0,0,0,0
+10,4,Time to Adjust Long Run Price Expectations,841,341,55,25,8,3,0,0,0,0,0,0
+10,5,Price,964,213,40,20,8,2,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,6,19,2,1,0,45,0,0,192,0,-1--1--1,,1|(652,373)|
+1,7,3,2,1,0,43,0,0,192,0,-1--1--1,,1|(731,291)|
+10,8,Effect of Expected Profit on Desired Capacity,442,264,59,30,8,3,0,0,0,0,0,0
+10,9,Table for Effect of Expected Profit on Desired Capacity,485,387,74,31,8,3,0,0,0,0,0,0
+1,10,2,8,1,0,43,0,0,192,0,-1--1--1,,1|(520,284)|
+1,11,9,8,1,0,0,0,0,192,0,-1--1--1,,1|(442,330)|
+1,12,8,1,1,0,43,0,0,192,0,-1--1--1,,1|(352,238)|
+10,13,Capital Stock,566,72,58,21,8,2,0,0,-1,0,0,0
+1,14,13,1,1,0,43,0,0,192,0,-1--1--1,,1|(464,156)|
+10,15,Unit Costs,849,459,40,20,8,3,0,0,0,0,0,0
+10,16,Unit Variable Cost,974,394,55,31,8,2,0,0,-1,0,0,0
+10,17,Unit Fixed Cost,979,518,40,20,8,3,0,0,0,0,0,0
+1,18,17,15,1,0,43,0,0,192,0,-1--1--1,,1|(886,508)|
+10,19,Expected Production Costs,702,435,40,20,3,3,0,0,0,0,0,0
+10,20,Time to Adjust Expected Costs,757,518,56,20,8,3,0,0,0,0,0,0
+1,21,16,15,1,0,43,0,0,192,0,-1--1--1,,1|(885,406)|
+10,22,Sensitivity of Investment to Exp Profit,260,376,51,31,8,3,0,0,0,0,0,0
+1,23,22,1,1,0,43,0,0,192,0,-1--1--1,,1|(261,278)|
+1,24,5,3,1,0,43,0,0,192,0,-1--1--1,,1|(899,251)|
+1,25,4,3,1,0,0,0,0,64,0,-1--1--1,,1|(799,296)|
+1,26,20,19,1,0,0,0,0,64,0,-1--1--1,,1|(704,470)|
+1,27,15,19,1,0,43,0,0,192,0,-1--1--1,,1|(792,461)|
+///---\\\
+:GRAPH PRODUCTION
+:TITLE Production
+:X-AXIS time
+:SCALE
+:VAR Customer Orders
+:VAR Production Rate
+:VAR Production Start Rate
+:GRAPH INVENTORY
+:TITLE Inventory
+:X-AXIS Time
+:SCALE
+:VAR Inventory
+:GRAPH WIP
+:TITLE WIP
+:X-AXIS Time
+:SCALE
+:VAR Work in Process Inventory
+:GRAPH INVENTORY_COVERAGE
+:TITLE inventory coverage
+:X-AXIS time
+:SCALE
+:VAR inventory coverage
+:GRAPH CUSTOMER_SERVICE
+:TITLE Customer Service
+:X-AXIS time
+:SCALE
+:VAR order fulfillment ratio
+:Y-MIN 0
+:Y-MAX 1
+:GRAPH DESIRED_AND_ACTUAL_PRODUCTION_STARTS
+:TITLE Desired and Actual Production Starts
+:X-AXIS time
+:SCALE
+:VAR Production Start Rate
+:VAR Production Capacity
+:GRAPH PRICE
+:TITLE Price
+:X-AXIS time
+:SCALE
+:VAR Price
+:VAR Traders' Expected Price
+:VAR Expected Production Costs
+:VAR Unit Costs
+:GRAPH PRICE_PRESSURES
+:TITLE Price Pressures
+:X-AXIS Time
+:SCALE
+:VAR Effect of Costs on Price
+:VAR Effect of Inventory Coverage on Price
+:GRAPH CAPACITY_UTILIZATION
+:TITLE Capacity Utilization
+:X-AXIS Time
+:SCALE
+:VAR Capacity Utilization
+:Y-MIN 0.75
+:Y-MAX 1.15
+:GRAPH INDUSTRY_DEMAND
+:TITLE Industry Demand
+:X-AXIS time
+:SCALE
+:VAR Industry Demand
+:VAR Indicated Industry Demand
+:GRAPH CAPACITY
+:TITLE Capacity
+:X-AXIS time
+:SCALE
+:VAR Capital Stock
+:VAR Desired Capital
+:GRAPH CAPACITY_ACQUISITION
+:TITLE Capacity Acquisition
+:X-AXIS time
+:SCALE
+:VAR Order Rate
+:VAR Acquisition Rate
+:VAR Discard Rate
+:GRAPH EXPECTED_PROFITABILITY
+:TITLE Expected Profitability
+:X-AXIS time
+:SCALE
+:VAR Expected Profitability of New Investment
+:SCALE
+:VAR Expected Markup
+:GRAPH DESIRED_VS._ACTUAL_CAPAC
+:TITLE Desired vs. Actual Capacity
+:X-AXIS Capital Stock
+:SCALE
+:VAR Desired Capital
+:GRAPH UTILIZATION_VS._PRICE
+:TITLE Utilization vs. Price
+:X-AXIS Price
+:SCALE
+:VAR Capacity Utilization
+:GRAPH CAPACITY_ORDERS_VS._PRIC
+:TITLE Capacity Orders vs. Price
+:X-AXIS Price
+:SCALE
+:VAR Order Rate
+:GRAPH PRICE_VS_INVENTORY
+:TITLE price vs inventory
+:X-AXIS inventory
+:SCALE
+:VAR price
+:L<%^E!@
+9:current
+22:Capital Unit,Capital Units
+22:Unit,Units
+22:Year,Years
+15:0,0,0,0
+19:100,0
+5:Production Rate

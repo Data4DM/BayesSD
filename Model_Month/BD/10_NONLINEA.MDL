@@ -1,0 +1,212 @@
+********************************************************
+	.NonlinearPolya
+********************************************************~
+		
+		Nonlinear Polya Process Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This isa nonlinear Polya process model in which
+		the probability of adding a stone of a given color to a jar is
+		a function o the proportion of stones in the jar of that color.
+		Chapter 10.
+	|
+
+White Stones Added per Period=
+	Stones Added per Period*IF THEN ELSE(1 - Random Draw < Probability of Choosing a White Stone\
+		,1,0)
+	~	Stones/period
+	~	The number of white stones added each period equals the number of stones \
+		added each period when the complement of the random draw from a uniform \
+		distribution on the interval [0, 1]  is less than  the probability of \
+		choosing a white stone.
+	|
+
+Black Stones Added per Period=
+	Stones Added per Period*IF THEN ELSE(Random Draw <= Probability of Choosing a Black Stone\
+		,1,0)
+	~	Stones/period
+	~	The number of black stones added each period equals the number of stones \
+		added each period when the random draw from a uniform distribution on the \
+		interval [0, 1]  is less than or equal to the probability of choosing a \
+		black stone.
+	|
+
+Probability of Choosing a White Stone=
+	1/(1+exp(-Sensitivity to Proportion*(Proportion of White Stones-0.5)))
+	~	Dimensionless
+	~	The probability of choosing a stone of a given color is a function of the \
+		proportion of stones of that color.  The exponential function is used.    \
+		The probability of choosing each color is 1/2 when the proportion of \
+		stones of that color is 1/2.
+	|
+
+Sensitivity to Proportion=
+	10
+	~	Dimensionless
+	~	The larger this parameter, the faster the probability of choosing a  stone \
+		of a given color increases with its proportion in the jar.
+	|
+
+Probability of Choosing a Black Stone=
+	1/(1+exp(-Sensitivity to Proportion*(Proportion of Black Stones-0.5)))
+	~	Dimensionless
+	~	The probability of choosing a stone of a given color is a function of the \
+		proportion of stones of that color.  The exponential function is used.    \
+		The probability of choosing each color is 1/2 when the proportion of \
+		stones of that color is 1/2.
+	|
+
+Random Draw=
+	RANDOM UNIFORM(0,1,Random number seed)
+	~	Dimensionless
+	~	Each period a random number is drawn from the uniform distribuion on the \
+		interval [0, 1].
+	|
+
+Random number seed=
+	1000
+	~	Dimensionless
+	~	Ensures that the sequence of random numbers drawn in successive simulation \
+		runs is the same.  Alter the seed to generate a different sequence of \
+		realizations for the random process.
+	|
+
+Black Stones= INTEG (
+	Black Stones Added per Period,
+		Initial Black Stones)
+	~	Stones
+	~	The number of black stones in the jar.
+	|
+
+Initial Black Stones=
+	1
+	~	Stones
+	~	There is one stone of each color in the jar to start.
+	|
+
+Initial White Stones=
+	1
+	~	Stones
+	~	There is one stone of each color in the jar to start.
+	|
+
+Proportion of Black Stones=
+	Black Stones/Total Number of Stones
+	~	Dimensionless
+	~	The proportion of black stones in the jar.
+	|
+
+Proportion of White Stones=
+	White Stones/Total Number of Stones
+	~	Dimensionless
+	~	The proportion of white stones in the jar.
+	|
+
+Stones Added per Period=
+	1
+	~	Stones/period
+	~	The number of stones added per period, equal to one in the traditional \
+		model.
+	|
+
+Total Number of Stones=
+	Black Stones + White Stones
+	~	Stones
+	~	The total number of stones in the jar.
+	|
+
+White Stones= INTEG (
+	White Stones Added per Period,
+		Initial White Stones)
+	~	Stones
+	~	The number of white stones in the jar.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 200
+	~	Periods
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Periods
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Periods
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Periods
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Black Stones,505,169,40,20,3,3,0,0,0,0,0,0
+10,2,White Stones,507,393,40,20,3,3,0,0,0,0,0,0
+10,3,Proportion of Black Stones,213,163,45,22,8,3,0,0,0,0,0,0
+10,4,Total Number of Stones,521,284,40,20,8,3,0,0,0,0,0,0
+1,5,1,4,1,0,43,0,0,192,0,-1--1--1,,1|(519,190)|
+1,6,2,4,1,0,43,0,0,192,0,-1--1--1,,1|(532,336)|
+1,7,4,3,1,0,45,0,0,192,0,-1--1--1,,1|(342,251)|
+1,8,1,3,1,0,43,0,0,192,0,-1--1--1,,1|(360,184)|
+12,9,0,381,431,20,20,5,4,0,0,-1,0,0,0
+R
+12,10,0,376,120,20,20,4,4,0,0,-1,0,0,0
+R
+12,11,0,433,230,20,20,4,4,0,0,-1,0,0,0
+B
+10,12,Stones Added per Period,658,286,40,20,8,3,0,0,-1,0,0,0
+12,13,48,507,81,8,8,0,3,0,0,-1,0,0,0
+1,14,16,1,4,0,0,22,0,0,0,-1--1--1,,1|(507,132)|
+1,15,16,13,100,0,0,22,0,0,0,-1--1--1,,1|(507,96)|
+11,16,48,507,110,8,6,33,3,0,0,4,0,0,0
+10,17,Black Stones Added per Period,566,110,51,26,40,3,0,0,-1,0,0,0
+1,18,12,17,1,0,43,0,0,192,0,-1--1--1,,1|(618,160)|
+12,19,48,512,486,8,8,0,3,0,0,-1,0,0,0
+1,20,22,2,4,0,0,22,0,0,0,-1--1--1,,1|(511,430)|
+1,21,22,19,100,0,0,22,0,0,0,-1--1--1,,1|(511,469)|
+11,22,48,511,454,8,6,33,3,0,0,4,0,0,0
+10,23,White Stones Added per Period,570,454,51,26,40,3,0,0,-1,0,0,0
+1,24,12,23,1,0,43,0,0,192,0,-1--1--1,,1|(658,367)|
+10,25,Proportion of White Stones,215,402,52,21,8,3,0,0,0,0,0,0
+1,26,2,25,1,0,43,0,0,192,0,-1--1--1,,1|(393,370)|
+1,27,4,25,1,0,45,0,0,192,0,-1--1--1,,1|(302,332)|
+12,28,0,435,333,20,20,5,4,0,0,-1,0,0,0
+B
+10,29,Initial Black Stones,71,223,40,20,8,3,0,0,-1,0,0,0
+10,30,Initial White Stones,72,304,49,22,8,3,0,0,-1,0,0,0
+10,31,Random Draw,752,286,40,20,8,3,0,0,0,0,0,0
+1,32,31,17,1,0,0,0,0,64,0,-1--1--1,,1|(713,175)|
+1,33,31,23,1,0,0,0,0,64,0,-1--1--1,,1|(724,395)|
+10,34,Random number seed,864,277,40,20,8,3,0,0,-1,0,0,0
+1,35,34,31,0,0,0,0,0,0,0,-1--1--1,,1|(814,280)|
+10,36,Probability of Choosing a Black Stone,315,48,53,26,8,3,0,0,0,0,0,0
+10,37,Probability of Choosing a White Stone,337,534,53,26,8,3,0,0,0,0,0,0
+1,38,3,36,1,0,43,0,0,192,0,-1--1--1,,1|(221,101)|
+1,39,25,37,1,0,43,0,0,192,0,-1--1--1,,1|(260,509)|
+10,40,Sensitivity to Proportion,114,49,50,21,8,3,0,0,-1,0,0,0
+1,41,40,36,0,0,0,0,0,0,0,-1--1--1,,1|(206,48)|
+10,42,Sensitivity to Proportion,124,530,50,21,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,43,42,37,0,0,0,0,0,64,0,-1--1--1,,1|(222,531)|
+1,44,36,17,1,0,43,0,0,192,0,-1--1--1,,1|(391,27)|
+1,45,37,23,1,0,43,0,0,192,0,-1--1--1,,1|(466,548)|
+///---\\\
+:L<%^E!@
+9:Current
+22:Period,Periods
+15:0,0,0,0
+19:100,0
+5:Proportion of Black Stones

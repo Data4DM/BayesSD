@@ -1,0 +1,540 @@
+********************************************************
+	.Learning
+********************************************************~
+		
+		Labor Experience Curve Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This model, developed in chapter 12, tracks the experience of a 
+		workforce, including changes from hiring and quits, experience decay
+		from changes in equipment and procedures, and on-the-job learning.
+	|
+
+Labor Pulse=
+	0
+	~	People
+	~	The number of people added to the labor force by the pulse input.
+	|
+
+Pulse Start Time=
+	0.25
+	~	Year
+	~	The time at which the pulse input in hiring takes place.
+	|
+
+Hiring=
+	Attrition + Hiring Growth Rate*Labor Force + Pulse in Hiring
+	~	People/Year
+	~	Hiring replaces total attrition and includes the possibility of a pulse in \
+		hiring and a constant exponential growth rate.
+	|
+
+Initial Labor Force=
+	1000
+	~	People
+	~	The initial labor force. is 1000 people.
+	|
+
+Pulse in Hiring=
+	(Labor Pulse/TIME STEP)*PULSE( Pulse Start Time , TIME STEP )
+	~	People/Year
+	~	As a test input, the user can hire a certain number of employees in one \
+		instant.
+	|
+
+Change in Fractional Experience Decay=
+	0
+	~	1/Year
+	~	The exogenous change in experience decay.
+	|
+
+Learning Curve Exponent=
+	LN(1+Learning Curve Strength)/LN(2)
+	~	Dimensionless
+	~	The exponent in the learning curve.  Calculated from the strength of the \
+		learning curve expressed as the fractional improvement in productivity \
+		attained per doubling of experience.
+	|
+
+Learning Curve Strength=
+	0.3
+	~	Dimensionless
+	~	The fractional increase in productivity per doubling of experience.
+	|
+
+Fractional Attrition Rate=
+	Normal Fractional Attrition Rate + STEP(Change in Fractional Attrition,Fractional Attrition Change Time\
+		)
+	~	1/Year
+	~	The fractional attrition rate changes by a user-specified amount at a time \
+		set by the user.
+	|
+
+Change in Fractional Attrition=
+	0
+	~	1/Year
+	~	The change in the fractional attrition rate.
+	|
+
+Productivity=
+	Reference Productivity*(Average Experience/Reference Experience)^Learning Curve Exponent
+	~	Widgets/(person*Week)
+	~	Productivity is determined by a standard learning curve in total \
+		(cumulative) effective experience.
+	|
+
+Exogenous Experience of New Hires=
+	 Initial Experience of New Hires*Input
+	~	Weeks
+	~	A variety of test inputs allow users to try different patterns,  including \
+		a step, pulse, sine wave, and random noise.
+	|
+
+Exogenous Growth Rate=
+	0
+	~	1/Year
+	~	The exogenous fractional growth rate in hiring.
+	|
+
+Experience Decay Change Time=
+	0.25
+	~	Year
+	~	The time at which the experience decay rate changes, set by the user.
+	|
+
+Fractional Experience Decay Rate=
+	Normal Fractional Experience Decay + STEP(Change in Fractional Experience Decay,Experience Decay Change Time\
+		)
+	~	1/Year
+	~	The fractional rate of experience decay from changes in the work \
+		environment that render existing knowledge obsolete, plus forgetting by \
+		workers.
+	|
+
+Growth Start Time=
+	0.25
+	~	Years
+	~	The time at which growth in the hiring rate begins.
+	|
+
+Reference Experience=
+	10
+	~	Weeks
+	~	The reference level of average experience that generates the reference \
+		productivity.
+	|
+
+Fractional Attrition Change Time=
+	0.25
+	~	Year
+	~	The time at which the fractional attrition rate changes.
+	|
+
+Normal Fractional Attrition Rate=
+	0.2
+	~	1/Year
+	~	The normal (initial) fractional rate of labor turnover.
+	|
+
+Normal Fractional Experience Decay=
+	0.1
+	~	1/Year
+	~	The normal rate of experience decay.
+	|
+
+Hiring Growth Rate=
+	STEP(Exogenous Growth Rate,Growth Start Time)
+	~	1/Year
+	~	The hiring rate grows exponentially at a particular time.
+	|
+
+Reference Productivity=
+	100
+	~	Widgets/person/Week
+	~	The productivity attained when the average experience of the workers \
+		equals the reference level.
+	|
+
+Weeks Worked per Year=
+	50
+	~	Weeks/Year
+	~	The average number of weeks worked per year.
+	|
+
+Total Effective Experience= INTEG (
+	Increase in Experience from Hiring - 
+	Loss of Experience from Attrition + Increase in On the Job Experience - Experience Decay Rate\
+		,
+		((Average Experience of New Hires*Hiring)+(Weeks Worked per Year*Labor Force))/(Fractional Attrition Rate\
+		+Fractional Experience Decay Rate))
+	~	Weeks*person
+	~	The total person-weeks of experience over the entire workforce.  Increased \
+		by the experience new workers bring in and on the job learning; decreased \
+		by loss of experienced workers and by experience decay.
+	|
+
+Experience Decay Rate=
+	Labor Force*Average Experience* Fractional Experience Decay Rate
+	~	person*Weeks/Year
+	~	Experience decays due to changes in equipment and products and forgetting.
+	|
+
+Increase in On the Job Experience=
+	Labor Force*Weeks Worked per Year
+	~	Weeks*person/Year
+	~	The rate at which on-the-job learning adds to total experience depends on \
+		the size of the workforce and the number of weeks worked per year on \
+		average.
+	|
+
+Attrition=
+	Fractional Attrition Rate*Labor Force
+	~	People/Year
+	~	A fraction of the labor force quits each period.
+	|
+
+Labor Force= INTEG (
+	Hiring-Attrition,
+		Initial Labor Force)
+	~	People
+	~	Labor is increased by hiring and decreased by attrition.
+	|
+
+Exponential Growth Time=
+	5
+	~	Year
+	~	The time for exogenous exponential growth to start
+	|
+
+Exponential Growth Rate=
+	0
+	~	1/Year
+	~	The exogenous growth rate
+	|
+
+Average Experience of New Hires=
+	Exogenous Experience of New Hires
+	~	Weeks
+	~	The average experience of new hires, determined exogenously.
+	|
+
+Pink Noise = INTEG(Change in Pink Noise,0)
+	~	Dimensionless
+	~	Pink Noise is first-order autocorrelated noise.  Pink noise provides a realistic \
+		noise input to
+		        models in which the next random shock depends in part on the previous \
+		shocks.  The user
+		        can specify the correlation time.  The mean is 0 and the standard deviation \
+		is specified
+		         by the user.
+	|
+
+Pulse Quantity=0
+	~	Dimensionless*Year
+	~	The quantity to be injected to customer orders, as a fraction of the base value of \
+		Input. 
+		        For example, to pulse in a quantity equal to 50% of the current value of \
+		input, set to
+		         .50.
+	|
+
+Change in Pink Noise = (White Noise - Pink Noise)/Noise Correlation Time
+	~	1/Year
+	~	Change in the pink noise value; Pink noise is a first order exponential smoothing \
+		delay of the white
+		         noise input.
+	|
+
+Ramp End Time=1e+009
+	~	Year
+	~	End time for the ramp input.
+	|
+
+Initial Experience of New Hires=
+	10
+	~	Weeks
+	~	Initial experience of new hires.
+	|
+
+Input=
+	1+STEP(Step Height,Step Time)+
+	(Pulse Quantity/TIME STEP)*PULSE(Pulse Time,TIME STEP)+
+	RAMP(Ramp Slope,Ramp Start Time,Ramp End Time)+(STEP(1, Exponential Growth Time)*(exp\
+		(Exponential Growth Rate*(Time - Exponential Growth Time))-1))+
+	Sine Amplitude*SIN(2*3.14159*Time/Sine Period)+
+	  	STEP(1,Noise Start Time)*Pink Noise
+	~	Dimensionless
+	~	Input is a dimensionless variable which provides a variety of test input patterns, \
+		including a step,
+		         pulse, sine wave, and random noise.
+	|
+
+Sine Period=50
+	~	Year
+	~	Period of sine wave in customer demand.  Set initially to 50 weeks (1 \
+		year).
+	|
+
+Noise Correlation Time = 4
+	~	Year
+	~	The correlation time constant for Pink Noise.
+	|
+
+Noise Standard Deviation = 0
+	~	Dimensionless
+	~	The standard deviation of the pink noise process.
+	|
+
+Noise Start Time = 5
+	~	Year
+	~	Start time for the random input.
+	|
+
+Ramp Slope=0
+	~	1/Year
+	~	Slope of the ramp input, as a fraction of the base value (per week).
+	|
+
+Pulse Time=5
+	~	Year
+	~	Time at which the pulse in Input occurs.
+	|
+
+Step Time=5
+	~	Year
+	~	Time for the step input.
+	|
+
+White Noise = Noise Standard Deviation*((24*Noise Correlation Time/TIME STEP)^0.5*(RANDOM 0 1\
+		() - 0.5
+))
+	~	Dimensionless
+	~	White noise input to the pink noise process.
+	|
+
+Ramp Start Time=5
+	~	Year
+	~	Start time for the ramp input.
+	|
+
+Step Height=0
+	~	Dimensionless
+	~	Height of step input to customer orders, as fraction of initial value.
+	|
+
+Sine Amplitude=0
+	~	Dimensionless
+	~	Amplitude of sine wave in customer orders (fraction of mean).
+	|
+
+Average Experience=
+	Total Effective Experience/Labor Force
+	~	Weeks
+	~	The average experience of the workers.
+	|
+
+Loss of Experience from Attrition=
+	Attrition*Average Experience
+	~	Weeks*person/Year
+	~	Employees who quit take the average experience with them.
+	|
+
+Increase in Experience from Hiring=
+	Hiring*Average Experience of New Hires
+	~	Weeks*person/Year
+	~	The rate at which new hires add experience to the total experience pool.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 10
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Year
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.03125
+	~	Year
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Labor Force
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Total Effective Experience,516,471,47,27,3,3,0,0,0,0,0,0
+12,2,48,350,472,8,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(440,472)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(378,472)|
+11,5,48,405,472,6,8,34,3,0,0,1,0,0,0
+10,6,Increase in Experience from Hiring,405,502,53,22,40,3,0,0,0,0,0,0
+12,7,48,692,472,8,8,0,3,0,0,-1,0,0,0
+1,8,10,7,4,0,0,22,0,0,0,-1--1--1,,1|(656,472)|
+1,9,10,1,100,0,0,22,0,0,0,-1--1--1,,1|(589,472)|
+11,10,48,622,472,6,8,34,3,0,0,1,0,0,0
+10,11,Loss of Experience from Attrition,622,502,52,22,40,3,0,0,-1,0,0,0
+10,12,Labor Force,511,223,47,27,3,3,0,0,0,0,0,0
+12,13,48,344,222,8,8,0,3,0,0,-1,0,0,0
+1,14,16,12,4,0,0,22,0,0,0,-1--1--1,,1|(437,222)|
+1,15,16,13,100,0,0,22,0,0,0,-1--1--1,,1|(375,222)|
+11,16,48,404,222,6,8,34,3,0,0,1,0,0,0
+10,17,Hiring,404,253,36,23,40,3,0,0,-1,0,0,0
+12,18,48,687,224,8,8,0,3,0,0,-1,0,0,0
+1,19,21,18,4,0,0,22,0,0,0,-1--1--1,,1|(651,224)|
+1,20,21,12,100,0,0,22,0,0,0,-1--1--1,,1|(584,224)|
+11,21,48,617,224,6,8,34,3,0,0,1,0,0,0
+10,22,Attrition,617,255,43,23,40,3,0,0,-1,0,0,0
+10,23,Average Experience of New Hires,282,518,50,23,8,3,0,0,0,0,0,0
+10,24,Average Experience,673,361,46,19,8,3,0,0,0,0,0,0
+1,25,23,6,1,0,43,0,0,192,0,-1--1--1,,1|(327,540)|
+1,26,1,24,1,0,43,0,0,192,0,-1--1--1,,1|(623,407)|
+1,27,12,24,1,0,45,0,0,64,0,-1--1--1,,1|(564,301)|
+1,28,24,10,1,0,43,0,0,128,0,-1--1--1,,1|(644,454)|
+1,29,22,11,1,0,43,0,0,192,0,-1--1--1,,1|(749,438)|
+1,30,17,6,1,0,43,0,0,192,0,-1--1--1,,1|(273,380)|
+10,31,Exogenous Experience of New Hires,112,483,59,33,8,2,1,1,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,32,31,23,1,1,43,0,0,192,0,-1--1--1,,1|(190,527)|
+1,33,12,22,1,0,43,0,0,192,0,-1--1--1,,1|(556,271)|
+10,34,Fractional Attrition Rate,587,156,51,24,8,3,0,0,0,0,0,0
+1,35,34,21,1,0,43,0,0,192,0,-1--1--1,,1|(614,179)|
+12,36,48,487,618,8,8,0,3,0,0,-1,0,0,0
+1,37,39,1,4,0,0,22,0,0,0,-1--1--1,,1|(486,529)|
+1,38,39,36,100,0,0,22,0,0,0,-1--1--1,,1|(486,591)|
+11,39,48,486,567,8,6,33,3,0,0,4,0,0,0
+10,40,Increase in On the Job Experience,544,567,50,23,40,3,0,0,-1,0,0,0
+12,41,48,486,341,8,8,0,3,0,0,-1,0,0,0
+1,42,44,41,4,0,0,22,0,0,0,-1--1--1,,1|(486,370)|
+1,43,44,1,100,0,0,22,0,0,0,-1--1--1,,1|(486,423)|
+11,44,48,486,397,8,6,33,3,0,0,4,0,0,0
+10,45,Experience Decay Rate,543,397,49,25,40,3,0,0,-1,0,0,0
+1,46,24,45,1,0,43,0,0,192,0,-1--1--1,,1|(576,372)|
+10,47,Fractional Experience Decay Rate,363,347,49,29,8,3,0,0,0,0,0,0
+1,48,47,44,1,0,43,0,0,192,0,-1--1--1,,1|(406,386)|
+10,49,Weeks Worked per Year,664,613,61,27,8,3,0,0,0,0,0,0
+1,50,12,39,1,0,43,0,0,192,0,-1--1--1,,1|(184,322)|
+1,51,49,40,1,0,43,0,0,192,0,-1--1--1,,1|(578,609)|
+1,52,12,45,1,0,43,0,0,192,0,-1--1--1,,1|(542,301)|
+10,53,Productivity,460,745,40,20,8,3,0,0,0,0,0,0
+10,54,Average Experience,608,711,45,21,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,55,Learning Curve Exponent,574,780,40,20,8,3,0,0,0,0,0,0
+1,56,55,53,1,0,43,0,0,192,0,-1--1--1,,1|(526,785)|
+1,57,54,53,1,0,43,0,0,192,0,-1--1--1,,1|(507,703)|
+10,58,Reference Productivity,319,708,40,20,8,3,0,0,0,0,0,0
+10,59,Reference Experience,319,781,40,20,8,3,0,0,0,0,0,0
+1,60,58,53,1,0,43,0,0,192,0,-1--1--1,,1|(385,711)|
+1,61,59,53,1,0,45,0,0,192,0,-1--1--1,,1|(388,780)|
+10,62,Learning Curve Strength,705,779,40,20,8,3,0,0,0,0,0,0
+1,63,62,55,1,0,43,0,0,192,0,-1--1--1,,1|(643,792)|
+10,64,Attrition,448,155,40,20,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,65,64,16,1,1,43,0,0,192,0,-1--1--1,,1|(411,177)|
+1,66,12,16,1,1,43,0,0,64,0,-1--1--1,,1|(436,192)|
+10,67,Growth Start Time,110,194,40,20,8,3,1,0,0,0,0,0
+10,68,Change in Fractional Attrition,817,138,40,20,8,3,1,0,0,0,0,0
+10,69,Fractional Attrition Change Time,796,204,44,26,8,3,1,0,0,0,0,0
+1,70,68,34,1,1,43,0,0,192,0,-1--1--1,,1|(680,142)|
+1,71,69,34,1,1,0,0,0,64,0,-1--1--1,,1|(697,197)|
+10,72,Normal Fractional Attrition Rate,685,90,45,27,8,3,1,0,0,0,0,0
+1,73,72,34,1,1,43,0,0,192,0,-1--1--1,,1|(605,108)|
+10,74,Exogenous Growth Rate,111,98,40,20,8,3,1,0,0,0,0,0
+10,75,Hiring Growth Rate,253,135,40,20,8,3,1,0,0,0,0,0
+1,76,74,75,1,1,43,0,0,192,0,-1--1--1,,1|(193,107)|
+1,77,75,17,1,1,43,0,0,192,0,-1--1--1,,1|(301,214)|
+1,78,67,75,1,1,0,0,0,64,0,-1--1--1,,1|(176,151)|
+10,79,Normal Fractional Experience Decay,112,274,51,30,8,3,1,0,0,0,0,0
+10,80,Change in Fractional Experience Decay,63,344,45,26,8,3,1,0,0,0,0,0
+10,81,Experience Decay Change Time,122,422,42,28,8,3,1,0,0,0,0,0
+1,82,79,47,1,1,43,0,0,192,0,-1--1--1,,1|(249,305)|
+1,83,80,47,1,1,43,0,0,192,0,-1--1--1,,1|(204,344)|
+1,84,81,47,1,1,0,0,0,64,0,-1--1--1,,1|(250,397)|
+10,85,Initial Labor Force,175,743,32,22,8,3,0,0,0,0,0,0
+10,86,Pulse in Hiring,337,79,40,20,8,3,1,0,0,0,0,0
+10,87,Pulse Start Time,234,55,40,20,8,3,1,0,0,0,0,0
+10,88,Labor Pulse,386,34,40,20,8,3,1,0,0,0,0,0
+1,89,86,16,1,1,43,0,0,192,0,-1--1--1,,1|(352,143)|
+1,90,88,86,1,1,43,0,0,192,0,-1--1--1,,1|(338,46)|
+1,91,87,86,1,1,0,0,0,64,0,-1--1--1,,1|(291,53)|
+10,92,TIME STEP,453,90,47,13,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,93,92,86,0,1,0,0,0,0,0,-1--1--1,,1|(398,84)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Exogenous Inputs
+$0,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,Input,286,356,22,11,0,3,0,0,-1,0,0,0
+10,2,Pink Noise,638,291,40,20,3,3,0,0,0,0,0,0
+12,3,48,770,294,8,8,0,3,0,0,-1,0,0,0
+10,4,White Noise,665,394,40,20,8,3,0,0,0,0,0,0
+10,5,Noise Standard Deviation,558,422,40,20,8,3,0,0,0,0,0,0
+10,6,TIME STEP,572,354,54,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,7,Pink Noise,207,306,52,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,8,Noise Start Time,254,277,65,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,9,Pulse Quantity,343,262,58,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,10,Pulse Time,396,286,44,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,11,Ramp End Time,222,445,63,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,12,Ramp Slope,186,387,49,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,13,Ramp Start Time,184,417,65,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,14,Sine Amplitude,399,391,60,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,15,Sine Period,378,419,46,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,16,Step Height,291,460,47,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,17,Step Time,344,440,40,11,0,3,0,1,-1,0,0,0,128-128-128,0-0-0,|12|B|0-0-0
+10,18,Time,182,338,30,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+10,19,TIME STEP,182,363,54,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+11,20,156,728,295,6,8,34,3,0,0,1,0,0,0
+10,21,Change in Pink Noise,728,323,40,20,40,3,0,0,0,0,0,0
+10,22,Noise Correlation Time,795,375,40,20,8,3,0,0,0,0,0,0
+1,23,8,1,0,0,0,0,0,0,0,-1--1--1,,1|(266,310)|
+1,24,9,1,0,0,0,0,0,0,0,-1--1--1,,1|(318,303)|
+1,25,10,1,0,0,0,0,0,0,0,-1--1--1,,1|(346,317)|
+1,26,11,1,0,0,0,0,0,0,0,-1--1--1,,1|(249,406)|
+1,27,12,1,0,0,0,0,0,0,0,-1--1--1,,1|(235,371)|
+1,28,13,1,0,0,0,0,0,0,0,-1--1--1,,1|(228,390)|
+1,29,14,1,1,0,0,0,0,0,0,-1--1--1,,1|(323,371)|
+1,30,15,1,0,0,0,0,0,0,0,-1--1--1,,1|(337,391)|
+1,31,16,1,0,0,0,0,0,0,0,-1--1--1,,1|(288,414)|
+1,32,17,1,0,0,0,0,0,0,0,-1--1--1,,1|(319,403)|
+1,33,18,1,0,0,0,0,0,0,0,-1--1--1,,1|(230,346)|
+1,34,19,1,0,0,0,0,0,0,0,-1--1--1,,1|(243,359)|
+1,35,20,2,4,0,0,22,0,0,0,-1--1--1,,1|(700,295)|
+1,36,20,3,100,0,0,22,0,0,0,-1--1--1,,1|(748,295)|
+1,37,2,21,2,0,0,0,0,0,0,-1--1--1,,1|(687,346)|
+1,38,4,21,2,0,0,0,0,0,0,-1--1--1,,1|(725,361)|
+1,39,22,21,2,0,0,0,0,0,0,-1--1--1,,1|(781,327)|
+1,40,22,4,1,0,0,0,0,0,0,-1--1--1,,1|(725,412)|
+1,41,6,4,1,0,0,0,0,0,0,-1--1--1,,1|(608,382)|
+1,42,5,4,1,0,0,0,0,0,0,-1--1--1,,1|(625,411)|
+1,43,7,1,0,0,0,0,0,0,0,-1--1--1,,1|(240,327)|
+10,44,Exogenous Experience of New Hires,284,135,69,25,8,3,0,0,0,0,0,0
+10,45,Initial Experience of New Hires,122,165,56,24,8,3,0,0,0,0,0,0
+1,46,45,44,0,0,43,0,0,192,0,-1--1--1,,1|(189,152)|
+10,47,Exponential Growth Rate,432,322,40,20,8,3,0,0,-1,0,0,0
+1,48,47,1,0,0,0,0,0,0,0,-1--1--1,,1|(356,338)|
+10,49,Exponential Growth Time,474,364,40,20,8,3,0,0,-1,0,0,0
+1,50,49,1,0,0,0,0,0,0,0,-1--1--1,,1|(377,359)|
+10,51,Input,121,95,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,52,51,44,0,0,43,0,0,192,0,-1--1--1,,1|(181,109)|
+///---\\\
+:L<%^E!@
+9:current
+22:$,Dollar,Dollars,$s
+22:Capital Unit,Capital Units
+22:Day,Days
+22:Person,People,Persons
+22:Unit,Units
+22:Year,Years
+15:0,0,0,0
+19:100,0
+5:Learning Curve Strength
