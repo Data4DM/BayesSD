@@ -1,4 +1,12 @@
-Time, Graph, Openness, Hierarchy are four components of system structure.
+(in process)
+
+Time, Graph, Openness, Hierarchy are four standards for classifying system structure.
+- Two forces of system: soul and body (by [Jules Verne](https://www.enquoted.com/jules-verne--dost-thou-not-understand-that-there-are-two-distinct-forces-in-us-that-of-the-quote.html))
+| -     | soul, information  | body, material |
+| ----- | ------------------ | -------------- | 
+| a.k.a | movement           | regulator      | 
+|       | physical constaint |                | 
+|       | devil              | angel          | 
 
 ## 1. Time
 Everything is relative. Any policy can be myopic as the time horizon can always be elongated. Speed is the integration of acceleration, but is the differentiation of location. Worlding starts from setting the time horizon and time step. 
@@ -7,6 +15,9 @@ Everything is relative. Any policy can be myopic as the time horizon can always 
 Once the time axis is set, we move on to the spatial structure layout. Stock and flow diagram is a cyclic directed graph with the aggregation lever in each link. This aggregation is why the graph holds not only the information of space but also time. Modeler's will for system's heterogeneity, is expressed as the number of assumed parameter i.e. replacing nuisance parameter to its equilibrium value (first moment). `N`th order system's order usually has `N` number of stocks. With greater order comes greater responsibility for the marginalized out heterogenity. These integration explains "low pass filter" role of SD models, killing the aleatoric uncertainty with high frequency.
 
 Usually, variables in one view are one connected graph.
+
+### body and soul system
+sharing material VS sharing 
 
 ## 3. Openness: Information+Energy+Material
 Four types of system exists depending how open this system is on the axis of information, energy, and material. Closed, information open, information+energy open, information+energy+material open are the four systems in order of modeling complexity.
@@ -43,18 +54,19 @@ Below are eight examples of world models (in process).
 - 
 
 ### 1. SEIRb
-[[Mng(Diffusion)]]
-![[Pasted image 20220822225557.png]]
+[[mng(diffusion)]]
+
+![[mng(diffusion).png]]
 
 ### 2. Project
-[[Mng(Project)]]
-![[Mng(project).excalidraw.svg]]
+[[model_month/2 mng(project)/mng(project)]]
+![[mng(project).png]]
 
 
 ### 3. Capacity
 [[Mng(Capacity)]]: capital
 ![[Mng(Longwave).excalidraw.svg]]
-
+![[mng(capacity).png]]
 
 ### 4. Market growth
 [[Mng(Market)]]
@@ -65,7 +77,7 @@ Below are eight examples of world models (in process).
 
 
 ### 5. Service quality
-[[Mng(Service)]]
+[[mng(service)]]
 ![[Manage(Service).excalidraw.svg]]
 
 ### 6. Material Cycle
@@ -75,11 +87,11 @@ Mng(MaterialSupplyPink Noise, Industry Demand, Long Run Expected Price, Expected
 ![[Mng(Commodity).excalidraw.svg]]
 
 ### 7. City
-[[Mng(City)]]
+[[mng(city)]]
 
 
 ### 8. World 
-[[Mng(World)]] 
+[[mng(energy)]] 
 
 
 

@@ -1,0 +1,157 @@
+{
+  "main": {
+    "id": "228cd12bc854f085",
+    "type": "split",
+    "children": [
+      {
+        "id": "50a0e4e73fbcbcd7",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "model_month/10 mng(chain ⛓)/mng(chain).md",
+            "mode": "source",
+            "source": false
+          }
+        }
+      },
+      {
+        "id": "fd264a7e05e34b11",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "model_month/1 mng(diffusion)/mng(diffusion).md",
+            "mode": "source",
+            "source": false
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "58c49a29620ec513",
+    "type": "split",
+    "children": [
+      {
+        "id": "b12d825f6206f734",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5aa160476f5f4029",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "779915ada92a41fe",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "73e0d2c9e9fc0ec7",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "d2ebde418b2c7149",
+    "type": "split",
+    "children": [
+      {
+        "id": "c3f5fd7a67d60fd1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c96445fb06a5cbad",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "model_month/10 mng(chain ⛓)/mng(chain).md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "752454dc37adee9d",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "model_month/10 mng(chain ⛓)/mng(chain).md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "13403e29b7a9fba4",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "23f1848e7d4149e5",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "model_month/10 mng(chain ⛓)/mng(chain).md"
+              }
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "50a0e4e73fbcbcd7",
+  "lastOpenFiles": [
+    "model_month/9 mng(information🧠)/mng(information).md",
+    "model_month/12 mng(game)/mng(game).md",
+    "model_month/11 mng(variation)/mng(variation).md",
+    "model_month/8 mng(energy⚡️)/mng(energy).md",
+    "model_month/10 mng(chain ⛓)/mng(chain).md",
+    "wiki_week/4 System Structures.md",
+    "wiki_week/6 Branching Behavior.md",
+    "wiki_week/3 Bayequentist Dynamics with SBC.md",
+    "model_month/2 mng(project)/mng(project).md",
+    "model_month/1 mng(diffusion)/mng(diffusion).md"
+  ]
+}

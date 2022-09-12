@@ -11,5 +11,3 @@ List of Actionable models (a.k.a SYSTEM DYNAMICS IN ACTION) from Business Dynami
 - 11.6 Forecasting Semiconductor Demand
 - 12.1.5 World Population and Economic Development
 - 18.3 Reengineering the Supply Chain in a High-Velocity Industry
-- 
-- 

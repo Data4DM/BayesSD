@@ -1,0 +1,2 @@
+![[JointBeliefDesire.png]]
+

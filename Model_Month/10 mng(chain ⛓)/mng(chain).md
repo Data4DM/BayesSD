@@ -1,0 +1,3 @@
+- supply chain management, bullwhip effect
+- military logistics
+- 

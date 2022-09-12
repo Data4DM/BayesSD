@@ -1,5 +1,5 @@
 ## What
-: Cheap Cutting-edge Curation
+: Affordable Cutting-edge Analytics for All
 
 More detailed:
 Bayesian workflow on which stakeholder's demand, expert's structural knowledge, and machine's learning algorithms are balanced and tested. My work is focused on automating this flow with modular design so that its output, explainable policy, can be widely supplied which is the vision of my startup: cheap and cutting-edge curation.

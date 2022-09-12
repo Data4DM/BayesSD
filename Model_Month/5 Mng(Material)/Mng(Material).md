@@ -1,3 +1,5 @@
+Related to soul system
+
 ![[Mng(Commodity).excalidraw.svg]]
 
 Four cause of cognitive bias from Sterman's paper on managerial biases: [[Managerial bias]]
