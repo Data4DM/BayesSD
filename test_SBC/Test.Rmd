@@ -1,0 +1,104 @@
+---
+title: "SEIR"
+author: "Jair Andrade"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(readr)
+library(readsdr)
+library(SBC)
+```
+
+```{r}
+mdl_filepath <- "./models/SEIR.xmile"
+mdl <- read_xmile(mdl_filepath)
+```
+
+```{r}
+output <- sd_simulate(mdl$deSolve_components, start_time = 0, stop_time = 100,
+                      integ_method = "rk4")
+```
+
+```{r}
+ggplot(output, aes(time, C_in)) +
+  geom_line(colour = "steelblue") +
+  labs(y = "Detected cases per day") +
+  theme_classic()
+```
+
+```{r}
+meas_mdl   <- list("y ~ poisson(net_flow(C))")
+
+est_params <- list(sd_prior("par_inv_R0", "beta", c(2,2)),
+                   sd_prior("par_rho", "beta", c(2,2)),
+                   sd_prior("I0", "lognormal", c(0, 1), "init"))
+
+stan_file <- sd_Bayes(mdl_filepath, meas_mdl, est_params)
+
+stan_fp <- "./Stan_files/SEIR.stan"
+write_file(stan_file, stan_fp)
+```
+
+```{r}
+ds_inputs <- mdl$deSolve_components
+
+data_generator <- function() {
+  
+  par_inv_R0   <- rbeta(1, 2, 2)
+  par_rho  <- rbeta(1, 2, 2)
+  par_I0   <- rlnorm(1)
+  
+  ds_inputs$consts[["par_inv_R0"]] <- par_inv_R0
+  ds_inputs$consts[["par_rho"]]    <- par_rho
+  
+  N_val  <- ds_inputs$consts[["N"]] 
+  
+  ds_inputs$stocks[["S"]] <- N_val - par_I0
+  ds_inputs$stocks[["I"]] <- par_I0
+  
+  measurement_df <- sd_measurements(1, meas_mdl, ds_inputs, 0, 80, 
+                                    timestep = 1/32, integ_method = "rk4")
+  
+  n_obs <- nrow(measurement_df)
+  
+  list(
+    variables = list(
+      par_inv_R0 = par_inv_R0,
+      par_rho    = par_rho,
+      par_I0     = par_I0),
+    generated =   list(
+      n_obs    = n_obs,
+      y        = measurement_df$measurement,
+      n_params = 2,
+      n_difeq  = 5,
+      t0       = 0,
+      ts       = 1:n_obs))
+}
+```
+
+```{r}
+poisson_generator <- SBC_generator_function(data_generator)
+
+n_sims <- 2
+
+poisson_dataset <- generate_datasets(
+  poisson_generator, 
+  n_sims)
+```
+
+
+```{r}
+cmdstan_model   <- cmdstanr::cmdstan_model(stan_fp)
+poisson_backend <- SBC_backend_cmdstan_sample(
+    cmdstan_model, iter_warmup = 1000, iter_sampling = 1000, chains = 2)
+```
+
+```{r}
+results <- compute_SBC(poisson_dataset, poisson_backend)
+```
+
+
