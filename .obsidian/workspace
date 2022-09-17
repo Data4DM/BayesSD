@@ -1,0 +1,145 @@
+{
+  "main": {
+    "id": "228cd12bc854f085",
+    "type": "split",
+    "children": [
+      {
+        "id": "966dffc837076f1e",
+        "type": "leaf",
+        "state": {
+          "type": "empty",
+          "state": {}
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "58c49a29620ec513",
+    "type": "split",
+    "children": [
+      {
+        "id": "b12d825f6206f734",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5aa160476f5f4029",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "779915ada92a41fe",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "community",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "73e0d2c9e9fc0ec7",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "d2ebde418b2c7149",
+    "type": "split",
+    "children": [
+      {
+        "id": "c3f5fd7a67d60fd1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c96445fb06a5cbad",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "752454dc37adee9d",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "13403e29b7a9fba4",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "23f1848e7d4149e5",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          },
+          {
+            "id": "6d20f2bf40e0fd1c",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 234.5,
+    "collapsed": true
+  },
+  "active": "966dffc837076f1e",
+  "lastOpenFiles": [
+    "ContinuousCode/Code_Commit.md",
+    "MonthlyModel/10 mng(chain ⛓)/mng(chain).md",
+    "MonthlyModel/10 mng(chain ⛓)/mng(supplyChain).md",
+    "seminar_season/2022Fall/TA-BringData2DM_Rahmandad/2-CalibInVensim/0916.md",
+    "model_month/7 mng(city_world🌏)/mng(world).md",
+    "model_month/7 mng(city_world🌏)/mng(city).md",
+    "model_month/4 mng(market🏪)/mng(market).md",
+    "model_month/1 mng(diffusion)/mng(diffusion).md",
+    "model_month/2 mng(capacity)/mng(capacity).md",
+    "wiki_week/stack/Untitled.md"
+  ]
+}
