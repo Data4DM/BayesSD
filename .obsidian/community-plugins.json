@@ -3,5 +3,7 @@
   "obsidian-excel-to-markdown-table",
   "obsidian-excalidraw-plugin",
   "obsidian-dynamic-toc",
-  "obsidian-plugin-toc"
+  "obsidian-plugin-toc",
+  "obsidian-minimal-settings",
+  "highlightr-plugin"
 ]

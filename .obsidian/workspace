@@ -4,24 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "50a0e4e73fbcbcd7",
+        "id": "966dffc837076f1e",
         "type": "leaf",
         "state": {
           "type": "markdown",
           "state": {
-            "file": "model_month/10 mng(chain ⛓)/mng(chain).md",
-            "mode": "source",
-            "source": false
-          }
-        }
-      },
-      {
-        "id": "fd264a7e05e34b11",
-        "type": "leaf",
-        "state": {
-          "type": "markdown",
-          "state": {
-            "file": "model_month/1 mng(diffusion)/mng(diffusion).md",
+            "file": "ContinuousCode/Code_Commit.md",
             "mode": "source",
             "source": false
           }
@@ -52,7 +40,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "community",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -89,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "model_month/10 mng(chain ⛓)/mng(chain).md",
+                "file": "ContinuousCode/Code_Commit.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -106,7 +94,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "model_month/10 mng(chain ⛓)/mng(chain).md",
+                "file": "ContinuousCode/Code_Commit.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -129,29 +117,37 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "model_month/10 mng(chain ⛓)/mng(chain).md"
+                "file": "ContinuousCode/Code_Commit.md"
               }
+            }
+          },
+          {
+            "id": "6d20f2bf40e0fd1c",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 300,
+    "width": 234.5,
     "collapsed": true
   },
-  "active": "50a0e4e73fbcbcd7",
+  "active": "966dffc837076f1e",
   "lastOpenFiles": [
-    "model_month/9 mng(information🧠)/mng(information).md",
-    "model_month/12 mng(game)/mng(game).md",
-    "model_month/11 mng(variation)/mng(variation).md",
-    "model_month/8 mng(energy⚡️)/mng(energy).md",
-    "model_month/10 mng(chain ⛓)/mng(chain).md",
-    "wiki_week/4 System Structures.md",
-    "wiki_week/6 Branching Behavior.md",
-    "wiki_week/3 Bayequentist Dynamics with SBC.md",
-    "model_month/2 mng(project)/mng(project).md",
-    "model_month/1 mng(diffusion)/mng(diffusion).md"
+    "MonthlyModel/10 mng(chain ⛓)/mng(chain).md",
+    "MonthlyModel/10 mng(chain ⛓)/mng(supplyChain).md",
+    "seminar_season/2022Fall/TA-BringData2DM_Rahmandad/2-CalibInVensim/0916.md",
+    "model_month/7 mng(city_world🌏)/mng(world).md",
+    "model_month/7 mng(city_world🌏)/mng(city).md",
+    "model_month/4 mng(market🏪)/mng(market).md",
+    "model_month/1 mng(diffusion)/mng(diffusion).md",
+    "model_month/2 mng(capacity)/mng(capacity).md",
+    "wiki_week/stack/Untitled.md",
+    "ref/Drawing 2022-09-16 03.10.39.excalidraw.md"
   ]
 }

@@ -10,7 +10,7 @@ tags: [excalidraw]
 # Text Elements
 
 # Embedded files
-850fc1315eb55db6119203fda0d193a17e7e8bdd: [[ref/Pasted Image 20220911233157_922.png]]
+3ef24ef02dd1f0d47bd1abf31d96bd16e75aaadb: [[ref/Pasted Image 20220913204321_125.png]]
 
 %%
 # Drawing
@@ -21,12 +21,12 @@ tags: [excalidraw]
 	"source": "https://excalidraw.com",
 	"elements": [
 		{
-			"id": "6OtxY1YRdSmv4ZQiQhruh",
+			"id": "RQdOWgQx3awRu_3Z2lwqN",
 			"type": "image",
-			"x": -678.0232222092909,
-			"y": -296.5698211630927,
-			"width": 798.3477837042966,
-			"height": 269.9967851833281,
+			"x": -509.39106583072095,
+			"y": -444.5,
+			"width": 810.2821316614419,
+			"height": 359,
 			"angle": 0,
 			"strokeColor": "transparent",
 			"backgroundColor": "transparent",
@@ -37,48 +37,16 @@ tags: [excalidraw]
 			"opacity": 100,
 			"groupIds": [],
 			"strokeSharpness": "round",
-			"seed": 2065893524,
+			"seed": 325631916,
 			"version": 4,
-			"versionNonce": 621954348,
+			"versionNonce": 278929044,
 			"isDeleted": false,
 			"boundElements": null,
-			"updated": 1663116070943,
+			"updated": 1663116199542,
 			"link": null,
 			"locked": false,
 			"status": "pending",
-			"fileId": "850fc1315eb55db6119203fda0d193a17e7e8bdd",
-			"scale": [
-				1,
-				1
-			]
-		},
-		{
-			"type": "image",
-			"version": 5,
-			"versionNonce": 660824108,
-			"isDeleted": true,
-			"id": "n1yPX95cKxG4Er7SAlN2o",
-			"fillStyle": "hachure",
-			"strokeWidth": 1,
-			"strokeStyle": "solid",
-			"roughness": 1,
-			"opacity": 100,
-			"angle": 0,
-			"x": -611.4028651180698,
-			"y": -299,
-			"strokeColor": "transparent",
-			"backgroundColor": "transparent",
-			"width": 1040.8213552361397,
-			"height": 352,
-			"seed": 715574804,
-			"groupIds": [],
-			"strokeSharpness": "round",
-			"boundElements": [],
-			"updated": 1663116070404,
-			"link": null,
-			"locked": false,
-			"status": "pending",
-			"fileId": "850fc1315eb55db6119203fda0d193a17e7e8bdd",
+			"fileId": "3ef24ef02dd1f0d47bd1abf31d96bd16e75aaadb",
 			"scale": [
 				1,
 				1

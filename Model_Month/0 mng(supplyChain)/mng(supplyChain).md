@@ -1,1 +1,0 @@
-![[data4dmSupplyChain.png]]
