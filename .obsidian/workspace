@@ -7,8 +7,12 @@
         "id": "966dffc837076f1e",
         "type": "leaf",
         "state": {
-          "type": "empty",
-          "state": {}
+          "type": "markdown",
+          "state": {
+            "file": "MonthlyModel/1 mng(diffusion)/Covid.md",
+            "mode": "source",
+            "source": false
+          }
         }
       }
     ],
@@ -73,6 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "MonthlyModel/1 mng(diffusion)/Covid.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -89,6 +94,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "MonthlyModel/1 mng(diffusion)/Covid.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -110,7 +116,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "MonthlyModel/1 mng(diffusion)/Covid.md"
+              }
             }
           },
           {
@@ -131,15 +139,15 @@
   },
   "active": "966dffc837076f1e",
   "lastOpenFiles": [
+    "ContinuousCode/2_PD/1b(StrucDomAnal)/def(StrucDomAnal).md",
+    "ContinuousCode/2_PD/1a(StockFlowDiag)/def(StockFlowDiag).md",
+    "MonthlyModel/5 mng(material)/mng(Material).md",
     "ContinuousCode/Code_Commit.md",
     "MonthlyModel/10 mng(chain ⛓)/mng(chain).md",
     "MonthlyModel/10 mng(chain ⛓)/mng(supplyChain).md",
     "seminar_season/2022Fall/TA-BringData2DM_Rahmandad/2-CalibInVensim/0916.md",
     "model_month/7 mng(city_world🌏)/mng(world).md",
     "model_month/7 mng(city_world🌏)/mng(city).md",
-    "model_month/4 mng(market🏪)/mng(market).md",
-    "model_month/1 mng(diffusion)/mng(diffusion).md",
-    "model_month/2 mng(capacity)/mng(capacity).md",
-    "wiki_week/stack/Untitled.md"
+    "model_month/4 mng(market🏪)/mng(market).md"
   ]
 }
