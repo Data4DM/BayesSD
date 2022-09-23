@@ -3,7 +3,7 @@ Related to soul system
 ![[Mng(Commodity).excalidraw.svg]]
 
 Four cause of cognitive bias from Sterman's paper on managerial biases: [[Managerial bias]]
-[[Mangerial bias and Inductive bias]]
+[[BayesSD/ref/Mangerial bias and Inductive bias]]
 Four operational causes from Sterman's paper on hoarding:
 - uncertainty from demand forecast
 - forward ordering based on price expectations

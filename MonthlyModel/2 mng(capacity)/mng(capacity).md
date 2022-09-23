@@ -1,6 +1,6 @@
-![[mng(capacity).excali]]
 ![[Pasted image 20220916091325.png]]
-
+- increase and decrease of capital supplyline and stock, backlog, goods supply line
+- capital stock is measurable, acquisition is more mbl
 connected economy, capital resource 
 good and capital
 If unit of analysis is nation, all can be normal. Poisson distribution for flow, Normal for stock

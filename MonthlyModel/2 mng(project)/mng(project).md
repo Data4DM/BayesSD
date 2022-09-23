@@ -1,5 +1,5 @@
-
-![[ref/mng(project)]]
+![[Pasted image 20220923093920.png]]
+[[ref/mng(project)]]
 
 1. selecting estimated parameter
 2. two ways of encode constraint for fixed population

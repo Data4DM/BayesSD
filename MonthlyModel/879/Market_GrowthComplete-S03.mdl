@@ -1,0 +1,930 @@
+{UTF-8}
+********************************************************
+	.MarketGrowth
+********************************************************~
+		
+		Market Growth Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		This is the version of Forrester's (1968) Market Growth Model
+		developed in chapter 15.  The company goal for delivery delay is
+		fixed, and market potential is unlimited.
+		
+		The model includes switches to decouple the sectors and allow 
+		partial model testing.
+	|
+
+Pressure to Expand Capacity=
+	Switch for Endogenous Pressure*((Delivery Delay Perceived by Company)/Company Goal for Delivery Delay\
+		) + (1-Switch for Endogenous Pressure
+	)*Exogenous Pressure for Expansion
+	~	Dimensionless
+	~	Pressure to expand capacity arises when the perceived delivery delay is \
+		greater than the firm's goal for delivery delay.  The Switch for \
+		Endogenous Pressure allows expansion pressure to be made exogenous for \
+		testing purposes.
+	|
+
+Backlog= INTEG (
+	Order Rate-Shipment Rate,
+		Initial Backlog)
+	~	Units
+	~	The backlog of unfilled orders.
+	|
+
+Book to Bill Ratio=
+	Order Rate/Shipment Rate
+	~	Dimensionless
+	~	The book to bill ratio is a common measure of the health of high-tech \
+		companies.
+	|
+
+Exogenous Delivery Delay=
+	Normal Delivery Delay
+	~	Months
+	~	Exogenous delivery delay for model testing purposes.  Inclues a variety of \
+		step inputs.
+	|
+
+Exogenous Order Rate=
+	500
+	~	Units/Month
+	~	Exogenous order rate for model testring.
+	|
+
+Exogenous Pressure for Expansion=
+	Normal Expansion Pressure
+	~	Dimensionless
+	~	Exogenous pressure for expansion is based on the normal value and adjusted \
+		by avariety of step functions for testing purposes.
+	|
+
+Exogenous Sales Effectiveness=
+	Normal Sales Effectiveness
+	~	Units/(Month*Person)
+	~	Exogenous sales effectiveness for model testing.  Includes a step input.
+	|
+
+Switch for Endogenous Sales Effectiveness=
+	1
+	~	Dimensionless [0,1]
+	~	1 = Sales Effectiveness determined by delivery delay.
+		0 = Sales Effectiveness is exogenous for testing purposes.
+	|
+
+Delivery Delay=
+	Switch for Endogenous Delivery Delay*(Backlog/Shipment Rate) +  (1-Switch for Endogenous Delivery Delay\
+		)*Exogenous Delivery Delay
+	~	Month
+	~	Delivery delay is the rato of backlog to shipments.  For model testing \
+		purposes, delivery delay can be set to an exogenous value.
+	|
+
+Initial Capacity= INITIAL(
+	Initial Backlog/Company Goal for Delivery Delay)
+	~	Units/Month
+	~	Initial capacity is set to be in equilibrium wtih initial Backlog and \
+		Company's goal for delivery delay.
+	|
+
+Switch for Capacity Constraint=
+	1
+	~	Dimensionless [0,1]
+	~	1 = shipments determined by capacity and capacity utilization.  0 = \
+		shipments always equal desired production, which keeps the delivery delay \
+		constant at the normal value.
+	|
+
+Switch for Endogenous Delivery Delay=
+	1
+	~	Dimensionless [0,1]
+	~	1 = delivery delay determined by backlog and shipments.   0 = delivery \
+		delay determined exogenously.
+	|
+
+Shipment Rate=
+	Switch for Capacity Constraint*Capacity*Capacity Utilization+(1-Switch for Capacity Constraint\
+		)*Desired Production
+	~	Units/Month
+	~	Shipments can be constrained by capacity or set equal to the desired rate.  \
+		Setting the Switch for Capacity Constraint to 1 means shipments are \
+		determined by capacity and capacity utilization.  When the switch is zero, \
+		shipments always equal the rate that keeps the delivery delay constant at \
+		the normal value.
+	|
+
+Sales Effectiveness=
+	Switch for Endogenous Sales Effectiveness*(Normal Sales Effectiveness*Effect of Delivery Delay on Sales Effectiveness\
+		) + (1-Switch for Endogenous Sales Effectiveness)*Exogenous Sales Effectiveness
+	~	Units/Month/Person
+	~	Sales effectiveness is determined by the delivery delay for the product \
+		(when theSwitch for Endogenous Sales Effectiveness = 1).  Otherwise it is \
+		exogenous for model testing.
+	|
+
+Switch for Endogenous Pressure=
+	1
+	~	Dimensionless [0,1]
+	~	1 = Expansion pressure determined by perceived delivery delay and the \
+		delivery delay goal.  0 = exogenous expansion pressure.
+	|
+
+Initial Backlog=
+	1000
+	~	Units
+	~	The initial backlog is one unit.
+	|
+
+Switch for Endogenous Orders=
+	1
+	~	Dimensionless [0,1]
+	~	1 = orders determined by sales force and sales effectiveness.  0 = orders \
+		are exogenous.
+	|
+
+Order Rate=
+	Switch for Endogenous Orders*Sales Force*Sales Effectiveness+(1-Switch for Endogenous Orders\
+		)*Exogenous Order Rate
+	~	Units/Month
+	~	Orders are determined by the sales force and sales force effetiveness when \
+		the Switch for Endogenous Orders = 1.  Setting the switch to 0 cuts the \
+		sales growth feedback for partial model testing purposes.
+	|
+
+Normal Expansion Pressure=
+	1
+	~	Dimensionless
+	~	Normal expansion pressure is one, indicating that current capacity is \
+		adequate.
+	|
+
+Capacity=
+	SMOOTH3I(Desired Capacity,Capacity Acquisition Delay,Initial Capacity)
+	~	Units/Month
+	~	Production capacity adjusts to target capacity with an average lage given \
+		by the capacity acquisition time.  A third-order delay is assumed.  \
+		Expansion and contraction are symmetric, for simplicity.
+	|
+
+Capacity Acquisition Delay=
+	18
+	~	Months
+	~	The average time required to alter capacity.  Symmetric for increases and \
+		decreases.
+	|
+
+Capacity Utilization=
+	Table for Capacity Utilization(Desired Production/Capacity)
+	~	Dimensionless
+	~	Capacity utilization is a function of the ratio of desired production to \
+		capacity.
+	|
+
+Change in Recent Revenue=
+	(Revenue - Recent Revenue)/Revenue Reporting Delay
+	~	$/Month/Month
+	~	Recent revenue adjusts via first-order smoothing to actual revenue.  The \
+		reporting delay includes the time required for reporting and budget \
+		decision-making.
+	|
+
+Company Goal for Delivery Delay=
+	2
+	~	Months
+	~	Senior management's goal for delivery delay.
+	|
+
+Cost per Sales Representative=
+	8000
+	~	$/Month/Person
+	~	The fully loaded cost per sales representative is $8000/month.
+	|
+
+Delivery Delay Perceived by Company=
+	SMOOTH(Delivery Delay,Time for Company to Perceive Delivery Delay)
+	~	Month
+	~	The delivery delay recognized by the company lags behind true \
+		availability.  First order smoothing is assumed.
+	|
+
+Delivery Delay Perceived by Market=
+	SMOOTH(Delivery Delay Perceived by Company,Time for Market to Perceive Delivery Delay\
+		)
+	~	Months
+	~	The delivery delay perceived by the market lags behind the quotes given by \
+		the company, which in turn lag the true availability of the product.  \
+		First-order smoothing is assumed.
+	|
+
+Desired Capacity=
+	Capacity*Effect of Expansion Pressure on Desired Capacity
+	~	Units/Month
+	~	Desired capacity is anchored on current capacity, then adjusted up or down \
+		based on the pressure for expansion the firm recognizes.
+	|
+
+Desired Production=
+	Backlog/Normal Delivery Delay
+	~	Units/Month
+	~	Desired production (desired shipments) is the rate of shipments that keeps \
+		delivery delay constant at the normal value.
+	|
+
+Effect of Delivery Delay on Sales Effectiveness=
+	Table for Effect of Delivery Delay on Sales Effectiveness(Delivery Delay Perceived by Market\
+		/Market Target Delivery Delay)
+	~	Dimensionless
+	~	The attractiveness of the firm's products depends on their availability.  \
+		Long delivery delays relative to the market norm erodes attractiveness.  \
+		Market norms for delivery delay represent the delivery delay available \
+		from other suppliers.
+	|
+
+Effect of Expansion Pressure on Desired Capacity=
+	Table for Effect of Pressure on Desired Capacity(Pressure to Expand Capacity)
+	~	Dimensionless
+	~	The effect of expansion pressure on desired capacity is a nonlinear \
+		function of the pressure to expand capacity.
+	|
+
+Fraction of Revenue to Sales=
+	0.2
+	~	Dimensionless
+	~	Twenty percent of the organization's budget is allocated to the sales \
+		organization.
+	|
+
+Market Target Delivery Delay=
+	2
+	~	Months
+	~	The market norm for delivery delay, representing the lead time offered by \
+		competitors.
+	|
+
+Normal Sales Effectiveness=
+	10
+	~	Units/(Month*Person)
+	~	The rate of sales booked per sales person per month when the availability \
+		of the product is normal.
+	|
+
+Price=
+	10000
+	~	$/Unit
+	~	Average product price, assumed constant.
+	|
+
+Recent Revenue= INTEG (
+	Change in Recent Revenue,
+		Revenue)
+	~	$/Month
+	~	Recent revenue represents the firm's budgeting process.
+	|
+
+Revenue=
+	Price*Shipment Rate
+	~	$/Month
+	~	Revenue is recognized when product is shipped.
+	|
+
+Revenue Reporting Delay=
+	3
+	~	Months
+	~	A one quarter-year delay is assumed in the budgeting process.
+	|
+
+Sales Budget=
+	Recent Revenue*Fraction of Revenue to Sales
+	~	$/Month
+	~	The sales organization gets a fraction of recent revenue.
+	|
+
+Sales Force= INTEG (
+	Sales Force Net Hiring Rate,
+		10)
+	~	People
+	~	The firm's sales force is increased by net hiring.
+	|
+
+Sales Force Adjustment Time=
+	18
+	~	Months
+	~	An average delay of 18 months is required to adjust the sales force to \
+		target levels.
+	|
+
+Sales Force Net Hiring Rate=
+	(Target Sales Force - Sales Force)/Sales Force Adjustment Time
+	~	People/Month
+	~	Net hiring is modeled as a first-order adjustment to the target sales \
+		force.  The sales force adjustment time represents the average time \
+		required to alter the sales force, including hiring and training delays.
+	|
+
+Table for Capacity Utilization(
+	[(0,0)-(2,1.5)],(0,0),(0.25,0.35),(0.5,0.65),(0.75,0.85),(1,1),(1.25,1.1),(1.5,1.17)\
+		,(1.75,1.23),(2,1.25))
+	~	Dimensionless
+	~	Capacity utilization saturates 25% above normal, implying normal \
+		utilization yields 80% of maximum output.\!\!\!
+	|
+
+Table for Effect of Delivery Delay on Sales Effectiveness(
+	[(0,0)-(6,1.5)],(0,1.1),(0.5,1.07),(1,1),(1.5,0.9),(2,0.7),(2.5,0.4),(3,0.2),(3.5,0.1\
+		),(4,0.05),(4.5,0.02),(5,0))
+	~	Dimensionless
+	~	This function defines the attractiveness of the firm's products, and hence \
+		slaes effectiveness, as a function of the perceived delivery delay \
+		relative to the market norm for delivery delay.
+	|
+
+Table for Effect of Pressure on Desired Capacity(
+	[(0,0)-(6,2.5)],(0,0.3),(0.5,0.75),(1,1),(1.5,1.2),(2,1.4),(2.5,1.6),(3,1.8),(3.5,2)\
+		,(4,2.1),(4.5,2.17),(5,2.2))
+	~	Dimensionless
+	~	This function defines how desired capacity varies relative to current \
+		capacity.  High pressure increases desired capacity above current levels, \
+		but eventually saturates.\!\!
+	|
+
+Normal Delivery Delay=
+	2
+	~	Months
+	~	The normal time required to process, produce, and deliver an order.
+	|
+
+Target Sales Force=
+	Sales Budget/Cost per Sales Representative
+	~	People
+	~	The target sales force is determined by the sales organization's budget \
+		and the cost per sales representative, including all overhead, benefits, \
+		and other administrative costs.
+	|
+
+Time for Company to Perceive Delivery Delay=
+	3
+	~	Months
+	~	The average delay for the company to perceive the delivery delay for the \
+		product.
+	|
+
+Time for Market to Perceive Delivery Delay=
+	12
+	~	Months
+	~	The time required for the market to perceive the delivery delay for the \
+		firm's products.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 130
+	~	Month
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Month
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Month
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.125
+	~	Month
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Overview
+$192-192-192,0,Arial|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,75,0
+10,1,Sales Force,544,227,56,28,3,3,0,0,0,0,0,0
+10,2,Target Sales Force,350,408,47,18,8,3,0,0,0,0,0,0
+10,3,Cost per Sales Representative,220,367,56,18,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+10,4,Sales Budget,305,519,49,10,8,3,0,0,0,0,0,0
+10,5,Backlog,644,429,56,28,3,3,0,0,0,0,0,0
+12,6,48,612,271,10,8,0,3,0,0,-1,0,0,0
+1,7,9,5,4,0,0,22,0,0,0,-1--1--1,,1|(621,376)|
+1,8,9,6,100,0,0,22,0,0,0,-1--1--1,,1|(621,307)|
+11,9,48,621,343,11,8,33,3,0,0,4,0,0,0
+10,10,Order Rate,673,343,41,10,40,3,0,0,-1,0,0,0
+12,11,48,645,584,10,8,0,3,0,0,-1,0,0,0
+1,12,14,11,4,0,0,22,0,0,0,-1--1--1,,1|(644,555)|
+1,13,14,5,100,0,0,22,0,0,0,-1--1--1,,1|(644,488)|
+11,14,48,644,527,11,8,33,3,0,0,4,0,0,0
+10,15,Shipment Rate,709,527,54,10,40,3,0,0,-1,0,0,0
+10,16,Revenue,623,680,33,10,8,3,0,0,0,0,0,0
+10,17,Price,551,731,21,10,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+10,18,Recent Revenue,371,639,56,28,3,3,0,0,0,0,0,0
+12,19,48,543,649,10,8,0,3,0,0,-1,0,0,0
+1,20,22,18,4,0,0,22,0,0,0,-1--1--1,,1|(451,635)|
+1,21,22,19,100,0,0,22,0,0,0,-1--1--1,,1|(543,635)|
+11,22,48,484,635,8,11,34,3,0,0,1,0,0,0
+10,23,Change in Recent Revenue,484,663,60,18,40,3,0,0,-1,0,0,0
+10,24,Desired Production,551,515,40,18,8,3,0,0,0,0,0,0
+10,25,Capacity Utilization,783,649,52,31,8,131,0,0,0,0,0,0
+1,26,110,10,1,0,43,0,0,192,0,-1--1--1,,1|(700,260)|
+10,27,Sales Force Adjustment Time,198,283,61,18,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,28,4,2,1,0,43,0,0,192,0,-1--1--1,,1|(316,476)|
+1,29,18,4,1,0,43,0,0,192,0,-1--1--1,,1|(304,569)|
+1,30,16,23,1,0,43,0,0,192,0,-1--1--1,,1|(543,689)|
+1,31,17,16,1,0,43,0,0,192,0,-1--1--1,,1|(610,701)|
+1,32,5,24,1,0,43,0,0,192,0,-1--1--1,,1|(598,480)|
+1,33,24,25,1,0,43,0,0,192,0,-1--1--1,,1|(633,544)|
+1,34,70,15,1,0,43,0,0,192,0,-1--1--1,,1|(770,555)|
+1,35,25,15,1,0,43,0,0,192,0,-1--1--1,,1|(765,612)|
+1,36,3,2,1,0,45,0,0,192,0,-1--1--1,,1|(308,385)|
+10,37,Fraction of Revenue to Sales,164,471,65,18,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,38,37,4,1,0,43,0,0,192,0,-1--1--1,,1|(237,487)|
+1,39,18,23,1,0,45,0,0,192,0,-1--1--1,,1|(411,673)|
+10,40,Revenue Reporting Delay,385,779,59,18,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,41,40,23,1,0,0,0,0,64,0,-1--1--1,,1|(426,748)|
+1,42,70,25,1,0,45,0,0,192,0,-1--1--1,,1|(847,631)|
+10,43,Normal Delivery Delay,465,555,58,18,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,44,43,24,1,0,45,0,0,192,0,-1--1--1,,1|(548,531)|
+1,45,1,10,1,0,43,0,0,192,0,-1--1--1,,1|(607,223)|
+12,46,48,319,229,10,8,0,3,0,0,-1,0,0,0
+1,47,49,1,4,0,0,22,0,0,0,-1--1--1,,1|(452,223)|
+1,48,49,46,100,0,0,22,0,0,0,-1--1--1,,1|(364,223)|
+11,49,48,408,223,8,11,34,3,0,0,1,0,0,0
+10,50,Sales Force Net Hiring Rate,408,251,60,18,40,3,0,0,-1,0,0,0
+1,51,1,50,1,0,45,0,0,192,0,-1--1--1,,1|(514,279)|
+1,52,2,50,1,0,43,0,0,192,0,-1--1--1,,1|(343,363)|
+1,53,27,50,1,0,0,0,0,64,0,-1--1--1,,1|(296,259)|
+1,54,14,16,1,0,43,0,0,192,0,-1--1--1,,1|(683,611)|
+10,55,Table for Capacity Utilization,802,779,77,22,8,131,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-0-255
+1,56,55,25,1,0,0,0,0,64,0,-1--1--1,,1|(799,667)|
+1,57,24,15,1,0,0,0,0,64,0,-1--1--1,,1|(629,511)|
+10,58,Switch for Capacity Constraint,644,780,71,18,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12|B|255-0-0
+1,59,58,15,1,0,0,0,0,0,0,-1--1--1,,1|(706,625)|
+10,60,Switch for Endogenous Orders,534,365,47,27,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12|B|255-0-0
+10,61,Exogenous Order Rate,441,327,42,18,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,62,60,9,1,0,0,0,0,64,0,-1--1--1,,1|(588,348)|
+1,63,61,9,1,0,0,0,0,64,0,-1--1--1,,1|(579,324)|
+10,64,Initial Backlog,1009,-84,50,10,8,3,1,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+10,65,Initial Capacity,1003,-25,53,10,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+12,66,0,467,421,28,28,4,4,0,0,0,0,0,0
+R1
+12,67,0,480,487,56,28,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+Sales Growth
+1,68,64,5,0,0,0,0,0,0,1,-1--1--1,,1|(836,157)|
+1,69,16,18,0,0,0,0,0,0,1,-1--1--1,,1|(515,662)|
+10,70,Capacity,908,601,56,28,3,3,0,0,0,0,0,0
+10,71,Delivery Delay,792,455,52,10,8,3,0,0,-1,0,0,0
+10,72,Delivery Delay Perceived by Company,1008,423,70,34,3,3,0,0,-1,0,0,0
+1,73,71,72,1,0,0,0,0,0,0,-1--1--1,,1|(883,435)|
+10,74,Time for Company to Perceive Delivery Delay,1258,319,77,27,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,75,74,72,1,0,0,0,0,0,0,-1--1--1,,1|(1135,383)|
+10,76,Desired Capacity,1087,587,33,18,8,3,0,0,0,0,0,0
+10,77,Pressure to Expand Capacity,1173,455,63,18,8,3,0,0,0,0,0,0
+10,78,Company Goal for Delivery Delay,1297,396,67,18,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,79,72,77,1,0,0,0,0,64,0,-1--1--1,,1|(1101,415)|
+1,80,78,77,1,0,0,0,0,64,0,-1--1--1,,1|(1227,419)|
+10,81,Effect of Expansion Pressure on Desired Capacity,1205,569,76,27,8,3,0,0,0,0,0,0
+10,82,Table for Effect of Pressure on Desired Capacity,1195,677,76,27,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-0-255
+1,83,76,70,1,0,0,0,0,64,0,-1--1--1,,1|(1011,679)|
+1,84,77,81,1,0,0,0,0,64,0,-1--1--1,,1|(1197,504)|
+1,85,82,81,1,0,0,0,0,64,0,-1--1--1,,1|(1195,616)|
+1,86,81,76,1,0,0,0,0,64,0,-1--1--1,,1|(1172,581)|
+1,87,70,76,1,0,0,0,0,64,0,-1--1--1,,1|(996,555)|
+10,88,Capacity Acquisition Delay,1086,737,64,18,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,89,88,70,1,0,0,0,0,64,0,-1--1--1,,1|(985,740)|
+10,90,Initial Capacity,933,792,38,18,8,2,0,0,-1,0,0,0
+1,91,90,70,1,0,0,0,0,0,0,-1--1--1,,1|(892,703)|
+12,92,0,906,495,28,28,4,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+B2
+12,93,0,903,535,56,28,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+Capacity Expansion
+12,94,0,1010,597,28,28,4,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+R0
+12,95,0,1009,639,36,29,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+Capacity Goal
+10,96,Switch for Endogenous Delivery Delay,753,360,53,27,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12|B|255-0-0
+10,97,Exogenous Delivery Delay,1169,75,53,18,8,3,1,0,0,0,0,0
+1,98,96,71,1,0,0,0,0,64,0,-1--1--1,,1|(768,412)|
+1,99,97,71,1,1,0,0,0,64,0,-1--1--1,,1|(856,331)|
+10,100,Normal Delivery Delay,1344,67,58,18,8,2,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,101,100,97,1,0,0,0,0,0,0,-1--1--1,,1|(1277,65)|
+10,102,Switch for Endogenous Pressure,1444,481,47,27,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12|B|255-0-0
+10,103,Exogenous Pressure for Expansion,1382,559,45,27,8,3,0,0,0,0,0,0
+1,104,103,77,1,0,0,0,0,64,0,-1--1--1,,1|(1274,523)|
+1,105,102,77,1,0,0,0,0,64,0,-1--1--1,,1|(1329,493)|
+10,106,Normal Expansion Pressure,1449,665,67,18,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,107,106,103,0,0,0,0,0,0,0,-1--1--1,,1|(1422,622)|
+1,108,5,71,0,0,0,0,0,64,0,-1--1--1,,1|(713,440)|
+1,109,15,71,0,0,0,0,0,64,0,-1--1--1,,1|(744,495)|
+10,110,Sales Effectiveness,734,220,49,18,8,3,0,0,-1,0,0,0
+10,111,Delivery Delay Perceived by Market,1081,253,76,39,3,3,0,0,-1,0,0,0
+10,112,Time for Market to Perceive Delivery Delay,1283,175,67,27,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,113,112,111,1,0,0,0,0,0,0,-1--1--1,,1|(1166,191)|
+12,114,0,875,368,28,28,5,4,0,0,-1,0,0,0
+B3
+12,115,0,827,405,56,28,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+Availability
+10,116,Table for Effect of Delivery Delay on Sales Effectiveness,886,48,87,27,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-0-255
+10,117,Effect of Delivery Delay on Sales Effectiveness,874,191,62,27,8,3,0,0,0,0,0,0
+1,118,111,117,1,0,0,0,0,64,0,-1--1--1,,1|(960,172)|
+1,119,116,117,1,0,0,0,0,64,0,-1--1--1,,1|(863,123)|
+1,120,117,110,1,0,0,0,0,64,0,-1--1--1,,1|(787,199)|
+10,121,Normal Sales Effectiveness,603,120,50,18,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,122,121,110,1,0,0,0,0,0,0,-1--1--1,,1|(658,165)|
+10,123,Market Target Delivery Delay,1049,69,53,18,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,124,123,117,1,0,0,0,0,64,0,-1--1--1,,1|(943,119)|
+10,125,Exogenous Sales Effectiveness,805,288,69,18,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+1,126,125,110,1,0,0,0,0,64,0,-1--1--1,,1|(772,255)|
+10,127,Switch for Endogenous Sales Effectiveness,762,92,70,27,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||255-0-0
+1,128,127,110,0,0,0,0,0,64,0,-1--1--1,,1|(748,153)|
+1,129,72,111,0,0,0,0,0,64,0,-1--1--1,,1|(1040,346)|
+1,130,78,65,0,0,0,0,0,64,1,-1--1--1,,1|(1151,187)|
+1,131,64,65,0,1,0,0,0,64,1,-1--1--1,,1|(1006,-61)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Control Panel
+$192-192-192,0,Arial|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,75,0
+12,1,0,1125,260,371,209,3,188,0,0,1,0,0,0
+Overview
+12,2,0,1196,664,301,193,3,188,0,0,1,0,0,0
+DeliveryDelays
+12,3,0,1140,1036,358,181,3,188,0,0,1,0,0,0
+Capacity
+10,4,Switch for Capacity Constraint,230,141,48,31,8,3,0,26,-1,0,0,0,0-0-0,0-0-0,|14|B|255-128-0
+10,5,Switch for Endogenous Orders,642,141,58,31,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|255-128-0
+10,6,Time for Market to Perceive Delivery Delay,425,394,84,31,8,3,0,26,-1,0,0,0,0-0-0,0-0-0,|14|B|0-128-0
+10,7,Time for Company to Perceive Delivery Delay,339,505,97,31,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|0-128-0
+10,8,Switch for Endogenous Sales Effectiveness,640,225,86,31,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|255-128-0
+10,9,Capacity Acquisition Delay,221,383,81,21,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|0-128-0
+10,10,Switch for Endogenous Delivery Delay,446,149,68,31,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|255-128-0
+10,11,Switch for Endogenous Pressure,228,211,58,31,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|255-128-0
+10,12,Cost per Sales Representative,624,641,71,21,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|0-128-0
+10,13,Sales Force Adjustment Time,627,399,79,21,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|0-128-0
+10,14,Fraction of Revenue to Sales,634,736,81,21,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|0-128-0
+10,15,Revenue Reporting Delay,633,494,74,21,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|0-128-0
+10,16,Price,628,691,25,12,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|0-128-0
+10,17,Normal Sales Effectiveness,553,817,64,21,8,3,0,26,-1,0,0,0,0-0-0,0-0-0,|14|B|0-128-0
+12,18,0,224,91,98,3,3,132,0,4,3,0,0,0,0-0-0,0-0-0,|12||0-0-0
+Capacity
+12,19,0,638,89,98,3,3,132,0,4,3,0,0,0,0-0-0,0-0-0,|12||0-0-0
+Sales
+12,20,0,433,89,98,3,3,132,0,4,3,0,0,0,0-0-0,0-0-0,|12||0-0-0
+Availability
+12,21,0,110,217,4,116,3,132,0,4,2,0,0,0,0-0-0,0-0-0,|12||0-0-0
+Switches
+12,22,0,109,473,4,116,3,132,0,4,2,0,0,0,0-0-0,0-0-0,|12||0-0-0
+Delays
+12,23,0,112,734,4,116,3,132,0,4,2,0,0,0,0-0-0,0-0-0,|12||0-0-0
+Parameters
+12,24,0,111,983,4,116,3,132,0,4,2,0,0,0,0-0-0,0-0-0,|12||0-0-0
+Tables
+10,25,Table for Effect of Pressure on Desired Capacity,206,915,94,31,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|0-0-255
+10,26,Table for Effect of Delivery Delay on Sales Effectiveness,427,915,110,31,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|0-0-255
+10,27,Table for Capacity Utilization,563,1011,46,31,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|0-0-255
+10,28,Company Goal for Delivery Delay,425,599,83,21,8,3,0,26,0,0,0,0,0-0-0,0-0-0,|14|B|0-128-0
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Sales Force
+$192-192-192,0,Helvetica|12|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,75,0
+10,1,Sales Force,578,150,56,28,3,3,0,0,0,0,0,0
+10,2,Target Sales Force,265,375,56,28,8,3,0,0,0,0,0,0
+10,3,Cost per Sales Representative,125,441,81,27,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+10,4,Sales Budget,272,550,46,24,8,3,0,0,0,0,0,0
+10,5,Backlog,837,426,56,28,3,3,0,0,0,0,0,0
+12,6,48,833,266,8,6,0,3,0,0,-1,0,0,0
+1,7,9,5,4,0,0,22,0,0,0,-1--1--1,,1|(833,374)|
+1,8,9,6,100,0,0,22,0,0,0,-1--1--1,,1|(833,303)|
+11,9,48,833,342,11,8,33,3,0,0,4,0,0,0
+10,10,Order Rate,900,342,56,28,40,3,0,0,-1,0,0,0
+12,11,48,841,613,8,6,0,3,0,0,-1,0,0,0
+1,12,14,11,4,0,0,22,0,0,0,-1--1--1,,1|(834,569)|
+1,13,14,5,100,0,0,22,0,0,0,-1--1--1,,1|(834,485)|
+11,14,48,834,524,11,8,33,3,0,0,4,0,0,0
+10,15,Shipment Rate,902,524,56,28,40,3,0,0,-1,0,0,0
+10,16,Revenue,714,647,52,15,8,3,0,0,0,0,0,0
+10,17,Price,834,752,43,18,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+10,18,Sales Effectiveness,1098,164,59,19,8,2,0,0,0,0,0,0
+10,19,Recent Revenue,440,638,56,28,3,3,0,0,0,0,0,0
+12,20,48,610,638,8,6,0,3,0,0,-1,0,0,0
+1,21,23,19,4,0,0,22,0,0,0,-1--1--1,,1|(524,637)|
+1,22,23,20,100,0,0,22,0,0,0,-1--1--1,,1|(585,637)|
+11,23,48,560,637,8,11,34,3,0,0,1,0,0,0
+10,24,Change in Recent Revenue,560,692,60,43,40,3,0,0,-1,0,0,0
+10,25,Desired Production,1137,379,56,28,8,3,0,0,0,0,0,0
+10,26,Capacity Utilization,1158,526,56,28,8,3,0,0,0,0,0,0
+10,27,Capacity,1247,686,45,11,8,2,0,0,0,0,0,0
+1,28,18,10,1,0,43,0,0,192,0,-1--1--1,,1|(1002,216)|
+10,29,Sales Force Adjustment Time,232,207,66,34,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,30,4,2,1,0,43,0,0,192,0,-1--1--1,,1|(256,487)|
+1,31,19,4,1,0,43,0,0,192,0,-1--1--1,,1|(337,616)|
+1,32,16,24,1,0,43,0,0,192,0,-1--1--1,,1|(650,686)|
+1,33,17,16,1,0,43,0,0,192,0,-1--1--1,,1|(759,720)|
+1,34,5,25,1,0,43,0,0,192,0,-1--1--1,,1|(994,360)|
+1,35,25,26,1,0,43,0,0,192,0,-1--1--1,,1|(1194,448)|
+1,36,27,15,1,0,43,0,0,192,0,-1--1--1,,1|(1046,679)|
+1,37,26,15,1,0,43,0,0,192,0,-1--1--1,,1|(1049,550)|
+1,38,3,2,1,0,45,0,0,192,0,-1--1--1,,1|(211,386)|
+10,39,Fraction of Revenue to Sales,175,659,56,28,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,40,39,4,1,0,43,0,0,192,0,-1--1--1,,1|(216,599)|
+1,41,19,24,1,0,45,0,0,192,0,-1--1--1,,1|(461,717)|
+10,42,Revenue Reporting Delay,498,827,56,28,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,43,42,24,1,0,0,0,0,64,0,-1--1--1,,1|(550,774)|
+1,44,27,26,1,0,45,0,0,192,0,-1--1--1,,1|(1268,608)|
+10,45,Normal Delivery Delay,1292,332,56,28,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,46,45,25,1,0,45,0,0,192,0,-1--1--1,,1|(1211,325)|
+1,47,1,10,1,0,43,0,0,192,0,-1--1--1,,1|(648,140)|
+12,48,48,353,153,8,6,0,3,0,0,-1,0,0,0
+1,49,51,1,4,0,0,22,0,0,0,-1--1--1,,1|(486,153)|
+1,50,51,48,100,0,0,22,0,0,0,-1--1--1,,1|(398,153)|
+11,51,48,442,153,8,11,34,3,0,0,1,0,0,0
+10,52,Sales Force Net Hiring Rate,442,204,56,41,40,3,0,0,-1,0,0,0
+1,53,1,52,1,0,45,0,0,192,0,-1--1--1,,1|(573,231)|
+1,54,2,52,1,0,43,0,0,192,0,-1--1--1,,1|(295,290)|
+1,55,29,52,1,0,0,0,0,64,0,-1--1--1,,1|(330,182)|
+1,56,14,16,1,0,43,0,0,192,0,-1--1--1,,1|(791,582)|
+10,57,Table for Capacity Utilization,1351,522,56,28,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-0-255
+1,58,57,26,1,0,0,0,0,64,0,-1--1--1,,1|(1252,507)|
+1,59,25,15,1,1,0,0,0,64,0,-1--1--1,,1|(1036,469)|
+10,60,Switch for Capacity Constraint,1009,790,56,28,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12|B|255-128-0
+1,61,60,15,1,0,0,0,0,0,0,-1--1--1,,1|(890,630)|
+10,62,Switch for Endogenous Orders,784,116,70,28,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12|B|255-128-0
+10,63,Exogenous Order Rate,965,109,56,28,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,64,62,10,1,0,0,0,0,64,0,-1--1--1,,1|(857,204)|
+1,65,63,10,1,0,0,0,0,64,0,-1--1--1,,1|(923,237)|
+10,66,Initial Backlog,1308,80,56,28,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+10,67,Initial Capacity,1302,150,56,28,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+12,68,0,594,413,28,28,4,4,0,0,0,0,0,0
+R1
+12,69,0,596,468,56,28,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+Sales Growth
+1,70,66,5,0,0,0,0,0,0,1,-1--1--1,,1|(1077,250)|
+1,71,16,19,0,0,0,0,0,0,1,-1--1--1,,1|(584,642)|
+10,72,Company Goal for Delivery Delay,1302,198,78,19,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+1,73,72,67,0,0,0,0,0,64,1,-1--1--1,,1|(1302,178)|
+1,74,66,67,0,0,0,0,0,64,1,-1--1--1,,1|(1306,110)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Market
+$192-192-192,0,Helvetica|12|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,75,0
+10,1,Backlog,579,558,56,28,3,3,0,0,0,0,0,0
+12,2,48,580,342,10,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(578,485)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(578,387)|
+11,5,48,578,433,11,8,33,3,0,0,4,0,0,0
+10,6,Order Rate,645,433,56,28,40,3,0,0,-1,0,0,0
+12,7,48,583,811,10,8,0,3,0,0,-1,0,0,0
+1,8,10,7,4,0,0,22,0,0,0,-1--1--1,,1|(580,750)|
+1,9,10,1,100,0,0,22,0,0,0,-1--1--1,,1|(580,634)|
+11,10,48,580,690,11,8,33,3,0,0,4,0,0,0
+10,11,Shipment Rate,648,690,56,28,40,3,0,0,-1,0,0,0
+10,12,Sales Effectiveness,748,296,64,25,8,3,0,0,-1,0,0,0
+1,13,12,6,1,0,0,0,0,0,0,-1--1--1,,1|(687,342)|
+10,14,Sales Force,516,289,56,11,8,2,0,0,-1,0,0,0
+1,15,14,6,1,0,0,0,1,0,0,255-255-255,|12||0-0-0,1|(606,327)|
+10,16,Capacity,866,874,56,28,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,17,16,11,1,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(753,743)|
+10,18,Capacity Utilization,540,873,56,28,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,19,18,11,1,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(625,785)|
+10,20,Delivery Delay Perceived by Market,1142,439,76,39,3,3,0,0,-1,0,0,0
+10,21,Delivery Delay Perceived by Company,1062,620,80,38,3,3,0,0,-1,0,0,0
+1,22,21,20,1,0,0,0,0,0,0,-1--1--1,,1|(1156,505)|
+10,23,Time for Market to Perceive Delivery Delay,1321,491,52,53,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,24,23,20,1,0,0,0,0,0,0,-1--1--1,,1|(1231,445)|
+10,25,Delivery Delay,853,692,42,29,8,3,0,0,-1,0,0,0
+1,26,25,21,1,0,0,0,0,0,0,-1--1--1,,1|(999,677)|
+1,27,1,25,1,0,0,0,0,0,0,-1--1--1,,1|(685,641)|
+1,28,11,25,1,0,0,0,0,0,0,-1--1--1,,1|(733,709)|
+10,29,Time for Company to Perceive Delivery Delay,1251,687,60,52,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,30,29,21,1,0,0,0,0,64,0,-1--1--1,,1|(1206,646)|
+12,31,0,845,464,28,28,5,4,0,0,-1,0,0,0
+B3
+12,32,0,849,512,56,28,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+Availability
+10,33,Table for Effect of Delivery Delay on Sales Effectiveness,1115,145,111,56,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-0-255
+10,34,Effect of Delivery Delay on Sales Effectiveness,961,285,81,38,8,3,0,0,0,0,0,0
+1,35,20,34,1,0,0,0,0,64,0,-1--1--1,,1|(1073,321)|
+1,36,33,34,1,0,0,0,0,64,0,-1--1--1,,1|(1012,197)|
+1,37,34,12,1,0,0,0,0,64,0,-1--1--1,,1|(832,267)|
+10,38,Normal Sales Effectiveness,744,162,87,24,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,39,38,12,1,0,0,0,0,0,0,-1--1--1,,1|(713,193)|
+10,40,Market Target Delivery Delay,1240,268,81,31,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,41,40,34,1,0,0,0,0,64,0,-1--1--1,,1|(1087,246)|
+10,42,Book to Bill Ratio,333,559,56,28,8,3,0,0,0,0,0,0
+1,43,5,42,1,0,0,0,0,64,0,-1--1--1,,1|(358,506)|
+1,44,10,42,1,0,0,0,0,64,0,-1--1--1,,1|(429,683)|
+10,45,Exogenous Order Rate,443,347,78,35,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,46,45,6,1,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(550,370)|
+10,47,Switch for Endogenous Orders,314,398,60,27,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,48,47,6,1,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(466,396)|
+10,49,Desired Production,753,828,64,22,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,50,49,11,1,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(715,753)|
+10,51,Switch for Capacity Constraint,673,890,56,28,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,52,51,11,1,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(681,793)|
+10,53,Exogenous Delivery Delay,1089,767,67,29,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,54,53,25,0,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(965,727)|
+10,55,Switch for Endogenous Delivery Delay,961,820,83,34,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,56,55,25,0,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(909,758)|
+10,57,Switch for Endogenous Sales Effectiveness,503,211,94,42,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12|B|255-128-0
+1,58,57,12,1,0,0,0,0,64,0,-1--1--1,,1|(573,267)|
+10,59,Exogenous Sales Effectiveness,565,131,81,31,8,3,0,0,0,0,0,0
+1,60,59,12,1,0,0,0,0,64,0,-1--1--1,,1|(674,253)|
+1,61,38,59,1,0,0,0,0,0,0,-1--1--1,,1|(653,123)|
+10,62,Initial Backlog,579,603,70,10,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,63,62,1,0,0,0,0,0,0,1,-1--1--1,,1|(579,596)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Capacity Acquisition
+$192-192-192,0,Helvetica|12|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,75,0
+10,1,Backlog,350,350,56,28,3,3,0,0,0,0,0,0
+12,2,48,346,157,10,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(346,281)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(346,194)|
+11,5,48,346,232,11,8,33,3,0,0,4,0,0,0
+10,6,Order Rate,413,232,56,28,40,3,0,0,-1,0,0,0
+12,7,48,348,559,10,8,0,3,0,0,-1,0,0,0
+1,8,10,7,4,0,0,22,0,0,0,-1--1--1,,1|(356,507)|
+1,9,10,1,100,0,0,22,0,0,0,-1--1--1,,1|(356,412)|
+11,10,48,356,455,11,8,33,3,0,0,4,0,0,0
+10,11,Shipment Rate,423,455,56,28,40,3,0,0,-1,0,0,0
+10,12,Capacity,476,595,56,28,3,3,0,0,0,0,0,0
+1,13,12,11,1,0,43,0,0,192,0,-1--1--1,,1|(439,532)|
+10,14,Capacity Utilization,597,367,56,28,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,15,14,11,0,17,0,0,0,0,0,-1--1--1,,1|(516,407)|
+10,16,Sales Effectiveness,254,83,69,25,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,17,16,6,1,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(325,122)|
+10,18,Sales Force,328,18,56,28,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,19,18,6,1,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(380,105)|
+10,20,Delivery Delay,580,273,56,28,8,3,0,0,-1,0,0,0
+1,21,1,20,1,0,0,0,0,0,0,-1--1--1,,1|(453,290)|
+1,22,11,20,1,0,0,0,0,0,0,-1--1--1,,1|(467,352)|
+10,23,Delivery Delay Perceived by Company,818,284,70,34,3,3,0,0,-1,0,0,0
+1,24,20,23,1,0,0,0,0,0,0,-1--1--1,,1|(696,244)|
+10,25,Time for Company to Perceive Delivery Delay,1050,235,70,52,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,26,25,23,1,0,0,0,0,0,0,-1--1--1,,1|(938,239)|
+10,27,Desired Capacity,672,687,56,28,8,3,0,0,0,0,0,0
+10,28,Pressure to Expand Capacity,948,461,56,28,8,3,0,0,0,0,0,0
+10,29,Company Goal for Delivery Delay,1106,426,45,49,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,30,23,28,1,0,0,0,0,64,0,-1--1--1,,1|(922,353)|
+1,31,29,28,1,0,0,0,0,64,0,-1--1--1,,1|(1020,431)|
+10,32,Effect of Expansion Pressure on Desired Capacity,870,641,57,62,8,3,0,0,0,0,0,0
+10,33,Table for Effect of Pressure on Desired Capacity,1052,760,90,48,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-0-255
+1,34,27,12,1,0,0,0,0,64,0,-1--1--1,,1|(570,678)|
+1,35,28,32,1,0,0,0,0,64,0,-1--1--1,,1|(938,556)|
+1,36,33,32,1,0,0,0,0,64,0,-1--1--1,,1|(937,711)|
+1,37,32,27,1,0,0,0,0,64,0,-1--1--1,,1|(815,671)|
+1,38,12,27,1,0,0,0,0,64,0,-1--1--1,,1|(626,529)|
+10,39,Capacity Acquisition Delay,377,750,56,28,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,40,39,12,1,0,0,0,0,64,0,-1--1--1,,1|(376,673)|
+10,41,Exogenous Order Rate,453,8,66,25,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,42,41,6,1,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(441,109)|
+10,43,Switch for Endogenous Orders,223,188,70,32,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,44,43,6,1,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(304,188)|
+10,45,Desired Production,219,409,67,24,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,46,45,11,0,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(319,431)|
+10,47,Switch for Capacity Constraint,227,532,56,28,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,48,47,11,0,17,0,0,1,0,0,255-255-255,|12||0-0-0,1|(318,496)|
+10,49,Initial Capacity,581,787,56,28,8,3,0,3,-1,0,0,0,0-128-0,0-0-0,|12||0-128-0
+1,50,49,12,1,0,0,0,1,0,0,255-255-255,|12||0-0-0,1|(497,710)|
+12,51,0,724,421,28,28,4,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+B2
+12,52,0,726,470,56,28,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+Capacity Expansion
+12,53,0,601,585,28,28,4,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+R0
+12,54,0,602,633,36,29,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+Capacity Goal
+10,55,Switch for Endogenous Delivery Delay,516,122,73,42,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12|B|255-128-0
+10,56,Exogenous Delivery Delay,696,123,56,28,8,3,0,0,0,0,0,0
+1,57,55,20,1,0,0,0,0,64,0,-1--1--1,,1|(535,207)|
+1,58,56,20,1,0,0,0,0,64,0,-1--1--1,,1|(605,199)|
+10,59,Normal Delivery Delay,839,49,56,28,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,60,59,56,1,0,0,0,0,0,0,-1--1--1,,1|(762,60)|
+10,61,Switch for Endogenous Pressure,1251,528,66,35,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12|B|255-128-0
+10,62,Exogenous Pressure for Expansion,1095,609,66,43,8,3,0,0,0,0,0,0
+1,63,62,28,1,0,0,0,0,64,0,-1--1--1,,1|(1015,547)|
+1,64,61,28,1,0,0,0,0,64,0,-1--1--1,,1|(1118,529)|
+10,65,Normal Expansion Pressure,1267,664,56,28,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,66,65,62,0,0,0,0,0,0,0,-1--1--1,,1|(1192,640)|
+10,67,Initial Backlog,206,373,70,10,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,68,67,1,0,0,0,0,0,0,1,-1--1--1,,1|(274,361)|
+1,69,29,49,0,0,0,0,0,64,1,-1--1--1,,1|(846,603)|
+1,70,67,49,0,0,0,0,0,64,1,-1--1--1,,1|(380,565)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Production
+$192-192-192,0,Helvetica|12|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,75,0
+10,1,Backlog,475,374,56,28,3,3,0,0,0,0,0,0
+12,2,48,470,202,10,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(469,310)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(469,234)|
+11,5,48,469,266,11,8,33,3,0,0,4,0,0,0
+10,6,Order Rate,536,266,56,28,40,3,0,0,-1,0,0,0
+12,7,48,477,543,10,8,0,3,0,0,-1,0,0,0
+1,8,10,7,4,0,0,22,0,0,0,-1--1--1,,1|(477,509)|
+1,9,10,1,100,0,0,22,0,0,0,-1--1--1,,1|(477,435)|
+11,10,48,477,476,11,8,33,3,0,0,4,0,0,0
+10,11,Shipment Rate,545,476,56,28,40,3,0,0,-1,0,0,0
+10,12,Desired Production,738,316,56,28,8,3,0,0,0,0,0,0
+10,13,Capacity Utilization,759,463,56,28,8,3,0,0,0,0,0,0
+10,14,Capacity,763,645,45,11,8,2,0,0,0,0,0,0
+1,15,1,12,1,0,43,0,0,192,0,-1--1--1,,1|(631,308)|
+1,16,12,13,1,0,43,0,0,192,0,-1--1--1,,1|(795,385)|
+1,17,14,11,1,0,43,0,0,192,0,-1--1--1,,1|(641,610)|
+1,18,13,11,1,0,43,0,0,192,0,-1--1--1,,1|(687,496)|
+1,19,14,13,1,0,45,0,0,192,0,-1--1--1,,1|(818,587)|
+10,20,Normal Delivery Delay,847,258,42,32,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|12||0-128-0
+1,21,20,12,1,0,45,0,0,192,0,-1--1--1,,1|(788,269)|
+10,22,Sales Effectiveness,672,153,78,27,8,3,1,0,-1,0,0,0
+1,23,22,6,1,1,0,0,0,0,0,-1--1--1,,1|(603,185)|
+10,24,Sales Force,434,139,53,31,8,3,1,0,-1,0,0,0
+1,25,24,6,1,1,0,0,0,0,0,-1--1--1,,1|(494,189)|
+10,26,Sales Force Net Hiring Rate,253,104,76,34,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,27,26,24,0,1,0,0,0,0,0,-1--1--1,,1|(348,121)|
+10,28,Effect of Delivery Delay on Sales Effectiveness,742,49,101,32,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,29,28,22,0,1,0,0,0,0,0,-1--1--1,,1|(709,97)|
+10,30,Table for Capacity Utilization,995,479,56,28,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|12||0-0-255
+1,31,30,13,1,0,0,0,0,0,0,-1--1--1,,1|(878,449)|
+10,32,Normal Sales Effectiveness,938,136,98,18,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,33,32,22,0,1,0,0,0,0,0,-1--1--1,,1|(801,144)|
+1,34,12,11,1,1,0,0,0,0,0,-1--1--1,,1|(707,433)|
+10,35,Exogenous Order Rate,689,244,71,25,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,36,35,6,0,1,0,0,0,0,0,-1--1--1,,1|(611,254)|
+10,37,Switch for Endogenous Orders,545,73,70,25,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,38,37,6,0,1,0,0,0,0,0,-1--1--1,,1|(540,160)|
+10,39,Switch for Capacity Constraint,578,713,56,28,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,40,39,11,1,1,0,0,0,0,0,-1--1--1,,1|(519,592)|
+12,41,0,655,371,28,28,4,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+B1
+12,42,0,655,420,56,28,8,4,0,8,-1,0,0,0,0-0-0,0-0-0,|10|B|0-0-0
+Order Fulfillment
+10,43,Book to Bill Ratio,176,374,56,28,8,3,0,0,-1,0,0,0
+1,44,6,43,1,0,43,0,0,0,0,-1--1--1,,1|(237,335)|
+1,45,11,43,1,0,45,0,0,0,0,-1--1--1,,1|(234,412)|
+10,46,Delivery Delay,314,363,56,28,8,3,0,0,-1,0,0,0
+1,47,1,46,1,0,43,0,0,0,0,-1--1--1,,1|(374,329)|
+1,48,11,46,1,0,45,0,0,0,0,-1--1--1,,1|(353,420)|
+10,49,Exogenous Delivery Delay,211,514,74,31,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,50,49,46,1,1,0,0,0,0,0,-1--1--1,,1|(244,430)|
+10,51,Switch for Endogenous Delivery Delay,356,587,116,27,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,52,51,46,1,1,0,0,0,0,0,-1--1--1,,1|(307,483)|
+10,53,Exogenous Sales Effectiveness,995,202,94,31,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,54,53,22,0,1,0,0,0,0,0,-1--1--1,,1|(832,177)|
+10,55,Switch for Endogenous Sales Effectiveness,942,55,84,35,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|12|B|128-128-128
+1,56,55,22,0,1,0,0,0,0,0,-1--1--1,,1|(808,103)|
+10,57,Initial Backlog,475,421,39,19,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+1,58,57,1,0,0,0,0,0,64,1,-1--1--1,,1|(475,402)|
+///---\\\
+:GRAPH Overview
+:TITLE Overview
+:SCALE
+:VAR Sales Force
+:SCALE
+:VAR Effect of Delivery Delay on Sales Effectiveness
+:SCALE
+:VAR Capacity
+:SCALE
+:VAR Backlog
+
+:GRAPH DeliveryDelays
+:TITLE Delivery Delays
+:SCALE
+:VAR Delivery Delay
+:VAR Delivery Delay Perceived by Company
+:VAR Delivery Delay Perceived by Market
+
+:GRAPH Capacity
+:TITLE Capacity
+:SCALE
+:VAR Capacity
+:VAR Desired Capacity
+:SCALE
+:VAR Delivery Delay Perceived by Company
+:L<%^E!@
+9:test2
+22:Month,Months
+22:People,Person
+22:Unit,Units
+23:0
+15:0,0,0,0,0,0
+19:75,5
+27:2,
+34:0,
+4:Time
+5:Table for Effect of Pressure on Desired Capacity
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+42:0
+24:0
+25:130
+26:130

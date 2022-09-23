@@ -1,0 +1,125 @@
+birth rate=
+	0.08
+	~	fraction/Year
+	~		|
+
+aging[age]=
+	Population[age] / average time in cohort[age]
+	~	person/Year
+	~		|
+
+initial population[age]=
+	30, 50, 50, 60, 50
+	~	person
+	~		|
+
+average time in cohort[age]=
+	2, 10, 7, 40, 20
+	~	Year
+	~		|
+
+births=
+	Population[middle] * birth rate
+	~	person/Year
+	~		|
+
+Population[infant]= INTEG (
+	births - aging[infant],
+		initial population[infant]) ~~|
+Population[all but youngest]= INTEG (
+	aging[previous cohort] - aging[all but youngest],
+		initial population[all but youngest])
+	~	person
+	~		|
+
+age:
+	infant, child, teen, middle, old
+	~	index
+	~		|
+
+all but youngest:
+	child, teen, middle, old
+	~	index
+	~	age cohorts except infant
+	|
+
+previous cohort:
+	infant, child, teen, middle -> all but youngest
+	~	index
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 100
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 1
+	~	Year
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Year
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|0,0
+10,1,Population,227,205,40,20,3,3,0,0,0,0,0,0
+12,2,48,73,206,8,8,0,3,0,0,-1,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(166,206)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(104,206)|
+11,5,48,132,206,6,8,34,3,0,0,1,0,0,0
+10,6,births,132,225,19,11,32,3,0,0,-1,0,0,0
+10,7,initial population,120,154,51,11,0,3,0,0,-1,0,0,0
+1,8,7,1,0,0,0,0,0,0,0,-1--1--1,,1|(163,174)|
+11,9,332,328,205,6,8,34,3,0,0,1,0,0,0
+10,10,aging,328,224,18,11,32,3,0,0,-1,0,0,0
+1,11,1,6,1,0,0,0,0,64,0,-1--1--1,,1|(168,252)|
+1,12,1,10,1,0,0,0,0,64,0,-1--1--1,,1|(302,245)|
+10,13,average time in cohort,420,262,69,11,0,3,0,0,-1,0,0,0
+1,14,13,10,0,0,0,0,0,0,0,-1--1--1,,1|(373,242)|
+10,15,birth rate,71,267,29,11,0,3,0,0,-1,0,0,0
+1,16,15,6,0,0,0,0,0,0,0,-1--1--1,,1|(96,248)|
+1,17,9,1,4,0,0,22,0,0,0,-1--1--1,,3|(328,127)|(228,127)|(228,156)|
+1,18,9,1,100,0,0,22,0,0,0,-1--1--1,,3|(296,205)|(296,205)|(277,205)|
+12,19,48,405,207,8,8,0,3,0,0,-1,0,0,0
+1,20,9,19,4,0,0,22,0,0,0,-1--1--1,,1|(366,205)|
+///---\\\
+:L<%^E!@
+9:Current
+22:$,Dollar,Dollars,$s
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+22:Day,Days
+15:0,0,0,0,0,0
+19:100,0
+27:0,
+34:0,
+4:Time
+5:Population[age]
+24:0
+25:100
+26:100
+6:child
+6:infant
+6:middle
+6:old
+6:teen
