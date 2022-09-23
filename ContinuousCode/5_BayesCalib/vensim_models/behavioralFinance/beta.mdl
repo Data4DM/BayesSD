@@ -1,0 +1,136 @@
+{UTF-8}
+Available Budget beta=A FUNCTION OF(Available Budget beta,cashflow beta) ~~|
+Available Budget beta= INTEG (
+	,
+		)
+	~	
+	~		|
+
+beta position  = A FUNCTION OF( "delayed first price deriv.",beta stock position limiting rate\
+		)
+	~	
+	~		|
+
+beta stock position limiting rate=
+	Available Budget beta
+	~	
+	~		|
+
+cashflow beta  = A FUNCTION OF( price rate beta)
+	~	
+	~		|
+
+"delayed first price deriv."  = A FUNCTION OF( first price derivative)
+	~	
+	~		|
+
+first price derivative  = A FUNCTION OF( price rate beta)
+	~	
+	~		|
+
+Price beta  = A FUNCTION OF( price rate beta)
+	~	
+	~		|
+
+price rate beta  = A FUNCTION OF( trading)
+	~	
+	~		|
+
+trading  = A FUNCTION OF( beta position,Price beta)
+	~	
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Month
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Month
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP 
+	~	Month [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Month [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,146,0
+10,1,Available Budget beta,106,68,56,23,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,2,cashflow beta,456,66,55,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,3,trading,341,251,17,17,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,4,Price beta,255,159,44,23,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,5,"delayed first price deriv.",620,270,59,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,6,first price derivative,556,123,43,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,7,2,1,0,0,45,0,0,192,0,-1--1--1,,1|(0,0)|
+12,8,48,456,156,25,15,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,9,11,8,100,0,0,22,0,192,0,-1--1--1,,1|(402,156)|
+1,10,11,4,4,0,0,22,0,192,0,-1--1--1,,1|(330,156)|
+11,11,0,367,156,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,12,price rate beta,367,187,48,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,13,12,2,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,14,4,3,1,0,0,0,0,192,0,-1--1--1,,1|(288,217)|
+1,15,3,12,0,0,43,0,0,192,0,-1--1--1,,1|(0,0)|
+1,16,12,6,1,0,0,0,0,192,0,-1--1--1,,1|(462,133)|
+1,17,6,5,1,0,43,0,0,192,0,-1--1--1,,1|(610,194)|
+10,18,beta position,430,311,43,23,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,19,48,288,310,25,15,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,20,22,19,100,0,0,22,0,192,0,-1--1--1,,1|(328,310)|
+1,21,22,18,4,0,0,22,0,192,0,-1--1--1,,1|(371,310)|
+11,22,0,350,310,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,23,beta stock position limiting rate,350,341,46,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,24,1,22,1,0,0,0,0,192,0,-1--1--1,,1|(207,210)|
+1,25,18,3,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,26,5,18,1,0,0,0,0,192,0,-1--1--1,,1|(534,325)|
+///---\\\
+:L<%^E!@
+5:Available Budget beta
+19:146,0
+24:0
+25:0
+26:0
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:1
+72:0
+73:0
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:0
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Helvetica|12||0-0-0|0-0-0|-1--1--1|0-0-0|192-192-192|-1--1--1
