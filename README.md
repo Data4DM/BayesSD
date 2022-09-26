@@ -1,4 +1,4 @@
-## Deamand and Supply of this repository 
+## Demand and Supply of this repository 
 The short term purpose of this respository is to supply students of 879 seminar series with resources, starting with 15.879 Brining Data Into Dynamic Models ([syllabus](https://github.com/hyunjimoon/DataInDM/blob/main/879Weekly/Syllabus-15879-Fall2022.pdf). Long term goal is to kickoff SilkRoad project (more below). Each are being updated in `879_Week folder` and `879Re_Month` folder. 
 
 ## Demand of SilkRoad project
