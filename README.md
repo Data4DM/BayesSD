@@ -1,5 +1,5 @@
 ## Demand and Supply of this repository 
-The short term purpose of this respository is to supply students of 879 seminar series with resources, starting with 15.879 Brining Data Into Dynamic Models ([syllabus](https://github.com/hyunjimoon/DataInDM/blob/main/879Weekly/Syllabus-15879-Fall2022.pdf). Long term goal is to kickoff SilkRoad project (more below). Each are being updated in `879_Week folder` and `879Re_Month` folder. 
+The short term purpose of this respository is to supply students of 879 seminar series with resources, starting with 15.879 Brining Data Into Dynamic Models ([syllabus](https://github.com/hyunjimoon/DataInDM/blob/main/879Weekly/Syllabus-15879-Fall2022.pdf). Long term goal is to kickoff SilkRoad project (more below). Slides with be shared in SeasonalSeminar folder [here](https://github.com/Data4DM/BayesSD/tree/master/SeasonalSeminar/2022Fall/TA-BringData2DM_Rahmandad).
 
 ## Demand of SilkRoad project
 Short answer: I wished to connect the lifelong brainchild of the scholars I respect. 
@@ -31,7 +31,7 @@ Supply based on my research interests, skill set, network in both statistical an
 
 <img width="935" alt="image" src="https://user-images.githubusercontent.com/30194633/183892835-324cc2ce-d3a6-46f9-a815-8b3aa106adc5.png">
 
-- Detailed summary of each package is being documented in [here](https://github.com/hyunjimoon/DataInDM/blob/main/Digest_Day/3%20Demand%20Draws%20Data.md#3-879-fall-nondiscrete-data---draws---demand)
+- Detailed summary of each package is being documented in [ContinuousCode](https://github.com/Data4DM/BayesSD/blob/master/ContinuousCode/ContinuousCode.md) folder.
 - Collaboration with PySD team is happening through [this](https://github.com/JamesPHoughton/pysd/pull/347) PR
 - Case studies may be presented in cookbook format like [here](https://pysd-cookbook.readthedocs.io/en/latest/index.html) (tbd)
 - Users can cook their decision by `programming demand`, `sampling scientific draws`, `collecting sensible data`
