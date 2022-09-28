@@ -10,41 +10,41 @@ using namespace stan::math;
 stan::math::profile_map profiles__;
 static constexpr std::array<const char*, 36> locations_array__ = 
 {" (found before start of program)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 15, column 4 to column 38)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 16, column 4 to column 40)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 17, column 4 to column 41)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 18, column 4 to column 38)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 19, column 4 to column 58)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 22, column 4 to column 25)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 23, column 4 to column 28)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 25, column 4 to column 30)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 26, column 4 to column 36)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 27, column 4 to column 40)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 29, column 4 to column 130)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 30, column 4 to column 51)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 31, column 4 to column 55)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 33, column 4 to column 72)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 34, column 4 to column 64)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 5, column 4 to column 12)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 9, column 4 to column 28)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 10, column 10 to column 13)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 10, column 4 to column 100)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 29, column 32 to column 35)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 30, column 10 to column 13)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 31, column 10 to column 13)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 3, column 4, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 6, column 4, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 7, column 4, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 9, column 4, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 10, column 4, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 11, column 4, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 12, column 4, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 13, column 4, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 14, column 4, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 16, column 4, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 17, column 4, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 19, column 4, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
- " (in '/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_functions.stan', line 2, column 96, included from\n'/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files/prey-predator_draws2data.stan', line 2, column 0)"};
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 15, column 4 to column 39)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 16, column 4 to column 38)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 17, column 4 to column 40)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 18, column 4 to column 41)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 19, column 4 to column 56)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 22, column 4 to column 25)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 23, column 4 to column 28)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 25, column 4 to column 30)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 26, column 4 to column 36)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 27, column 4 to column 40)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 29, column 4 to column 130)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 30, column 4 to column 51)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 31, column 4 to column 55)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 33, column 4 to column 72)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 34, column 4 to column 64)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 5, column 4 to column 12)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 9, column 4 to column 28)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 10, column 10 to column 13)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 10, column 4 to column 100)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 29, column 32 to column 35)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 30, column 10 to column 13)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 31, column 10 to column 13)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 3, column 4, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 6, column 4, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 7, column 4, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 9, column 4, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 10, column 4, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 11, column 4, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 12, column 4, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 13, column 4, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 14, column 4, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 16, column 4, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 17, column 4, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 19, column 4, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_functions.stan', line 2, column 96, included from\n'/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/prey-predator_draws2data.stan', line 2, column 0)"};
 
 struct vensim_ode_func_functor__ {
   template <typename T0__, typename T1__, typename T2__, typename T3__,
@@ -59,7 +59,7 @@ struct vensim_ode_func_functor__ {
   Eigen::Matrix<stan::promote_args_t<T0__, stan::base_type_t<T1__>, T2__, T3__, T4__,
                        stan::promote_args_t<T5__>>, -1, 1>
   operator()(const T0__& time, const T1__& outcome, const T2__& delta,
-             const T3__& beta, const T4__& alpha, const T5__& gamma,
+             const T3__& alpha, const T4__& gamma, const T5__& beta,
              std::ostream* pstream__) const;
 };
 struct vensim_ode_func_odefunctor__ {
@@ -75,8 +75,8 @@ struct vensim_ode_func_odefunctor__ {
   Eigen::Matrix<stan::promote_args_t<T0__, stan::base_type_t<T1__>, T2__, T3__, T4__,
                        stan::promote_args_t<T5__>>, -1, 1>
   operator()(const T0__& time, const T1__& outcome, std::ostream* pstream__,
-             const T2__& delta, const T3__& beta, const T4__& alpha,
-             const T5__& gamma) const;
+             const T2__& delta, const T3__& alpha, const T4__& gamma,
+             const T5__& beta) const;
 };
 
 template <typename T0__, typename T1__, typename T2__, typename T3__,
@@ -91,8 +91,8 @@ template <typename T0__, typename T1__, typename T2__, typename T3__,
   Eigen::Matrix<stan::promote_args_t<T0__, stan::base_type_t<T1__>, T2__, T3__, T4__,
                      stan::promote_args_t<T5__>>, -1, 1>
   vensim_ode_func(const T0__& time, const T1__& outcome_arg__,
-                  const T2__& delta, const T3__& beta, const T4__& alpha,
-                  const T5__& gamma, std::ostream* pstream__) {
+                  const T2__& delta, const T3__& alpha, const T4__& gamma,
+                  const T5__& beta, std::ostream* pstream__) {
     using local_scalar_t__ =
             stan::promote_args_t<T0__, stan::base_type_t<T1__>, T2__, T3__,
                                  T4__, stan::promote_args_t<T5__>>;
@@ -113,18 +113,18 @@ template <typename T0__, typename T1__, typename T2__, typename T3__,
       current_statement__ = 25;
       predator = stan::model::rvalue(outcome, "outcome",
                    stan::model::index_uni(2));
-      local_scalar_t__ prey_death_rate = DUMMY_VAR__;
+      local_scalar_t__ predator_birth_rate = DUMMY_VAR__;
       current_statement__ = 26;
+      predator_birth_rate = ((delta * prey) * predator);
+      local_scalar_t__ prey_death_rate = DUMMY_VAR__;
+      current_statement__ = 27;
       prey_death_rate = ((beta * predator) * prey);
       local_scalar_t__ prey_birth_rate = DUMMY_VAR__;
-      current_statement__ = 27;
+      current_statement__ = 28;
       prey_birth_rate = (alpha * prey);
       local_scalar_t__ prey_dydt = DUMMY_VAR__;
-      current_statement__ = 28;
-      prey_dydt = (prey_birth_rate - prey_death_rate);
-      local_scalar_t__ predator_birth_rate = DUMMY_VAR__;
       current_statement__ = 29;
-      predator_birth_rate = ((delta * prey) * predator);
+      prey_dydt = (prey_birth_rate - prey_death_rate);
       local_scalar_t__ predator_death_rate = DUMMY_VAR__;
       current_statement__ = 30;
       predator_death_rate = (gamma * predator);
@@ -155,11 +155,11 @@ template <typename T0__, typename T1__, typename T2__, typename T3__,
 Eigen::Matrix<stan::promote_args_t<T0__, stan::base_type_t<T1__>, T2__, T3__, T4__,
                      stan::promote_args_t<T5__>>, -1, 1>
 vensim_ode_func_functor__::operator()(const T0__& time, const T1__& outcome,
-                                      const T2__& delta, const T3__& beta,
-                                      const T4__& alpha, const T5__& gamma,
+                                      const T2__& delta, const T3__& alpha,
+                                      const T4__& gamma, const T5__& beta,
                                       std::ostream* pstream__)  const
 {
-  return vensim_ode_func(time, outcome, delta, beta, alpha, gamma, pstream__);
+  return vensim_ode_func(time, outcome, delta, alpha, gamma, beta, pstream__);
 }
 
 template <typename T0__, typename T1__, typename T2__, typename T3__,
@@ -176,11 +176,12 @@ Eigen::Matrix<stan::promote_args_t<T0__, stan::base_type_t<T1__>, T2__, T3__, T4
 vensim_ode_func_odefunctor__::operator()(const T0__& time,
                                          const T1__& outcome,
                                          std::ostream* pstream__,
-                                         const T2__& delta, const T3__& beta,
-                                         const T4__& alpha, const T5__& gamma) 
+                                         const T2__& delta,
+                                         const T3__& alpha,
+                                         const T4__& gamma, const T5__& beta) 
 const
 {
-  return vensim_ode_func(time, outcome, delta, beta, alpha, gamma, pstream__);
+  return vensim_ode_func(time, outcome, delta, alpha, gamma, beta, pstream__);
 }
 
 
@@ -198,7 +199,7 @@ class prey_predator_draws2data_model final : public model_base_crtp<prey_predato
   inline std::string model_name() const final { return "prey_predator_draws2data_model"; }
 
   inline std::vector<std::string> model_compile_info() const noexcept {
-    return std::vector<std::string>{"stanc_version = stanc3 v2.30.1", "stancflags = --include-paths=/Users/hyunjimoon/Dropbox/BayesSD/ContinuousCode/explore/stan_files"};
+    return std::vector<std::string>{"stanc_version = stanc3 v2.30.1", "stancflags = --include-paths=/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files"};
   }
   
   
@@ -316,20 +317,19 @@ class prey_predator_draws2data_model final : public model_base_crtp<prey_predato
       } 
       double alpha = std::numeric_limits<double>::quiet_NaN();
       current_statement__ = 1;
-      alpha = stan::math::normal_rng(0.8, 0.1, base_rng__);
-      double beta = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 2;
-      beta = stan::math::normal_rng(0.05, 0.001, base_rng__);
-      double delta = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 3;
-      delta = stan::math::normal_rng(0.05, 0.001, base_rng__);
+      alpha = stan::math::normal_rng(0.55, 0.1, base_rng__);
       double gamma = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 4;
+      current_statement__ = 2;
       gamma = stan::math::normal_rng(0.8, 0.1, base_rng__);
+      double beta = std::numeric_limits<double>::quiet_NaN();
+      current_statement__ = 3;
+      beta = stan::math::normal_rng(0.028, 0.01, base_rng__);
+      double delta = std::numeric_limits<double>::quiet_NaN();
+      current_statement__ = 4;
+      delta = stan::math::normal_rng(0.024, 0.01, base_rng__);
       double sigma = std::numeric_limits<double>::quiet_NaN();
       current_statement__ = 5;
-      sigma = stan::math::lognormal_rng(-6.907755278982137, 0.001,
-                base_rng__);
+      sigma = stan::math::lognormal_rng(-4.605170185988091, 0.1, base_rng__);
       double prey__init = std::numeric_limits<double>::quiet_NaN();
       current_statement__ = 6;
       prey__init = 30;
@@ -352,7 +352,7 @@ class prey_predator_draws2data_model final : public model_base_crtp<prey_predato
       current_statement__ = 11;
       stan::model::assign(integrated_result,
         stan::math::ode_rk45(vensim_ode_func_odefunctor__(), initial_outcome,
-          initial_time, times, pstream__, delta, beta, alpha, gamma),
+          initial_time, times, pstream__, delta, alpha, gamma, beta),
         "assigning variable integrated_result");
       std::vector<double> prey =
          std::vector<double>(n_t, std::numeric_limits<double>::quiet_NaN());
@@ -385,9 +385,9 @@ class prey_predator_draws2data_model final : public model_base_crtp<prey_predato
           stan::math::lognormal_rng(prey, sigma, base_rng__)),
         "assigning variable prey_obs");
       out__.write(alpha);
+      out__.write(gamma);
       out__.write(beta);
       out__.write(delta);
-      out__.write(gamma);
       out__.write(sigma);
       out__.write(prey__init);
       out__.write(predator__init);
@@ -428,7 +428,7 @@ class prey_predator_draws2data_model final : public model_base_crtp<prey_predato
     
   inline void get_param_names(std::vector<std::string>& names__) const {
     
-    names__ = std::vector<std::string>{"alpha", "beta", "delta", "gamma",
+    names__ = std::vector<std::string>{"alpha", "gamma", "beta", "delta",
       "sigma", "prey__init", "predator__init", "initial_outcome",
       "integrated_result", "prey", "predator", "predator_obs", "prey_obs"};
     
@@ -461,9 +461,9 @@ class prey_predator_draws2data_model final : public model_base_crtp<prey_predato
     
     if (emit_generated_quantities__) {
       param_names__.emplace_back(std::string() + "alpha");
+      param_names__.emplace_back(std::string() + "gamma");
       param_names__.emplace_back(std::string() + "beta");
       param_names__.emplace_back(std::string() + "delta");
-      param_names__.emplace_back(std::string() + "gamma");
       param_names__.emplace_back(std::string() + "sigma");
       param_names__.emplace_back(std::string() + "prey__init");
       param_names__.emplace_back(std::string() + "predator__init");
@@ -518,9 +518,9 @@ class prey_predator_draws2data_model final : public model_base_crtp<prey_predato
     
     if (emit_generated_quantities__) {
       param_names__.emplace_back(std::string() + "alpha");
+      param_names__.emplace_back(std::string() + "gamma");
       param_names__.emplace_back(std::string() + "beta");
       param_names__.emplace_back(std::string() + "delta");
-      param_names__.emplace_back(std::string() + "gamma");
       param_names__.emplace_back(std::string() + "sigma");
       param_names__.emplace_back(std::string() + "prey__init");
       param_names__.emplace_back(std::string() + "predator__init");
@@ -564,13 +564,13 @@ class prey_predator_draws2data_model final : public model_base_crtp<prey_predato
     
   inline std::string get_constrained_sizedtypes() const {
     
-    return std::string("[{\"name\":\"alpha\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"beta\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"delta\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"gamma\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"sigma\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"prey__init\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"predator__init\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"initial_outcome\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(2) + "},\"block\":\"generated_quantities\"},{\"name\":\"integrated_result\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"vector\",\"length\":" + std::to_string(2) + "}},\"block\":\"generated_quantities\"},{\"name\":\"prey\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"generated_quantities\"},{\"name\":\"predator\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"generated_quantities\"},{\"name\":\"predator_obs\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(20) + "},\"block\":\"generated_quantities\"},{\"name\":\"prey_obs\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(20) + "},\"block\":\"generated_quantities\"}]");
+    return std::string("[{\"name\":\"alpha\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"gamma\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"beta\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"delta\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"sigma\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"prey__init\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"predator__init\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"initial_outcome\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(2) + "},\"block\":\"generated_quantities\"},{\"name\":\"integrated_result\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"vector\",\"length\":" + std::to_string(2) + "}},\"block\":\"generated_quantities\"},{\"name\":\"prey\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"generated_quantities\"},{\"name\":\"predator\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"generated_quantities\"},{\"name\":\"predator_obs\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(20) + "},\"block\":\"generated_quantities\"},{\"name\":\"prey_obs\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(20) + "},\"block\":\"generated_quantities\"}]");
     
     } // get_constrained_sizedtypes() 
     
   inline std::string get_unconstrained_sizedtypes() const {
     
-    return std::string("[{\"name\":\"alpha\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"beta\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"delta\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"gamma\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"sigma\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"prey__init\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"predator__init\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"initial_outcome\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(2) + "},\"block\":\"generated_quantities\"},{\"name\":\"integrated_result\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"vector\",\"length\":" + std::to_string(2) + "}},\"block\":\"generated_quantities\"},{\"name\":\"prey\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"generated_quantities\"},{\"name\":\"predator\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"generated_quantities\"},{\"name\":\"predator_obs\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(20) + "},\"block\":\"generated_quantities\"},{\"name\":\"prey_obs\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(20) + "},\"block\":\"generated_quantities\"}]");
+    return std::string("[{\"name\":\"alpha\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"gamma\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"beta\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"delta\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"sigma\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"prey__init\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"predator__init\",\"type\":{\"name\":\"real\"},\"block\":\"generated_quantities\"},{\"name\":\"initial_outcome\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(2) + "},\"block\":\"generated_quantities\"},{\"name\":\"integrated_result\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"vector\",\"length\":" + std::to_string(2) + "}},\"block\":\"generated_quantities\"},{\"name\":\"prey\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"generated_quantities\"},{\"name\":\"predator\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"generated_quantities\"},{\"name\":\"predator_obs\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(20) + "},\"block\":\"generated_quantities\"},{\"name\":\"prey_obs\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(20) + "},\"block\":\"generated_quantities\"}]");
     
     } // get_unconstrained_sizedtypes() 
     

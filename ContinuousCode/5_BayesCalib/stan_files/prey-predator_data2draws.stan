@@ -31,7 +31,7 @@ transformed parameters {
     initial_outcome[1] = prey__init;
     initial_outcome[2] = predator__init;
 
-    vector[2] integrated_result[n_t] = ode_rk45(vensim_ode_func, initial_outcome, initial_time, times, delta, beta, alpha, gamma);
+    vector[2] integrated_result[n_t] = ode_rk45(vensim_ode_func, initial_outcome, initial_time, times, alpha, gamma, beta, delta);
     array[n_t] real prey = integrated_result[:, 1];
     array[n_t] real predator = integrated_result[:, 2];
 }
