@@ -2,11 +2,26 @@
 
 Time, Graph, Openness, Hierarchy are four standards for classifying system structure.
 - Two forces of system: soul and body (by [Jules Verne](https://www.enquoted.com/jules-verne--dost-thou-not-understand-that-there-are-two-distinct-forces-in-us-that-of-the-quote.html))
-| -     | soul, information  | body, material |
-| ----- | ------------------ | -------------- | 
-| a.k.a | movement           | regulator      | 
-|       | physical constaint |                | 
-|       | devil              | angel          | 
+
+| -                   | Guard System                                                                                                      | Attack System                                                                                           |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| e.g. of man         | Angel [Michael](https://en.wikipedia.org/wiki/Michael_(archangel)) asks one's fear, White hacker | Devil [Lucifer](https://en.wikipedia.org/wiki/Lucifer) asks one's desire, Black hacker |
+| e.g. of machine     | Shield, Red fiber muscle (aerobic, fatigue-tolerant)                                                        | Spear, White fiber muscle (anaerobic, rapid use)                                                 |
+| e.g. of material    | Water (Long time, high latent heat w/ hydrogen bond)                                                     | Fire (Short time, Ignition, Energy space),                                                              |
+| e.g. of information | Cyber-security, Privacy, Fairness, Sustainability, Innocent until proven guilty, Time, worst avoiding, Hazhir's [quest](https://medium.com/@jahandad.memarian/hazhir-rahmandad-applying-system-dynamics-to-social-challenges-998b5bb62f84) for lose-lose strategy                                                                 | Hacking, Phishing, Discrimination, Guilty until proven innocent ([reverse onus](https://en.wikipedia.org/wiki/Reverse_onus)), Space                                                                     |
+| e.g. of energy      | Renewable energy                                                                                                  | Non-renewable energy                                                                                    |
+| synonym             | Prevention, Defense                                                                                               | Promotion, Offense                                                                                      |
+| objective function  | minimize the cost                                                                                                 | maximize the benefit                                                                                    |
+| Goal                | Sustain, Stable, Negative-loop dominant, [industry 5.0](https://www.forbes.com/sites/jeroenkraaijenbrink/2022/05/24/what-is-industry-50-and-how-it-will-radically-change-your-business-strategy/?fbclid=IwAR0dfsxXp54qUtXG1RK-Jrof1E4qjceVnnL1umE3EvZeIkttv6KSwmktsT8&sh=2815339120bd) (humans as ends company as solution)                                                                           | Subvert, Non-stable, Positive-loop dominant, Path-dependence, industry 4.0 (human as means, company as problems)                                            |
+| interconnectedness  | dense connection                                                                                                  | sparse connection                                                                                       |
+| time horizon        | long term, noise-free (aggregated to 0)                                                                           | short term, noise-dependent                                                                             |
+| difficulty          | nobody gets credit for something fixing problem that didn't happen                              |   proving existance is easier than non-existence                                                                                                       |
+| math symbol         | $\forall$                                                                                                         | $\exists$                                                                                               |
+| uncertainty         | fight with the `unknown` (=its complement = nature)                                                               | fight with the `known`                                                                                  |
+| statistical support | uniformity test like SBC (computationally heavy)                                                                  |                                                                                                         |
+|                     |<img width="478" alt="image" src="https://user-images.githubusercontent.com/30194633/183263726-f225ba87-dcc9-4dbc-89d5-359ece1dc0f4.png">                                                                              | <img width="506" alt="image" src="https://user-images.githubusercontent.com/30194633/183263743-8ec4de46-bd4f-43d2-9a77-2041cc62543c.png">                                                                   |
+
+
 
 ## 1. Time
 Everything is relative. Any policy can be myopic as the time horizon can always be elongated. Speed is the integration of acceleration, but is the differentiation of location. Worlding starts from setting the time horizon and time step. 
@@ -23,9 +38,13 @@ sharing material VS sharing
 Four types of system exists depending how open this system is on the axis of information, energy, and material. Closed, information open, information+energy open, information+energy+material open are the four systems in order of modeling complexity.
 
  The following  (n $\in$ 1..N) structure classification may tell us something on how open the system is. For instance, c is the most closed (perfect markov chain). Balking is one physical mechanism that transforms open to closed system.
+ 
 a. flow - $(\text{stock}-\text{flow})_{n}$
+
 b. flow - $(\text{stock}-\text{flow})_{n}$- stock
+
 c. stock - $(\text{flow}-\text{stock})_{n}$
+
 d. stock - $(\text{flow}-\text{stock})_{n}$- flow
 
 #hrq Q. Could we find the relation between a~d to information, energy, material open system?
