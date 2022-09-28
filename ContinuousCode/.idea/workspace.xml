@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6678889f-5135-459f-b3d6-6395ea6b7487" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/5_BayesCalib/moduledBayesTest_mngInven.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/BayesTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/BayesTest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/demand_supply.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/demand_supply.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/prey-predator.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/prey-predator.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/alpha_functions.stan" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/alpha_functions.stan" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws.stan" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws.stan" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws_full" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws_full.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws_full.stan" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws_full.stan" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_draws2data" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_draws2data" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_draws2data.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_draws2data.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_draws2data.stan" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_draws2data.stan" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_functions.stan" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_functions.stan" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/vensim_models/mngChain/mngChain.mdl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/vensim_models/mngChain/mngChain.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/vensim_models/mngChain/mngChain_wolookup.mdl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DailyDigest/3 Bayequentist Dynamics with SBC.md" beforeDir="false" afterPath="$PROJECT_DIR$/../DailyDigest/3 Bayequentist Dynamics with SBC.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2FLPW8NgTvz2KKy9JnQfl1P6II4" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6678889f-5135-459f-b3d6-6395ea6b7487" name="Changes" comment="" />
+      <created>1664268420010</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1664268420010</updated>
+      <workItem from="1664268422915" duration="92000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -12,11 +12,11 @@ transformed data{
 
 
 generated quantities{
-    real alpha = normal_rng(0.8, 0.1);
-    real beta = normal_rng(0.05, 0.001);
-    real delta = normal_rng(0.05, 0.001);
+    real alpha = normal_rng(0.55, 0.1);
     real gamma = normal_rng(0.8, 0.1);
-    real sigma = lognormal_rng(-6.907755278982137, 0.001);
+    real beta = normal_rng(0.028, 0.01);
+    real delta = normal_rng(0.024, 0.01);
+    real sigma = lognormal_rng(-4.605170185988091, 0.1);
 
     // Initial ODE values
     real prey__init = 30;
@@ -26,7 +26,7 @@ generated quantities{
     initial_outcome[1] = prey__init;
     initial_outcome[2] = predator__init;
 
-    vector[2] integrated_result[n_t] = ode_rk45(vensim_ode_func, initial_outcome, initial_time, times, delta, beta, alpha, gamma);
+    vector[2] integrated_result[n_t] = ode_rk45(vensim_ode_func, initial_outcome, initial_time, times, delta, alpha, gamma, beta);
     array[n_t] real prey = integrated_result[:, 1];
     array[n_t] real predator = integrated_result[:, 2];
 

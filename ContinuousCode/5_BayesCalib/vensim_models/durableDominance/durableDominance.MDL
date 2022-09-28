@@ -1,0 +1,346 @@
+{UTF-8}
+Fraction Super Star Actors  = A FUNCTION OF( Star Actors,Total Actor)
+	~	
+	~		|
+
+Leading2Star Rate=
+	10
+	~	
+	~		|
+
+Star Actors  = A FUNCTION OF( Leading2Star Rate,-Star Retirement Rate)
+	~	
+	~		|
+
+Star Retirement Rate  = A FUNCTION OF( )
+	~	
+	~		|
+
+********************************************************
+	.Faculty
+********************************************************~
+		
+		Faculty Aging Chain Model
+		John Sterman (1999) Business Dynamics.  Irwin/McGraw-Hill
+		Copyright (c) 1999 John Sterman
+		
+		A simple model of the aging chain for faculty at a university (chapter 12).
+		Based on a model originally developed by David Peterson.
+		Data from MIT.
+		Hiring and promotion are exogenous.
+	|
+
+Total Actor  = A FUNCTION OF( Leading Actors,Starting Actors,Star Actors,Supporting Actors\
+		) ~~|
+Total Actor=
+	Starting Actors + Supporting Actors + Leading Actors
+	~	people
+	~	The total faculty is the sum of the faculty at each rank.
+	|
+
+Leading Actors= INTEG (
+	Supporting2Leading Rate-Leading Retirement Rate-Leading2Star Rate,
+		86)
+	~	people
+	~	The number of full professors.  86 in 1930.
+	|
+
+Leading Retirement Rate=
+	DELAY3(Supporting2Leading Rate,Average Leading Review Time)
+	~	people/Year
+	~	Full professors are assumed to retire after an average service time; a \
+		third-order delay is assumed.
+	|
+
+Starting Departure Rate=
+	Starting Review Rate * ( 1 - Starting Promotion Fraction )
+	~	people/Year
+	~	A fraction of the assistant professors reviewed are promoted; the rest \
+		leave.
+	|
+
+Assistant Hire Rate=
+	Historic Assistant Hire Rate ( Time )
+	~	people/Year
+	~	The assistant professor hire rate.  Determined by historic data
+	|
+
+Starting Actors= INTEG (
+	Assistant Hire Rate - Start2Supporting Rate - Starting Departure Rate,
+		80)
+	~	people
+	~	The number of assistant professors.  80 in 1930
+	|
+
+Fraction Supporting Actors=
+	Supporting Actors/Total Actor
+	~	Dimensionless
+	~	The fraction of the total faculty consisting of associate professors.
+	|
+
+Start2Supporting Rate=
+	Starting Review Rate * Starting Promotion Fraction
+	~	people/Year
+	~	A fraction of the assistant professors reviewed are promoted; the rest \
+		leave.
+	|
+
+Supporting Departure Rate=
+	Supporting Review Rate* ( 1 - Supporting Promotion Fraction )
+	~	people/Year
+	~	A fraction of the associate professors reviewed are promoted; the rest \
+		leave.
+	|
+
+Supporting Actors= INTEG (
+	Start2Supporting Rate - Supporting2Leading Rate - Supporting Departure Rate,
+		63)
+	~	people
+	~	The number of associate professors.  63 in 1930.
+	|
+
+Supporting Promotion Fraction=
+	 Historic Associate Promotion Fraction ( Time )
+	~	fraction
+	~	The fraction of assistant professors promoted to full professor is \
+		determined exogenously.
+	|
+
+Supporting2Leading Rate=
+	Supporting Review Rate * Supporting Promotion Fraction
+	~	people/Year
+	~	A fraction of the associate professors reviewed are promoted; the rest \
+		leave.
+	|
+
+Supporting Review Rate=
+	Supporting Actors / Average Supporting Review Time
+	~	people/Year
+	~	Associate professors are reviewed for promotion after an average review \
+		time.
+	|
+
+Fraction Starting Actors=
+	Starting Actors/Total Actor
+	~	Dimensionless
+	~	The fraction of the total faculty consisting of assistant professors.
+	|
+
+Fraction Star Actors=
+	Leading Actors/Total Actor
+	~	Dimensionless
+	~	The fraction of the total faculty consisting of full professors.
+	|
+
+Historic Associate Promotion Fraction(
+	[(1930,0)-(1990,1)],(1930,0.4),(1940,0.4),(1950,0.4),(1960,0.6),(1970,0.65),(1971,0.5\
+		),(1980,0.5),(1990,0.5))
+	~	fraction
+	~	The approximate imputed associate professor promotionfraction.
+	|
+
+Historic Assistant Promotion Fraction        ([(1930,0)-(2010,1)],(1930,0.7)
+,(1940,0.7),(1961,0.7),(1962,0.5),(1969,0.5),(1970,0.7),(1980,0.65)
+,(1990,0.6),(2010,0.6) )
+	~	fraction
+	~	The approximate imputed assistant professor promotionfraction.
+	|
+
+Historic Assistant Hire Rate(
+	[(1930,0)-(2010,200)],(1930,27),(1940,27),(1957,75),(1962,75),(1963,120),(1967,90),(\
+		1968,70),(1969,50),(1970,70),(1990,55),(2010,55))
+	~	people/Year
+	~	The approximate historic hire rate for assistant professors.
+	|
+
+Starting Review Rate = Starting Actors / Average Starting Review Time
+	~	people/Year
+	~	Assistant professors are reviewed for promotion after an average review \
+		time.
+	|
+
+Average Leading Review Time=
+	35
+	~	Year
+	~	The average time full professors serve prior to retirement.
+	|
+
+Average Supporting Review Time=
+	5
+	~	Year
+	~	The average review time for promotion from associate to full professor.
+	|
+
+Average Starting Review Time = 3
+	~	Year
+	~	The average review time for promotion from assistant to associate.
+	|
+
+Starting Promotion Fraction = Historic Assistant Promotion Fraction ( Time )
+	~	fraction
+	~	The fraction of assistant professors promoted to associate is determined \
+		exogenously.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 2010
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 1930
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Year
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Year
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$-1--1--1,0,Helvetica|10|B|0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|96,96,146,0
+10,1,Starting Actors,576,359,40,20,3,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,2,Supporting Actors,793,360,40,20,3,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,3,Leading Actors,1017,356,40,20,3,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,4,Historic Assistant Hire Rate,462,482,40,20,8,3,1,0,-1,0,0,0,0,0,0,0,0,0
+10,5,Starting Review Rate,704,485,35,25,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,6,Starting Promotion Fraction,652,647,58,23,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,7,Average Starting Review Time,675,576,52,23,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,8,Supporting Review Rate,938,483,40,20,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,9,Supporting Promotion Fraction,918,653,59,23,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,10,Average Supporting Review Time,924,569,43,26,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,11,Average Leading Review Time,1122,602,63,28,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica||B|0-0-0,0,0,0,0,0,0
+10,12,Total Actor,916,294,30,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,13,Historic Associate Promotion Fraction,829,685,42,35,8,3,1,0,-1,0,0,0,0,0,0,0,0,0
+10,14,Time,971,729,75,30,0,2,1,51,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|128-128-128,0,0,0,0,0,0
+10,15,Historic Assistant Promotion Fraction,552,681,42,29,8,3,1,1,-1,0,0,0,128-128-128,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,16,Time,664,734,75,30,0,2,1,51,-1,0,0,0,128-128-128,0-0-0,Helvetica||B|128-128-128,0,0,0,0,0,0
+1,17,1,5,0,0,43,0,0,192,0,-1--1--1,,1|(0,0)|
+1,18,7,5,1,0,45,0,0,192,0,-1--1--1,,1|(713,522)|
+1,19,1,12,1,0,43,0,0,192,0,-1--1--1,,1|(760,311)|
+1,20,2,12,0,0,43,0,0,192,0,-1--1--1,,1|(0,0)|
+1,21,3,12,1,0,43,0,0,192,0,-1--1--1,,1|(973,311)|
+1,22,14,9,0,1,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,23,15,6,1,1,43,0,0,192,0,-1--1--1,,1|(623,680)|
+1,24,16,6,0,1,0,0,0,0,0,-1--1--1,,1|(0,0)|
+12,25,48,443,361,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,26,28,1,4,0,0,22,0,0,0,-1--1--1,,1|(516,361)|
+1,27,28,25,100,0,0,22,0,0,0,-1--1--1,,1|(469,361)|
+11,28,0,491,361,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,29,Assistant Hire Rate,491,389,40,20,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,30,4,29,1,1,43,0,0,192,0,-1--1--1,,1|(464,420)|
+12,31,48,576,542,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,32,34,31,4,0,0,22,0,0,0,-1--1--1,,1|(576,504)|
+1,33,34,1,100,0,0,22,0,0,0,-1--1--1,,1|(576,421)|
+11,34,0,576,469,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,35,Starting Departure Rate,624,469,40,20,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,36,5,35,1,0,43,0,0,192,0,-1--1--1,,1|(654,502)|
+1,37,6,35,1,0,45,0,0,192,0,-1--1--1,,1|(604,558)|
+1,38,40,2,4,0,0,22,0,0,0,-1--1--1,,1|(719,358)|
+1,39,40,1,100,0,0,22,0,0,0,-1--1--1,,1|(644,358)|
+11,40,0,679,358,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,41,Start2Supporting Rate,679,394,37,28,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,42,6,41,1,0,43,0,0,192,0,-1--1--1,,1|(776,522)|
+1,43,5,41,1,0,43,0,0,192,0,-1--1--1,,1|(708,438)|
+12,44,48,794,542,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,45,47,44,4,0,0,22,0,0,0,-1--1--1,,1|(794,499)|
+1,46,47,2,100,0,0,22,0,0,0,-1--1--1,,1|(794,416)|
+11,47,0,794,459,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,48,Supporting Departure Rate,842,459,40,20,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,49,51,3,4,0,0,22,0,0,0,-1--1--1,,1|(944,358)|
+1,50,51,2,100,0,0,22,0,0,0,-1--1--1,,1|(866,358)|
+11,51,0,905,358,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,52,Supporting2Leading Rate,905,393,42,27,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,53,48,1021,542,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,54,56,53,4,0,0,22,0,0,0,-1--1--1,,1|(1021,494)|
+1,55,56,3,100,0,0,22,0,0,0,-1--1--1,,1|(1021,409)|
+11,56,0,1021,449,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,57,Leading Retirement Rate,1071,449,42,30,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,58,13,9,1,1,43,0,0,192,0,-1--1--1,,1|(896,690)|
+1,59,9,52,1,0,43,0,0,192,0,-1--1--1,,1|(998,509)|
+1,60,8,48,1,0,43,0,0,192,0,-1--1--1,,1|(892,497)|
+1,61,8,52,1,0,43,0,0,192,0,-1--1--1,,1|(932,432)|
+1,62,2,8,0,0,43,0,0,192,0,-1--1--1,,1|(0,0)|
+1,63,9,48,1,0,45,0,0,192,0,-1--1--1,,1|(837,537)|
+1,64,11,57,1,0,45,0,0,192,0,-1--1--1,,1|(1113,513)|
+1,65,10,8,1,0,45,0,0,192,0,-1--1--1,,1|(944,514)|
+10,66,Fraction Starting Actors,1588,355,40,20,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,67,Fraction Supporting Actors,1588,423,40,20,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,68,Fraction Star Actors,1590,500,40,20,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,69,Starting Actors,1437,351,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,70,Supporting Actors,1436,419,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+10,71,Leading Actors,1434,499,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+1,72,69,66,0,0,43,0,0,192,0,-1--1--1,,1|(0,0)|
+1,73,70,67,0,0,43,0,0,192,0,-1--1--1,,1|(0,0)|
+1,74,71,68,0,0,43,0,0,192,0,-1--1--1,,1|(0,0)|
+10,75,Total Actor,1724,428,40,20,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+1,76,75,66,0,0,45,0,0,192,0,-1--1--1,,1|(0,0)|
+1,77,75,67,0,0,45,0,0,192,0,-1--1--1,,1|(0,0)|
+1,78,75,68,0,0,45,0,0,192,0,-1--1--1,,1|(0,0)|
+10,79,Time,390,438,29,11,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,||B|128-128-128,0,0,0,0,0,0
+1,80,79,29,0,1,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,81,52,56,1,0,43,0,0,64,0,-1--1--1,,1|(970,401)|
+10,82,Star Actors,1253,352,55,23,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,83,85,3,100,0,0,22,0,192,0,-1--1--1,,1|(1089,354)|
+1,84,85,82,4,0,0,22,0,192,0,-1--1--1,,1|(1165,354)|
+11,85,0,1127,354,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,86,Leading2Star Rate,1127,385,48,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,87,48,1253,541,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,88,90,82,100,0,0,22,0,192,0,-1--1--1,,1|(1253,409)|
+1,89,90,87,4,0,0,22,0,192,0,-1--1--1,,1|(1253,494)|
+11,90,0,1253,449,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,91,Star Retirement Rate,1300,449,39,22,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,92,82,12,1,0,0,0,0,192,0,-1--1--1,,1|(1056,303)|
+10,93,Fraction Super Star Actors,1589,546,46,22,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,94,75,93,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,95,Star Actors,1439,545,43,12,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,96,95,93,0,0,43,0,0,192,0,-1--1--1,,1|(0,0)|
+11,97,0,795,241,8,6,1,3,0,0,1,0,0,0,0,0,0,0,0,0
+1,98,97,1,100,0,0,22,0,192,0,-1--1--1,,1|(576,241)|
+1,99,97,3,4,0,0,22,0,192,0,-1--1--1,,1|(1017,241)|
+///---\\\
+:L<%^E!@
+4:Time
+5:Assistant Hire Rate
+9:current
+19:146,0
+24:0
+25:0
+26:0
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:0
+72:0
+73:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Courier|12||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1

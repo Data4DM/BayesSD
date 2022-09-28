@@ -1,8 +1,11 @@
 ## What
 : Affordable Cutting-edge Analytics for All
 
-More detailed:
+Detailed:
 Bayesian workflow on which stakeholder's demand, expert's structural knowledge, and machine's learning algorithms are balanced and tested. My work is focused on automating this flow with modular design so that its output, explainable policy, can be widely supplied which is the vision of my startup: cheap and cutting-edge curation.
+
+Control panels
+
 
 ## How
 : Design  `Prior specifier`, `Posterior approximator`, `Simulation-based Calibration` coflow for system data scientist whose work is detailed as:
