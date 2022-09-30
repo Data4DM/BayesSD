@@ -39,13 +39,35 @@ Four types of system exists depending how open this system is on the axis of inf
 
  The following  (n $\in$ 1..N) structure classification may tell us something on how open the system is. For instance, c is the most closed (perfect markov chain). Balking is one physical mechanism that transforms open to closed system.
  
-a. flow - $(\text{stock}-\text{flow})_{n}$
+### a. flow - $(\text{stock}-\text{flow})_{n}$
+#### [[mng(diffusion)]]
+##### existence of self-loop
+![[Pasted image 20220929064847.png]]
+![[Pasted image 20220929071937.png]]
+- loop of suceptible is interesting whose equations are:
+	- Susceptible[Rgn,NVx] = -Infection Rate VS[Rgn,NVx]-Vaccinations[Rgn,NVx]+Immunity Loss[Rgn,NVx]+Losing Immunity Susceptible[Rgn]
+	- Susceptible[Rgn,NVx] = -Infection Rate VS[Rgn,Vx]+Vaccinations[Rgn,NVx]-Losing Immunity Susceptible[Rgn]+Vaccinations[Rgn,Naive]
+	- Susceptible[Rgn,Naive] = -Infection Rate VS[Rgn,Naive]-Vaccinations[Rgn,Naive]
+Entire population, subscripted with `VS` is divided into `Naive, NVx, Vx`. `VS`'s subrange `VS2` includes `Naive, NVX, VX` while `VS3` includes `Naive, NVX`
 
-b. flow - $(\text{stock}-\text{flow})_{n}$- stock
+  
+#### [[mng(chain)]]
+![[Pasted image 20220929071219.png]]
 
-c. stock - $(\text{flow}-\text{stock})_{n}$
+![[Pasted image 20220929081905.png]]
+### b. flow - $(\text{stock}-\text{flow})_{n}$- stock
 
-d. stock - $(\text{flow}-\text{stock})_{n}$- flow
+
+
+### c. stock - $(\text{flow}-\text{stock})_{n}$
+- [[mng(project)]] explains "no equilibrium condition"
+![[Pasted image 20220929082027.png]]
+
+### d. stock - $(\text{flow}-\text{stock})_{n}$- flow
+
+### others
+- from [[mng(service)]]
+- ![[Pasted image 20220929082423.png]] 
 
 #hrq Q. Could we find the relation between a~d to information, energy, material open system?
 
