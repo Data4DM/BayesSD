@@ -1,5 +1,5 @@
 functions{
-#include mngInven_functions.stan
+#include mngInven_gp_functions.stan
 }
 data{
     int n_t;
