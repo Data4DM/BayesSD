@@ -129,7 +129,7 @@ class StanVensimModel:
         self.integration_times = integration_times
         self.stan_model_context = StanModelContext(initial_time, integration_times)
         self.stan_model_context.identify_stan_data_types(data_dict)
-        self.data_dict = data_dict
+        self.data_dict = {vensim_name_to_identifier(name): value for name, value in data_dict.items()}
         self.vensim_model_context = VensimModelContext(self.abstract_model)
         if initial_time in integration_times:
             raise Exception("initial_time shouldn't be present in integration_times")
@@ -185,7 +185,7 @@ class StanVensimModel:
                 raise Exception("Code generation aborted by user")
 
         with open(os.path.join(self.stan_model_dir, f"{self.model_name}_functions.stan"), "w") as f:
-            self.function_builder = StanFunctionBuilder(self.abstract_model)
+            self.function_builder = StanFunctionBuilder(self.abstract_model, self.data_dict)
             f.write(self.function_builder.build_functions(self.stan_model_context.exposed_parameters, self.vensim_model_context.stock_variable_names))
 
     def stanify_data2draws(self):

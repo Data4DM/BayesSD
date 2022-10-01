@@ -283,13 +283,14 @@ class Draws2DataStanDataBuilder(StanDataBuilder):
 
 class StanFunctionBuilder:
     def __init__(
-        self, abstract_model: AbstractModel, function_name: str = "vensim_ode_func"
+        self, abstract_model: AbstractModel, data_dict: Dict[str, Any], function_name: str = "vensim_ode_func"
     ):
 
         self.abstract_model = abstract_model
         self.elements = self.abstract_model.sections[0].elements
         self.ode_function_name = function_name
         self.lookup_builder_walker = LookupCodegenWalker()
+        self.datastructure_builder_walker = DataStructureCodegenWalker(data_dict)
         self.variable_dependency_graph: Dict[
             str, Set
         ] = (
@@ -335,6 +336,13 @@ class StanFunctionBuilder:
 
         self.code += "// Begin ODE declaration\n"
         self._create_dependency_graph()
+
+        # Build the data structure functions
+        self.build_datastructures()
+        datastructure_functions_code = str(self.datastructure_builder_walker.code).rstrip()
+        if datastructure_functions_code:
+            self.code += datastructure_functions_code
+            self.code += "\n\n"
 
         # Identify the minimum number of variables needed for calculating outcomes
         required_variables = set()
@@ -412,7 +420,7 @@ class StanFunctionBuilder:
         self.code += "\n"
 
         codegen_walker = BlockCodegenWalker(
-            self.lookup_builder_walker.generated_lookup_function_names
+            self.lookup_builder_walker.generated_lookup_function_names, self.datastructure_builder_walker.data_variable_names
         )
         for element in self.elements:
             stan_varname = vensim_name_to_identifier(element.name)
@@ -449,3 +457,8 @@ class StanFunctionBuilder:
         for element in self.elements:
             for component in element.components:
                 self.lookup_builder_walker.walk(component.ast, vensim_name_to_identifier(element.name))
+
+    def build_datastructures(self):
+        for element in self.elements:
+            for component in element.components:
+                self.datastructure_builder_walker.walk(component.ast, vensim_name_to_identifier(element.name))
