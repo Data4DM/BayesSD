@@ -60,6 +60,8 @@ class StanModelContext:
                 return None
             else:
                 dim = len(obj)
+                if dim == 1:
+                    return None
                 inner_dim = get_dims(obj[0])
                 if inner_dim:
                     return [dim] + inner_dim
