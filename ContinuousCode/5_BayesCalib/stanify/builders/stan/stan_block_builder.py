@@ -22,11 +22,19 @@ class StanTransformedParametersBuilder:
         self.vensim_model_context = vensim_model_context
         self.abstract_model = self.vensim_model_context.abstract_model
 
-    def build_block(self, predictor_variable_names, outcome_variable_names, lookup_function_dict, function_name, stock_initial_values: Dict[str, str]):
+    def build_block(
+        self,
+        predictor_variable_names,
+        outcome_variable_names,
+        lookup_function_dict,
+        datastructure_fucntion_set,
+        function_name,
+        stock_initial_values: Dict[str, str]
+    ):
         self.code = IndentedString()
         self.code += "transformed parameters {\n"
         self.code.indent_level += 1
-        self.write_block(predictor_variable_names, outcome_variable_names, lookup_function_dict, function_name, stock_initial_values)
+        self.write_block(predictor_variable_names, outcome_variable_names, lookup_function_dict, datastructure_fucntion_set, function_name, stock_initial_values)
         self.code.indent_level -= 1
         self.code += "}\n"
 
@@ -38,6 +46,7 @@ class StanTransformedParametersBuilder:
         predictor_variable_names,
         outcome_variable_names,
         lookup_function_dict,
+        datastructure_fucntion_set,
         function_name,
         stock_initial_values: Dict[str, str]
     ):
@@ -72,7 +81,7 @@ class StanTransformedParametersBuilder:
                     assert isinstance(
                         component.ast, IntegStructure
                     ), "Output variable component must be an INTEG."
-                    self.code += f"real {outcome_variable_name}__init = {InitialValueCodegenWalker(lookup_function_dict, variable_ast_dict).walk(component.ast)};\n"
+                    self.code += f"real {outcome_variable_name}__init = {InitialValueCodegenWalker(lookup_function_dict, datastructure_fucntion_set, variable_ast_dict).walk(component.ast)};\n"
                     break
 
         self.code += "\n"
@@ -301,6 +310,8 @@ class StanFunctionBuilder:
     def get_generated_lookups_dict(self):
         return self.lookup_builder_walker.generated_lookup_function_names
 
+    def get_generated_datastructures_set(self):
+        return self.datastructure_builder_walker.data_variable_names
     def _create_dependency_graph(self):
         self.variable_dependency_graph = {}
         walker = AuxNameWalker()

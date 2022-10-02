@@ -182,6 +182,8 @@ class BlockCodegenWalker(BaseNodeWaler):
             return f"{ast_node}"
         elif isinstance(ast_node, str):
             return ast_node
+        elif isinstance(ast_node, DataStructure):
+            return
         elif isinstance(ast_node, ArithmeticStructure):
             # ArithmeticStructure consists of chained arithmetic expressions.
             # We parse them one by one into a single expression
@@ -267,7 +269,6 @@ class BlockCodegenWalker(BaseNodeWaler):
 @dataclass
 class InitialValueCodegenWalker(BlockCodegenWalker):
     variable_ast_dict: Dict[str, AbstractSyntax]
-    lookup_function_names: Dict[Union[str, Tuple], str]
 
     def walk(self, ast_node):
         if isinstance(ast_node, IntegStructure):

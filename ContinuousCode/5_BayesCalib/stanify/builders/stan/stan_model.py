@@ -217,6 +217,7 @@ class StanVensimModel:
             f.write(transformed_params_builder.build_block(self.stan_model_context.exposed_parameters,
                                                            self.vensim_model_context.stock_variable_names,
                                                            self.function_builder.get_generated_lookups_dict(),
+                                                           self.function_builder.get_generated_datastructures_set(),
                                                            self.function_builder.ode_function_name,
                                                            stock_initials))
             f.write("\n")
@@ -255,6 +256,7 @@ class StanVensimModel:
             transformed_params_builder.write_block(self.stan_model_context.exposed_parameters,
                                                        self.vensim_model_context.stock_variable_names,
                                                        self.function_builder.get_generated_lookups_dict(),
+                                                       self.function_builder.get_generated_datastructures_set(),
                                                        self.function_builder.ode_function_name,
                                                        stock_initials)
             f.write("\n")

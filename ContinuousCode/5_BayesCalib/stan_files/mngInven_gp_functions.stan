@@ -87,11 +87,11 @@ real dataFunc__ran_norm1(real time){
     real intercept;
 
     if(time <= 1){
-        intercept = -0.9475833142030767;
-        slope = 1.850714408931264 - -0.9475833142030767;
-        return intercept + slope * (x - -0.9475833142030767);
+        intercept = -0.14078394831657634;
+        slope = -0.6893059197865244 - -0.14078394831657634;
+        return intercept + slope * (x - -0.14078394831657634);
     }
-    return 1.850714408931264;
+    return -0.6893059197865244;
 }
 
 real dataFunc__ran_norm2(real time){
@@ -100,25 +100,39 @@ real dataFunc__ran_norm2(real time){
     real intercept;
 
     if(time <= 1){
-        intercept = 0.08341246105304796;
-        slope = 0.3061267528186808 - 0.08341246105304796;
-        return intercept + slope * (x - 0.08341246105304796);
+        intercept = 1.1767322768153243;
+        slope = 1.0060928504135582 - 1.1767322768153243;
+        return intercept + slope * (x - 1.1767322768153243);
     }
-    return 0.3061267528186808;
+    return 1.0060928504135582;
 }
 
 vector vensim_ode_func(real time, vector outcome, real minimum_order_processing_time, real inventory_adjustment_time){
     vector[6] dydt;  // Return vector of the ODE function
 
     // State variables
-    real backlog = outcome[1];
-    real work_in_process_inventory = outcome[2];
-    real expected_order_rate = outcome[3];
-    real production_rate_af_p_noise = outcome[4];
-    real production_start_rate_af_p_noise = outcome[5];
+    real production_rate_af_p_noise = outcome[1];
+    real expected_order_rate = outcome[2];
+    real production_start_rate_af_p_noise = outcome[3];
+    real work_in_process_inventory = outcome[4];
+    real backlog = outcome[5];
     real inventory = outcome[6];
 
     real manufacturing_cycle_time = 8;
+    real production_rate = work_in_process_inventory / manufacturing_cycle_time;
+    real ran_norm2 = None;
+    real time_step = 0.0625;
+    real process_corr_time = 3;
+    real dt_tc = time_step / process_corr_time;
+    real p_noise_scale = 0.1;
+    real production_rate_bf_p_noise = production_rate * p_noise_scale * 2 - dt_tc / dt_tc ^ 0.5 * dataFunc__ran_norm2(time);
+    real production_rate_af_p_noise_change_rate = production_rate_bf_p_noise - production_rate_af_p_noise / process_corr_time;
+    real production_rate_af_p_noise_dydt = production_rate_af_p_noise_change_rate;
+    real customer_order_rate = None;
+    real time_to_average_order_rate = 8;
+    real change_in_exp_orders = dataFunc__customer_order_rate(time) - expected_order_rate / time_to_average_order_rate;
+    real expected_order_rate_dydt = change_in_exp_orders;
+    real ran_norm1 = None;
     real safety_stock_coverage = 2;
     real desired_inventory_coverage = minimum_order_processing_time + safety_stock_coverage;
     real desired_inventory = desired_inventory_coverage * expected_order_rate;
@@ -127,41 +141,27 @@ vector vensim_ode_func(real time, vector outcome, real minimum_order_processing_
     real desired_wip = manufacturing_cycle_time * desired_production;
     real wip_adjustment_time = 2;
     real adjustment_for_wip = desired_wip - work_in_process_inventory / wip_adjustment_time;
-    real ran_norm1 = None;
     real desired_production_start_rate = desired_production + adjustment_for_wip;
     real production_start_rate = fmax(0, desired_production_start_rate);
-    real process_corr_time = 3;
-    real time_step = 0.0625;
-    real dt_tc = time_step / process_corr_time;
-    real p_noise_scale = 0.1;
     real production_start_rate_bf_p_noise = production_start_rate * p_noise_scale * 2 - dt_tc / dt_tc ^ 0.5 * dataFunc__ran_norm1(time);
     real production_start_rate_af_p_noise_change_rate = production_start_rate_bf_p_noise - production_start_rate_af_p_noise / process_corr_time;
-    real production_start_rate_af_p_noise_dydt = production_start_rate_af_p_noise_change_rate;
-    real ran_norm2 = None;
-    real production_rate = work_in_process_inventory / manufacturing_cycle_time;
-    real production_rate_bf_p_noise = production_rate * p_noise_scale * 2 - dt_tc / dt_tc ^ 0.5 * dataFunc__ran_norm2(time);
-    real time_to_average_order_rate = 8;
     real target_delivery_delay = 2;
-    real desired_shipment_rate = backlog / target_delivery_delay;
+    real work_in_process_inventory_dydt = production_start_rate - production_rate;
     real maximum_shipment_rate = inventory / minimum_order_processing_time;
+    real desired_shipment_rate = backlog / target_delivery_delay;
     real order_fulfillment_ratio = lookupFunc__table_for_order_fulfillment(maximum_shipment_rate / desired_shipment_rate);
+    real order_rate = dataFunc__customer_order_rate(time);
+    real production_start_rate_af_p_noise_dydt = production_start_rate_af_p_noise_change_rate;
     real shipment_rate = desired_shipment_rate * order_fulfillment_ratio;
     real order_fulfillment_rate = shipment_rate;
-    real customer_order_rate = None;
-    real order_rate = dataFunc__customer_order_rate(time);
     real backlog_dydt = order_rate - order_fulfillment_rate;
-    real production_rate_af_p_noise_change_rate = production_rate_bf_p_noise - production_rate_af_p_noise / process_corr_time;
-    real production_rate_af_p_noise_dydt = production_rate_af_p_noise_change_rate;
-    real change_in_exp_orders = dataFunc__customer_order_rate(time) - expected_order_rate / time_to_average_order_rate;
     real inventory_dydt = production_rate - shipment_rate;
-    real work_in_process_inventory_dydt = production_start_rate - production_rate;
-    real expected_order_rate_dydt = change_in_exp_orders;
 
-    dydt[1] = backlog_dydt;
-    dydt[2] = work_in_process_inventory_dydt;
-    dydt[3] = expected_order_rate_dydt;
-    dydt[4] = production_rate_af_p_noise_dydt;
-    dydt[5] = production_start_rate_af_p_noise_dydt;
+    dydt[1] = production_rate_af_p_noise_dydt;
+    dydt[2] = expected_order_rate_dydt;
+    dydt[3] = production_start_rate_af_p_noise_dydt;
+    dydt[4] = work_in_process_inventory_dydt;
+    dydt[5] = backlog_dydt;
     dydt[6] = inventory_dydt;
 
     return dydt;
