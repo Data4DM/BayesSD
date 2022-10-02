@@ -26,7 +26,7 @@
 
 - [[def(3_Data4DM)]] and  [[def(4_DM4Data)]] bridges labeled and unlabeled learning as follows:
 
-![[Pasted image 20221002110321.png]]
+<img width="1126" alt="image" src="https://user-images.githubusercontent.com/30194633/193463114-08ae6606-d7ef-4e2c-be7c-c291af8ea450.png">
 
 
 ## Code for 0_PA Matter
