@@ -22,11 +22,19 @@ class StanTransformedParametersBuilder:
         self.vensim_model_context = vensim_model_context
         self.abstract_model = self.vensim_model_context.abstract_model
 
-    def build_block(self, predictor_variable_names, outcome_variable_names, lookup_function_dict, function_name, stock_initial_values: Dict[str, str]):
+    def build_block(
+        self,
+        predictor_variable_names,
+        outcome_variable_names,
+        lookup_function_dict,
+        datastructure_fucntion_set,
+        function_name,
+        stock_initial_values: Dict[str, str]
+    ):
         self.code = IndentedString()
         self.code += "transformed parameters {\n"
         self.code.indent_level += 1
-        self.write_block(predictor_variable_names, outcome_variable_names, lookup_function_dict, function_name, stock_initial_values)
+        self.write_block(predictor_variable_names, outcome_variable_names, lookup_function_dict, datastructure_fucntion_set, function_name, stock_initial_values)
         self.code.indent_level -= 1
         self.code += "}\n"
 
@@ -38,6 +46,7 @@ class StanTransformedParametersBuilder:
         predictor_variable_names,
         outcome_variable_names,
         lookup_function_dict,
+        datastructure_fucntion_set,
         function_name,
         stock_initial_values: Dict[str, str]
     ):
@@ -51,13 +60,14 @@ class StanTransformedParametersBuilder:
 
         variable_ast_dict: Dict[str, AbstractSyntax] = {}
         for element in self.abstract_model.sections[0].elements:
-            stan_varname = vensim_name_to_identifier(element.name)
+            stan_varname = vensim_name_to_identifier(element.name) #            if stan_varname not in datastructure_fucntion_set:
             variable_ast_dict[stan_varname] = element.components[0].ast
 
         # Create variables defined through assignment
         for statement in self.stan_model_context.sample_statements:
             if statement.distribution_type == statement.assignment_dist:
-                self. code += f"real {statement.lhs_expr} = {''.join(statement.distribution_args)};\n"
+                if statement.lhs_expr not in datastructure_fucntion_set:
+                    self. code += f"real {statement.lhs_expr} = {''.join(statement.distribution_args)};\n"
 
         self.code += "// Initial ODE values\n"
         for outcome_variable_name in outcome_variable_names:
@@ -72,7 +82,7 @@ class StanTransformedParametersBuilder:
                     assert isinstance(
                         component.ast, IntegStructure
                     ), "Output variable component must be an INTEG."
-                    self.code += f"real {outcome_variable_name}__init = {InitialValueCodegenWalker(lookup_function_dict, variable_ast_dict).walk(component.ast)};\n"
+                    self.code += f"real {outcome_variable_name}__init = {InitialValueCodegenWalker(lookup_function_dict, datastructure_fucntion_set, variable_ast_dict).walk(component.ast)};\n"
                     break
 
         self.code += "\n"
@@ -301,6 +311,8 @@ class StanFunctionBuilder:
     def get_generated_lookups_dict(self):
         return self.lookup_builder_walker.generated_lookup_function_names
 
+    def get_generated_datastructures_set(self):
+        return self.datastructure_builder_walker.data_variable_names
     def _create_dependency_graph(self):
         self.variable_dependency_graph = {}
         walker = AuxNameWalker()
@@ -429,6 +441,8 @@ class StanFunctionBuilder:
             elif stan_varname in outcome_variable_names:
                 stan_varname += "_dydt"
             elif stan_varname not in required_variables:
+                continue
+            elif stan_varname in codegen_walker.datastructure_function_names:
                 continue
             for component in element.components:
                 self.code += f"real {stan_varname} = {codegen_walker.walk(component.ast)};\n"
