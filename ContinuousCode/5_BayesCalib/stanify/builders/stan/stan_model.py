@@ -50,7 +50,8 @@ class StanModelContext:
     integration_times: Iterable[float]
     stan_data: Dict[str, StanDataEntry] = field(default_factory=dict)
     sample_statements: List[SamplingStatement] = field(default_factory=list)
-    exposed_parameters: Set[str] = field(default_factory=set)
+    exposed_parameters: Set[str] = field(default_factory=set)  # stan variables to be passed to the ODE function
+    all_stan_variables: Set[str] = field(default_factory=set)  # set of all stan variables
 
     def identify_stan_data_types(self, data_dict):
         def get_dims(obj):
@@ -86,7 +87,7 @@ class StanModelContext:
 
 class VensimModelContext:
     def __init__(self, abstract_model):
-        self.variable_names = set()
+        self.variable_names = set()  # stanified
         self.stock_variable_names = set()
         self.abstract_model = abstract_model
 
@@ -157,13 +158,19 @@ class StanVensimModel:
             if variable_name not in self.vensim_model_context.stock_variable_names:
                 raise Exception("init_state may be set to True only for stock variables.")
             self.stan_model_context.sample_statements.append(SamplingStatement(f"{variable_name}_init", distribution_type, *args, lower=lower, upper=upper, init_state=init_state))
+            self.stan_model_context.all_stan_variables.add(f"{variable_name}_init")
         else:
+            variable_name = vensim_name_to_identifier(variable_name)
+            self.stan_model_context.all_stan_variables.add(variable_name)
             for arg in args:
                 if isinstance(arg, str):
                     # If the distribution argument is an expression, parse the dependant variables
                     # We're using the python parser here, which might be problematic
-                    used_variable_names = [node.id.strip() for node in ast.walk(ast.parse(arg)) if isinstance(node, ast.Name)]
+                    used_variable_names = [vensim_name_to_identifier(node.id.strip()) for node in ast.walk(ast.parse(arg)) if isinstance(node, ast.Name)]
                     for name in used_variable_names:
+                        if vensim_name_to_identifier(name) not in set(self.vensim_model_context.variable_names).union(set(self.stan_model_context.all_stan_variables)):
+                            sample_string = f"{variable_name} ~ {distribution_type}({', '.join(args)})"
+                            raise Exception(f"{sample_string} : '{name}' doesn't exist in the Vensim model or the Stan model!")
                         if name in self.vensim_model_context.variable_names and name not in self.vensim_model_context.stock_variable_names:
                             self.stan_model_context.exposed_parameters.update(used_variable_names)
 

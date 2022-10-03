@@ -197,11 +197,11 @@ class BlockCodegenWalker(BaseNodeWaler):
         elif isinstance(ast_node, ReferenceStructure):
             # ReferenceStructure denotes invoking the value of another variable
             # Subscripts are ignored for now
-            if ast_node.reference in self.lookup_function_names:
-                return self.lookup_function_names[ast_node.reference]
-            elif vensim_name_to_identifier(ast_node.reference) in self.datastructure_function_names:
+            if vensim_name_to_identifier(ast_node.reference) in self.datastructure_function_names:
                 # Reference to input data needs to be mapped back into data functions
                 return f"{DataStructureCodegenWalker.get_function_name(ast_node.reference)}(time)"
+            elif ast_node.reference in self.lookup_function_names:
+                return self.lookup_function_names[ast_node.reference]
 
             return ast_node.reference
 
@@ -255,9 +255,9 @@ class BlockCodegenWalker(BaseNodeWaler):
             ]
             return f"{lookup_func_name}({self.walk(ast_node.argument)})"
 
-        elif isinstance(ast_node, DataStructure):
-            # DataStructure building is handled separately, no need to do anything here
-            pass
+        # elif isinstance(ast_node, DataStructure):
+        #     # DataStructure building is handled separately, no need to do anything here
+        #     pass
 
         else:
             raise Exception("Got unknown node", ast_node)
@@ -276,7 +276,9 @@ class InitialValueCodegenWalker(BlockCodegenWalker):
             return self.walk(ast_node.initial)
 
         elif isinstance(ast_node, ReferenceStructure):
-            if ast_node.reference in self.variable_ast_dict:
+            if ast_node.reference in self.datastructure_function_names:
+                return f'{DataStructureCodegenWalker.get_function_name(ast_node.reference)}(0)'
+            elif ast_node.reference in self.variable_ast_dict:
                 return self.walk(self.variable_ast_dict[ast_node.reference])
             else:
                 return super().walk(ast_node)
@@ -287,7 +289,6 @@ class InitialValueCodegenWalker(BlockCodegenWalker):
             output_string = ""
             last_argument_index = len(ast_node.arguments) - 1
             for index, argument in enumerate(ast_node.arguments):
-                print(self.walk(argument))
                 output_string += self.walk(argument)
                 if index < last_argument_index:
                     output_string += " "

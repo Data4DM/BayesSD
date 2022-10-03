@@ -12,7 +12,7 @@ pd.set_option('display.max_rows', 1000)
 
 est_param_lst = ["inventory_adjustment_time", "minimum_order_processing_time"]
 ass_param_lst = ["customer_order_rate", "inventory_coverage", "manufacturing_cycle_time", "safety_stock_coverage", "time_to_average_order_rate", "wip_adjustment_time"]
-obs_stock_lst = ["work_in_process_inventory_obs", "inventory_obs"]
+obs_stock_lst = ["production_start_rate_af_p_noise_obs", "production_rate_af_p_noise_obs"]
 driving_data_lst = ["customer_order_rate", "ran_norm1", "ran_norm2"]
 
 def draws2data(am, data_draws2data):
@@ -34,8 +34,9 @@ def draws2data(am, data_draws2data):
     model.set_prior("m_noise_scale", "inv_gamma", 2, 0.1)
 
     ### 3)  measurement \tilde{y}_{1..t} ~ f(\theta, t)_{1..t}
-    model.set_prior("wip_with_p_noise_obs", "normal", "wip_with_p_noise", "m_noise_scale")
-    model.set_prior("inventory_with_p_noise_obs", "normal", "inventory_with_p_noise", "m_noise_scale")
+    model.set_prior("production_start_rate_af_p_noise_obs", "normal", "production_start_rate_af_p_noise",
+                    "m_noise_scale")
+    model.set_prior("production_rate_af_p_noise_obs", "normal", "production_rate_af_p_noise", "m_noise_scale")
 
     ### 1) + 2) + 3)
     model.build_stan_functions()
@@ -43,8 +44,8 @@ def draws2data(am, data_draws2data):
     ### c. set_prior_demand #TODO
 
     ## 1+2. P(D)
-    model.stanify_draws2data()
-    draws2data_model = cmdstanpy.CmdStanModel(stan_file="stan_files/mngInven_draws2data_gp.stan")
+
+    draws2data_model = model.stanify_draws2data()
 
     #model.print_info()
     ## 3. A(P(D))
@@ -101,6 +102,12 @@ n_firm = 2 # for hierarchical model
 vf = VensimFile('vensim_models/mngChain/InventoryManagementWeek5_GP.mdl')
 vf.parse()
 am = vf.get_abstract_model()
+
+# for element in am.sections[0].elements:
+#     print("*" * 10)
+#     print(element.name)
+#     for component in element.components:
+#         print(component.ast)
 
 # Draws2Data
 ## driving data

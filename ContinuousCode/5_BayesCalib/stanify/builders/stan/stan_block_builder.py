@@ -41,15 +41,7 @@ class StanTransformedParametersBuilder:
         return str(self.code)
 
 
-    def write_block(
-        self,
-        predictor_variable_names,
-        outcome_variable_names,
-        lookup_function_dict,
-        datastructure_fucntion_set,
-        function_name,
-        stock_initial_values: Dict[str, str]
-    ):
+    def write_block(self, predictor_variable_names, outcome_variable_names, lookup_function_dict, datastructure_fucntion_set, function_name, stock_initial_values: Dict[str, str]):
         argument_variables = []
         for var in predictor_variable_names:
             if isinstance(var, str):
@@ -74,14 +66,9 @@ class StanTransformedParametersBuilder:
             if outcome_variable_name in stock_initial_values:
                 continue
             for element in self.abstract_model.sections[0].elements:
-                if (
-                    vensim_name_to_identifier(element.name)
-                    == outcome_variable_name
-                ):
+                if vensim_name_to_identifier(element.name) == outcome_variable_name:
                     component = element.components[0]
-                    assert isinstance(
-                        component.ast, IntegStructure
-                    ), "Output variable component must be an INTEG."
+                    assert isinstance(component.ast, IntegStructure), "Output variable component must be an INTEG."
                     self.code += f"real {outcome_variable_name}__init = {InitialValueCodegenWalker(lookup_function_dict, datastructure_fucntion_set, variable_ast_dict).walk(component.ast)};\n"
                     break
 
@@ -235,6 +222,7 @@ class Draws2DataStanGQBuilder:
             if statement.lhs_variable in self.stan_model_context.stan_data:
                 param_name = statement.lhs_expr
                 stan_type = self.stan_model_context.stan_data[param_name].stan_type
+                print(statement.lhs_variable, stan_type)
                 if stan_type.startswith("vector"):
                     self.code += f"{stan_type} {param_name} = to_vector({statement.distribution_type}_rng({', '.join(statement.distribution_args)}));\n"
                 else:
@@ -248,11 +236,14 @@ class Draws2DataStanGQBuilder:
         for sample_statements in self.stan_model_context.sample_statements:
             stmt_sorter.add_stmt(sample_statements.lhs_variable, sample_statements.rhs_variables)
 
+        print(stmt_sorter.dependency_graph)
+        print(stmt_sorter.ignored_variables)
+        print(self.stan_model_context.stan_data.keys())
+
         param_draw_order = stmt_sorter.sort()
         statements = self.stan_model_context.sample_statements.copy()
 
         processed_statements = set()
-
         for param_name in param_draw_order:
             if param_name in ignored_variables:
                 continue
@@ -276,7 +267,6 @@ class Draws2DataStanDataBuilder(StanDataBuilder):
 
     def build_block(self):
         stan_params = [stmt.lhs_variable for stmt in self.stan_model_context.sample_statements]
-        print(stan_params)
         code = IndentedString()
         code += "data{\n"
         code.indent_level += 1
