@@ -127,7 +127,6 @@ class DataStructureCodegenWalker(BaseNodeWaler):
             function_name = f"dataFunc__{node_name}"
             self.data_variable_names.add(node_name)
             try:
-                print(self.input_data_dict)
                 data_vector = self.input_data_dict[vensim_name_to_identifier(node_name)]
 
                 n_intervals = len(data_vector)
@@ -154,7 +153,7 @@ class DataStructureCodegenWalker(BaseNodeWaler):
                 # enter conditional body
                 self.code += f"intercept = {data_vector[time_index - 1]};\n"
                 self.code += f"slope = {data_vector[time_index]} - {data_vector[time_index - 1]};\n"
-                self.code += f"return intercept + slope * (x - {data_vector[time_index - 1]});\n"
+                self.code += f"return intercept + slope * (time - {data_vector[time_index - 1]});\n"
                 self.code.indent_level -= 1
                 # exit conditional body
                 self.code += "}\n"
@@ -182,8 +181,6 @@ class BlockCodegenWalker(BaseNodeWaler):
             return f"{ast_node}"
         elif isinstance(ast_node, str):
             return ast_node
-        elif isinstance(ast_node, DataStructure):
-            return
         elif isinstance(ast_node, ArithmeticStructure):
             # ArithmeticStructure consists of chained arithmetic expressions.
             # We parse them one by one into a single expression
@@ -271,6 +268,7 @@ class InitialValueCodegenWalker(BlockCodegenWalker):
     variable_ast_dict: Dict[str, AbstractSyntax]
 
     def walk(self, ast_node):
+
         if isinstance(ast_node, IntegStructure):
             return self.walk(ast_node.initial)
 
@@ -289,6 +287,7 @@ class InitialValueCodegenWalker(BlockCodegenWalker):
             output_string = ""
             last_argument_index = len(ast_node.arguments) - 1
             for index, argument in enumerate(ast_node.arguments):
+                print(self.walk(argument))
                 output_string += self.walk(argument)
                 if index < last_argument_index:
                     output_string += " "

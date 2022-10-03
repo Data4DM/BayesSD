@@ -60,13 +60,14 @@ class StanTransformedParametersBuilder:
 
         variable_ast_dict: Dict[str, AbstractSyntax] = {}
         for element in self.abstract_model.sections[0].elements:
-            stan_varname = vensim_name_to_identifier(element.name)
+            stan_varname = vensim_name_to_identifier(element.name) #            if stan_varname not in datastructure_fucntion_set:
             variable_ast_dict[stan_varname] = element.components[0].ast
 
         # Create variables defined through assignment
         for statement in self.stan_model_context.sample_statements:
             if statement.distribution_type == statement.assignment_dist:
-                self. code += f"real {statement.lhs_expr} = {''.join(statement.distribution_args)};\n"
+                if statement.lhs_expr not in datastructure_fucntion_set:
+                    self. code += f"real {statement.lhs_expr} = {''.join(statement.distribution_args)};\n"
 
         self.code += "// Initial ODE values\n"
         for outcome_variable_name in outcome_variable_names:
@@ -440,6 +441,8 @@ class StanFunctionBuilder:
             elif stan_varname in outcome_variable_names:
                 stan_varname += "_dydt"
             elif stan_varname not in required_variables:
+                continue
+            elif stan_varname in codegen_walker.datastructure_function_names:
                 continue
             for component in element.components:
                 self.code += f"real {stan_varname} = {codegen_walker.walk(component.ast)};\n"

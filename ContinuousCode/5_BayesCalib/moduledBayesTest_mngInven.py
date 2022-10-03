@@ -95,7 +95,7 @@ def draws2data2draws():
 # simulation-based calibration
     return
 
-customer_order_rate = pd.read_csv('data/example_retail_sales.csv').iloc[:3, :]
+customer_order_rate = pd.read_csv('data/example_retail_sales.csv').iloc[:4, :]
 n_t = customer_order_rate.shape[0] - 1
 n_firm = 2 # for hierarchical model
 vf = VensimFile('vensim_models/mngChain/InventoryManagementWeek5_GP.mdl')
@@ -110,12 +110,11 @@ ran_norm3 = np.random.normal(0,1, size=n_t)
 ran_norm4 = np.random.normal(0,1, size=n_t)
 # all states need placeholder
 placeholder = np.zeros(shape = n_t)
-
 data_draws2data = {
     "n_t": n_t,
     "production_start_rate_af_p_noise_obs": placeholder,
     "production_rate_af_p_noise_obs":  placeholder,
-    "customer_order_rate": customer_order_rate.values,
+    "customer_order_rate": ran_norm1, #customer_order_rate.loc[:, 'y'],
     "ran_norm1": ran_norm1,
     "ran_norm2": ran_norm2,
     "ran_norm3": ran_norm3,
