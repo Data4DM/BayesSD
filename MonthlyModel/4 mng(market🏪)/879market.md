@@ -19,3 +19,5 @@
 
 information of time series cannot be measurable , data series 
 target ts is informative about parameter of interest. 
+
+- Two modes of behavior for revenue ![[Pasted image 20221007094644.png]]

@@ -15,13 +15,22 @@
 - [[def(0_PA)]] explains form and matter of generator. It includes modeling techniques from both statistical and simulation side
 	- statistical (form): Stan syntax e.g. syntatic sugar `~` that automates building objective function, `_lpdf, _rng`  of any distribution function. Parameterization and prior design.
 	- simulation (matter): aging chaing, coflow, replacing causal loops with functional approximation, defining objective function (policy)
-	- "is form and matter close enough" checking methods e.g. Talts2018 Simulation-based calibration. We define form-matter pair that passed this checking as `identified generator`
+	- "is form and matter close enough" checking methods e.g. Talts2018 Simulation-based calibration. We define form-matter pair that passed this checking as `identified generator`.  Defining `identified` as having a reversible map between parameter and stock variables (state), `identified generator` can recover $\Theta$ after going through $\Theta \xRightarrow[\text{}]{\text{generator}} Y \xRightarrow[\text{}]{\text{estimator symmetric to generator}} \Theta$ with definitions below.
+		- parameter $\theta$:  `vector [n_params]` (e.g. `n_params` = 8)
+		- state $Y$: `matrix [n_stocks, n_t]`(e.g. `n_stocks` = 3, `n_t` = 100)
+		
+		
 - [[def(1_PAD)]] explains approximator of  `identified generator` (form) conditional on the observed data. It includes estimation methods, including the first five chapters of AMD textbook.
 	
-- [[def(2_PD)]] explains in depth analysis of  `generator` on the parameter region on which  `identified generator` is verified and validated. 
+- [[def(2_PD)]] explains in depth analysis of  `generator` on the parameter region on which  `identified generator` is verified and validated. We define form-matter pair that passed this checking as `identified dynamic model`. Defining `identified` as having a reversible map between parameter and stock variables (state), `identified generator` can recover $\Theta$ after going through $\Theta \xRightarrow[\text{}]{\text{generator}} Y \xRightarrow[\text{}]{\text{estimator approximating generator}} \Theta$ with definitions below.
+		- parameter $\theta$:  `vector [n_params]` (e.g. `n_params` = 8)
+		- state $Y$: `matrix [n_stocks, n_t]`(e.g. `n_stocks` = 3, `n_t` = 100)
+		- test quantities $f(Y)$: `vector` e.g. volume of unattractive basin
+	Approximator is tested with $f$ whose formulation shapes the model's sensitivity.  `identified generator` 
+	
+- [[def(3_Data4DM)]] explains construction from labeled to unlabeled learning (https://statmodeling.stat.columbia.edu/2022/07/20/unsupervised-learning-gets-a-bad-rap/). It includes BATS and SOPS from SD community. 
 
-- [[def(3_Data4DM)]] explains construction from labeled to unlabeled learning (https://statmodeling.stat.columbia.edu/2022/07/20/unsupervised-learning-gets-a-bad-rap/). It includes BATS and SOPS from SD community.
-
+Define `identified` as having a reversible map between parameter and stock variables (state), `identified generator` can recover $\Theta$ after going through $\Theta \xRightarrow[\text{}]{\text{generator}} Y \xRightarrow[\text{}]{\text{symmetric generator}} \Theta$
 - [[def(4_DM4Data)]] explains construction from unlabeled to labeled learning which includes GAN. 
 
 - [[def(3_Data4DM)]] and  [[def(4_DM4Data)]] bridges labeled and unlabeled learning as follows:

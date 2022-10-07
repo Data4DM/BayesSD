@@ -1,0 +1,1 @@
+labor force participation rate, inherent land fertility, potentially arable land, desired food quality, tech development dat

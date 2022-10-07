@@ -1,4 +1,6 @@
 ## variables
+inventory, price, capacity
+![[Pasted image 20221007101836.png]]
 - production
 - price
 - inflation
