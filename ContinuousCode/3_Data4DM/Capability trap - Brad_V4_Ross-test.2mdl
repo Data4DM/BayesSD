@@ -1,0 +1,339 @@
+{UTF-8}
+Resources to Production IC=
+	1400
+	~	hours/Week [0,4000,80]
+	~		|
+
+Process Problems IC=
+	0.4
+	~	 [0,0.98,0.02]
+	~		|
+
+Problem Introduction=
+	(Unattended Process Problem Level-Process Problems)/Avg Process Erosion Time
+	~	
+	~	0.4/16*0.625*(Process Problems/0.4)^alpha
+	|
+
+alpha=
+	1
+	~	 [0,1,0.1]
+	~		|
+
+additional desired throughput=
+	300
+	~	 [200,500,10]
+	~		|
+
+Indicated Allocation to Production=
+	max(0,min(Available Time,Resource Gap+Resources to Production+pulse(time to impliment measure\
+		,shock duration)*Policy measure))
+	~	
+	~	How many hours do you need to update production to fufill throughput gap
+	|
+
+shock duration=
+	0
+	~	 [0,100,4]
+	~		|
+
+Policy measure=
+	0
+	~	 [-4000,0,100]
+	~		|
+
+Resources to Improve Process=
+	Available Time-Resources to Production
+	~	
+	~		|
+
+time to impliment measure=
+	0
+	~	 [0,200,5]
+	~		|
+
+Adjusting Allocation=
+	(Indicated Allocation to Production-Resources to Production)/Time to Adjust Allocation
+	~	
+	~		|
+
+Available Time=
+	4000
+	~	hours/Week
+	~		|
+
+Avg Process Erosion Time=
+	32
+	~	Week
+	~		|
+
+Defect Introduction=
+	Process Problems*Gross Process Throughput
+	~	units/Week
+	~		|
+
+Desired Throughput=
+	900+additional desired throughput
+	~	units/Week [300,1800,20]
+	~	900*1.2
+		900+STEP(180, 10 )
+		900+STEP(additional desired throughput,40)
+	|
+
+Gross Process Throughput=
+	Resources to Production*Productivity of Production Time
+	~	units/Week
+	~		|
+
+Net Process Throughput=
+	Gross Process Throughput-Defect Introduction
+	~	units/Week
+	~		|
+
+Net Productivity of Production Time=
+	Productivity of Production Time*(1-Process Problems)
+	~	units/hour
+	~	How much of the time are you being productive
+	|
+
+Problem Correction=
+	Problem Correction Effectiveness*(Process Problems/Time to Correct Problems)
+	~	
+	~		|
+
+Problem Correction Effectiveness=
+	Resources to Improve Process/Resources for Maximum Problem Correction
+	~	
+	~		|
+
+Process Problems= INTEG (
+	min(1,Problem Introduction-Problem Correction),
+		Process Problems IC)
+	~	units
+	~	Dimensionless index from 0 to 1
+	|
+
+Productivity of Production Time=
+	1
+	~	units/hour
+	~		|
+
+Resource Gap=
+	Throughput Gap/Net Productivity of Production Time
+	~	hour/Week
+	~	How many more hours would you really need to close throughput gap
+	|
+
+Resources for Maximum Problem Correction=
+	4000
+	~	hours/Week
+	~		|
+
+Resources to Production= INTEG (
+	Adjusting Allocation,
+		Resources to Production IC
+		)
+	~	hours/Week
+	~		|
+
+Throughput Gap=
+	Desired Throughput-Net Process Throughput
+	~	units/Week
+	~		|
+
+Time to Adjust Allocation=
+	12
+	~	Week [1,12,1]
+	~		|
+
+Time to Correct Problems=
+	16
+	~	Week
+	~		|
+
+Unattended Process Problem Level=
+	0.9
+	~	
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME=
+	500
+	~	Week
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Week
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Week [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.25
+	~	Week [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,100,0
+10,1,Process Problems,403,186,43,23,3,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||255-128-0,0,0,0,0,0,0
+12,2,48,180,187,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,3,5,2,100,0,0,22,0,192,0,-1--1--1,,1|(229,187)|
+1,4,5,1,4,0,0,22,0,192,0,-1--1--1,,1|(320,187)|
+11,5,0,275,187,6,8,34,3,0,2,1,0,0,0,0-0-0,0-0-0,|||255-128-0,0,0,0,0,0,0
+10,6,Problem Introduction,275,218,58,23,40,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||255-128-0,0,0,0,0,0,0
+12,7,48,624,186,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,8,10,1,100,0,0,22,0,192,0,-1--1--1,,1|(485,186)|
+1,9,10,7,4,0,0,22,0,192,0,-1--1--1,,1|(575,186)|
+11,10,0,530,186,6,8,34,3,0,2,1,0,0,0,0-0-0,0-0-0,|||255-128-0,0,0,0,0,0,0
+10,11,Problem Correction,530,217,49,23,40,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||255-128-0,0,0,0,0,0,0
+10,12,Time to Correct Problems,646,141,50,31,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||255-128-0,0,0,0,0,0,0
+10,13,Avg Process Erosion Time,187,97,69,23,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||255-128-0,0,0,0,0,0,0
+10,14,Unattended Process Problem Level,123,259,73,31,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||255-128-0,0,0,0,0,0,0
+10,15,Defect Introduction,799,263,60,23,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+10,16,Productivity of Production Time,538,312,73,31,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+10,17,Gross Process Throughput,685,337,58,31,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+10,18,Net Process Throughput,798,435,64,23,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+10,19,Throughput Gap,758,546,58,23,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+10,20,Desired Throughput,883,499,58,23,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+10,21,Net Productivity of Production Time,744,650,80,31,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+10,22,Resource Gap,610,586,50,23,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+10,23,Indicated Allocation to Production,439,597,63,31,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+10,24,Time to Adjust Allocation,279,554,51,31,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+10,25,Available Time,149,590,47,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,26,Resources to Improve Process,360,386,56,31,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||0-128-64,0,0,0,0,0,0
+10,27,Problem Correction Effectiveness,381,283,69,31,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||0-128-64,0,0,0,0,0,0
+10,28,Resources for Maximum Problem Correction,182,342,72,40,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||0-128-64,0,0,0,0,0,0
+1,29,12,10,1,0,0,0,0,192,0,-1--1--1,,1|(566,143)|
+1,30,28,27,1,0,0,0,0,192,0,-1--1--1,,1|(298,286)|
+1,31,26,27,1,0,0,0,0,192,0,-1--1--1,,1|(368,334)|
+1,32,25,26,1,0,0,0,0,192,0,-1--1--1,,1|(200,479)|
+10,33,Resources to Production,496,478,56,31,3,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+12,34,48,333,476,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,35,37,34,100,0,0,22,0,192,0,-1--1--1,,1|(364,476)|
+1,36,37,33,4,0,0,22,0,192,0,-1--1--1,,1|(418,476)|
+11,37,0,391,476,6,8,34,3,0,2,1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+10,38,Adjusting Allocation,391,507,51,23,40,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-0,0,0,0,0,0,0
+1,39,24,38,1,0,0,0,0,192,0,-1--1--1,,1|(334,501)|
+1,40,23,38,1,0,0,0,0,192,0,-1--1--1,,1|(399,560)|
+1,41,33,23,1,0,0,0,0,192,0,-1--1--1,,1|(517,553)|
+1,42,22,23,1,0,0,0,0,192,0,-1--1--1,,1|(495,598)|
+1,43,19,22,1,0,0,0,0,192,0,-1--1--1,,1|(696,567)|
+1,44,21,22,1,0,0,0,0,192,0,-1--1--1,,1|(652,618)|
+1,45,20,19,1,0,0,0,0,192,0,-1--1--1,,1|(813,546)|
+1,46,18,19,1,0,0,0,0,192,0,-1--1--1,,1|(795,487)|
+1,47,17,18,1,0,0,0,0,192,0,-1--1--1,,1|(775,357)|
+1,48,15,18,1,0,0,0,0,192,0,-1--1--1,,1|(842,363)|
+1,49,16,17,1,0,0,0,0,192,0,-1--1--1,,1|(615,334)|
+1,50,33,17,1,0,0,0,0,192,0,-1--1--1,,1|(590,394)|
+1,51,33,26,1,0,0,0,0,192,0,-1--1--1,,1|(423,386)|
+1,52,27,11,1,0,0,0,0,192,0,-1--1--1,,1|(439,217)|
+1,53,1,15,1,0,0,0,0,192,0,-1--1--1,,1|(540,70)|
+1,54,33,37,1,0,0,0,0,192,0,-1--1--1,,1|(411,452)|
+10,55,Productivity of Production Time,914,662,56,31,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,56,55,21,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,57,Process Problems,905,584,56,22,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,58,57,21,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,59,25,23,1,0,0,0,0,192,0,-1--1--1,,1|(251,610)|
+1,60,17,15,1,0,0,0,0,64,0,-1--1--1,,1|(741,323)|
+1,61,1,10,1,0,0,0,0,192,0,-1--1--1,,1|(482,153)|
+12,62,0,1663,600,208,140,8,15,0,0,2,0,0,0,0,0,0,0,0,0
+Process Problems,Graph
+12,63,0,1663,323,208,140,8,15,0,0,2,0,0,0,0,0,0,0,0,0
+Resources to Production,Graph
+12,64,0,1248,601,208,140,8,15,0,0,2,0,0,0,0,0,0,0,0,0
+Net Process Throughput,Graph
+12,65,0,1248,324,208,140,8,15,0,0,2,0,0,0,0,0,0,0,0,0
+Problem Correction,Graph
+10,66,additional desired throughput,934,408,66,18,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,67,66,20,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,68,FINAL TIME,982,88,41,22,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,69,Policy measure,507,708,45,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,70,69,23,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,71,time to impliment measure,387,713,62,18,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,72,71,23,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,73,shock duration,598,688,53,10,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,74,73,23,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,75,1,5,1,0,0,0,0,192,0,-1--1--1,,1|(342,123)|
+10,76,alpha,555,-97,21,10,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,77,Resources to Production IC,615,473,50,18,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,78,77,33,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,79,Process Problems IC,405,72,46,18,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,80,79,1,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,81,13,6,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,82,14,6,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+///---\\\
+:GRAPH Process_Problems
+:TITLE Process_Problems
+:SCALE
+:VAR Process Problems
+
+:GRAPH Resources_to_Production
+:TITLE Resources_to_Production
+:SCALE
+:VAR Resources to Production
+:L<%^E!@
+1:currentvectorv1.vdfx
+1:currentvectorv2.vdfx
+4:Time
+5:additional desired throughput
+9:currentvectorv1
+19:100,0
+24:0
+25:2000
+26:2000
+60:
+61:0
+62:0
+63:0
+64:0
+65:1
+66:0
+67:0
+68:0
+69:0
+70:1
+18:currentvectorv2.vsc
+20:currentvectorv1.lst
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:1
+72:0
+73:0
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Arial|14||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1
