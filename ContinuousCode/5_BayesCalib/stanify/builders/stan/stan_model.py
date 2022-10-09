@@ -1,6 +1,9 @@
 import os
 from typing import List, Set, Type, Tuple
 import ast, glob, re
+
+import numpy
+
 from .stan_block_builder import *
 from .utilities import vensim_name_to_identifier
 from pysd.translators.structures.abstract_expressions import *
@@ -53,8 +56,10 @@ class StanModelContext:
     exposed_parameters: Set[str] = field(default_factory=set)  # stan variables to be passed to the ODE function
     all_stan_variables: Set[str] = field(default_factory=set)  # set of all stan variables
 
-    def identify_stan_data_types(self, data_dict):
+    def identify_stan_data_types(self, numeric_assump_dict):
         def get_dims(obj):
+            if isinstance(obj, numpy.ndarray):
+                return obj.shape
             try:
                 iter(obj)
             except:
@@ -69,7 +74,7 @@ class StanModelContext:
                 else:
                     return [dim]
 
-        for key, val in data_dict.items():
+        for key, val in numeric_assump_dict.items():
             if isinstance(val, int):
                 self.stan_data[key] = StanDataEntry(key, "int")
             elif isinstance(val, float):
@@ -103,6 +108,7 @@ class VensimModelContext:
                 if isinstance(component.ast, IntegStructure):
                     self.stock_variable_names.add(vensim_name_to_identifier(element.name))
                     break
+        print("abstract_model", abstract_model)
 
     def print_variable_info(self, abstract_model):
         var_names = []
@@ -125,16 +131,16 @@ class VensimModelContext:
 
 
 class StanVensimModel:
-    def __init__(self, model_name: str, abstract_model, initial_time: float, integration_times: Iterable[Number], data_dict={}):
+    def __init__(self, abstract_model, setting_dict = {}, numeric_assump_dict ={}, ):
         self.abstract_model = abstract_model
-        self.model_name = model_name
-        self.initial_time = float(initial_time)
-        self.integration_times = integration_times
-        self.stan_model_context = StanModelContext(initial_time, integration_times)
-        self.stan_model_context.identify_stan_data_types(data_dict)
-        self.data_dict = {vensim_name_to_identifier(name): value for name, value in data_dict.items()}
+        self.numeric_assump_dict = {vensim_name_to_identifier(name): value for name, value in numeric_assump_dict.items()}
         self.vensim_model_context = VensimModelContext(self.abstract_model)
-        if initial_time in integration_times:
+        self.model_name = setting_dict['model_name']
+        self.initial_time = float(setting_dict['initial_time'])
+        self.integration_times = setting_dict['integration_times'] #Iterable
+        self.stan_model_context = StanModelContext(setting_dict['initial_time'], setting_dict['integration_times'])
+        self.stan_model_context.identify_stan_data_types(numeric_assump_dict)
+        if setting_dict['initial_time'] in setting_dict['integration_times']:
             raise Exception("initial_time shouldn't be present in integration_times")
 
         self.stan_model_dir = os.path.join(os.getcwd(), "stan_files")
@@ -145,6 +151,9 @@ class StanVensimModel:
         # This regex is to match all preceding characters that come before '__init' at the end of the string.
         # So something like stock_var_init__init would match into stock_var__init.
         # This is used to parse out the corresponding stock names for init parameters.
+
+        for key in setting_dict['target_simulated_vector']:
+            numeric_assump_dict[key] = self.integration_times
 
     def print_info(self):
         print("- Vensim model information:")
@@ -179,6 +188,32 @@ class StanVensimModel:
             self.stan_model_context.sample_statements.append(SamplingStatement(variable_name, distribution_type, *args, lower=lower, upper=upper, init_state=init_state))
 
 
+    def set_setting(self, variable_name: str, distribution_type: str, *args, lower=float("-inf"), upper=float("inf"), init_state=False):
+        if init_state:
+            # This means the initial value of the ODE state variable.
+            if variable_name not in self.vensim_model_context.stock_variable_names:
+                raise Exception("init_state may be set to True only for stock variables.")
+            self.stan_model_context.sample_statements.append(SamplingStatement(f"{variable_name}_init", distribution_type, *args, lower=lower, upper=upper, init_state=init_state))
+            self.stan_model_context.all_stan_variables.add(f"{variable_name}_init")
+        else:
+            variable_name = vensim_name_to_identifier(variable_name)
+            self.stan_model_context.all_stan_variables.add(variable_name)
+            for arg in args:
+                if isinstance(arg, str):
+                    # If the distribution argument is an expression, parse the dependant variables
+                    # We're using the python parser here, which might be problematic
+                    used_variable_names = [vensim_name_to_identifier(node.id.strip()) for node in ast.walk(ast.parse(arg)) if isinstance(node, ast.Name)]
+                    for name in used_variable_names:
+                        if vensim_name_to_identifier(name) not in set(self.vensim_model_context.variable_names).union(set(self.stan_model_context.all_stan_variables)):
+                            sample_string = f"{variable_name} ~ {distribution_type}({', '.join(args)})"
+                            raise Exception(f"{sample_string} : '{name}' doesn't exist in the Vensim model or the Stan model!")
+                        if name in self.vensim_model_context.variable_names and name not in self.vensim_model_context.stock_variable_names:
+                            self.stan_model_context.exposed_parameters.update(used_variable_names)
+
+            if variable_name in self.vensim_model_context.variable_names and variable_name not in self.vensim_model_context.stock_variable_names:
+                self.stan_model_context.exposed_parameters.add(variable_name)
+            self.stan_model_context.sample_statements.append(SamplingStatement(variable_name, distribution_type, *args, lower=lower, upper=upper, init_state=init_state))
+
     def build_stan_functions(self):
         """
         We build the stan file that holds the ODE function. From the sample statements that the user have provided,
@@ -189,13 +224,17 @@ class StanVensimModel:
         -------
 
         """
+        self.function_builder = StanFunctionBuilder(self.abstract_model, self.numeric_assump_dict)
+        function_code = self.function_builder.build_functions(self.stan_model_context.exposed_parameters, self.vensim_model_context.stock_variable_names)
         if glob.glob(os.path.join(self.stan_model_dir, f"{self.model_name}_functions.stan")):
+            with open(os.path.join(self.stan_model_dir, f"{self.model_name}_functions.stan"), "r") as f:
+                if f.read().rstrip() != function_code.rstrip():
+                    return
             if input(f"{self.model_name}_functions.stan already exists in the current working directory. Overwrite? (Y/N):").lower() != "y":
                 raise Exception("Code generation aborted by user")
 
         with open(os.path.join(self.stan_model_dir, f"{self.model_name}_functions.stan"), "w") as f:
-            self.function_builder = StanFunctionBuilder(self.abstract_model, self.data_dict)
-            f.write(self.function_builder.build_functions(self.stan_model_context.exposed_parameters, self.vensim_model_context.stock_variable_names))
+            f.write(function_code)
 
     def stanify_data2draws(self):
         stan_model_path = os.path.join(self.stan_model_dir, f"{self.model_name}_data2draws.stan")
