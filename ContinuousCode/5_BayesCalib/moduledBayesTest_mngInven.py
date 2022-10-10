@@ -13,7 +13,7 @@ vf.parse()
 structural_assumption = vf.get_abstract_model()
 
 n_t = 20
-model_settings = {
+model_setting = {
     "est_param_scalar" : ("inventory_adjustment_time", "minimum_order_processing_time"),
     "ass_param_scalar" : ("inventory_coverage", "manufacturing_cycle_time", "safety_stock_coverage", "time_to_average_order_rate", "wip_adjustment_time"),
     "target_simulated_vector" : ("production_start_rate_stocked", "production_rate_stocked"),
@@ -30,10 +30,12 @@ numeric_assumption = {
     "process_noise_std_norm_data": np.random.normal(0,1, size=n_t),
     "production_start_rate_m_noise_trun_norm_data": truncnorm.rvs(0, 2, size=n_t),
     "production_rate_m_noise_trun_norm_data": truncnorm.rvs(0, 2, size=n_t),
+    "production_start_rate_stocked": truncnorm.rvs(0, 2, size=n_t),
+    "production_rate_stocked": truncnorm.rvs(0, 2, size=n_t),
 }
 
 
-model = StanVensimModel(structural_assumption, setting_dict = model_settings, numeric_assump_dict = numeric_assumption)
+model = StanVensimModel(structural_assumption, setting_dict = model_setting, numeric_assump_dict = numeric_assumption)
 
 #model.set_settings(model_settings)
 
@@ -41,7 +43,7 @@ model.set_prior("inventory_adjustment_time", "normal", 2, 0.4)
 model.set_prior("minimum_order_processing_time", "normal", 0.05, 0.01)
 model.set_prior("m_noise_scale", "inv_gamma", 2, 0.1)
 
-for key in model_settings.get('target_simulated_vector'):
+for key in model_setting.get('target_simulated_vector'):
     model.set_prior(f"{key}_obs", "normal", f"{key}", "m_noise_scale")
 
 model.build_stan_functions()

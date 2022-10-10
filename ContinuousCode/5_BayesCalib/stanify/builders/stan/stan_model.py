@@ -151,10 +151,13 @@ class StanVensimModel:
         # This regex is to match all preceding characters that come before '__init' at the end of the string.
         # So something like stock_var_init__init would match into stock_var__init.
         # This is used to parse out the corresponding stock names for init parameters.
-
+        print("=======")
+        print(self.numeric_assump_dict)
         for key in setting_dict['target_simulated_vector']:
-            numeric_assump_dict[key] = self.integration_times
-
+            self.numeric_assump_dict[f"{key}_obs"] = self.integration_times
+        print("=======")
+        print(self.numeric_assump_dict)
+        print("=======")
     def print_info(self):
         print("- Vensim model information:")
         self.vensim_model_context.print_variable_info(self.abstract_model)
