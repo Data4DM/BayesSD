@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/3_Data4DM/durable_dominance" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/5_BayesCalib/experiment/regulatory_function" vcs="Git" />
   </component>
 </project>

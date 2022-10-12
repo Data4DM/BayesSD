@@ -8,17 +8,17 @@ from stanify.calibrator.draws_data_mapper import  draws2data, data2draws, draws2
 from stanify.builders.stan.stan_model import StanVensimModel
 import cmdstanpy
 
-vf = VensimFile('vensim_models/mngChain/InventoryManagementWeek7.mdl')
+vf = VensimFile('vensim_models/mngChain/InventoryManagementWeek7woPN.mdl')
 vf.parse()
 structural_assumption = vf.get_abstract_model()
 
 n_t = 20
-model_setting = {
+setting_assumption = {
     "est_param_scalar" : ("inventory_adjustment_time", "minimum_order_processing_time"),
     "ass_param_scalar" : ("inventory_coverage", "manufacturing_cycle_time", "safety_stock_coverage", "time_to_average_order_rate", "wip_adjustment_time"),
-    "target_simulated_vector" : ("production_start_rate_stocked", "production_rate_stocked"),
+    "target_simulated_vector" : ( "production_rate_stocked", "production_start_rate_stocked"),
     "driving_data_vector" : ("customer_order_rate", "process_noise_std_norm_data", "production_start_rate_m_noise_trun_norm_data", "production_rate_m_noise_trun_norm_data"),
-    "model_name": "mngIven",
+    "model_name": "mngInven",
     "integration_times": list(range(1, n_t + 1)),
     "initial_time": 0.0
 }
@@ -30,27 +30,24 @@ numeric_assumption = {
     "process_noise_std_norm_data": np.random.normal(0,1, size=n_t),
     "production_start_rate_m_noise_trun_norm_data": truncnorm.rvs(0, 2, size=n_t),
     "production_rate_m_noise_trun_norm_data": truncnorm.rvs(0, 2, size=n_t),
-    "production_start_rate_stocked": truncnorm.rvs(0, 2, size=n_t),
-    "production_rate_stocked": truncnorm.rvs(0, 2, size=n_t),
 }
 
+for key in setting_assumption.get('target_simulated_vector'):
+    numeric_assumption[f"{key}_obs"] = list(range(1, n_t + 1))
 
-model = StanVensimModel(structural_assumption, setting_dict = model_setting, numeric_assump_dict = numeric_assumption)
+model = StanVensimModel(structural_assumption, setting_dict = setting_assumption, numeric_assump_dict = numeric_assumption)
 
-#model.set_settings(model_settings)
+model.set_prior("inventory_adjustment_time", "normal", 2, 0.1, lower=0)
+model.set_prior("minimum_order_processing_time", "normal", 0.05, 0.001, lower=0)
+model.set_prior("m_noise_scale", "normal", 0.01, 0.0005, lower = 0)
 
-model.set_prior("inventory_adjustment_time", "normal", 2, 0.4)
-model.set_prior("minimum_order_processing_time", "normal", 0.05, 0.01)
-model.set_prior("m_noise_scale", "inv_gamma", 2, 0.1)
-
-for key in model_setting.get('target_simulated_vector'):
+for key in setting_assumption.get('target_simulated_vector'):
     model.set_prior(f"{key}_obs", "normal", f"{key}", "m_noise_scale")
 
 model.build_stan_functions()
 
 prior_pred_obs = draws2data(model, numeric_assumption)
-
-
+print(prior_pred_obs)
 numeric_assumption["n_obs_state"] = 2
 
 for key, value in prior_pred_obs.items():
@@ -58,7 +55,6 @@ for key, value in prior_pred_obs.items():
 
 posterior = data2draws(model, numeric_assumption)
 print(posterior)
-
 
 # # Compare Prior and Posterior
 # posterior = xr.open_dataset("data/mngInvenPostDraws.nc")

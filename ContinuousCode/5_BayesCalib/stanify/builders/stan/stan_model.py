@@ -133,6 +133,7 @@ class VensimModelContext:
 class StanVensimModel:
     def __init__(self, abstract_model, setting_dict = {}, numeric_assump_dict ={}, ):
         self.abstract_model = abstract_model
+        self.setting_dict = setting_dict
         self.numeric_assump_dict = {vensim_name_to_identifier(name): value for name, value in numeric_assump_dict.items()}
         self.vensim_model_context = VensimModelContext(self.abstract_model)
         self.model_name = setting_dict['model_name']
@@ -151,13 +152,7 @@ class StanVensimModel:
         # This regex is to match all preceding characters that come before '__init' at the end of the string.
         # So something like stock_var_init__init would match into stock_var__init.
         # This is used to parse out the corresponding stock names for init parameters.
-        print("=======")
-        print(self.numeric_assump_dict)
-        for key in setting_dict['target_simulated_vector']:
-            self.numeric_assump_dict[f"{key}_obs"] = self.integration_times
-        print("=======")
-        print(self.numeric_assump_dict)
-        print("=======")
+
     def print_info(self):
         print("- Vensim model information:")
         self.vensim_model_context.print_variable_info(self.abstract_model)
@@ -231,7 +226,7 @@ class StanVensimModel:
         function_code = self.function_builder.build_functions(self.stan_model_context.exposed_parameters, self.vensim_model_context.stock_variable_names)
         if glob.glob(os.path.join(self.stan_model_dir, f"{self.model_name}_functions.stan")):
             with open(os.path.join(self.stan_model_dir, f"{self.model_name}_functions.stan"), "r") as f:
-                if f.read().rstrip() != function_code.rstrip():
+                if f.read().rstrip() == function_code.rstrip():
                     return
             if input(f"{self.model_name}_functions.stan already exists in the current working directory. Overwrite? (Y/N):").lower() != "y":
                 raise Exception("Code generation aborted by user")
@@ -279,6 +274,7 @@ class StanVensimModel:
 
     def stanify_draws2data(self):
         stan_model_path = os.path.join(self.stan_model_dir, f"{self.model_name}_draws2data.stan")
+        print(stan_model_path)
         with open(stan_model_path, "w") as f:
             # Include the function
             f.write("functions{")

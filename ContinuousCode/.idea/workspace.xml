@@ -2,25 +2,44 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6678889f-5135-459f-b3d6-6395ea6b7487" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/5_BayesCalib/moduledBayesTest_mngInven.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/BayesTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/BayesTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/demand_supply.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/demand_supply.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/prey-predator.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/prey-predator.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/alpha_functions.stan" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/alpha_functions.stan" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws.stan" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws.stan" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws_full" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws_full.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws_full.stan" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_data2draws_full.stan" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_draws2data" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_draws2data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_draws2data.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_draws2data.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_draws2data.stan" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_draws2data.stan" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_functions.stan" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stan_files/prey-predator_functions.stan" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/vensim_models/mngChain/mngChain.mdl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/vensim_models/mngChain/mngChain.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_BayesCalib/vensim_models/mngChain/mngChain_wolookup.mdl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DailyDigest/3 Bayequentist Dynamics with SBC.md" beforeDir="false" afterPath="$PROJECT_DIR$/../DailyDigest/3 Bayequentist Dynamics with SBC.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/AdataldataidataPdatardataidataodatardataPdatardataedataddataDdataadatatdataadata.datandatac" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/data/mngInven3_prior_pred.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/data/mngInven3_prior_pred_data.nc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/experiment/regulatory_function" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/experiment/regulatory_function" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/experiment/regulatory_function/analysis/regulate.py" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/experiment/regulatory_function/analysis/regulate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/experiment/regulatory_function/analysis/regulate_v.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/experiment/regulatory_function/analysis/regulate_v.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/inventory_obs.nc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/mngInven_data2draws_for" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/mngInven_data2draws_for.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/mngInven_draws2data" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/mngInven_draws2data.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/moduledBayesTest_mngInven.py" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/moduledBayesTest_mngInven.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/moduledBayesTest_prey-predator.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/optTest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven2_draws2data" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven2_draws2data.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven2_draws2data.stan" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven2_functions.stan" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven3_draws2data" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven3_draws2data.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven3_draws2data.stan" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven3_functions.stan" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven_gp_data2draws" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven_gp_data2draws.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven_gp_data2draws.stan" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven_gp_draws2data" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven_gp_draws2data.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven_gp_draws2data.stan" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngInven_gp_functions.stan" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngIven_draws2data.stan" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stan_files/mngIven_functions.stan" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stanify/builders/stan/stan_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stanify/builders/stan/stan_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/stanify/calibrator/draws_data_mapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/stanify/calibrator/draws_data_mapper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/testing.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/vensim_models/mngChain/InventoryManagementWeek7.3vmfx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_BayesCalib/vensim_models/mngChain/InventoryManagementWeek7.mdl" beforeDir="false" afterPath="$PROJECT_DIR$/5_BayesCalib/vensim_models/mngChain/InventoryManagementWeek7.mdl" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +47,10 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/3_Data4DM/durable_dominance" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2FLPW8NgTvz2KKy9JnQfl1P6II4" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -41,9 +63,40 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode"
+    "last_opened_file_path": "/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="analysis" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ContinuousCode" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/3_Data4DM/durable_dominance/analysis" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/3_Data4DM/durable_dominance/analysis/analysis.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.analysis" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -53,6 +106,7 @@
       <option name="presentableId" value="Default" />
       <updated>1664268420010</updated>
       <workItem from="1664268422915" duration="92000" />
+      <workItem from="1665439877347" duration="10522000" />
     </task>
     <servers />
   </component>
@@ -69,5 +123,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ContinuousCode$analysis.coverage" NAME="analysis Coverage Results" MODIFIED="1665444000556" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/3_Data4DM/durable_dominance/analysis" />
   </component>
 </project>
