@@ -63,55 +63,55 @@ real lookupFunc__table_for_order_fulfillment(real x){
 }
 
 // Begin ODE declaration
-vector vensim_ode_func(real time, vector outcome, real minimum_order_processing_time, real inventory_adjustment_time){
+vector vensim_ode_func(real time, vector outcome, real inventory_adjustment_time, real minimum_order_processing_time){
     vector[6] dydt;  // Return vector of the ODE function
 
     // State variables
-    real inventory = outcome[1];
-    real expected_order_rate = outcome[2];
-    real work_in_process_inventory = outcome[3];
-    real production_rate_stocked = outcome[4];
-    real production_start_rate_stocked = outcome[5];
-    real backlog = outcome[6];
+    real backlog = outcome[1];
+    real work_in_process_inventory = outcome[2];
+    real production_start_rate_stocked = outcome[3];
+    real inventory = outcome[4];
+    real production_rate_stocked = outcome[5];
+    real expected_order_rate = outcome[6];
 
-    real customer_order_rate = 100;
-    real time_to_average_order_rate = 8;
-    real change_in_exp_orders = customer_order_rate - expected_order_rate / time_to_average_order_rate;
-    real maximum_shipment_rate = inventory / minimum_order_processing_time;
-    real target_delivery_delay = 2;
-    real desired_shipment_rate = backlog / target_delivery_delay;
-    real order_fulfillment_ratio = lookupFunc__table_for_order_fulfillment(maximum_shipment_rate / desired_shipment_rate);
-    real shipment_rate = desired_shipment_rate * order_fulfillment_ratio;
+    real time_step = 0.0625;
     real manufacturing_cycle_time = 6;
     real production_rate = work_in_process_inventory / manufacturing_cycle_time;
+    real production_rate_stocked_change_rate = production_rate - production_rate_stocked / time_step;
+    real target_delivery_delay = 2;
+    real desired_shipment_rate = backlog / target_delivery_delay;
+    real maximum_shipment_rate = inventory / minimum_order_processing_time;
+    real order_fulfillment_ratio = lookupFunc__table_for_order_fulfillment(maximum_shipment_rate / desired_shipment_rate);
+    real shipment_rate = desired_shipment_rate * order_fulfillment_ratio;
+    real order_fulfillment_rate = shipment_rate;
+    real customer_order_rate = 100;
+    real order_rate = customer_order_rate;
+    real backlog_dydt = order_rate - order_fulfillment_rate;
+    real wip_adjustment_time = 3;
     real safety_stock_coverage = 2;
     real desired_inventory_coverage = minimum_order_processing_time + safety_stock_coverage;
     real desired_inventory = desired_inventory_coverage * expected_order_rate;
-    real inventory_dydt = production_rate - shipment_rate;
-    real order_fulfillment_rate = shipment_rate;
     real prodcution_adjustment_from_inventory = desired_inventory - inventory / inventory_adjustment_time;
     real desired_production = fmax(0, expected_order_rate + prodcution_adjustment_from_inventory);
     real desired_wip = manufacturing_cycle_time * desired_production;
-    real wip_adjustment_time = 3;
     real adjustment_for_wip = desired_wip - work_in_process_inventory / wip_adjustment_time;
+    real inventory_dydt = production_rate - shipment_rate;
+    real production_rate_stocked_dydt = production_rate_stocked_change_rate;
     real desired_production_start_rate = desired_production + adjustment_for_wip;
     real production_start_rate = desired_production_start_rate;
-    real work_in_process_inventory_dydt = production_start_rate - production_rate;
-    real order_rate = customer_order_rate;
-    real time_step = 0.0625;
-    real expected_order_rate_dydt = change_in_exp_orders;
     real production_start_rate_stocked_change_rate = production_start_rate - production_start_rate_stocked / time_step;
-    real production_rate_stocked_change_rate = production_rate - production_rate_stocked / time_step;
-    real production_rate_stocked_dydt = production_rate_stocked_change_rate;
     real production_start_rate_stocked_dydt = production_start_rate_stocked_change_rate;
-    real backlog_dydt = order_rate - order_fulfillment_rate;
+    real time_to_average_order_rate = 8;
+    real change_in_exp_orders = customer_order_rate - expected_order_rate / time_to_average_order_rate;
+    real expected_order_rate_dydt = change_in_exp_orders;
+    real work_in_process_inventory_dydt = production_start_rate - production_rate;
 
-    dydt[1] = inventory_dydt;
-    dydt[2] = expected_order_rate_dydt;
-    dydt[3] = work_in_process_inventory_dydt;
-    dydt[4] = production_rate_stocked_dydt;
-    dydt[5] = production_start_rate_stocked_dydt;
-    dydt[6] = backlog_dydt;
+    dydt[1] = backlog_dydt;
+    dydt[2] = work_in_process_inventory_dydt;
+    dydt[3] = production_start_rate_stocked_dydt;
+    dydt[4] = inventory_dydt;
+    dydt[5] = production_rate_stocked_dydt;
+    dydt[6] = expected_order_rate_dydt;
 
     return dydt;
 }

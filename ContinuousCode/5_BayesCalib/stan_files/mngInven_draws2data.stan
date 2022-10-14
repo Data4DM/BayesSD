@@ -21,28 +21,28 @@ generated quantities{
     real m_noise_scale = normal_rng(0.01, 0.0005);
 
     // Initial ODE values
-    real inventory__init = 5 + 2 * 100;
-    real expected_order_rate__init = 100;
-    real work_in_process_inventory__init = 6 * fmax(0, 100 + 5 + 2 * 100 - 5 + 2 * 100 / 7);
-    real production_rate_stocked__init = 6 * fmax(0, 100 + 5 + 2 * 100 - 5 + 2 * 100 / 7) / 6;
-    real production_start_rate_stocked__init = fmax(0, 100 + 5 + 2 * 100 - 5 + 2 * 100 / 7) + 6 * fmax(0, 100 + 5 + 2 * 100 - 5 + 2 * 100 / 7) - 6 * fmax(0, 100 + 5 + 2 * 100 - 5 + 2 * 100 / 7) / 3;
-    real backlog__init = 100 * 2;
+    real backlog__init = order_rate * target_delivery_delay;
+    real work_in_process_inventory__init = desired_wip;
+    real production_start_rate_stocked__init = production_start_rate;
+    real inventory__init = desired_inventory;
+    real production_rate_stocked__init = production_rate;
+    real expected_order_rate__init = customer_order_rate;
 
     vector[6] initial_outcome;  // Initial ODE state vector
-    initial_outcome[1] = inventory__init;
-    initial_outcome[2] = expected_order_rate__init;
-    initial_outcome[3] = work_in_process_inventory__init;
-    initial_outcome[4] = production_rate_stocked__init;
-    initial_outcome[5] = production_start_rate_stocked__init;
-    initial_outcome[6] = backlog__init;
+    initial_outcome[1] = backlog__init;
+    initial_outcome[2] = work_in_process_inventory__init;
+    initial_outcome[3] = production_start_rate_stocked__init;
+    initial_outcome[4] = inventory__init;
+    initial_outcome[5] = production_rate_stocked__init;
+    initial_outcome[6] = expected_order_rate__init;
 
-    vector[6] integrated_result[n_t] = ode_rk45(vensim_ode_func, initial_outcome, initial_time, times, minimum_order_processing_time, inventory_adjustment_time);
-    array[n_t] real inventory = integrated_result[:, 1];
-    array[n_t] real expected_order_rate = integrated_result[:, 2];
-    array[n_t] real work_in_process_inventory = integrated_result[:, 3];
-    array[n_t] real production_rate_stocked = integrated_result[:, 4];
-    array[n_t] real production_start_rate_stocked = integrated_result[:, 5];
-    array[n_t] real backlog = integrated_result[:, 6];
+    vector[6] integrated_result[n_t] = ode_rk45(vensim_ode_func, initial_outcome, initial_time, times, inventory_adjustment_time, minimum_order_processing_time);
+    array[n_t] real backlog = integrated_result[:, 1];
+    array[n_t] real work_in_process_inventory = integrated_result[:, 2];
+    array[n_t] real production_start_rate_stocked = integrated_result[:, 3];
+    array[n_t] real inventory = integrated_result[:, 4];
+    array[n_t] real production_rate_stocked = integrated_result[:, 5];
+    array[n_t] real expected_order_rate = integrated_result[:, 6];
 
     vector[20] production_rate_stocked_obs = to_vector(normal_rng(production_rate_stocked, m_noise_scale));
     vector[20] production_start_rate_stocked_obs = to_vector(normal_rng(production_start_rate_stocked, m_noise_scale));

@@ -8,7 +8,7 @@ def draws2data(model, draws2data_numeric_assumption):
     #TODO iter_sampling = 10 merge into one xarray, merge posterior samples from ten datasets
 
     # store data
-    prior_ppc.draws_xr().to_netcdf(f"data/{ model.model_name}_prior_ppc.nc")
+    #prior_ppc.draws_xr().to_netcdf(f"data/{ model.model_name}_prior_ppc.nc")
 
     # return only the obs
     obs_dict = {key: prior_ppc.draws_xr()[key + "_obs"].values.flatten() for key in model.setting_dict['target_simulated_vector']}

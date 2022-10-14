@@ -61,6 +61,7 @@ class StanTransformedParametersBuilder:
                 if statement.lhs_expr not in datastructure_fucntion_set:
                     self. code += f"real {statement.lhs_expr} = {''.join(statement.distribution_args)};\n"
 
+
         self.code += "// Initial ODE values\n"
         for outcome_variable_name in outcome_variable_names:
             if outcome_variable_name in stock_initial_values:
@@ -384,7 +385,7 @@ class StanFunctionBuilder:
             self.elements,
             key=lambda x: eval_order.index(vensim_name_to_identifier(x.name)),
         )
-
+        print(required_variables)
         #################
         # Create function declaration
         self.code += f"vector {function_name}(real time, vector outcome"

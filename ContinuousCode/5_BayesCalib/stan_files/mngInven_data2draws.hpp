@@ -13,26 +13,26 @@ static constexpr std::array<const char*, 151> locations_array__ =
  " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 21, column 4 to column 44)",
  " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 22, column 4 to column 48)",
  " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 23, column 4 to column 32)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 28, column 4 to column 39)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 29, column 4 to column 41)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 30, column 4 to column 92)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 28, column 4 to column 198)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 29, column 4 to column 92)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 30, column 4 to column 39)",
  " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 31, column 4 to column 94)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 32, column 4 to column 198)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 33, column 4 to column 33)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 32, column 4 to column 33)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 33, column 4 to column 41)",
  " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 35, column 4 to column 30)",
  " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 43, column 4 to column 161)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 44, column 4 to column 56)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 45, column 4 to column 66)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 46, column 4 to column 72)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 44, column 4 to column 76)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 45, column 4 to column 72)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 46, column 4 to column 56)",
  " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 47, column 4 to column 70)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 48, column 4 to column 76)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 49, column 4 to column 54)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 36, column 4 to column 41)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 37, column 4 to column 51)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 38, column 4 to column 57)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 48, column 4 to column 54)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 49, column 4 to column 66)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 36, column 4 to column 61)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 37, column 4 to column 57)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 38, column 4 to column 41)",
  " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 39, column 4 to column 55)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 40, column 4 to column 61)",
- " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 41, column 4 to column 39)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 40, column 4 to column 39)",
+ " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 41, column 4 to column 51)",
  " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 53, column 4 to column 47)",
  " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 54, column 4 to column 56)",
  " (in '/Users/hyunjimoon/Dropbox/tolzul/BayesSD/ContinuousCode/5_BayesCalib/stan_files/mngInven_data2draws.stan', line 55, column 4 to column 41)",
@@ -176,8 +176,8 @@ struct vensim_ode_func_functor__ {
                                 stan::is_stan_scalar<T3__>>* = nullptr>
   Eigen::Matrix<stan::promote_args_t<T0__, stan::base_type_t<T1__>, T2__, T3__>, -1, 1>
   operator()(const T0__& time, const T1__& outcome,
-             const T2__& minimum_order_processing_time,
-             const T3__& inventory_adjustment_time, std::ostream* pstream__) const;
+             const T2__& inventory_adjustment_time,
+             const T3__& minimum_order_processing_time, std::ostream* pstream__) const;
 };
 struct vensim_ode_func_odefunctor__ {
   template <typename T0__, typename T1__, typename T2__, typename T3__,
@@ -188,8 +188,8 @@ struct vensim_ode_func_odefunctor__ {
                                 stan::is_stan_scalar<T3__>>* = nullptr>
   Eigen::Matrix<stan::promote_args_t<T0__, stan::base_type_t<T1__>, T2__, T3__>, -1, 1>
   operator()(const T0__& time, const T1__& outcome, std::ostream* pstream__,
-             const T2__& minimum_order_processing_time,
-             const T3__& inventory_adjustment_time) const;
+             const T2__& inventory_adjustment_time,
+             const T3__& minimum_order_processing_time) const;
 };
 
 template <typename T0__,
@@ -329,8 +329,8 @@ template <typename T0__, typename T1__, typename T2__, typename T3__,
                               stan::is_stan_scalar<T3__>>* = nullptr>
   Eigen::Matrix<stan::promote_args_t<T0__, stan::base_type_t<T1__>, T2__, T3__>, -1, 1>
   vensim_ode_func(const T0__& time, const T1__& outcome_arg__,
-                  const T2__& minimum_order_processing_time,
-                  const T3__& inventory_adjustment_time,
+                  const T2__& inventory_adjustment_time,
+                  const T3__& minimum_order_processing_time,
                   std::ostream* pstream__) {
     using local_scalar_t__ =
             stan::promote_args_t<T0__, stan::base_type_t<T1__>, T2__, T3__>;
@@ -343,159 +343,159 @@ template <typename T0__, typename T1__, typename T2__, typename T3__,
     try {
       Eigen::Matrix<local_scalar_t__, -1, 1> dydt =
          Eigen::Matrix<local_scalar_t__, -1, 1>::Constant(6, DUMMY_VAR__);
-      local_scalar_t__ inventory = DUMMY_VAR__;
+      local_scalar_t__ production_start_rate_stocked = DUMMY_VAR__;
       current_statement__ = 106;
-      inventory = stan::model::rvalue(outcome, "outcome",
-                    stan::model::index_uni(1));
-      local_scalar_t__ expected_order_rate = DUMMY_VAR__;
-      current_statement__ = 107;
-      expected_order_rate = stan::model::rvalue(outcome, "outcome",
-                              stan::model::index_uni(2));
+      production_start_rate_stocked = stan::model::rvalue(outcome, "outcome",
+                                        stan::model::index_uni(1));
       local_scalar_t__ work_in_process_inventory = DUMMY_VAR__;
-      current_statement__ = 108;
+      current_statement__ = 107;
       work_in_process_inventory = stan::model::rvalue(outcome, "outcome",
-                                    stan::model::index_uni(3));
+                                    stan::model::index_uni(2));
+      local_scalar_t__ inventory = DUMMY_VAR__;
+      current_statement__ = 108;
+      inventory = stan::model::rvalue(outcome, "outcome",
+                    stan::model::index_uni(3));
       local_scalar_t__ production_rate_stocked = DUMMY_VAR__;
       current_statement__ = 109;
       production_rate_stocked = stan::model::rvalue(outcome, "outcome",
                                   stan::model::index_uni(4));
-      local_scalar_t__ production_start_rate_stocked = DUMMY_VAR__;
-      current_statement__ = 110;
-      production_start_rate_stocked = stan::model::rvalue(outcome, "outcome",
-                                        stan::model::index_uni(5));
       local_scalar_t__ backlog = DUMMY_VAR__;
-      current_statement__ = 111;
+      current_statement__ = 110;
       backlog = stan::model::rvalue(outcome, "outcome",
-                  stan::model::index_uni(6));
-      local_scalar_t__ customer_order_rate = DUMMY_VAR__;
+                  stan::model::index_uni(5));
+      local_scalar_t__ expected_order_rate = DUMMY_VAR__;
+      current_statement__ = 111;
+      expected_order_rate = stan::model::rvalue(outcome, "outcome",
+                              stan::model::index_uni(6));
+      local_scalar_t__ time_step = DUMMY_VAR__;
       current_statement__ = 112;
-      customer_order_rate = 100;
-      local_scalar_t__ time_to_average_order_rate = DUMMY_VAR__;
-      current_statement__ = 113;
-      time_to_average_order_rate = 8;
-      local_scalar_t__ change_in_exp_orders = DUMMY_VAR__;
-      current_statement__ = 114;
-      change_in_exp_orders = (customer_order_rate -
-                               (expected_order_rate /
-                                 time_to_average_order_rate));
-      local_scalar_t__ maximum_shipment_rate = DUMMY_VAR__;
-      current_statement__ = 115;
-      maximum_shipment_rate = (inventory / minimum_order_processing_time);
-      local_scalar_t__ target_delivery_delay = DUMMY_VAR__;
-      current_statement__ = 116;
-      target_delivery_delay = 2;
-      local_scalar_t__ desired_shipment_rate = DUMMY_VAR__;
-      current_statement__ = 117;
-      desired_shipment_rate = (backlog / target_delivery_delay);
-      local_scalar_t__ order_fulfillment_ratio = DUMMY_VAR__;
-      current_statement__ = 118;
-      order_fulfillment_ratio = lookupFunc__table_for_order_fulfillment(
-                                  (maximum_shipment_rate /
-                                    desired_shipment_rate), pstream__);
-      local_scalar_t__ shipment_rate = DUMMY_VAR__;
-      current_statement__ = 119;
-      shipment_rate = (desired_shipment_rate * order_fulfillment_ratio);
-      local_scalar_t__ manufacturing_cycle_time = DUMMY_VAR__;
-      current_statement__ = 120;
-      manufacturing_cycle_time = 6;
-      local_scalar_t__ production_rate = DUMMY_VAR__;
-      current_statement__ = 121;
-      production_rate = (work_in_process_inventory /
-                          manufacturing_cycle_time);
+      time_step = 0.0625;
       local_scalar_t__ safety_stock_coverage = DUMMY_VAR__;
-      current_statement__ = 122;
+      current_statement__ = 113;
       safety_stock_coverage = 2;
       local_scalar_t__ desired_inventory_coverage = DUMMY_VAR__;
-      current_statement__ = 123;
+      current_statement__ = 114;
       desired_inventory_coverage = (minimum_order_processing_time +
                                      safety_stock_coverage);
       local_scalar_t__ desired_inventory = DUMMY_VAR__;
-      current_statement__ = 124;
+      current_statement__ = 115;
       desired_inventory = (desired_inventory_coverage * expected_order_rate);
-      local_scalar_t__ inventory_dydt = DUMMY_VAR__;
-      current_statement__ = 125;
-      inventory_dydt = (production_rate - shipment_rate);
-      local_scalar_t__ order_fulfillment_rate = DUMMY_VAR__;
-      current_statement__ = 126;
-      order_fulfillment_rate = shipment_rate;
       local_scalar_t__ prodcution_adjustment_from_inventory = DUMMY_VAR__;
-      current_statement__ = 127;
+      current_statement__ = 116;
       prodcution_adjustment_from_inventory = (desired_inventory -
                                                (inventory /
                                                  inventory_adjustment_time));
       local_scalar_t__ desired_production = DUMMY_VAR__;
-      current_statement__ = 128;
+      current_statement__ = 117;
       desired_production = stan::math::fmax(0,
                              (expected_order_rate +
                                prodcution_adjustment_from_inventory));
+      local_scalar_t__ manufacturing_cycle_time = DUMMY_VAR__;
+      current_statement__ = 118;
+      manufacturing_cycle_time = 6;
       local_scalar_t__ desired_wip = DUMMY_VAR__;
-      current_statement__ = 129;
+      current_statement__ = 119;
       desired_wip = (manufacturing_cycle_time * desired_production);
       local_scalar_t__ wip_adjustment_time = DUMMY_VAR__;
-      current_statement__ = 130;
+      current_statement__ = 120;
       wip_adjustment_time = 3;
       local_scalar_t__ adjustment_for_wip = DUMMY_VAR__;
-      current_statement__ = 131;
+      current_statement__ = 121;
       adjustment_for_wip = (desired_wip -
                              (work_in_process_inventory /
                                wip_adjustment_time));
       local_scalar_t__ desired_production_start_rate = DUMMY_VAR__;
-      current_statement__ = 132;
+      current_statement__ = 122;
       desired_production_start_rate = (desired_production +
                                         adjustment_for_wip);
       local_scalar_t__ production_start_rate = DUMMY_VAR__;
-      current_statement__ = 133;
+      current_statement__ = 123;
       production_start_rate = desired_production_start_rate;
-      local_scalar_t__ work_in_process_inventory_dydt = DUMMY_VAR__;
-      current_statement__ = 134;
-      work_in_process_inventory_dydt = (production_start_rate -
-                                         production_rate);
-      local_scalar_t__ order_rate = DUMMY_VAR__;
-      current_statement__ = 135;
-      order_rate = customer_order_rate;
-      local_scalar_t__ time_step = DUMMY_VAR__;
-      current_statement__ = 136;
-      time_step = 0.0625;
-      local_scalar_t__ expected_order_rate_dydt = DUMMY_VAR__;
-      current_statement__ = 137;
-      expected_order_rate_dydt = change_in_exp_orders;
       local_scalar_t__ production_start_rate_stocked_change_rate =
          DUMMY_VAR__;
-      current_statement__ = 138;
+      current_statement__ = 124;
       production_start_rate_stocked_change_rate = (production_start_rate -
                                                     (production_start_rate_stocked
                                                       / time_step));
+      local_scalar_t__ production_start_rate_stocked_dydt = DUMMY_VAR__;
+      current_statement__ = 125;
+      production_start_rate_stocked_dydt = production_start_rate_stocked_change_rate;
+      local_scalar_t__ maximum_shipment_rate = DUMMY_VAR__;
+      current_statement__ = 126;
+      maximum_shipment_rate = (inventory / minimum_order_processing_time);
+      local_scalar_t__ target_delivery_delay = DUMMY_VAR__;
+      current_statement__ = 127;
+      target_delivery_delay = 2;
+      local_scalar_t__ desired_shipment_rate = DUMMY_VAR__;
+      current_statement__ = 128;
+      desired_shipment_rate = (backlog / target_delivery_delay);
+      local_scalar_t__ order_fulfillment_ratio = DUMMY_VAR__;
+      current_statement__ = 129;
+      order_fulfillment_ratio = lookupFunc__table_for_order_fulfillment(
+                                  (maximum_shipment_rate /
+                                    desired_shipment_rate), pstream__);
+      local_scalar_t__ shipment_rate = DUMMY_VAR__;
+      current_statement__ = 130;
+      shipment_rate = (desired_shipment_rate * order_fulfillment_ratio);
+      local_scalar_t__ production_rate = DUMMY_VAR__;
+      current_statement__ = 131;
+      production_rate = (work_in_process_inventory /
+                          manufacturing_cycle_time);
+      local_scalar_t__ work_in_process_inventory_dydt = DUMMY_VAR__;
+      current_statement__ = 132;
+      work_in_process_inventory_dydt = (production_start_rate -
+                                         production_rate);
+      local_scalar_t__ time_to_average_order_rate = DUMMY_VAR__;
+      current_statement__ = 133;
+      time_to_average_order_rate = 8;
       local_scalar_t__ production_rate_stocked_change_rate = DUMMY_VAR__;
-      current_statement__ = 139;
+      current_statement__ = 134;
       production_rate_stocked_change_rate = (production_rate -
                                               (production_rate_stocked /
                                                 time_step));
+      local_scalar_t__ inventory_dydt = DUMMY_VAR__;
+      current_statement__ = 135;
+      inventory_dydt = (production_rate - shipment_rate);
       local_scalar_t__ production_rate_stocked_dydt = DUMMY_VAR__;
-      current_statement__ = 140;
+      current_statement__ = 136;
       production_rate_stocked_dydt = production_rate_stocked_change_rate;
-      local_scalar_t__ production_start_rate_stocked_dydt = DUMMY_VAR__;
+      local_scalar_t__ customer_order_rate = DUMMY_VAR__;
+      current_statement__ = 137;
+      customer_order_rate = 100;
+      local_scalar_t__ change_in_exp_orders = DUMMY_VAR__;
+      current_statement__ = 138;
+      change_in_exp_orders = (customer_order_rate -
+                               (expected_order_rate /
+                                 time_to_average_order_rate));
+      local_scalar_t__ expected_order_rate_dydt = DUMMY_VAR__;
+      current_statement__ = 139;
+      expected_order_rate_dydt = change_in_exp_orders;
+      local_scalar_t__ order_rate = DUMMY_VAR__;
+      current_statement__ = 140;
+      order_rate = customer_order_rate;
+      local_scalar_t__ order_fulfillment_rate = DUMMY_VAR__;
       current_statement__ = 141;
-      production_start_rate_stocked_dydt = production_start_rate_stocked_change_rate;
+      order_fulfillment_rate = shipment_rate;
       local_scalar_t__ backlog_dydt = DUMMY_VAR__;
       current_statement__ = 142;
       backlog_dydt = (order_rate - order_fulfillment_rate);
       current_statement__ = 143;
-      stan::model::assign(dydt, inventory_dydt,
+      stan::model::assign(dydt, production_start_rate_stocked_dydt,
         "assigning variable dydt", stan::model::index_uni(1));
       current_statement__ = 144;
-      stan::model::assign(dydt, expected_order_rate_dydt,
+      stan::model::assign(dydt, work_in_process_inventory_dydt,
         "assigning variable dydt", stan::model::index_uni(2));
       current_statement__ = 145;
-      stan::model::assign(dydt, work_in_process_inventory_dydt,
+      stan::model::assign(dydt, inventory_dydt,
         "assigning variable dydt", stan::model::index_uni(3));
       current_statement__ = 146;
       stan::model::assign(dydt, production_rate_stocked_dydt,
         "assigning variable dydt", stan::model::index_uni(4));
       current_statement__ = 147;
-      stan::model::assign(dydt, production_start_rate_stocked_dydt,
+      stan::model::assign(dydt, backlog_dydt,
         "assigning variable dydt", stan::model::index_uni(5));
       current_statement__ = 148;
-      stan::model::assign(dydt, backlog_dydt,
+      stan::model::assign(dydt, expected_order_rate_dydt,
         "assigning variable dydt", stan::model::index_uni(6));
       current_statement__ = 149;
       return dydt;
@@ -520,12 +520,12 @@ template <typename T0__, typename T1__, typename T2__, typename T3__,
                               stan::is_stan_scalar<T3__>>*>
 Eigen::Matrix<stan::promote_args_t<T0__, stan::base_type_t<T1__>, T2__, T3__>, -1, 1>
 vensim_ode_func_functor__::operator()(const T0__& time, const T1__& outcome,
-                                      const T2__& minimum_order_processing_time,
-                                      const T3__& inventory_adjustment_time,
+                                      const T2__& inventory_adjustment_time,
+                                      const T3__& minimum_order_processing_time,
                                       std::ostream* pstream__)  const
 {
-  return vensim_ode_func(time, outcome, minimum_order_processing_time,
-           inventory_adjustment_time, pstream__);
+  return vensim_ode_func(time, outcome, inventory_adjustment_time,
+           minimum_order_processing_time, pstream__);
 }
 
 template <typename T0__, typename T1__, typename T2__, typename T3__,
@@ -538,12 +538,12 @@ Eigen::Matrix<stan::promote_args_t<T0__, stan::base_type_t<T1__>, T2__, T3__>, -
 vensim_ode_func_odefunctor__::operator()(const T0__& time,
                                          const T1__& outcome,
                                          std::ostream* pstream__,
-                                         const T2__& minimum_order_processing_time,
-                                         const T3__& inventory_adjustment_time) 
+                                         const T2__& inventory_adjustment_time,
+                                         const T3__& minimum_order_processing_time) 
 const
 {
-  return vensim_ode_func(time, outcome, minimum_order_processing_time,
-           inventory_adjustment_time, pstream__);
+  return vensim_ode_func(time, outcome, inventory_adjustment_time,
+           minimum_order_processing_time, pstream__);
 }
 
 
@@ -776,21 +776,21 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
       current_statement__ = 39;
       stan::math::validate_non_negative_index("integrated_result", "n_t", n_t);
       current_statement__ = 40;
-      stan::math::validate_non_negative_index("inventory", "n_t", n_t);
+      stan::math::validate_non_negative_index("production_start_rate_stocked",
+                                              "n_t", n_t);
       current_statement__ = 41;
-      stan::math::validate_non_negative_index("expected_order_rate", "n_t",
-                                              n_t);
-      current_statement__ = 42;
       stan::math::validate_non_negative_index("work_in_process_inventory",
                                               "n_t", n_t);
+      current_statement__ = 42;
+      stan::math::validate_non_negative_index("inventory", "n_t", n_t);
       current_statement__ = 43;
       stan::math::validate_non_negative_index("production_rate_stocked",
                                               "n_t", n_t);
       current_statement__ = 44;
-      stan::math::validate_non_negative_index("production_start_rate_stocked",
-                                              "n_t", n_t);
-      current_statement__ = 45;
       stan::math::validate_non_negative_index("backlog", "n_t", n_t);
+      current_statement__ = 45;
+      stan::math::validate_non_negative_index("expected_order_rate", "n_t",
+                                              n_t);
     } catch (const std::exception& e) {
       stan::lang::rethrow_located(e, locations_array__[current_statement__]);
     }
@@ -829,26 +829,8 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
       current_statement__ = 3;
       m_noise_scale = in__.template read_constrain_lb<local_scalar_t__, 
                         jacobian__>(0, lp__);
-      local_scalar_t__ inventory__init = DUMMY_VAR__;
-      current_statement__ = 4;
-      inventory__init = (5 + (2 * 100));
-      local_scalar_t__ expected_order_rate__init = DUMMY_VAR__;
-      current_statement__ = 5;
-      expected_order_rate__init = 100;
-      local_scalar_t__ work_in_process_inventory__init = DUMMY_VAR__;
-      current_statement__ = 6;
-      work_in_process_inventory__init = (6 *
-                                          stan::math::fmax(0,
-                                            ((((100 + 5) + (2 * 100)) - 5) +
-                                              ((2 * 100) / 7))));
-      local_scalar_t__ production_rate_stocked__init = DUMMY_VAR__;
-      current_statement__ = 7;
-      production_rate_stocked__init = ((6 *
-                                         stan::math::fmax(0,
-                                           ((((100 + 5) + (2 * 100)) - 5) +
-                                             ((2 * 100) / 7)))) / 6);
       local_scalar_t__ production_start_rate_stocked__init = DUMMY_VAR__;
-      current_statement__ = 8;
+      current_statement__ = 4;
       production_start_rate_stocked__init = ((stan::math::fmax(0,
                                                 ((((100 + 5) + (2 * 100)) -
                                                    5) + ((2 * 100) / 7))) +
@@ -862,29 +844,47 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
                                                    ((((100 + 5) + (2 * 100))
                                                       - 5) + ((2 * 100) / 7))))
                                                 / 3));
+      local_scalar_t__ work_in_process_inventory__init = DUMMY_VAR__;
+      current_statement__ = 5;
+      work_in_process_inventory__init = (6 *
+                                          stan::math::fmax(0,
+                                            ((((100 + 5) + (2 * 100)) - 5) +
+                                              ((2 * 100) / 7))));
+      local_scalar_t__ inventory__init = DUMMY_VAR__;
+      current_statement__ = 6;
+      inventory__init = (5 + (2 * 100));
+      local_scalar_t__ production_rate_stocked__init = DUMMY_VAR__;
+      current_statement__ = 7;
+      production_rate_stocked__init = ((6 *
+                                         stan::math::fmax(0,
+                                           ((((100 + 5) + (2 * 100)) - 5) +
+                                             ((2 * 100) / 7)))) / 6);
       local_scalar_t__ backlog__init = DUMMY_VAR__;
-      current_statement__ = 9;
+      current_statement__ = 8;
       backlog__init = (100 * 2);
+      local_scalar_t__ expected_order_rate__init = DUMMY_VAR__;
+      current_statement__ = 9;
+      expected_order_rate__init = 100;
       Eigen::Matrix<local_scalar_t__, -1, 1> initial_outcome =
          Eigen::Matrix<local_scalar_t__, -1, 1>::Constant(6, DUMMY_VAR__);
       current_statement__ = 18;
-      stan::model::assign(initial_outcome, inventory__init,
+      stan::model::assign(initial_outcome,
+        production_start_rate_stocked__init,
         "assigning variable initial_outcome", stan::model::index_uni(1));
       current_statement__ = 19;
-      stan::model::assign(initial_outcome, expected_order_rate__init,
+      stan::model::assign(initial_outcome, work_in_process_inventory__init,
         "assigning variable initial_outcome", stan::model::index_uni(2));
       current_statement__ = 20;
-      stan::model::assign(initial_outcome, work_in_process_inventory__init,
+      stan::model::assign(initial_outcome, inventory__init,
         "assigning variable initial_outcome", stan::model::index_uni(3));
       current_statement__ = 21;
       stan::model::assign(initial_outcome, production_rate_stocked__init,
         "assigning variable initial_outcome", stan::model::index_uni(4));
       current_statement__ = 22;
-      stan::model::assign(initial_outcome,
-        production_start_rate_stocked__init,
+      stan::model::assign(initial_outcome, backlog__init,
         "assigning variable initial_outcome", stan::model::index_uni(5));
       current_statement__ = 23;
-      stan::model::assign(initial_outcome, backlog__init,
+      stan::model::assign(initial_outcome, expected_order_rate__init,
         "assigning variable initial_outcome", stan::model::index_uni(6));
       std::vector<Eigen::Matrix<local_scalar_t__, -1, 1>> integrated_result =
          std::vector<Eigen::Matrix<local_scalar_t__, -1, 1>>(n_t, 
@@ -892,29 +892,30 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
       current_statement__ = 11;
       stan::model::assign(integrated_result,
         stan::math::ode_rk45(vensim_ode_func_odefunctor__(), initial_outcome,
-          initial_time, times, pstream__, minimum_order_processing_time,
-          inventory_adjustment_time), "assigning variable integrated_result");
-      std::vector<local_scalar_t__> inventory =
+          initial_time, times, pstream__, inventory_adjustment_time,
+          minimum_order_processing_time),
+        "assigning variable integrated_result");
+      std::vector<local_scalar_t__> production_start_rate_stocked =
          std::vector<local_scalar_t__>(n_t, DUMMY_VAR__);
       current_statement__ = 12;
-      stan::model::assign(inventory,
+      stan::model::assign(production_start_rate_stocked,
         stan::model::rvalue(integrated_result, "integrated_result",
           stan::model::index_omni(), stan::model::index_uni(1)),
-        "assigning variable inventory");
-      std::vector<local_scalar_t__> expected_order_rate =
-         std::vector<local_scalar_t__>(n_t, DUMMY_VAR__);
-      current_statement__ = 13;
-      stan::model::assign(expected_order_rate,
-        stan::model::rvalue(integrated_result, "integrated_result",
-          stan::model::index_omni(), stan::model::index_uni(2)),
-        "assigning variable expected_order_rate");
+        "assigning variable production_start_rate_stocked");
       std::vector<local_scalar_t__> work_in_process_inventory =
          std::vector<local_scalar_t__>(n_t, DUMMY_VAR__);
-      current_statement__ = 14;
+      current_statement__ = 13;
       stan::model::assign(work_in_process_inventory,
         stan::model::rvalue(integrated_result, "integrated_result",
-          stan::model::index_omni(), stan::model::index_uni(3)),
+          stan::model::index_omni(), stan::model::index_uni(2)),
         "assigning variable work_in_process_inventory");
+      std::vector<local_scalar_t__> inventory =
+         std::vector<local_scalar_t__>(n_t, DUMMY_VAR__);
+      current_statement__ = 14;
+      stan::model::assign(inventory,
+        stan::model::rvalue(integrated_result, "integrated_result",
+          stan::model::index_omni(), stan::model::index_uni(3)),
+        "assigning variable inventory");
       std::vector<local_scalar_t__> production_rate_stocked =
          std::vector<local_scalar_t__>(n_t, DUMMY_VAR__);
       current_statement__ = 15;
@@ -922,20 +923,20 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
         stan::model::rvalue(integrated_result, "integrated_result",
           stan::model::index_omni(), stan::model::index_uni(4)),
         "assigning variable production_rate_stocked");
-      std::vector<local_scalar_t__> production_start_rate_stocked =
-         std::vector<local_scalar_t__>(n_t, DUMMY_VAR__);
-      current_statement__ = 16;
-      stan::model::assign(production_start_rate_stocked,
-        stan::model::rvalue(integrated_result, "integrated_result",
-          stan::model::index_omni(), stan::model::index_uni(5)),
-        "assigning variable production_start_rate_stocked");
       std::vector<local_scalar_t__> backlog =
          std::vector<local_scalar_t__>(n_t, DUMMY_VAR__);
-      current_statement__ = 17;
+      current_statement__ = 16;
       stan::model::assign(backlog,
         stan::model::rvalue(integrated_result, "integrated_result",
-          stan::model::index_omni(), stan::model::index_uni(6)),
+          stan::model::index_omni(), stan::model::index_uni(5)),
         "assigning variable backlog");
+      std::vector<local_scalar_t__> expected_order_rate =
+         std::vector<local_scalar_t__>(n_t, DUMMY_VAR__);
+      current_statement__ = 17;
+      stan::model::assign(expected_order_rate,
+        stan::model::rvalue(integrated_result, "integrated_result",
+          stan::model::index_omni(), stan::model::index_uni(6)),
+        "assigning variable expected_order_rate");
       {
         current_statement__ = 24;
         lp_accum__.add(
@@ -1005,16 +1006,16 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
       current_statement__ = 3;
       m_noise_scale = in__.template read_constrain_lb<local_scalar_t__, 
                         jacobian__>(0, lp__);
-      double inventory__init = std::numeric_limits<double>::quiet_NaN();
-      double expected_order_rate__init =
+      double production_start_rate_stocked__init =
          std::numeric_limits<double>::quiet_NaN();
       double work_in_process_inventory__init =
          std::numeric_limits<double>::quiet_NaN();
+      double inventory__init = std::numeric_limits<double>::quiet_NaN();
       double production_rate_stocked__init =
          std::numeric_limits<double>::quiet_NaN();
-      double production_start_rate_stocked__init =
-         std::numeric_limits<double>::quiet_NaN();
       double backlog__init = std::numeric_limits<double>::quiet_NaN();
+      double expected_order_rate__init =
+         std::numeric_limits<double>::quiet_NaN();
       Eigen::Matrix<double, -1, 1> initial_outcome =
          Eigen::Matrix<double, -1, 1>::Constant(6,
            std::numeric_limits<double>::quiet_NaN());
@@ -1022,17 +1023,17 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
          std::vector<Eigen::Matrix<double, -1, 1>>(n_t, 
            Eigen::Matrix<double, -1, 1>::Constant(6,
              std::numeric_limits<double>::quiet_NaN()));
-      std::vector<double> inventory =
-         std::vector<double>(n_t, std::numeric_limits<double>::quiet_NaN());
-      std::vector<double> expected_order_rate =
+      std::vector<double> production_start_rate_stocked =
          std::vector<double>(n_t, std::numeric_limits<double>::quiet_NaN());
       std::vector<double> work_in_process_inventory =
          std::vector<double>(n_t, std::numeric_limits<double>::quiet_NaN());
+      std::vector<double> inventory =
+         std::vector<double>(n_t, std::numeric_limits<double>::quiet_NaN());
       std::vector<double> production_rate_stocked =
          std::vector<double>(n_t, std::numeric_limits<double>::quiet_NaN());
-      std::vector<double> production_start_rate_stocked =
-         std::vector<double>(n_t, std::numeric_limits<double>::quiet_NaN());
       std::vector<double> backlog =
+         std::vector<double>(n_t, std::numeric_limits<double>::quiet_NaN());
+      std::vector<double> expected_order_rate =
          std::vector<double>(n_t, std::numeric_limits<double>::quiet_NaN());
       out__.write(inventory_adjustment_time);
       out__.write(minimum_order_processing_time);
@@ -1043,20 +1044,6 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
         return ;
       } 
       current_statement__ = 4;
-      inventory__init = (5 + (2 * 100));
-      current_statement__ = 5;
-      expected_order_rate__init = 100;
-      current_statement__ = 6;
-      work_in_process_inventory__init = (6 *
-                                          stan::math::fmax(0,
-                                            ((((100 + 5) + (2 * 100)) - 5) +
-                                              ((2 * 100) / 7))));
-      current_statement__ = 7;
-      production_rate_stocked__init = ((6 *
-                                         stan::math::fmax(0,
-                                           ((((100 + 5) + (2 * 100)) - 5) +
-                                             ((2 * 100) / 7)))) / 6);
-      current_statement__ = 8;
       production_start_rate_stocked__init = ((stan::math::fmax(0,
                                                 ((((100 + 5) + (2 * 100)) -
                                                    5) + ((2 * 100) / 7))) +
@@ -1070,81 +1057,96 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
                                                    ((((100 + 5) + (2 * 100))
                                                       - 5) + ((2 * 100) / 7))))
                                                 / 3));
-      current_statement__ = 9;
+      current_statement__ = 5;
+      work_in_process_inventory__init = (6 *
+                                          stan::math::fmax(0,
+                                            ((((100 + 5) + (2 * 100)) - 5) +
+                                              ((2 * 100) / 7))));
+      current_statement__ = 6;
+      inventory__init = (5 + (2 * 100));
+      current_statement__ = 7;
+      production_rate_stocked__init = ((6 *
+                                         stan::math::fmax(0,
+                                           ((((100 + 5) + (2 * 100)) - 5) +
+                                             ((2 * 100) / 7)))) / 6);
+      current_statement__ = 8;
       backlog__init = (100 * 2);
+      current_statement__ = 9;
+      expected_order_rate__init = 100;
       current_statement__ = 18;
-      stan::model::assign(initial_outcome, inventory__init,
+      stan::model::assign(initial_outcome,
+        production_start_rate_stocked__init,
         "assigning variable initial_outcome", stan::model::index_uni(1));
       current_statement__ = 19;
-      stan::model::assign(initial_outcome, expected_order_rate__init,
+      stan::model::assign(initial_outcome, work_in_process_inventory__init,
         "assigning variable initial_outcome", stan::model::index_uni(2));
       current_statement__ = 20;
-      stan::model::assign(initial_outcome, work_in_process_inventory__init,
+      stan::model::assign(initial_outcome, inventory__init,
         "assigning variable initial_outcome", stan::model::index_uni(3));
       current_statement__ = 21;
       stan::model::assign(initial_outcome, production_rate_stocked__init,
         "assigning variable initial_outcome", stan::model::index_uni(4));
       current_statement__ = 22;
-      stan::model::assign(initial_outcome,
-        production_start_rate_stocked__init,
+      stan::model::assign(initial_outcome, backlog__init,
         "assigning variable initial_outcome", stan::model::index_uni(5));
       current_statement__ = 23;
-      stan::model::assign(initial_outcome, backlog__init,
+      stan::model::assign(initial_outcome, expected_order_rate__init,
         "assigning variable initial_outcome", stan::model::index_uni(6));
       current_statement__ = 11;
       stan::model::assign(integrated_result,
         stan::math::ode_rk45(vensim_ode_func_odefunctor__(), initial_outcome,
-          initial_time, times, pstream__, minimum_order_processing_time,
-          inventory_adjustment_time), "assigning variable integrated_result");
+          initial_time, times, pstream__, inventory_adjustment_time,
+          minimum_order_processing_time),
+        "assigning variable integrated_result");
       current_statement__ = 12;
-      stan::model::assign(inventory,
+      stan::model::assign(production_start_rate_stocked,
         stan::model::rvalue(integrated_result, "integrated_result",
           stan::model::index_omni(), stan::model::index_uni(1)),
-        "assigning variable inventory");
+        "assigning variable production_start_rate_stocked");
       current_statement__ = 13;
-      stan::model::assign(expected_order_rate,
-        stan::model::rvalue(integrated_result, "integrated_result",
-          stan::model::index_omni(), stan::model::index_uni(2)),
-        "assigning variable expected_order_rate");
-      current_statement__ = 14;
       stan::model::assign(work_in_process_inventory,
         stan::model::rvalue(integrated_result, "integrated_result",
-          stan::model::index_omni(), stan::model::index_uni(3)),
+          stan::model::index_omni(), stan::model::index_uni(2)),
         "assigning variable work_in_process_inventory");
+      current_statement__ = 14;
+      stan::model::assign(inventory,
+        stan::model::rvalue(integrated_result, "integrated_result",
+          stan::model::index_omni(), stan::model::index_uni(3)),
+        "assigning variable inventory");
       current_statement__ = 15;
       stan::model::assign(production_rate_stocked,
         stan::model::rvalue(integrated_result, "integrated_result",
           stan::model::index_omni(), stan::model::index_uni(4)),
         "assigning variable production_rate_stocked");
       current_statement__ = 16;
-      stan::model::assign(production_start_rate_stocked,
-        stan::model::rvalue(integrated_result, "integrated_result",
-          stan::model::index_omni(), stan::model::index_uni(5)),
-        "assigning variable production_start_rate_stocked");
-      current_statement__ = 17;
       stan::model::assign(backlog,
         stan::model::rvalue(integrated_result, "integrated_result",
-          stan::model::index_omni(), stan::model::index_uni(6)),
+          stan::model::index_omni(), stan::model::index_uni(5)),
         "assigning variable backlog");
+      current_statement__ = 17;
+      stan::model::assign(expected_order_rate,
+        stan::model::rvalue(integrated_result, "integrated_result",
+          stan::model::index_omni(), stan::model::index_uni(6)),
+        "assigning variable expected_order_rate");
       if (emit_transformed_parameters__) {
-        out__.write(inventory__init);
-        out__.write(expected_order_rate__init);
-        out__.write(work_in_process_inventory__init);
-        out__.write(production_rate_stocked__init);
         out__.write(production_start_rate_stocked__init);
+        out__.write(work_in_process_inventory__init);
+        out__.write(inventory__init);
+        out__.write(production_rate_stocked__init);
         out__.write(backlog__init);
+        out__.write(expected_order_rate__init);
         out__.write(initial_outcome);
         for (int sym1__ = 1; sym1__ <= 6; ++sym1__) {
           for (int sym2__ = 1; sym2__ <= n_t; ++sym2__) {
             out__.write(integrated_result[(sym2__ - 1)][(sym1__ - 1)]);
           }
         }
-        out__.write(inventory);
-        out__.write(expected_order_rate);
-        out__.write(work_in_process_inventory);
-        out__.write(production_rate_stocked);
         out__.write(production_start_rate_stocked);
+        out__.write(work_in_process_inventory);
+        out__.write(inventory);
+        out__.write(production_rate_stocked);
         out__.write(backlog);
+        out__.write(expected_order_rate);
       } 
       if (stan::math::logical_negation(emit_generated_quantities__)) {
         return ;
@@ -1186,12 +1188,14 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
   inline void get_param_names(std::vector<std::string>& names__) const {
     
     names__ = std::vector<std::string>{"inventory_adjustment_time",
-      "minimum_order_processing_time", "m_noise_scale", "inventory__init",
-      "expected_order_rate__init", "work_in_process_inventory__init",
-      "production_rate_stocked__init", "production_start_rate_stocked__init",
-      "backlog__init", "initial_outcome", "integrated_result", "inventory",
-      "expected_order_rate", "work_in_process_inventory",
-      "production_rate_stocked", "production_start_rate_stocked", "backlog"};
+      "minimum_order_processing_time", "m_noise_scale",
+      "production_start_rate_stocked__init",
+      "work_in_process_inventory__init", "inventory__init",
+      "production_rate_stocked__init", "backlog__init",
+      "expected_order_rate__init", "initial_outcome", "integrated_result",
+      "production_start_rate_stocked", "work_in_process_inventory",
+      "inventory", "production_rate_stocked", "backlog",
+      "expected_order_rate"};
     
     } // get_param_names() 
     
@@ -1222,12 +1226,12 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
     param_names__.emplace_back(std::string() + "minimum_order_processing_time");
     param_names__.emplace_back(std::string() + "m_noise_scale");
     if (emit_transformed_parameters__) {
-      param_names__.emplace_back(std::string() + "inventory__init");
-      param_names__.emplace_back(std::string() + "expected_order_rate__init");
-      param_names__.emplace_back(std::string() + "work_in_process_inventory__init");
-      param_names__.emplace_back(std::string() + "production_rate_stocked__init");
       param_names__.emplace_back(std::string() + "production_start_rate_stocked__init");
+      param_names__.emplace_back(std::string() + "work_in_process_inventory__init");
+      param_names__.emplace_back(std::string() + "inventory__init");
+      param_names__.emplace_back(std::string() + "production_rate_stocked__init");
       param_names__.emplace_back(std::string() + "backlog__init");
+      param_names__.emplace_back(std::string() + "expected_order_rate__init");
       for (int sym1__ = 1; sym1__ <= 6; ++sym1__) {
         {
           param_names__.emplace_back(std::string() + "initial_outcome" + '.' + std::to_string(sym1__));
@@ -1244,12 +1248,7 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
       }
       for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
         {
-          param_names__.emplace_back(std::string() + "inventory" + '.' + std::to_string(sym1__));
-        } 
-      }
-      for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
-        {
-          param_names__.emplace_back(std::string() + "expected_order_rate" + '.' + std::to_string(sym1__));
+          param_names__.emplace_back(std::string() + "production_start_rate_stocked" + '.' + std::to_string(sym1__));
         } 
       }
       for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
@@ -1259,17 +1258,22 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
       }
       for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
         {
+          param_names__.emplace_back(std::string() + "inventory" + '.' + std::to_string(sym1__));
+        } 
+      }
+      for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
+        {
           param_names__.emplace_back(std::string() + "production_rate_stocked" + '.' + std::to_string(sym1__));
         } 
       }
       for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
         {
-          param_names__.emplace_back(std::string() + "production_start_rate_stocked" + '.' + std::to_string(sym1__));
+          param_names__.emplace_back(std::string() + "backlog" + '.' + std::to_string(sym1__));
         } 
       }
       for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
         {
-          param_names__.emplace_back(std::string() + "backlog" + '.' + std::to_string(sym1__));
+          param_names__.emplace_back(std::string() + "expected_order_rate" + '.' + std::to_string(sym1__));
         } 
       }
     }
@@ -1290,12 +1294,12 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
     param_names__.emplace_back(std::string() + "minimum_order_processing_time");
     param_names__.emplace_back(std::string() + "m_noise_scale");
     if (emit_transformed_parameters__) {
-      param_names__.emplace_back(std::string() + "inventory__init");
-      param_names__.emplace_back(std::string() + "expected_order_rate__init");
-      param_names__.emplace_back(std::string() + "work_in_process_inventory__init");
-      param_names__.emplace_back(std::string() + "production_rate_stocked__init");
       param_names__.emplace_back(std::string() + "production_start_rate_stocked__init");
+      param_names__.emplace_back(std::string() + "work_in_process_inventory__init");
+      param_names__.emplace_back(std::string() + "inventory__init");
+      param_names__.emplace_back(std::string() + "production_rate_stocked__init");
       param_names__.emplace_back(std::string() + "backlog__init");
+      param_names__.emplace_back(std::string() + "expected_order_rate__init");
       for (int sym1__ = 1; sym1__ <= 6; ++sym1__) {
         {
           param_names__.emplace_back(std::string() + "initial_outcome" + '.' + std::to_string(sym1__));
@@ -1312,12 +1316,7 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
       }
       for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
         {
-          param_names__.emplace_back(std::string() + "inventory" + '.' + std::to_string(sym1__));
-        } 
-      }
-      for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
-        {
-          param_names__.emplace_back(std::string() + "expected_order_rate" + '.' + std::to_string(sym1__));
+          param_names__.emplace_back(std::string() + "production_start_rate_stocked" + '.' + std::to_string(sym1__));
         } 
       }
       for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
@@ -1327,17 +1326,22 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
       }
       for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
         {
+          param_names__.emplace_back(std::string() + "inventory" + '.' + std::to_string(sym1__));
+        } 
+      }
+      for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
+        {
           param_names__.emplace_back(std::string() + "production_rate_stocked" + '.' + std::to_string(sym1__));
         } 
       }
       for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
         {
-          param_names__.emplace_back(std::string() + "production_start_rate_stocked" + '.' + std::to_string(sym1__));
+          param_names__.emplace_back(std::string() + "backlog" + '.' + std::to_string(sym1__));
         } 
       }
       for (int sym1__ = 1; sym1__ <= n_t; ++sym1__) {
         {
-          param_names__.emplace_back(std::string() + "backlog" + '.' + std::to_string(sym1__));
+          param_names__.emplace_back(std::string() + "expected_order_rate" + '.' + std::to_string(sym1__));
         } 
       }
     }
@@ -1350,13 +1354,13 @@ class mngInven_data2draws_model final : public model_base_crtp<mngInven_data2dra
     
   inline std::string get_constrained_sizedtypes() const {
     
-    return std::string("[{\"name\":\"inventory_adjustment_time\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"minimum_order_processing_time\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"m_noise_scale\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"inventory__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"expected_order_rate__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"work_in_process_inventory__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"production_rate_stocked__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"production_start_rate_stocked__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"backlog__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"initial_outcome\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(6) + "},\"block\":\"transformed_parameters\"},{\"name\":\"integrated_result\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"vector\",\"length\":" + std::to_string(6) + "}},\"block\":\"transformed_parameters\"},{\"name\":\"inventory\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"expected_order_rate\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"work_in_process_inventory\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"production_rate_stocked\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"production_start_rate_stocked\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"backlog\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"}]");
+    return std::string("[{\"name\":\"inventory_adjustment_time\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"minimum_order_processing_time\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"m_noise_scale\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"production_start_rate_stocked__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"work_in_process_inventory__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"inventory__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"production_rate_stocked__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"backlog__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"expected_order_rate__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"initial_outcome\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(6) + "},\"block\":\"transformed_parameters\"},{\"name\":\"integrated_result\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"vector\",\"length\":" + std::to_string(6) + "}},\"block\":\"transformed_parameters\"},{\"name\":\"production_start_rate_stocked\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"work_in_process_inventory\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"inventory\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"production_rate_stocked\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"backlog\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"expected_order_rate\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"}]");
     
     } // get_constrained_sizedtypes() 
     
   inline std::string get_unconstrained_sizedtypes() const {
     
-    return std::string("[{\"name\":\"inventory_adjustment_time\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"minimum_order_processing_time\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"m_noise_scale\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"inventory__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"expected_order_rate__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"work_in_process_inventory__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"production_rate_stocked__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"production_start_rate_stocked__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"backlog__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"initial_outcome\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(6) + "},\"block\":\"transformed_parameters\"},{\"name\":\"integrated_result\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"vector\",\"length\":" + std::to_string(6) + "}},\"block\":\"transformed_parameters\"},{\"name\":\"inventory\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"expected_order_rate\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"work_in_process_inventory\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"production_rate_stocked\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"production_start_rate_stocked\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"backlog\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"}]");
+    return std::string("[{\"name\":\"inventory_adjustment_time\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"minimum_order_processing_time\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"m_noise_scale\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"production_start_rate_stocked__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"work_in_process_inventory__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"inventory__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"production_rate_stocked__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"backlog__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"expected_order_rate__init\",\"type\":{\"name\":\"real\"},\"block\":\"transformed_parameters\"},{\"name\":\"initial_outcome\",\"type\":{\"name\":\"vector\",\"length\":" + std::to_string(6) + "},\"block\":\"transformed_parameters\"},{\"name\":\"integrated_result\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"vector\",\"length\":" + std::to_string(6) + "}},\"block\":\"transformed_parameters\"},{\"name\":\"production_start_rate_stocked\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"work_in_process_inventory\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"inventory\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"production_rate_stocked\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"backlog\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"},{\"name\":\"expected_order_rate\",\"type\":{\"name\":\"array\",\"length\":" + std::to_string(n_t) + ",\"element_type\":{\"name\":\"real\"}},\"block\":\"transformed_parameters\"}]");
     
     } // get_unconstrained_sizedtypes() 
     
