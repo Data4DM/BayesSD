@@ -20,7 +20,7 @@ setting_assumption = {
     "driving_data_vector" : ("customer_order_rate", "process_noise_std_norm_data", "production_start_rate_m_noise_trun_norm_data", "production_rate_m_noise_trun_norm_data"),
     "model_name": "mngInven",
     "integration_times": list(range(1, n_t + 1)),
-    "initial_time": 0.0
+    "initial_time": 0.0,
 }
 
 ## numeric data (using values in vensim; cannot specify)
@@ -36,6 +36,17 @@ for key in setting_assumption.get('target_simulated_vector'):
     numeric_assumption[f"{key}_obs"] = list(range(1, n_t + 1))
 
 model = StanVensimModel(structural_assumption, setting_dict = setting_assumption, numeric_assump_dict = numeric_assumption)
+# target_simulated_vector = [f"{x}_obs" for x in target_simulated_vector]
+# model = StanVensimModel(abstract_model, model_name, est_param_scalar = , initial_time=)
+# >> g = {"a": 1, "b": 2}
+# >> def a(a, b):
+#       print(a, b)
+#
+# >> a(**g)
+# 1 2
+
+
+model.vensim_model_context.print_ast_info()
 
 model.set_prior("inventory_adjustment_time", "normal", 2, 0.1, lower=0)
 model.set_prior("minimum_order_processing_time", "normal", 0.05, 0.001, lower=0)

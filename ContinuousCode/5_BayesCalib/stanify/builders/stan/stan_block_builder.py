@@ -62,6 +62,22 @@ class StanTransformedParametersBuilder:
                     self. code += f"real {statement.lhs_expr} = {''.join(statement.distribution_args)};\n"
 
 
+        # Find variables which are required for evaluating the initial values
+        required_variables_for_init = set()
+        for outcome_variable_name in outcome_variable_names:
+            required_variables_for_init |= self.vensim_model_context.variable_dependency_graph[outcome_variable_name]
+
+        # Create the assignment code for those variables
+        self.code += "// Constant variables for initial values\n"
+        required_variables_for_init_sorted = StatementTopoSort(ignored_variables_for_search=self.vensim_model_context.variable_names - required_variables_for_init, dependency_graph=self.vensim_model_context.variable_dependency_graph).sort()#.sort(ignored_variables_for_sort=self.vensim_model_context.variable_names - required_variables_for_init)
+        for variable_name in required_variables_for_init_sorted:
+            if variable_name in predictor_variable_names:
+                # If we already defined a stan parameter for a given variable, skip it
+                continue
+            self.code += f"real {variable_name} = {InitialValueCodegenWalker(lookup_function_dict, datastructure_fucntion_set, variable_ast_dict).walk(variable_ast_dict[variable_name])};\n"
+
+        self.code += "\n"
+
         self.code += "// Initial ODE values\n"
         for outcome_variable_name in outcome_variable_names:
             if outcome_variable_name in stock_initial_values:
@@ -207,13 +223,13 @@ class Draws2DataStanGQBuilder:
     def build_block(self, transformed_parameters_code: str = ""):
         self.code = IndentedString()
         self.code += "generated quantities{\n"
-        self.code.indent_level += 1
+        self.code.indent_level += 1  # enter code block
         self.build_rng_functions()
         self.code += "\n"
         self.code.add_raw(transformed_parameters_code, ignore_indent=True)
         self.code += "\n"
         self.build_data_rng_functions()
-        self.code.indent_level -= 1
+        self.code.indent_level -= 1  # exit block
         self.code += "}\n"
 
         return str(self.code)
@@ -223,7 +239,6 @@ class Draws2DataStanGQBuilder:
             if statement.lhs_variable in self.stan_model_context.stan_data:
                 param_name = statement.lhs_expr
                 stan_type = self.stan_model_context.stan_data[param_name].stan_type
-                print(statement.lhs_variable, stan_type)
                 if stan_type.startswith("vector"):
                     self.code += f"{stan_type} {param_name} = to_vector({statement.distribution_type}_rng({', '.join(statement.distribution_args)}));\n"
                 else:
@@ -236,10 +251,6 @@ class Draws2DataStanGQBuilder:
         stmt_sorter = StatementTopoSort(ignored_variables)
         for sample_statements in self.stan_model_context.sample_statements:
             stmt_sorter.add_stmt(sample_statements.lhs_variable, sample_statements.rhs_variables)
-
-        print(stmt_sorter.dependency_graph)
-        print(stmt_sorter.ignored_variables)
-        print(self.stan_model_context.stan_data.keys())
 
         param_draw_order = stmt_sorter.sort()
         statements = self.stan_model_context.sample_statements.copy()
@@ -284,19 +295,15 @@ class Draws2DataStanDataBuilder(StanDataBuilder):
 
 class StanFunctionBuilder:
     def __init__(
-        self, abstract_model: AbstractModel, data_dict: Dict[str, Any], function_name: str = "vensim_ode_func"
+        self, vensim_model_context: 'VensimModelContext', data_dict: Dict[str, Any], function_name: str = "vensim_ode_func"
     ):
 
-        self.abstract_model = abstract_model
+        self.vensim_model_context = vensim_model_context
+        self.abstract_model = vensim_model_context.abstract_model
         self.elements = self.abstract_model.sections[0].elements
         self.ode_function_name = function_name
         self.lookup_builder_walker = LookupCodegenWalker()
         self.datastructure_builder_walker = DataStructureCodegenWalker(data_dict)
-        self.variable_dependency_graph: Dict[
-            str, Set
-        ] = (
-            {}
-        )  # in order to evaluate 'key' variable, we need 'element' variables
         self.code = IndentedString()
 
     def get_generated_lookups_dict(self):
@@ -304,23 +311,6 @@ class StanFunctionBuilder:
 
     def get_generated_datastructures_set(self):
         return self.datastructure_builder_walker.data_variable_names
-    def _create_dependency_graph(self):
-        self.variable_dependency_graph = {}
-        walker = AuxNameWalker()
-        for element in self.elements:
-            for component in element.components:
-                if element.name not in self.variable_dependency_graph:
-                    self.variable_dependency_graph[
-                        vensim_name_to_identifier(element.name)
-                    ] = set()
-
-                dependent_aux_names = walker.walk(component.ast)
-                if dependent_aux_names:
-                    self.variable_dependency_graph[
-                        vensim_name_to_identifier(element.name)
-                    ].update(dependent_aux_names)
-
-        return self.variable_dependency_graph
 
     def build_functions(
         self,
@@ -338,7 +328,6 @@ class StanFunctionBuilder:
             self.code += "\n\n"
 
         self.code += "// Begin ODE declaration\n"
-        self._create_dependency_graph()
 
         # Build the data structure functions
         self.build_datastructures()
@@ -354,38 +343,22 @@ class StanFunctionBuilder:
         while len(bfs_stack) > 0:
             variable = bfs_stack.pop(0)
             required_variables.add(variable)
-            for next_var in self.variable_dependency_graph[variable]:
+            for next_var in self.vensim_model_context.variable_dependency_graph[variable]:
                 if next_var in required_variables:
                     continue
                 bfs_stack.append(next_var)
-            required_variables |= self.variable_dependency_graph[variable]
+            required_variables |= self.vensim_model_context.variable_dependency_graph[variable]
 
-        eval_order = []
+        sorter = StatementTopoSort(outcome_variable_names,
+                                   self.vensim_model_context.variable_dependency_graph)
 
-        def recursive_order_search(current, visited):
-            visited.add(current)
-            for child in self.variable_dependency_graph[current]:
-                if child == current:
-                    continue
-                if child in outcome_variable_names:
-                    continue
-                if child not in visited:
-                    recursive_order_search(child, visited)
-            eval_order.append(current)
+        sorted_element_names: List[str] = sorter.sort(ignored_variables_for_sort=self.vensim_model_context.variable_names - required_variables)
 
-        for var_name in required_variables:
-            recursive_order_search(var_name, set())
+        class Element:
+            name: str
+        self.elements = [element for element in self.elements if vensim_name_to_identifier(element.name) in sorted_element_names]
+        self.elements = sorted(self.elements, key=lambda x: sorted_element_names.index(vensim_name_to_identifier(x.name)))
 
-        self.elements = [
-            element
-            for element in self.elements
-            if vensim_name_to_identifier(element.name) in required_variables
-        ]
-        self.elements = sorted(
-            self.elements,
-            key=lambda x: eval_order.index(vensim_name_to_identifier(x.name)),
-        )
-        print(required_variables)
         #################
         # Create function declaration
         self.code += f"vector {function_name}(real time, vector outcome"

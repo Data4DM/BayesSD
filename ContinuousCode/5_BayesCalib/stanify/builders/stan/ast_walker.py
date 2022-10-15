@@ -300,6 +300,7 @@ class InitialValueCodegenWalker(BlockCodegenWalker):
             return super().walk(ast_node)
 
 
+
 # @dataclass
 # class RNGCodegenWalker(InitialValueCodegenWalker):
 #     variable_ast_dict: Dict[str, AbstractSyntax]

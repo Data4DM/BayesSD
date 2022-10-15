@@ -7,6 +7,7 @@ import numpy
 from .stan_block_builder import *
 from .utilities import vensim_name_to_identifier
 from pysd.translators.structures.abstract_expressions import *
+from .ast_walker import AuxNameWalker
 import cmdstanpy
 
 class SamplingStatement:
@@ -95,6 +96,7 @@ class VensimModelContext:
         self.variable_names = set()  # stanified
         self.stock_variable_names = set()
         self.abstract_model = abstract_model
+        self.variable_dependency_graph = {}
 
         # Some basic checks to make sure the AM is compatible
         assert len(abstract_model.sections) == 1, "Number of sections in AbstractModel must be 1."
@@ -108,12 +110,29 @@ class VensimModelContext:
                 if isinstance(component.ast, IntegStructure):
                     self.stock_variable_names.add(vensim_name_to_identifier(element.name))
                     break
-        print("abstract_model", abstract_model)
 
-    def print_variable_info(self, abstract_model):
+        self.create_dependency_graph()
+
+    def create_dependency_graph(self):
+        self.variable_dependency_graph = {}
+        walker = AuxNameWalker()
+        for element in self.abstract_model.sections[0].elements:
+            for component in element.components:
+                if element.name not in self.variable_dependency_graph:
+                    self.variable_dependency_graph[
+                        vensim_name_to_identifier(element.name)
+                    ] = set()
+
+                dependent_aux_names = walker.walk(component.ast)
+                if dependent_aux_names:
+                    self.variable_dependency_graph[
+                        vensim_name_to_identifier(element.name)
+                    ].update(dependent_aux_names)
+
+    def print_variable_info(self):
         var_names = []
         max_length = len("original name") + 1
-        for element in abstract_model.sections[0].elements:
+        for element in self.abstract_model.sections[0].elements:
             is_stock = False
             for component in element.components:
                 if isinstance(component.ast, IntegStructure):
@@ -128,6 +147,14 @@ class VensimModelContext:
         print("-" * len(header))
         for x in var_names:
             print(x[0].ljust(max_length) + x[1].ljust(max_length) + ("V" if x[2] else ""))
+
+    def print_ast_info(self):
+        for element in self.abstract_model.sections[0].elements:
+            print("*" * 10)
+            print("Name:", element.name)
+            for component in element.components:
+                print("AST type:", component.type)
+                print(component.ast)
 
 
 class StanVensimModel:
@@ -147,11 +174,6 @@ class StanVensimModel:
         self.stan_model_dir = os.path.join(os.getcwd(), "stan_files")
         if not os.path.exists(self.stan_model_dir):
             os.mkdir(self.stan_model_dir)
-
-        self.init_variable_regex = re.compile(".+?(?=__init$)")
-        # This regex is to match all preceding characters that come before '__init' at the end of the string.
-        # So something like stock_var_init__init would match into stock_var__init.
-        # This is used to parse out the corresponding stock names for init parameters.
 
     def print_info(self):
         print("- Vensim model information:")
@@ -222,7 +244,7 @@ class StanVensimModel:
         -------
 
         """
-        self.function_builder = StanFunctionBuilder(self.abstract_model, self.numeric_assump_dict)
+        self.function_builder = StanFunctionBuilder(self.vensim_model_context, self.numeric_assump_dict)
         function_code = self.function_builder.build_functions(self.stan_model_context.exposed_parameters, self.vensim_model_context.stock_variable_names)
         if glob.glob(os.path.join(self.stan_model_dir, f"{self.model_name}_functions.stan")):
             with open(os.path.join(self.stan_model_dir, f"{self.model_name}_functions.stan"), "r") as f:

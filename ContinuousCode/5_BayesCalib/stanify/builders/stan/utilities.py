@@ -1,4 +1,5 @@
 from collections import defaultdict
+from typing import Set
 
 class IndentedString:
     def __init__(self, indent_level=0):
@@ -23,10 +24,10 @@ class IndentedString:
 
 
 class StatementTopoSort:
-    def __init__(self, ignored_variables=tuple()):
-        self.dependency_graph = dict()
+    def __init__(self, ignored_variables_for_search=tuple(), dependency_graph=None):
+        self.dependency_graph = dependency_graph if dependency_graph else {}
         self.sorted_order = []
-        self.ignored_variables = ignored_variables
+        self.ignored_variables_for_search = ignored_variables_for_search  # these variables are not considered during DFS
 
     def add_stmt(self, lhs_var, rhs_vars):
         if lhs_var not in self.dependency_graph:
@@ -38,29 +39,32 @@ class StatementTopoSort:
 
 
     def recursive_order_search(self, current, visited):
-        if current in self.ignored_variables:
-            return
+        # if current in self.ignored_variables:
+        #     return
         visited.add(current)
         for child in self.dependency_graph[current]:
             if child == current:
                 continue
-            if child in self.ignored_variables:
+            if child in self.ignored_variables_for_search:
                 continue
             if child not in visited:
                 self.recursive_order_search(child, visited)
         if current not in self.sorted_order:
             self.sorted_order.append(current)
 
-    def sort(self, reversed=False):
+    def sort(self, reversed=False, ignored_variables_for_sort: Set[str] = None):
         """
         reversed=False(default) means it will sort according to LHS given RHS
         so a = b + c would mean b, c will come before a
         """
+        if not ignored_variables_for_sort:
+            ignored_variables_for_sort = self.ignored_variables_for_search
         for key in self.dependency_graph.keys():
+            if key in ignored_variables_for_sort:
+                continue
             self.recursive_order_search(key, set())
 
         return self.sorted_order if not reversed else self.sorted_order[::-1]
-
 
 def vensim_name_to_identifier(name: str):
     return name.lower().replace(" ", "_")
