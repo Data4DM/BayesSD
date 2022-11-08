@@ -1,0 +1,156 @@
+---
+title: "Demo"
+author: "Jair Andrade"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(ggplot2)
+library(pomp)
+library(purrr)
+library(scales)
+library(tidyr)
+```
+
+```{r}
+rmeas <- Csnippet("y1  = rnbinom_mu(1 / phi, C);") # Sampling distribution
+
+dmeas <- Csnippet("lik = dnbinom_mu(y1, 1 / phi, C, give_log);") # Likelihood function
+
+Csnippet("
+    S = N - P_0;
+    E = 0;
+    P = P_0;
+    I = 0;
+    A = 0;
+    R = 0;
+    Z = 1;
+    C = 0;
+  ") -> rinit
+  
+  Csnippet("
+    double dW     = rnorm(0, sqrt(dt));
+    double lambda = zeta * Z * (I + P + mu * A) / N;
+    S-= (S * lambda)*dt;
+    E+= (S * lambda - sigma*E)*dt;
+    P+= (omega * sigma * E - eta * P) * dt;
+    I+= (eta * P - gamma*I)*dt;
+    R+= (gamma*I + kappa * A)*dt;
+    A+= ((1-omega) * sigma * E - kappa * A) * dt;
+    Z+= alpha*Z*dW;
+    C+= (eta*P)*dt;
+  ") -> SEI3R_GBM_step
+  
+alpha_val <- 0.2
+  
+params        <- c(4937796, 0.5, 0.73, 1/2.9, 1/3, 1/2.1, 1/5, 2.5, 1.1,
+                   alpha_val, 0.1)
+par_names     <- c("N", "mu", "omega", "gamma", "sigma", "eta", "kappa",
+                   "P_0", "zeta", "alpha", "phi") 
+names(params) <- par_names
+```
+
+```{r}
+set.seed(103)
+sim1 <- pomp::simulate(t0 = 0, times = 1:120,
+               rprocess = pomp::euler(SEI3R_GBM_step, delta.t = 1/32),
+               rinit    = rinit,
+               statenames = c("S", "E", "P","I", "R", "A", "C", "Z"),
+               paramnames = par_names,
+               cdir = ".",
+               params   = params)
+```
+
+```{r}
+plot(sim1)
+```
+
+```{r}
+set.seed(103)
+sim2 <- pomp::simulate(t0 = 0, times = 1:120,
+               rprocess = pomp::euler(SEI3R_GBM_step, delta.t = 1/32),
+               rinit    = rinit,
+               rmeas    = rmeas,
+               statenames = c("S", "E", "P","I", "R", "A", "C", "Z"),
+               paramnames = par_names,
+               accumvars = "C",
+               obsnames  = "y1",
+               params   = params)
+```
+
+```{r}
+plot(sim2)
+```
+
+
+```{r}
+df <- as(sim2,"data.frame") |> 
+  select(time, y1) |> 
+  filter(time <= 96)
+```
+
+```{r}
+ggplot(df, aes(time, y1)) + 
+  geom_line(colour = "steelblue") +
+  theme_classic() +
+  scale_y_continuous(labels = comma) +
+  labs(y = "Incidence [Cases/Day", x = "Day")
+```
+
+
+```{r}
+df |>   
+    pomp(
+      times = "time", t0 = 0,
+      rinit = rinit,
+      rprocess = pomp::euler(SEI3R_GBM_step, delta.t = 1/32),
+      statenames = c("S", "E", "P","I", "R", "A", "C", "Z"),
+      paramnames = par_names,
+      params = params,
+      accumvars = "C",
+      rmeasure = rmeas,
+      dmeasure = dmeas,
+      obsnames = "y1") -> pomp_mdl
+
+pf <- pfilter(pomp_mdl, params = params,
+                    Np = 1e5, save.states = TRUE)
+
+ss <- saved.states(pf)
+```
+
+
+
+
+```{r}
+imap_dfr(ss, function(states_at_time, time) {
+  data.frame(time = as.numeric(time), Z = states_at_time["Z",]) |> 
+    mutate(iter = row_number())
+}) -> predicted_Z
+```
+
+```{r}
+summary_Z <- predicted_Z |> group_by(time) |> 
+  summarise(q_val  = quantile(Z, c(0.025, 0.25, 0.5, 0.75, 0.975)),
+              q_type = c("q2.5", "q25", "q50", "q75", "q97.5"),
+            .groups = "drop") |> 
+  pivot_wider(names_from = q_type, values_from = q_val)
+```
+
+```{r}
+data_df <- as(sim2,"data.frame") |>
+  filter(time <= 96) |> 
+  select(time, Z)
+
+
+
+ggplot(summary_Z, aes(time, q50)) +
+  geom_line(colour = "steelblue") +
+  geom_ribbon(aes(ymin = q25, ymax = q75), alpha = 0.3, fill = "steelblue") +
+  geom_ribbon(aes(ymin = q2.5, ymax = q97.5), alpha = 0.05, fill = "steelblue") +
+  geom_point(data = data_df, aes(y = Z), colour = "purple", size = 1) +
+  theme_classic()
+```
+
