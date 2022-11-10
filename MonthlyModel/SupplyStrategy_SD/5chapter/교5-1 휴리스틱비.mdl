@@ -1,0 +1,85 @@
+{UTF-8}
+Chaser=
+	FORECAST(Number, 3, 1)
+	~	
+	~		|
+
+Gambler=
+	2*Mean Anchor-Number
+	~	
+	~		|
+
+Mean Anchor=
+	SMOOTH( Number, 3)
+	~	
+	~		|
+
+Number=
+	100+STEP(100, 51)
+	~	
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Day
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Day
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP 
+	~	Day [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Day [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Number,881,341,27,11,8,3,0,0,0,0,0,0
+10,2,Mean Anchor,650,280,44,11,8,3,0,0,0,0,0,0
+10,3,Chaser,642,348,24,11,8,3,0,0,0,0,0,0
+10,4,Gambler,637,417,28,11,8,3,0,0,0,0,0,0
+1,5,1,2,0,0,0,0,0,64,0,-1--1--1,,1|(779,314)|
+1,6,1,3,0,0,0,0,0,64,0,-1--1--1,,1|(766,343)|
+1,7,1,4,0,0,0,0,0,64,0,-1--1--1,,1|(766,376)|
+1,8,2,4,1,0,0,0,0,64,0,-1--1--1,,1|(560,345)|
+///---\\\
+:GRAPH 휴리스틱_비교
+:TITLE 휴리스틱 비교
+:SCALE
+:VAR Number
+:Y-MAX 300
+:LINE-WIDTH 2
+:VAR Mean Anchor
+:LINE-WIDTH 2
+:VAR Chaser
+:LINE-WIDTH 2
+:VAR Gambler
+:LINE-WIDTH 2
+:L<%^E!@
+1:heuristic.vdf
+9:heuristic
+15:0,0,0,0,0,0
+19:100,0
+27:2,
+34:0,
+4:Time
+5:Gambler
+24:40
+25:70
+26:100
