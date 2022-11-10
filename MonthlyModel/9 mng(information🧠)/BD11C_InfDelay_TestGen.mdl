@@ -1,0 +1,188 @@
+{UTF-8}
+Exponential Growth Rate=
+	0
+	~	1/Day
+	~	The exponential growth rate in the input.
+	|
+
+Exponential Growth Time=
+	0
+	~	Day
+	~	The time at which the exponential growth in the input begins.
+	|
+
+Input=
+	1+STEP(Step Height,Step Time)+
+	(Pulse Quantity/TIME STEP)*PULSE(Pulse Time,TIME STEP)+
+	RAMP(Ramp Slope,Ramp Start Time,Ramp End Time)+STEP(1,Exponential Growth Time)*(EXP(\
+		Exponential Growth Rate*Time)-1)+
+	STEP(1,Sine Start Time)*Sine Amplitude*SIN(2*3.14159*Time/Sine Period)+STEP(1,Noise Start Time\
+		)*RANDOM NORMAL( -4 , 4 , 0 , Noise Standard Deviation , Noise Seed )
+	~	Dimensionless
+	~	The test input can be configured to generate a step, pulse, linear ramp, \
+		exponential growth, sine wave, and random variation.  The initial value of \
+		the input is 1 and each test input begins at a particular start time.  The \
+		magnitudes are expressed as fractions of the initial value.
+	|
+
+Noise Seed=
+	1000
+	~	Dimensionless
+	~	Varying the random number seed changes the sequence of realizations for \
+		the random variable.
+	|
+
+Noise Standard Deviation=
+	0
+	~	Dimensionless
+	~	The standard deviation in the random noise.  The random fluctuation is \
+		drawn from a normal distribution with min and max values of +/-  4.  The \
+		user can also specify the random number seed to replicate simulations.  To \
+		generate a different random number sequence, change the random number seed.
+	|
+
+Noise Start Time=
+	0
+	~	Day
+	~	The time at which the random noise in the input begins.
+	|
+
+Sine Start Time=
+	0
+	~	Day
+	~	The time at which the sine wave fluctuation in the input begins.
+	|
+
+Pulse Quantity=
+	0
+	~	Dimensionless*Day
+	~	The quantity added to the input at the pulse time.
+	|
+
+Pulse Time=
+	0
+	~	Day
+	~	The time at which the pulse increase in the input occurs.
+	|
+
+Ramp End Time=
+	1e+09
+	~	Day
+	~	The end time for the ramp input.
+	|
+
+Ramp Slope=
+	0
+	~	1/Day
+	~	The slope of the linear ramp in the input.
+	|
+
+Ramp Start Time=
+	0
+	~	Day
+	~	The time at which the ramp in the input begins.
+	|
+
+Sine Amplitude=
+	0
+	~	Dimensionless
+	~	The amplitude of the sine wave in the input.
+	|
+
+Sine Period=
+	10
+	~	Day
+	~	The period of the sine wave in the input.
+	|
+
+Step Height=
+	0
+	~	Dimensionless
+	~	The height of the step increase in the input.
+	|
+
+Step Time=
+	0
+	~	Day
+	~	The time at which the step increase in the input occurs.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 25
+	~	Day
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = -5
+	~	Day
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Day
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.125
+	~	Day
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Helvetica|12|B|0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Input,316,188,24,11,0,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,2,Time,67,171,35,11,0,2,0,51,-1,0,0,0,128-128-128,0-0-0,Helvetica|16|B|128-128-128
+10,3,Step Time,73,120,47,11,0,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,4,Step Height,123,85,53,11,0,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,5,Pulse Time,188,57,51,11,0,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,6,Pulse Quantity,273,35,65,11,0,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,7,TIME STEP,69,231,61,11,0,2,0,51,-1,0,0,0,128-128-128,0-0-0,Helvetica|16|B|128-128-128
+10,8,Sine Amplitude,424,37,68,11,0,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,9,Sine Period,512,76,53,11,0,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,10,Ramp Slope,207,364,55,11,0,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,11,Ramp Start Time,128,328,73,11,0,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,12,Ramp End Time,83,284,69,11,0,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+1,13,2,1,0,0,0,0,0,0,0,-1--1--1,,1|(187,177)|
+1,14,7,1,0,0,0,0,0,0,0,-1--1--1,,1|(201,208)|
+1,15,3,1,0,0,0,0,0,0,0,-1--1--1,,1|(192,152)|
+1,16,4,1,0,0,0,0,0,0,0,-1--1--1,,1|(209,132)|
+1,17,5,1,0,0,0,0,0,0,0,-1--1--1,,1|(244,115)|
+1,18,6,1,0,0,0,0,0,0,0,-1--1--1,,1|(291,101)|
+1,19,8,1,0,0,0,0,0,0,0,-1--1--1,,1|(375,104)|
+1,20,9,1,0,0,0,0,0,0,0,-1--1--1,,1|(421,127)|
+1,21,10,1,0,0,0,0,0,0,0,-1--1--1,,1|(255,283)|
+1,22,11,1,0,0,0,0,0,0,0,-1--1--1,,1|(213,263)|
+1,23,12,1,0,0,0,0,0,0,0,-1--1--1,,1|(191,239)|
+10,24,Exponential Growth Rate,565,180,69,25,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,25,Exponential Growth Time,551,241,71,21,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+1,26,24,1,0,0,0,0,0,64,0,-1--1--1,,1|(427,183)|
+1,27,25,1,0,0,0,0,0,64,0,-1--1--1,,1|(419,211)|
+10,28,Noise Start Time,528,297,53,27,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+10,29,Noise Standard Deviation,449,347,77,25,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica|12|B|0-0-0
+1,30,28,1,0,0,0,0,0,64,0,-1--1--1,,1|(415,239)|
+1,31,29,1,0,0,0,0,0,64,0,-1--1--1,,1|(383,267)|
+10,32,Noise Seed,335,369,53,27,8,3,0,48,-1,0,0,0,128-128-128,0-0-0,Helvetica|12|B|128-128-128
+1,33,32,1,0,0,0,0,0,0,0,-1--1--1,,1|(324,279)|
+10,34,Sine Start Time,556,121,53,27,8,3,0,0,-1,0,0,0
+1,35,34,1,0,0,0,0,0,0,0,-1--1--1,,1|(429,156)|
+///---\\\
+:L<%^E!@
+1:C:\Users\jpaine\OneDrive\MIT\Reference\15-872-fall-2013\contents\assignments\Current.vdf
+9:Current
+15:0,0,0,0,0,0
+19:100,0
+27:2,
+34:0,
+4:Time
+5:Input
+24:-5
+25:25
+26:25

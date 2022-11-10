@@ -2,11 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
-.vdfx
-.vmfx
-.hpp
-.nc
-
+**/*.vdfx
+**/*.hpp
+**/*.o
+**/*.vmfx
 *.pyc
 .ipynb_checkpoints/
 build/
@@ -16,4 +15,4 @@ build/
 .vscode/
 venv/
 .png
-**/.DS_Store
+**/*.DS_Store

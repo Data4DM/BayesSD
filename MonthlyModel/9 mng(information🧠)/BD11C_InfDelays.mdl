@@ -1,0 +1,256 @@
+{UTF-8}
+Average Total Time Delay=
+	5
+	~	Days
+	~	Average total time spent delayed from input to output in this information \
+		flow system
+	|
+
+Change in Stage 1=
+	(INPUT FUNCTION-S1 Output Stage 1)/Fractional Time Delay
+	~	Units/Day
+	~	Change in the stock of S1 per unit time determined by comparing hte \
+		current value of S1 and the input and adjusting over the time delay
+	|
+
+Change in Stage 2=
+	(S1 Output Stage 1-S2 Output Stage 2)/Fractional Time Delay
+	~	Units/Day
+	~	Change in the stock of S2 per unit time determined by comparing the \
+		current value of S2 and its input and adjusting over the time delay
+	|
+
+Change in Stage 3=
+	(S2 Output Stage 2-S3 Output Stage 3)/Fractional Time Delay
+	~	Units/Day
+	~	Change in the stock of S3 per unit time determined by comparing the \
+		current value of S3 and its input and adjusting over the time delay
+	|
+
+Change in Stage 4=
+	(S3 Output Stage 3-S4 Output Stage 4)/Fractional Time Delay
+	~	Units/Day
+	~	Change in the stock of S4 per unit time determined by comparing the \
+		current value of S4 and its input and adjusting over the time delay
+	|
+
+Change in Stage 5=
+	(S4 Output Stage 4-S5 Output Stage 5)/Fractional Time Delay
+	~	Units/Day
+	~	Change in the stock of S5 per unit time determined by comparing the \
+		current value of S5 and its input and adjusting over the time delay
+	|
+
+Fractional Time Delay=
+	Average Total Time Delay/ORDER
+	~	Days
+	~	Average time the information spend in each subcomponent of the delayed \
+		system. Here, assumed to be spread equally over each subcomponent.
+	|
+
+Initial Constant Input=
+	100
+	~	Units
+	~	Initial actual value in the environment, before any change occurs
+	|
+
+Input Change Start Time=
+	0
+	~	Days
+	~	Time at which the change to the factor in the environment occurs
+	|
+
+INPUT FUNCTION=
+	Initial Constant Input+ IF THEN ELSE(Time>=Input Change Start Time, 100, 0)
+	~	Units
+	~	Input: Actual Value in the Environment
+	|
+
+ORDER=
+	3
+	~	Dmnl
+	~	Order of the information delay system. Ie the number of delay processes \
+		the information flows through
+	|
+
+OUTPUT=
+	IF THEN ELSE(ORDER=5, S5 Output Stage 5, IF THEN ELSE(ORDER=4, S4 Output Stage 4, IF THEN ELSE\
+		(ORDER=3, S3 Output Stage 3, IF THEN ELSE(ORDER=2, S2 Output Stage 2, IF THEN ELSE(\
+		ORDER=1, S1 Output Stage 1, 0)))))
+	~	Units
+	~	Output: Precieved value of the environment
+	|
+
+S1 Output Stage 1= INTEG (
+	Change in Stage 1,
+		Initial Constant Input)
+	~	Units
+	~		|
+
+S2 Output Stage 2= INTEG (
+	Change in Stage 2,
+		Initial Constant Input)
+	~	Units
+	~		|
+
+S3 Output Stage 3= INTEG (
+	Change in Stage 3,
+		Initial Constant Input)
+	~	Units
+	~		|
+
+S4 Output Stage 4= INTEG (
+	Change in Stage 4,
+		Initial Constant Input)
+	~	Units
+	~		|
+
+S5 Output Stage 5= INTEG (
+	Change in Stage 5,
+		Initial Constant Input)
+	~	Units
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 25
+	~	Day
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = -5
+	~	Day
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP 
+	~	Day [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.0625
+	~	Day [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Calibri|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,80,0
+10,1,S1 Output Stage 1,681,194,40,20,3,3,0,32,0,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+10,2,S2 Output Stage 2,784,306,40,20,3,3,0,32,0,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+10,3,S3 Output Stage 3,883,408,40,20,3,3,0,32,0,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+10,4,S4 Output Stage 4,991,515,40,20,3,3,0,32,0,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+10,5,S5 Output Stage 5,1095,632,40,20,3,3,0,32,0,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+12,6,48,525,194,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+1,7,9,1,4,0,0,22,0,0,0,-1--1--1,,1|(606,194)|
+1,8,9,6,100,0,0,22,0,0,0,-1--1--1,,1|(547,194)|
+11,9,0,566,194,6,8,34,3,0,0,1,0,0,0
+10,10,Change in Stage 1,566,221,35,19,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+12,11,48,622,306,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+1,12,14,2,4,0,0,22,0,0,0,-1--1--1,,1|(707,306)|
+1,13,14,11,100,0,0,22,0,0,0,-1--1--1,,1|(645,306)|
+11,14,0,664,306,6,8,34,3,0,0,1,0,0,0
+10,15,Change in Stage 2,664,333,35,19,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+12,16,48,731,408,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+1,17,19,3,4,0,0,22,0,0,0,-1--1--1,,1|(815,408)|
+1,18,19,16,100,0,0,22,0,0,0,-1--1--1,,1|(758,408)|
+11,19,0,782,408,6,8,34,3,0,0,1,0,0,0
+10,20,Change in Stage 3,782,435,35,19,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+12,21,48,852,515,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+1,22,24,4,4,0,0,22,0,0,0,-1--1--1,,1|(931,515)|
+1,23,24,21,100,0,0,22,0,0,0,-1--1--1,,1|(881,515)|
+11,24,0,906,515,6,8,34,3,0,0,1,0,0,0
+10,25,Change in Stage 4,906,542,35,19,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+12,26,48,966,632,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+1,27,29,5,4,0,0,22,0,0,0,-1--1--1,,1|(1038,632)|
+1,28,29,26,100,0,0,22,0,0,0,-1--1--1,,1|(992,632)|
+11,29,0,1015,632,6,8,34,3,0,0,1,0,0,0
+10,30,Change in Stage 5,1015,659,35,19,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+10,31,INPUT FUNCTION,449,141,59,11,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+1,32,31,9,1,0,0,0,0,128,0,-1--1--1,,1|(517,137)|
+10,33,Initial Constant Input,964,155,53,19,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+1,34,33,31,1,0,43,0,2,64,0,-1--1--1,|0||-1--1--1,1|(607,44)|
+10,35,Input Change Start Time,338,46,46,19,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+1,36,35,31,1,0,0,0,0,64,0,-1--1--1,,1|(406,63)|
+10,37,Time,476,262,26,11,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Calibri|0||128-128-128
+1,38,37,31,0,0,0,0,0,64,0,-1--1--1,,1|(464,208)|
+1,39,1,9,1,0,45,0,2,128,0,-1--1--1,|0||-1--1--1,1|(596,166)|
+1,40,2,14,1,0,45,0,2,128,0,-1--1--1,|0||-1--1--1,1|(685,283)|
+1,41,3,19,1,0,45,0,2,128,0,-1--1--1,|0||-1--1--1,1|(811,383)|
+1,42,4,24,1,0,45,0,2,128,0,-1--1--1,|0||-1--1--1,1|(937,485)|
+1,43,5,29,1,0,45,0,2,128,0,-1--1--1,|0||-1--1--1,1|(1037,600)|
+1,44,1,14,1,0,43,0,2,128,0,-1--1--1,|0||-1--1--1,1|(644,274)|
+1,45,2,19,1,0,43,0,2,128,0,-1--1--1,|0||-1--1--1,1|(753,369)|
+1,46,3,24,1,0,43,0,2,128,0,-1--1--1,|0||-1--1--1,1|(876,476)|
+1,47,4,29,1,0,43,0,2,128,0,-1--1--1,|0||-1--1--1,1|(987,596)|
+10,48,Average Total Time Delay,447,640,48,19,8,3,0,0,0,0,0,0
+10,49,Fractional Time Delay,491,524,53,19,8,3,0,0,0,0,0,0
+10,50,ORDER,1235,205,26,11,8,3,0,0,0,0,0,0
+10,51,ORDER,385,483,34,11,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|0||128-128-128
+1,52,51,49,1,0,0,0,0,128,0,-1--1--1,,1|(449,472)|
+1,53,48,49,1,0,0,0,0,128,0,-1--1--1,,1|(497,599)|
+1,54,49,10,1,0,45,0,2,192,0,-1--1--1,|0||-1--1--1,1|(512,312)|
+1,55,49,15,1,0,45,0,2,192,0,-1--1--1,|0||-1--1--1,1|(574,386)|
+1,56,49,20,1,0,45,0,2,192,0,-1--1--1,|0||-1--1--1,1|(651,459)|
+1,57,49,25,1,0,45,0,2,192,0,-1--1--1,|0||-1--1--1,1|(780,569)|
+1,58,49,30,1,0,45,0,2,192,0,-1--1--1,|0||-1--1--1,1|(809,666)|
+10,59,OUTPUT,1289,263,30,11,8,3,0,0,0,0,0,0
+10,60,S1 Output Stage 1,1436,189,40,20,3,2,0,32,0,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+10,61,S2 Output Stage 2,1436,251,40,20,3,2,0,32,0,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+10,62,S3 Output Stage 3,1436,313,40,20,3,2,0,32,0,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+10,63,S4 Output Stage 4,1436,375,40,20,3,2,0,32,0,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+10,64,S5 Output Stage 5,1436,437,40,20,3,2,0,32,0,0,0,0,0-0-0,0-0-0,Calibri|0||0-0-0
+1,65,60,59,1,0,0,0,0,128,0,-1--1--1,,1|(1321,215)|
+1,66,61,59,1,0,0,0,0,128,0,-1--1--1,,1|(1354,235)|
+1,67,62,59,1,0,0,0,0,128,0,-1--1--1,,1|(1349,279)|
+1,68,63,59,1,0,0,0,0,128,0,-1--1--1,,1|(1330,329)|
+1,69,64,59,1,0,0,0,0,128,0,-1--1--1,,1|(1304,353)|
+1,70,50,59,1,0,0,0,0,128,0,-1--1--1,,1|(1247,252)|
+12,71,0,194,386,150,150,3,44,0,0,2,0,0,0
+INPUT FUNCTION,Graph
+12,72,0,193,695,150,150,3,44,0,0,2,0,0,0
+OUTPUT,Graph
+1,73,33,1,1,0,0,0,0,128,1,-1--1--1,,1|(741,160)|
+1,74,33,2,1,0,0,0,0,128,1,-1--1--1,,1|(810,241)|
+1,75,33,3,1,0,0,0,0,128,1,-1--1--1,,1|(892,347)|
+1,76,33,4,1,0,0,0,0,128,1,-1--1--1,,1|(1032,387)|
+1,77,33,5,1,0,0,0,0,128,1,-1--1--1,,1|(1132,536)|
+12,78,0,1663,225,150,150,3,12,0,0,1,0,0,0
+Input_vs_Output
+12,79,0,1695,474,103,46,3,252,0,0,0,0,0,0
+ORDER,1,5,1
+///---\\\
+:GRAPH Input_vs_Output
+:TITLE Response to Input
+:STAMP |Precieved and Acutal Values
+:SCALE
+:VAR INPUT FUNCTION|Input: Actual Value
+:VAR OUTPUT|Output: Precieved Value
+:L<%^E!@
+1:Current.vdf
+9:Current
+22:Day,Days
+22:Unit,Units
+15:0,0,0,0,0,0
+19:80,0
+27:0,
+34:0,
+4:Time
+5:Average Total Time Delay
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:4
+41:0
+42:1
+24:-5
+25:25
+26:0

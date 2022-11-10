@@ -101,7 +101,8 @@ Below are eight examples of world models (in process).
 
 ### 2. Project
 [[model_month/2 mng(project)/mng(project)]]
-![[mng(project).png]]
+![[Pasted image 20221028173956.png]]
+
 
 
 ### 3. Capacity
@@ -111,7 +112,7 @@ Below are eight examples of world models (in process).
 
 ### 4. Market growth
 [[mng(market)]]
-![[Mng(Market).excalidraw.svg]]
+![[Pasted image 20221028174043.png]]
 - why do we have three backlogs?
 - book to bill ratio?
 - stock: sales force, reent revenue, backlog, delivery delay perceived by company, delivery delay perceived by market, capacity
@@ -119,13 +120,14 @@ Below are eight examples of world models (in process).
 
 ### 5. Service quality
 [[mng(service)]]
-![[Manage(Service).excalidraw.svg]]
+![[Pasted image 20221028174145.png]]
+
 
 ### 6. Material Cycle
 [[Mng(MaterialCycle)]]
 Mng(MaterialSupplyPink Noise, Industry Demand, Long Run Expected Price, Expected Production Costs, WIP, Inventoy, Capacity Utilization, Short Run Expected Price, Expected Variable Costs)
 
-![[Mng(Commodity).excalidraw.svg]]
+![[Pasted image 20221028174218.png]]
 
 ### 7. City
 [[mng(city)]]

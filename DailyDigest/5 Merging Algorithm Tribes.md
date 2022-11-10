@@ -17,5 +17,3 @@ Domingos [introduces](https://en.wikipedia.org/wiki/The_Master_Algorithm) five o
 $$
 - (weapons): connectionist (neural network), evolutionist (genetic algorithm), Bayesian (Bayes rule), symbolist (decision tree), analogizers (kernel machine)) which are converging: Introduce five tribes of algorithm and its convergence starting from [[Moon17_Domingos15_MasterAlg.pdf]]  
  
-
-- UnHow SBC
