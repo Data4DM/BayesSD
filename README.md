@@ -1,5 +1,5 @@
 ## Demand and Supply of this repository 
-The short term purpose of this respository is to supply students of 879 seminar series with resources, starting with 15.879 Brining Data Into Dynamic Models ([syllabus](https://github.com/hyunjimoon/DataInDM/blob/main/879Weekly/Syllabus-15879-Fall2022.pdf). Long term goal is to kickoff SilkRoad project (more below). Slides with be shared in SeasonalSeminar folder [here](https://github.com/Data4DM/BayesSD/tree/master/SeasonalSeminar/2022Fall/TA-BringData2DM_Rahmandad).
+The short term purpose of this respository is to supply students of 879 seminar series with resources, starting with 15.879 Bringing Data Into Dynamic Models ([syllabus](https://github.com/hyunjimoon/DataInDM/blob/main/879Weekly/Syllabus-15879-Fall2022.pdf). Long term goal is to kickoff SilkRoad project (more below). Slides with be shared in SeasonalSeminar folder [here](https://github.com/Data4DM/BayesSD/tree/master/SeasonalSeminar/2022Fall/TA-BringData2DM_Rahmandad).
 
 ## Demand of SilkRoad project
 Short answer: I wished to connect the lifelong brainchild of the scholars I respect. 
