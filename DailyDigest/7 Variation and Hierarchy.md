@@ -1,4 +1,4 @@
-What we can't fully know, that is to say much about everything, can have prior. As lists in [[Table2 Procedural (functional)#Detailed How in progress]], prior can be classified into three: structure, demand, or data variation.
+What we can't fully know, that is to say much about everything, can have prior. As lists in [[functional_table2_workflow#Detailed How in progress]], prior can be classified into three: structure, demand, or data variation.
 
 
 ## Variation (a.k.a. Uncertainty)

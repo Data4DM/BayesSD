@@ -38,7 +38,7 @@ Domain focused:
 
 
 - [[def(branched)]]
-- [[def(merging branched)]]
+- [[def(merging_branched)]]
 - 
 
 ### 3.2. statistical analysis
