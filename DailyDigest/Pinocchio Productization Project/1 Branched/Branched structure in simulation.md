@@ -1,0 +1,2 @@
+- compartment vs agent-based vs discrete event
+- [[System Dynamics VS Discrete Event Simulation]]

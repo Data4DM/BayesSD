@@ -1,3 +1,8 @@
+## 12.02
+capital order ratio (intensity) varies contry level
+increase hyperparameter variance (capital intensity), 
+choosing parameters for unit-level parameter (in real life, we don't have luxury of choosing estimated parameter, but for testing, we add one by one until the framework breaks down)
+
 ## estimated 
 - company goal for delivery delay
 - capacity acquisition delay

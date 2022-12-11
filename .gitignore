@@ -14,5 +14,8 @@ build/
 *.swp
 .vscode/
 venv/
-.png
+**/*.png
 **/*.DS_Store
+.DS_Store
+.obsidian
+.idea

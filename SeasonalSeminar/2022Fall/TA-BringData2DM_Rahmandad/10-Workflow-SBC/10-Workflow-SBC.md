@@ -1,3 +1,28 @@
+- need ci for RQ
+- enveloping the groud truth (parameter or test)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - My talk and slide on BayesWF with the following abstract:
 	- "what" problems to solve and "how" to solve with one's and community's resources. 
 	- This would help you to classify the concepts on model misspecification, coding error, inaccurate computation. 

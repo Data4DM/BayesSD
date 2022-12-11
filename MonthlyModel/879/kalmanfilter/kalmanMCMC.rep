@@ -1,0 +1,13 @@
+The payoff is -63028.7
+The following are the components of the payoff:
+Type	Component	Contribution	Percent	Values	Params&Data	Used	Skipped	Source	RSquare	DW	Autocor1	Autocor2	Autocor3	Autocor4	(TimeGap)	RMSE	Um	Us	Uc	MAE	MAPE	MAEoM
+*CK	Expected Data[f1,d1]|Observed Data[f1,d1]/Expected Variance[f1,d1]	-21008.9	33.3323	-0.0206762	-21008.9	1601	0	
+*CK	Expected Data[f1,d2]|Observed Data[f1,d2]/Expected Variance[f1,d2]	-21008.9	33.3323	-0.00832228	-21008.9	1601	0	
+*CK	Expected Data[f1,d3]|Observed Data[f1,d3]/Expected Variance[f1,d3]	-21008.9	33.3323	-0.0045721	-21008.9	1601	0	
+
+Sources for exogenous variables
+Customer Order Rate[f1]	DataPop2.vdfx
+Process Noise[f1]	DataPop2.vdfx
+Production Data[f1]	DataPop2.vdfx
+Production Start Data[f1]	DataPop2.vdfx
+Shipment Data[f1]	DataPop2.vdfx

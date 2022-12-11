@@ -3,7 +3,9 @@ Possimpible is nexus between the Possible and the Impossible (How I met you moth
 The following figure from [[Stat-Efron computer age stat inf]] illustrates vertical and horizontal conditioning of Bayesian and Frequentist inference in a higher dimension. Due to our cognitive limitation, Bayesian and Frequentists have seeming different approach. However, they are different projections of the same joint data and parameter. Having a point mass prior, Frequentist approach is one of Bayesian approach. Bayesian can also be Frequentist by corresponding Bayesian prior distribution to the frequentist sample space (as Andrew explained [here](https://statmodeling.stat.columbia.edu/2018/06/17/bayesians-are-frequentists/) and Christian added (as comment) how frequentist's loss function correspond to Bayesian's prior and how both aim for decision sets of minimal average size with the only difference being the dimension along which error is controlled).
 
 ![[Pasted image 20221028173732.png]]
-Understanding both philosophies then allocating it to each participants of data science is possimpible. This is the motivation of the project with as slogan "Cheap Cutting-edge Curation" which is technologically supported by "Prior specifier (Human) and Posterior approximator (Machine) collaboration, controlled by SBC". Specific steps are detailed in [[3 Bayequentist Dynamics with SBC]].
+Understanding both philosophies then allocating it to each participants of data science is possimpible. This is the motivation of the project with as slogan "Cheap Cutting-edge Curation" which is technologically supported by "Prior specifier (Human) and Posterior approximator (Machine) collaboration, controlled by SBC". Specific steps are detailed in [[Table2 Procedural (functional)]].
+
+
 
 
 ## Reference
