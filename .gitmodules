@@ -1,3 +1,6 @@
-[submodule "ContinuousCode/3_Data4DM/ContinuousCode/3_Data4DM/empirical_dynamics"]
-	path = ContinuousCode/3_Data4DM/ContinuousCode/3_Data4DM/empirical_dynamics
+[submodule "ContinuousCode/empirical_dynamics"]
+	path = ContinuousCode/empirical_dynamics
 	url = https://github.com/hyunjimoon/empirical_dynamics
+[submodule "ContinuousCode/trust_factory/stanify"]
+	path = ContinuousCode/trust_factory/stanify
+	url = https://github.com/Data4DM/stanify

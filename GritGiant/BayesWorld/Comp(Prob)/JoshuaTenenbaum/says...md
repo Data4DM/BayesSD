@@ -1,1 +1,0 @@
-- [mind and brain are different](https://youtu.be/NTbPgkt9oMA?t=2803)

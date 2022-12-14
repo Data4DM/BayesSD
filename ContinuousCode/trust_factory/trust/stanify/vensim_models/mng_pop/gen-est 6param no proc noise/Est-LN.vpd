@@ -1,0 +1,18 @@
+*CGL
+Predator|Meas Predator/M noise scale
+*CGL
+Prey|Meas Prey/M noise scale
+*PI
+alpha prior ll/1
+*PI
+beta prior ll/1
+*PI
+delta prior ll/1
+*PI
+gamma prior ll/1
+*PI
+M noise scale prior ll/1
+*PI
+pred init prior ll/1
+*PI
+prey init prior ll/1

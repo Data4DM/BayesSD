@@ -1,0 +1,18 @@
+*CP
+Predator|Meas Predator/1
+*CP
+Prey|Meas Prey/1
+*PI
+alpha prior ll/1
+*PI
+beta prior ll/1
+*PI
+delta prior ll/1
+*PI
+gamma prior ll/1
+*PI
+M noise scale prior ll/1
+*PI
+pred init prior ll/1
+*PI
+prey init prior ll/1

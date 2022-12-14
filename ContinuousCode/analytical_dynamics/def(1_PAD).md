@@ -1,0 +1,1 @@
+Compared to empirical dynamics, approximator+analytical (A) is more emphasized, making this computaitional statistics topic, rather than social science or business.
