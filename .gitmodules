@@ -1,0 +1,3 @@
+[submodule "ContinuousCode/3_Data4DM/ContinuousCode/3_Data4DM/empirical_dynamics"]
+	path = ContinuousCode/3_Data4DM/ContinuousCode/3_Data4DM/empirical_dynamics
+	url = https://github.com/hyunjimoon/empirical_dynamics
