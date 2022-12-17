@@ -4,5 +4,8 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ContinuousCode/3_Data4DM/durable_dominance" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ContinuousCode/5_BayesCalib/experiment/regulatory_function" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ContinuousCode/empirical_dynamics" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ContinuousCode/empirical_dynamics/cont_code/VaccineMisinf" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ContinuousCode/trust_factory/stanify" vcs="Git" />
   </component>
 </project>
