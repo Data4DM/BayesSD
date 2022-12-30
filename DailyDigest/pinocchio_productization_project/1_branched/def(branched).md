@@ -1,1 +1,0 @@
-goal: traced the branched in terms of [structre (SD, Stats) X obejctive function X optimization algorithm]

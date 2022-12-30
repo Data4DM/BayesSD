@@ -1,2 +1,0 @@
-- There are loglik, logposterior, decision function, but we recommend decision function + loglik (examples: https://github.com/Data4DM/BayesSD/discussions/105)
-- connection with moments of simulated moments and likelihood free estimation: https://github.com/Data4DM/BayesSD/discussions/110

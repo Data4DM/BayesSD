@@ -1,0 +1,2 @@
+- [[bimodal_transportation.png]] #tfq (is this bimodality also due to allocation?)
+- 

@@ -1,0 +1,13 @@
+
+## 2. hierarchical structure
+- validation on hierarchical modeling (>2 layers)
+- [[hierarchical data structure of agency]]
+- dynamic hypothesis: how is / should organization be run?
+- action: fed agency [[agency_idata_plan]]
+
+
+
+
+
+- it might be difficulat to use arviz (groups of xarray) as it forces to have the same chain, draws within one dataset (although they could differe for e.g. `prior`, `posterior` group); filling zero fro non-existant can work for 2,3 and [arviz's addgroups](https://python.arviz.org/en/latest/getting_started/WorkingWithInferenceData.html#add-groups-to-inferencedata-objects) although its efficiency is questionable
+- visualization algorithm for each popular data structure can verify + validate dynamic hypothesis 

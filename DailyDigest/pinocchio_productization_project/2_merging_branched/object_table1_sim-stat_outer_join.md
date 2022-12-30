@@ -1,3 +1,0 @@
-- nonlinear regression
-- https://github.com/Data4DM/BayesSD/discussions/7
-- https://github.com/Data4DM/BayesSD/discussions/97

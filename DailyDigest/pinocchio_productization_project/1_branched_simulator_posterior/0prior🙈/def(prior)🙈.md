@@ -1,0 +1,2 @@
+- develop table from [[def(para)]] in terms of distribution
+- <iframe> https://docs.google.com/spreadsheets/d/1gbtGAA2YUaxXgHegiyoaa0WVKfPxnIgd7pxvXZABcIA/edit#gid=1633439295 <\iframe> 

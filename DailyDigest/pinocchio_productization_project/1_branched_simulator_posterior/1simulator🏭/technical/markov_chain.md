@@ -1,0 +1,1 @@
+- discrete (continuous) time markov chain

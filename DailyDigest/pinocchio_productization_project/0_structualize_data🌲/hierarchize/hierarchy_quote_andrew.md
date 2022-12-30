@@ -1,0 +1,3 @@
+- andrew's favorite parameterization in bayesian model (pinocchio)
+- uncertainty in pi (epistemic uncertainty) necessarily maps to potential information we could learn that would tell us something about pi. so in this larger, potentially hierarchical, context, Bayesian inference can distinguish between aleatory uncertainty (randomness) and epistemic uncertainty (ignorance). from [[7BA4700C-DE36-440C-B0AB-4198F20146D4_1_105_c.jpeg]]
+- 

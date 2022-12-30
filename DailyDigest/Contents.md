@@ -15,9 +15,6 @@ SEVEN. Living in a World of Systems
 : Estimation and Checking on eight dynamic models
 
 
-
-
-
 Hitchhiker's guide toSearching Model space Multiverse analysis
 
  * Model search: Greedy graph search
