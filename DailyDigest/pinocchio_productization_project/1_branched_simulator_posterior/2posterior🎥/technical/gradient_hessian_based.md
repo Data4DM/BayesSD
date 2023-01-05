@@ -1,2 +1,0 @@
-- will be diverse with the release of bridgestan which expose gradient and hessian to python, R, Julia
-- 

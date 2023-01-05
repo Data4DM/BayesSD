@@ -1,0 +1,2 @@
+- divergence plot with sbc: hypothesis is highly divergence posterior regions would cause non-uniform sbc logposterior rank plots 
+- stan offers diagnostic tools which is well documented [here](https://hackmd.io/@mc-stan/S1wcQn0P_)

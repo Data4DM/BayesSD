@@ -1,0 +1,1 @@
+- find data with symmetry, hierarchy, by time and space based on [[forming_data_movie]], [[forming_data_agency]]

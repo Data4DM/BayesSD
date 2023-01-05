@@ -1,0 +1,13 @@
+- path dependency
+- network effect
+- preferential attachment
+- Jared's reading list on power and influence
+	- French, J. R. P. Jr., & Raven, B. (1968). The bases of social power. In Cartwright & Zander (pp. 259‐269). Emerson, R. M. (1962). Power‐dependence relations. American Sociological Review, 27, 31‐40.
+	- Salancik, G. R., & Pfeffer, J. (1977, Winter). Who gets power—and how they hold on to it: A strategic‐contingency model of power. Organizational Dynamics, 3‐21.
+	- Recommended:
+		- *Wageman, R., & Mannix, E. A. (1998). Uses and misuses of power in task‐performing teams. In R. M. Kramer & M. A. Neale (Eds.), Power and influence in organizations (pp. 261‐285). Thousand Oaks, CA: Sage.
+		- *Keltner, D., Gruenfeld, D. H., & Anderson, C. (2003). Power, approach, and inhibition. Psychological Review, 110(2), 265‐284.
+		- Galinsky, A. D., Gruenfeld, D. H., & Magee, J. C. (2003). From power to action. Journal of Personality and Social Psychology, 85(3), 453‐466.
+		- Galinsky, A. D., Magee, J. C., Inesi, M. E., & Gruenfeld, D. H. (2006). Power and perspectives not taken. Psychological Science, 17(12): 1068‐1074.
+		- Blau, P. 1964. Exchange and power in social life. New York: Wiley.
+		- Molm, Linda. Coercive power in social exchange. Cambridge University Press.

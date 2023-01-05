@@ -1,0 +1,1 @@
+cat (consistency ability test): spinoff of rat from https://bbbales2.github.io/regressions/rat.html

@@ -1,3 +1,0 @@
-- cat (consistency ability test): spinoff of rat from https://bbbales2.github.io/regressions/rat.html
-- reliability verification: https://github.com/hyunjimoon/defense-reliability
-- sbc: https://github.com/hyunjimoon/SBC

@@ -1,1 +1,0 @@
-goal: trace branched history in [structre (SD, Stats) X obejctive function X optimization algorithm]

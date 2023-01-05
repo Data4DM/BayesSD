@@ -1,0 +1,2 @@
+- summarize vignettes from https://github.com/hyunjimoon/SBC
+- details on [[diagram(universal_adversarial)]]

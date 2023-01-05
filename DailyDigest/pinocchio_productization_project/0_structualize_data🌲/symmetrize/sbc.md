@@ -1,2 +1,0 @@
-- sbc data structure with `prior`. `prior_predictive`, `observed_data`, `posterior`, `posterior_predictive`, `log_likelihood` groups
-- redundant information from symmetry of $\theta \rightarrow y$ and $y \rightarrow \tilde{\theta}$ provides diagnostics that tests whether prior and posterior is exchangeable given data

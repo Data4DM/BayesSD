@@ -1,3 +1,0 @@
-- path dependency
-- network effect
-- preferential attachment

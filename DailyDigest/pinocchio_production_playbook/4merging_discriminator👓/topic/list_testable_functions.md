@@ -1,0 +1,1 @@
+- #tfq how to formulate untestable (unmeasured, unmeasurable - scale distortion) as testable?
