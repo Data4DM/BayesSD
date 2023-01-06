@@ -15,7 +15,7 @@
 | tag                    |       #ZeroSum                         |                                              |                                                        |
 
 
-
+conservation of (first order)
 
 
 ## Angel and Devil

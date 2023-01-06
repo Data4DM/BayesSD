@@ -21,7 +21,7 @@ warmer temperature, under frozen increase green house gases
 
 - aggressive automaker leasing created new competitors (we created superstores)
 
-- should collect data for how ppl buy new cars #tfq
+- should collect data for how ppl buy new cars 
 - policy recommendations were developing new clinics to assess consumer tradeoffs of new vs off-lease/used vehicles
 - move to longer terms (> 3yr)
 - reduce subvention

@@ -1,0 +1,2 @@
+- process noise is major source of stochasticity #tfq 
+- adequate level of process noise? symmetric around 1?
