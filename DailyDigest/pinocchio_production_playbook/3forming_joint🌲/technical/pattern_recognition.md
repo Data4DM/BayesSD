@@ -1,4 +1,3 @@
-Patterns
 From AMD Chp.6, system behavior is classified into six classes:
 1. constant
 2. growth

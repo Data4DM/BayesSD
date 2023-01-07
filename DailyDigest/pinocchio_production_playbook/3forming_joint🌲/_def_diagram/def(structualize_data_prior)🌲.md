@@ -7,7 +7,6 @@ parameter retrieval quality (RQ) is a measure of model trustability defined with
 -   numerically as sbc distance from uniformity metric, predictive quantities    
 -    visually as no divergence, pair plot simulate the model with some samples from the posterior and compare them against the data. This gives me a visual check of a "good fit".Pair Plot to evaluate the shape of the joint posterior distribution. Add correlations for more information. Lots of correlations indicate a difficult parameter space. Trace plots. For marginal distributions, I found it useful to overlap prior & posterior histograms. This plot tells how much information we gained from the inference process for a particular parameter.
 
-
 ##### semantic:
 
 -   [Effect of process noise and hierarchy measured by parameter retrieval quality (RQ)](https://github.com/Data4DM/BayesSD/discussions/118)

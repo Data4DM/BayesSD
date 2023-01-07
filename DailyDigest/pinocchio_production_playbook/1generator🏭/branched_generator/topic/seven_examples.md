@@ -14,4 +14,4 @@
 - connect with [[def(producing_pinocchio)]]'s [[experiment summary]]
 - ![[Pasted image 20221229180152.png]]
 
-- other model screenshots are in [[4 System Structures]] sec.eight examples
+- other model screenshots are in [[system_structure]] sec.eight examples
