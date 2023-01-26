@@ -1,0 +1,124 @@
+{UTF-8}
+actor=A FUNCTION OF(actor,adding career,start acting,stop acting) ~~|
+actor[career]= INTEG (
+	start acting-adding career[career],
+		init actor[career]) ~~|
+actor[career]= INTEG (
+	start acting-adding career-stop acting[career],
+		actor[career-1])
+	~	person
+	~		|
+
+adding career  = A FUNCTION OF( actor,adding career frac)
+	~	
+	~		|
+
+adding career frac  = A FUNCTION OF( )
+	~	
+	~		|
+
+start acting  = A FUNCTION OF( actor,starting career frac)
+	~	
+	~		|
+
+starting career frac=A FUNCTION OF(starting career frac) ~~|
+starting career frac=
+	~	1/Year
+	~		|
+
+stop acting=A FUNCTION OF(stop acting,actor,stopping career frac) ~~|
+stop acting=
+	~	person/Year
+	~		|
+
+stopping career frac=A FUNCTION OF(stopping career frac) ~~|
+stopping career frac=
+	~	1/Year
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Month
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Month
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Month [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Month [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,214,0
+10,1,actor,258,144,41,49,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,2,48,95,119,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,3,5,2,100,0,0,22,0,192,0,-1--1--1,,1|(130,119)|
+1,4,5,1,4,0,0,22,0,192,0,-1--1--1,,1|(192,119)|
+11,5,0,161,119,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,6,start acting,161,150,43,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,7,8,1,100,0,0,22,0,192,0,-1--1--1,,1|(379,144)|
+11,8,0,379,83,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,9,adding career,379,114,44,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,10,8,1,4,0,0,22,0,192,0,-1--1--1,,2|(379,47)|(258,47)|
+10,11,starting career frac,116,226,59,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,12,48,411,177,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,13,15,1,100,0,0,22,0,192,0,-1--1--1,,1|(321,177)|
+1,14,15,12,4,0,0,22,0,192,0,-1--1--1,,1|(378,177)|
+11,15,0,350,177,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,16,stop acting,350,208,43,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,17,adding career frac,517,155,57,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,18,11,6,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,19,1,6,1,0,0,0,0,192,0,-1--1--1,,1|(229,207)|
+1,20,17,9,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,21,1,9,1,0,0,0,0,192,0,-1--1--1,,1|(337,67)|
+10,22,stopping career frac,447,310,62,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,23,22,16,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,24,1,16,1,0,0,0,0,192,0,-1--1--1,,1|(318,235)|
+///---\\\
+:L<%^E!@
+5:actor
+19:214,0
+24:0
+25:0
+26:0
+22:week,Week
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:0
+72:0
+73:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Lucida Grande|12||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1

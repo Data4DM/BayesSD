@@ -1,0 +1,539 @@
+{UTF-8}
+cancel  = A FUNCTION OF( ) ~~|
+cancel=
+	~	Task/Month
+	~		|
+
+Desired Nonstar Workmonth  = A FUNCTION OF( Movie casting pass) ~~|
+Desired Nonstar Workmonth=
+	task arriving
+	~	NManager*Week
+	~	(task/week) * (manager) = expected non manager workweek.
+	|
+
+Main Nonmain match frac  = A FUNCTION OF( Main Roles,Movie under casting,Nonmain Roles\
+		) ~~|
+Main Nonmain match frac=
+	Nonstar Work * Star Work /Movie under casting
+	~	Dmnl
+	~		|
+
+Movie fail=
+	Movie casting pass * (1-High quality task completion frac)
+	~	Task/Year
+	~		|
+
+Desired Stars Workmonth  = A FUNCTION OF( Movie casting pass,Stars) ~~|
+Desired Stars Workmonth=
+	~	Manager*Week
+	~		|
+
+Nonstars= INTEG (
+	Nonstar in-Nonstar out-rising,
+		5)
+	~	NManager
+	~		|
+
+proposed  = A FUNCTION OF( Movie candidates) ~~|
+proposed=
+	~	Task/Month
+	~		|
+
+High quality task completion frac  = A FUNCTION OF( Nonstar Quality,Star Quality)
+	~	
+	~		|
+
+Stars  = A FUNCTION OF( rising,-Star out) ~~|
+Stars= INTEG (
+	Star in+rising-Star out,
+		1)
+	~	Manager
+	~		|
+
+Main Roles  = A FUNCTION OF( Nonstar Work,Star Work)
+	~	
+	~		|
+
+quality increase delay=
+	500
+	~	Year
+	~	Time delay of how one movie detracts the overall demand for the movie; \
+		inverse of fraction. e.g. if recent low quality movie Jurassic world \
+		decreased 10^-4 of overall movie demand, time delay is 10^4. avg of 500 \
+		films produced in US/Canada: \
+		https://www.statista.com/statistics/187122/movie-releases-in-north-america-\
+		since-2001/
+	|
+
+rising  = A FUNCTION OF( Desired Stars,Movie success,Stars)
+	~	
+	~		|
+
+Time to rise=
+	1/rising
+	~	Month
+	~	The system structure decides this rising delay; hypothesis is structural \
+		difference before and after 80s increased this delay.
+	|
+
+Nonmain Roles  = A FUNCTION OF( Nonstar Work)
+	~	
+	~		|
+
+quality increase=
+	Movie success * quality increase delay
+	~	
+	~		|
+
+quality decrease=
+	Movie fail * quality decrease delay
+	~	
+	~		|
+
+Movie success=
+	Movie casting pass * High quality task completion frac
+	~	Task/Year
+	~		|
+
+Movie Quality= INTEG (
+	quality increase-quality decrease,
+		1)
+	~	
+	~		|
+
+Star out=
+	Stars/(Time to Manager Retire * Month per Year)
+	~	Manager/Week
+	~		|
+
+Desired Nonstars=
+	Desired Nonstar Workmonth / Nonstars
+	~	NManager
+	~		|
+
+Nonstar Work=A FUNCTION OF(Nonstar Work,Nonstars) ~~|
+Nonstar Work=
+	~	
+	~		|
+
+Difference of Stars workmonth=
+	Desired Stars Workmonth - Standard Stars Workmonth
+	~	Manager*Week
+	~		|
+
+Differnce of Nonmanager Workmonth=
+	Desired Nonstar Workmonth-Standard Nonstar Workmonth
+	~	NManager*Week
+	~		|
+
+Standard Stars Workmonth=
+	4
+	~	Manager*Week
+	~		|
+
+Standard Nonstar Workmonth=
+	10
+	~	Ns*Month
+	~		|
+
+Net change of Star Quality=A FUNCTION OF(Net change of Star Quality,Difference of Stars workmonth\
+		,Star Fatigue,Star Quality) ~~|
+Net change of Star Quality=
+	~	1/Month
+	~		|
+
+nonmatched  = A FUNCTION OF( Movie under casting) ~~|
+nonmatched=
+	~	Task/Month
+	~		|
+
+Month per Year=
+	12
+	~	Month/Year
+	~		|
+
+Nonstar in=
+	(Desired Nonstars - Nonstars)/(Time to Nonmanager Hire * Month per Year)
+	~	NM/Week
+	~		|
+
+matched  = A FUNCTION OF( Movie under casting) ~~|
+matched=
+	Movie under casting * (1-Test Fraction)
+	~	Task/Month
+	~		|
+
+Nonstar out=
+	Nonstars / (Time to Nonmanager Retire * Month per Year)
+	~	NM/Week
+	~		|
+
+Movie candidates= INTEG (
+	cancel+task arriving-proposed,
+		Desired Nonstars * Time to Nonmanager Retire)
+	~	
+	~		|
+
+Star Quality=A FUNCTION OF(Star Quality,Net change of Star Quality) ~~|
+Star Quality= INTEG (
+	Net change of Star Quality,
+		)
+	~	Dmnl
+	~		|
+
+Nonstar Quality=A FUNCTION OF(Nonstar Quality,Net change of Nonmanager Quality) ~~|
+Nonstar Quality= INTEG (
+	Net change of Nonmanager Quality,
+		)
+	~	Dmnl
+	~		|
+
+Net change of Nonmanager Quality=A FUNCTION OF(Net change of Nonmanager Quality,Differnce of Nonmanager Workmonth\
+		,Nonmanager Fatigue,Nonstar Quality) ~~|
+Net change of Nonmanager Quality=
+	~	
+	~		|
+
+Nonmanager Fatigue= INTEG (
+	Nonmanager Fatigue in-Nonmanager Fatigue out,
+		0)
+	~	NMFatigue
+	~	Accumulated fatigue of non manager, which affects net change of mistake \
+		probability
+	|
+
+Nonmanager Fatigue in=
+	Max(0, Differnce of Nonmanager Workmonth)
+	~	NMFatigue/Month
+	~		|
+
+Star Fatigue= INTEG (
+	Star Fatigue in-Star Fatigue out,
+		0)
+	~	MFatigue
+	~	Accumulated fatigue of manager fatigue, which affects net change of \
+		manager mistake probability
+	|
+
+Star Fatigue in=
+	Max(Difference of Stars workmonth, 0)
+	~	MFatigue/Week
+	~		|
+
+Star Fatigue out=
+	Max(0, -1 * Difference of Stars workmonth)
+	~	MFatigue*Week
+	~		|
+
+Movie under casting=A FUNCTION OF(Movie under casting,matched,nonmatched,proposed) ~~|
+Movie under casting= INTEG (
+	proposed-matched-nonmatched,
+		)
+	~	
+	~	Seemingly completed task piled up, and a test fraction of them are tested
+	|
+
+task arriving=A FUNCTION OF(task arriving,Movie Demand) ~~|
+task arriving=
+	~	Task/Month
+	~		|
+
+Nonmanager Fatigue out=
+	Max(0, -1 * Differnce of Nonmanager Workmonth)
+	~	NMFatigue/Month
+	~		|
+
+Time to Manager Retire=
+	10
+	~	Month
+	~		|
+
+Time to Nonmanager Hire=
+	1
+	~	Month
+	~	Hiring delay of non manager
+	|
+
+Time to Nonmanager Retire=
+	5
+	~	Week
+	~	Non manager retiring delay
+	|
+
+Desired Stars  = A FUNCTION OF( Desired Stars Workmonth,Standard Stars Workmonth)
+	~	
+	~		|
+
+Star Work  = A FUNCTION OF( Stars)
+	~	
+	~		|
+
+Movie Demand  = A FUNCTION OF( Movie Quality)
+	~	
+	~		|
+
+quality decrease delay  = A FUNCTION OF( )
+	~	
+	~		|
+
+Movie cast fail  = A FUNCTION OF( nonmatched,-cancel)
+	~	
+	~		|
+
+Movie casting pass  = A FUNCTION OF( matched,-Movie fail,-Movie success)
+	~	
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 1000
+	~	Week
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Week
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Week [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.25
+	~	Week [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Manager and Fatigue
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,81,0
+10,1,Movie candidates,1135,616,47,188,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+12,2,48,942,533,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(1057,533)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(983,533)|
+11,5,0,1020,533,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,6,task arriving,1020,552,43,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,7,Movie under casting,1370,503,42,62,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,8,10,7,4,0,0,22,0,0,0,-1--1--1,,1|(1298,511)|
+1,9,10,1,100,0,0,22,0,0,0,-1--1--1,,1|(1219,511)|
+11,10,0,1263,511,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,11,proposed,1263,542,43,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,12,Movie casting pass,1579,529,45,109,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,13,Movie cast fail,1368,724,42,63,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,14,16,12,4,0,0,22,0,0,0,-1--1--1,,1|(1503,480)|
+1,15,16,7,100,0,0,22,0,0,0,-1--1--1,,1|(1436,480)|
+11,16,0,1467,480,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,17,matched,1467,511,43,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,18,20,1,4,0,0,22,0,0,0,-1--1--1,,1|(1219,732)|
+1,19,20,13,100,0,0,22,0,0,0,-1--1--1,,1|(1297,732)|
+11,20,0,1263,732,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,21,cancel,1263,751,22,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,22,48,1883,444,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,23,25,22,4,0,0,22,0,0,0,-1--1--1,,1|(1805,444)|
+1,24,25,12,100,0,0,22,0,0,0,-1--1--1,,1|(1675,444)|
+11,25,0,1732,444,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,26,Movie success,1732,471,55,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,27,48,1907,622,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,28,30,27,4,0,0,22,0,0,0,-1--1--1,,1|(1818,622)|
+1,29,30,12,100,0,0,22,0,0,0,-1--1--1,,1|(1676,622)|
+11,30,0,1734,622,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,31,Movie fail,1734,649,65,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,32,34,13,4,0,0,22,0,0,0,-1--1--1,,1|(1370,636)|
+1,33,34,7,100,0,0,22,0,0,0,-1--1--1,,1|(1370,582)|
+11,34,0,1370,605,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,35,nonmatched,1421,605,43,23,40,131,0,0,-1,0,0,0,0,0,0,0,0,0
+10,36,Nonstars,2051,1207,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,37,48,1779,1207,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,38,40,36,4,0,0,22,0,0,0,-1--1--1,,1|(1951,1207)|
+1,39,40,37,100,0,0,22,0,0,0,-1--1--1,,1|(1834,1207)|
+11,40,0,1885,1207,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,41,Nonstar in,1885,1234,48,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,42,48,2041,1351,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,43,45,42,4,0,0,22,0,0,0,-1--1--1,,1|(2041,1315)|
+1,44,45,36,100,0,0,22,0,0,0,-1--1--1,,1|(2041,1249)|
+11,45,0,2041,1280,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,46,Nonstar out,2041,1307,45,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,47,Standard Nonstar Workmonth,1013,1284,70,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,48,Desired Nonstar Workmonth,1699,1032,70,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,49,Desired Nonstars,1932,1048,61,15,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,50,48,49,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1826,1011)|
+1,51,36,49,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1948,1149)|
+1,52,49,41,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1858,1170)|
+10,53,Time to Nonmanager Hire,1869,1327,45,19,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+1,54,53,41,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1848,1275)|
+10,55,Time to Nonmanager Retire,1977,1401,54,18,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+1,56,55,46,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1984,1333)|
+10,57,Stars,2417,1205,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,58,48,2410,1371,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,59,61,58,4,0,0,22,0,0,0,-1--1--1,,1|(2410,1327)|
+1,60,61,57,100,0,0,22,0,0,0,-1--1--1,,1|(2410,1250)|
+11,61,0,2410,1283,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,62,Star out,2410,1302,51,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,63,Desired Stars Workmonth,2830,1037,64,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,64,57,63,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(2616,1086)|
+10,65,Desired Stars,2522,1025,58,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,66,Standard Stars Workmonth,2745,1426,63,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,67,66,65,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,68,63,65,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,69,Time to rise,2230,1074,43,23,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+10,70,Time to Manager Retire,2546,1363,49,19,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+1,71,70,62,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(2460,1349)|
+10,72,High quality task completion frac,1906,540,61,28,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||15-128-255,0,0,0,0,0,0
+1,73,72,26,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,74,72,31,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,75,Nonstar Quality,1678,1326,68,29,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+12,76,48,1406,1322,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,77,79,75,4,0,0,22,0,0,0,-1--1--1,,1|(1559,1322)|
+1,78,79,76,100,0,0,22,0,0,0,-1--1--1,,1|(1456,1322)|
+11,79,0,1502,1322,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,80,Net change of Nonmanager Quality,1502,1349,73,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,81,Nonmanager Fatigue,1416,1433,66,27,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+12,82,48,1222,1434,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,83,85,81,4,0,0,22,0,0,0,-1--1--1,,1|(1323,1434)|
+1,84,85,82,100,0,0,22,0,0,0,-1--1--1,,1|(1258,1434)|
+11,85,0,1291,1434,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,86,Nonmanager Fatigue in,1291,1461,45,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,87,48,1643,1429,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,88,90,87,4,0,0,22,0,0,0,-1--1--1,,1|(1588,1429)|
+1,89,90,81,100,0,0,22,0,0,0,-1--1--1,,1|(1507,1429)|
+11,90,0,1538,1429,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,91,Nonmanager Fatigue out,1538,1456,45,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,92,Differnce of Nonmanager Workmonth,1050,1365,67,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,93,Nonstar Work,2047,980,50,23,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||128-0-255,0,0,0,0,0,0
+1,94,36,93,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,95,48,92,0,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,96,47,92,0,0,45,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,97,92,86,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1165,1473)|
+1,98,92,80,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1305,1412)|
+1,99,75,80,1,0,45,0,1,64,0,0-0-0,|||0-0-0,1|(1624,1401)|
+1,100,81,80,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,101,92,91,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1188,1560)|
+10,102,Star Quality,3497,1325,84,36,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+12,103,48,3238,1319,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,104,106,102,4,0,0,22,0,0,0,-1--1--1,,1|(3374,1319)|
+1,105,106,103,100,0,0,22,0,0,0,-1--1--1,,1|(3286,1319)|
+11,106,0,3330,1319,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,107,Net change of Star Quality,3330,1346,73,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,108,Star Fatigue,3255,1438,43,23,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,109,48,3054,1439,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,110,112,108,4,0,0,22,0,0,0,-1--1--1,,1|(3184,1439)|
+1,111,112,109,100,0,0,22,0,0,0,-1--1--1,,1|(3104,1439)|
+11,112,0,3150,1439,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,113,Star Fatigue in,3150,1470,43,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,114,48,3408,1439,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,115,117,114,4,0,0,22,0,0,0,-1--1--1,,1|(3375,1439)|
+1,116,117,108,100,0,0,22,0,0,0,-1--1--1,,1|(3319,1439)|
+11,117,0,3346,1439,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,118,Star Fatigue out,3346,1466,54,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,119,Star Work,2421,983,43,23,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||128-0-255,0,0,0,0,0,0
+10,120,Difference of Stars workmonth,2890,1346,67,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,121,63,120,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,122,66,120,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,123,120,113,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(2984,1478)|
+1,124,120,118,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(3048,1539)|
+1,125,108,107,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,126,120,107,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(3057,1416)|
+1,127,102,107,1,0,45,0,1,64,0,0-0-0,|||0-0-0,1|(3413,1399)|
+1,128,102,72,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(2683,536)|
+1,129,57,119,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,130,Movie Quality,1729,122,63,31,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+12,131,48,1530,127,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,132,134,130,4,0,0,22,0,0,0,-1--1--1,,1|(1637,127)|
+1,133,134,131,100,0,0,22,0,0,0,-1--1--1,,1|(1568,127)|
+11,134,0,1603,127,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,135,quality increase,1603,146,51,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,136,48,1928,123,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,137,139,136,4,0,0,22,0,0,0,-1--1--1,,1|(1889,123)|
+1,138,139,130,100,0,0,22,0,0,0,-1--1--1,,1|(1820,123)|
+11,139,0,1855,123,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,140,quality decrease,1855,142,54,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,141,26,135,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,142,quality increase delay,1445,198,52,19,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+1,143,142,135,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,144,quality decrease delay,1721,208,57,23,8,3,0,2,0,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+1,145,144,140,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,146,Movie Demand,896,413,54,23,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,147,130,146,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1290,150)|
+1,148,146,6,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(931,485)|
+1,149,49,1,0,0,0,0,0,192,1,-1--1--1,,1|(0,0)|
+1,150,55,1,0,0,0,0,0,192,1,-1--1--1,,1|(0,0)|
+1,151,1,11,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1239,571)|
+1,152,36,46,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(2090,1260)|
+1,153,57,61,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(2445,1244)|
+1,154,7,17,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1425,447)|
+1,155,7,35,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1329,584)|
+10,156,Month per Year,1176,1020,44,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,157,156,41,0,17,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,158,156,46,0,1,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,159,156,62,0,1,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,160,36,41,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1982,1250)|
+1,161,12,26,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1695,523)|
+1,162,12,30,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1692,584)|
+1,163,165,36,100,0,0,22,0,192,0,-1--1--1,,1|(2156,1205)|
+1,164,165,57,4,0,0,22,0,192,0,-1--1--1,,1|(2305,1205)|
+11,165,0,2228,1205,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,166,rising,2228,1236,43,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,167,26,166,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,168,31,140,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,169,Main Nonmain match frac,2244,563,61,23,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||15-128-255,0,0,0,0,0,0
+1,170,7,169,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1846,726)|
+1,171,65,166,1,0,0,0,0,192,0,-1--1--1,,1|(2384,1143)|
+1,172,57,166,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(2305,1258)|
+1,173,165,69,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(2301,1145)|
+10,174,Nonmain Roles,2050,619,43,23,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,175,Main Roles,2419,618,43,23,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,176,93,174,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,177,93,175,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,178,119,175,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,179,174,169,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,180,175,169,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,181,75,72,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(2590,946)|
+1,182,12,48,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,183,12,63,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Cost
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,100,0
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*labor force
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,100,0
+///---\\\
+:L<%^E!@
+5:Month per Year
+9:Current
+19:81,0
+24:0
+25:0
+26:0
+15:0,0,0,0,0,0
+27:2,
+34:0,
+42:0
+72:0
+73:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Helvetica|12||0-0-0|0-0-0|-1--1--1|0-0-0|192-192-192|-1--1--1

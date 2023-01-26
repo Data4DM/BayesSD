@@ -1,0 +1,75 @@
+INFO:        Initial point of search.
+INFO:          p1 = 1.
+INFO:          p2 = 1.
+INFO:          p3 = 1.
+INFO:        Simulations = 1.
+INFO:        Pass = 0.
+INFO:        Payoff = -2001.25.
+INFO:        ---------------------------------.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p1 = 1 and 8.57512e+36.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p1 = 8.57512e+36 and 2.24499e+37.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p1 = 2.24499e+37 and 1.
+INFO:        With p2 = 1 and 8.57512e+36.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p2 = 8.57512e+36 and 2.24499e+37.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p2 = 2.24499e+37 and 1.
+INFO:        With p3 = 1 and 8.57512e+36.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p3 = 8.57512e+36 and 2.24499e+37.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p1 = 1 and 8.57512e+36.
+INFO:        With p3 = 2.24499e+37 and 1.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p1 = 8.57512e+36 and 2.24499e+37.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p1 = 2.24499e+37 and 1.
+INFO:        With p2 = 1 and 8.57512e+36.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p2 = 8.57512e+36 and 2.24499e+37.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p2 = 2.24499e+37 and 1.
+INFO:        With p3 = 1 and 8.57512e+36.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p3 = 8.57512e+36 and 2.24499e+37.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p1 = 1 and 8.57512e+36.
+INFO:        With p3 = 2.24499e+37 and 1.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p1 = 8.57512e+36 and 2.24499e+37.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p1 = 2.24499e+37 and 1.
+INFO:        With p2 = 1 and 8.57512e+36.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p2 = 8.57512e+36 and 2.24499e+37.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p2 = 2.24499e+37 and 1.
+INFO:        With p3 = 1 and 8.57512e+36.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p3 = 8.57512e+36 and 2.24499e+37.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p1 = 1 and 8.57512e+36.
+INFO:        With p3 = 2.24499e+37 and 1.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p1 = 8.57512e+36 and 2.24499e+37.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p1 = 2.24499e+37 and 1.
+INFO:        With p2 = 1 and 8.57512e+36.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p2 = 8.57512e+36 and 2.24499e+37.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p2 = 2.24499e+37 and 1.
+INFO:        With p3 = 1 and 8.57512e+36.
+INFO:        NOTE Payoff (-2001.25) realized at multiple parameter values.
+INFO:        With p3 = 8.57512e+36 and 2.24499e+37.
+INFO:        Maximum payoff found at:.
+INFO:          p1 = 1.
+INFO:          p2 = 1.
+INFO:         *p3 = 2.24499e+37.
+INFO:        Simulations = 25.
+INFO:        Pass = 3.
+INFO:        Payoff = -2001.25.
+INFO:        ---------------------------------.

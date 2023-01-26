@@ -1,0 +1,146 @@
+{UTF-8}
+birth rate=
+	0.08
+	~	fraction/Year
+	~		|
+
+aging[age]=
+	Population[age] / average time in cohort[age]
+	~	person/Year
+	~		|
+
+initial population[age]=
+	30, 50, 50, 60, 50
+	~	person
+	~		|
+
+average time in cohort[age]=
+	2, 10, 7, 40, 20
+	~	Year
+	~		|
+
+births=
+	Population[middle] * birth rate
+	~	person/Year
+	~		|
+
+Population[infant]= INTEG (
+	births - aging[infant],
+		initial population[infant]) ~~|
+Population[all but youngest]= INTEG (
+	aging[previous cohort] - aging[all but youngest],
+		initial population[all but youngest])
+	~	person
+	~		|
+
+age:
+	infant, child, teen, middle, old
+	~	index
+	~		|
+
+all but youngest:
+	child, teen, middle, old
+	~	index
+	~	age cohorts except infant
+	|
+
+previous cohort:
+	infant, child, teen, middle -> all but youngest
+	~	index
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 100
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 1
+	~	Year
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Year
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,121,0
+10,1,Population,495,242,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,2,48,341,243,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(430,243)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(372,243)|
+11,5,0,400,243,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,6,births,400,281,75,30,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,7,initial population,388,191,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,8,7,1,0,0,0,0,0,0,1,-1--1--1,,1|(0,0)|
+11,9,0,596,242,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,10,aging,596,280,75,30,32,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,11,1,6,1,0,0,0,0,64,0,-1--1--1,,1|(436,289)|
+1,12,1,10,1,0,0,0,0,64,0,-1--1--1,,1|(570,282)|
+10,13,average time in cohort,688,299,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,14,13,10,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+10,15,birth rate,339,304,75,30,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,16,15,6,0,0,0,0,0,0,0,-1--1--1,,1|(0,0)|
+1,17,9,1,4,0,0,22,0,0,0,-1--1--1,,3|(596,164)|(496,164)|(496,193)|
+1,18,9,1,100,0,0,22,0,0,0,-1--1--1,,3|(564,242)|(564,242)|(549,242)|
+12,19,48,673,242,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,20,9,19,4,0,0,22,0,0,0,-1--1--1,,1|(632,242)|
+///---\\\
+:L<%^E!@
+4:Time
+5:aging[age]
+6:child
+6:infant
+6:middle
+6:old
+6:teen
+9:Current
+19:121,0
+24:0
+25:100
+26:100
+22:$,Dollar,Dollars,$s
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+22:Day,Days
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:0
+72:0
+73:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Lucida Grande|12||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1

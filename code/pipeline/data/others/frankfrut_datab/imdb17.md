@@ -1,0 +1,4 @@
+- 15 csv
+- `actor` (object): name, aka_name
+- `movie` (event): movie_info, movie_idx
+- 

@@ -1,0 +1,664 @@
+{UTF-8}
+Manager Hiring=
+	(Desired Manager - Manager)/Time to Manager Hiring
+	~	Person/Week
+	~		|
+
+Cost of Manager Salary=
+	5000
+	~	Dollar/(Week*Person)
+	~		|
+
+Cost of Manager Salary Cumulative= INTEG (
+	manager salary per week,
+		0)
+	~	Dollar
+	~		|
+
+Cost of Nonmanager Salary=
+	1000
+	~	Dollar/(Week*Person)
+	~		|
+
+Cost of Nonmanager Salary Cumulative= INTEG (
+	nonmanager salary per week,
+		0)
+	~	Dollar
+	~		|
+
+Cost Salary Cumulative  = A FUNCTION OF( Cost of Manager Salary Cumulative,Cost of Nonmanager Salary Cumulative\
+		)
+	~	
+	~		|
+
+Desired Manager=
+	Reference Manager * Table for Company Quality 2 Desired Manager (Company Quality / Reference Quality\
+		)
+	~	Person
+	~		|
+
+Task Success Frac  = A FUNCTION OF( Efforts for Filling Form in TCR Unit,Table for FF to Task Success Frac\
+		,Time for Filling Form to Task Frac) ~~|
+Task Success Frac=
+	Table for FF to Task Success Frac(Efforts for Filling Form in TCR Unit / Time for Filling Form to Task Frac\
+		)
+	~	Dmnl
+	~	Out of 40 tasks being first processed (five nonmanagers working four days \
+		a week two tasks a day = 40), 10 tasks are error. error frac decrease from \
+		.25 to .2 with mandatory filling form  / 0.25 * (1-filling form SW) + 0.2 \
+		* filling form SW
+	|
+
+partial profit over partial perceived quality=
+	Profit/Perceived Quality
+	~	Dollar/Quality
+	~		|
+
+Perceived Quality= INTEG (
+	Perceived Quality In,
+		Reference Quality)
+	~	Quality
+	~		|
+
+Total Nonmanger Workforce in Task Completion Rate=
+	Nonmanager * Workweek / Time per Task
+	~	Task/Week
+	~	assume nonmanagers spend 20% of their time filling forms
+	|
+
+Effort on Task to Filling Form Frac=
+	0.25
+	~	Dmnl
+	~		|
+
+Efforts for Filling Form in TCR Unit=
+	Total Nonmanger Workforce in Task Completion Rate * (1-Effort on Task to Filling Form Frac\
+		)
+	~	Task/Week
+	~		|
+
+Efforts for Task Completion Rate in TCR Unit=
+	Total Nonmanger Workforce in Task Completion Rate * Effort on Task to Filling Form Frac
+	~	Task/Week
+	~		|
+
+tw  = A FUNCTION OF( Task Success Frac,Efforts for Task Completion Rate in TCR Unit) ~~|
+tw=
+	Task completion rate * Task Success Frac
+	~	Task/Week
+	~		|
+
+Reference Quality=
+	1
+	~	Dmnl
+	~		|
+
+Workweek=
+	4
+	~	Day/Week
+	~		|
+
+manager salary per week=
+	Cost of Manager Salary * Manager
+	~	Dollar/Week
+	~		|
+
+Margin of Task=
+	300
+	~	Dollar/(Task*Week)
+	~	300 * 40 is revenue from goods considering salary is 1000 * 5 + 5000 * 1
+	|
+
+Profit= INTEG (
+	profit per week,
+		0)
+	~	Dollar
+	~		|
+
+nonmanager salary per week=
+	Cost of Nonmanager Salary * Nonmanager
+	~	Dollar/Week
+	~		|
+
+Table for FF to Task Success Frac(
+	[(0,0)-(100,1)],(0,0.8),(50,0),(100,0.75))
+	~	Week/Task
+	~		|
+
+task revenue per week=
+	(tr submit + tw submit) *Margin of Task
+	~	Dollar/Week
+	~		|
+
+Revenue Cumulative= INTEG (
+	task revenue per week,
+		0)
+	~	Dollar
+	~		|
+
+profit per week=
+	 task revenue per week - manager salary per week  - nonmanager salary per week
+	~	Dollar/Week
+	~		|
+
+tr  = A FUNCTION OF( -Task Success Frac,Efforts for Task Completion Rate in TCR Unit)\
+		 ~~|
+tr=
+	Task completion rate * (1-Task Success Frac)
+	~	Task/Week
+	~		|
+
+Time for Filling Form to Task Frac=
+	0.25
+	~	Dmnl
+	~		|
+
+Desired Nonmanager=
+	Desired Task Completion Rate * Time per Task / Workweek
+	~	Person
+	~	H = TPT * WW / TCR
+	|
+
+Task Arriving=
+	Reference Task Arriving *  Table for Normalized Effect Qualtiy 2 Task Arrival(Perceived Quality\
+		/Reference Quality)
+	~	Task/Week
+	~	Reference Task Arriving   Desired Task Completion Rate    tr + tw
+	|
+
+Company Quality=
+	tr submit /tw submit
+	~	Dmnl
+	~		|
+
+Perceived Quality In=
+	(Company Quality - Perceived Quality)/Time to Adjust Quality
+	~	Quality/Week
+	~		|
+
+Test completion rate=
+	Manager * Workweek / Time per Task
+	~	Task/Week
+	~		|
+
+Table for Normalized Effect Qualtiy 2 Task Arrival (
+	[(0,0)-(10,10)],(0,0),(0.5,0.5),(1,1),(1.5,1.1),(2,1.15))
+	~	Dmnl
+	~	increasing lookup function
+	|
+
+Table for Company Quality 2 Desired Manager(
+	[(0,0)-(10,10)],(0,2),(0.5,1.5),(1,1))
+	~	Person/Quality
+	~		|
+
+Time to Manager Hiring=
+	12
+	~	Week
+	~		|
+
+Detection Frac=
+	Table for Manager to Detection Frac(Manager/Reference Manager)
+	~	Dmnl
+	~		|
+
+Table for Manager to Detection Frac(
+	[(0,0)-(10,1)],(0,0.3),(0.5,0.5),(1,0.7))
+	~	Dmnl
+	~		|
+
+Manager= INTEG (
+	Manager Hiring-Manager Retiring,
+		Reference Manager)
+	~	Person
+	~		|
+
+Manager Retiring=
+	Manager/Time to Manager Retiring
+	~	Person/Week
+	~		|
+
+Nonmanager= INTEG (
+	Nonmanger Hiring-Nonmanger Retiring,
+		Reference Nonmanager)
+	~	Person
+	~		|
+
+Time per Task=
+	1/40
+	~	Person*Day/Task
+	~	Forty task can be completed with 5 nonmangers and two tasks a day, working \
+		four days a week.
+	|
+
+Nonmanger Retiring=
+	Nonmanager/Time to Nonmanager Retiring
+	~	Person/Week
+	~		|
+
+Reference Nonmanager=
+	5
+	~	Person
+	~		|
+
+Time to Submit=
+	4
+	~	Week
+	~	TODO How to set?
+	|
+
+Task Done Right= INTEG (
+	tr-tr submit,
+		Reference Task * Task Success Frac)
+	~	Task
+	~		|
+
+tr submit=
+	Task Done Right / Time to Submit
+	~	Task/Week
+	~		|
+
+Reference Manager=
+	1
+	~	Person
+	~		|
+
+Task Done Wrong Submitted= INTEG (
+	tw submit,
+		Reference Task * (1-Task Success Frac))
+	~	Task
+	~	TODO what is affected by Task Done Wrong Submitted?
+	|
+
+Reference Task=
+	160
+	~	Task
+	~	Target task completion time (4) * Reference task arriving (40)
+	|
+
+Reference Task Arriving=
+	40
+	~	Task/Week
+	~	Five nonmanagers, working four days a week, two tasks a day (5 * 4 * 2)
+	|
+
+Time to Adjust Quality=
+	4
+	~	Week
+	~		|
+
+Target Task Completion Time=
+	4
+	~	Week
+	~		|
+
+Task to be done= INTEG (
+	detected+Task Arriving-tr-tw,
+		Reference Task)
+	~	Task
+	~		|
+
+Task Done Right Submitted= INTEG (
+	tr submit,
+		Reference Task * Task Success Frac)
+	~	Task
+	~	TODO what is affected by Task Done Right Submitted?
+	|
+
+Task Done Wrong= INTEG (
+	tw-detected-tw submit,
+		Reference Task * (1-Task Success Frac))
+	~	Task
+	~		|
+
+Time to Manager Retiring=
+	12
+	~	Week
+	~		|
+
+Desired Task Completion Rate=
+	Task to be done / Target Task Completion Time
+	~	Task/Week
+	~		|
+
+detected=
+	Test completion rate *Detection Frac
+	~	Task/Week
+	~		|
+
+Nonmanger Hiring=
+	(Desired Nonmanager - Nonmanager)/Time to Nonmanager Hiring
+	~	Person/Week
+	~		|
+
+Time to Nonmanager Hiring=
+	8
+	~	Week
+	~		|
+
+Time to Nonmanager Retiring=
+	4
+	~	Week
+	~		|
+
+tw submit=
+	Test completion rate * (1-Detection Frac)
+	~	Task/Week
+	~	TODO what keeps it from being:  task done wrong > dt * tw submit?
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Week
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Week
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Week [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Week [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*task person company
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,162,0
+10,1,Task to be done,300,269,50,134,3,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-255,0,0,0,0,0,0
+10,2,Task Done Right,745,194,58,58,3,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-255,0,0,0,0,0,0
+10,3,Task Done Wrong,747,383,57,55,3,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-255,0,0,0,0,0,0
+1,4,6,1,100,0,0,22,0,192,0,-1--1--1,,1|(424,389)|
+1,5,6,3,4,0,0,22,0,192,0,-1--1--1,,1|(602,389)|
+11,6,0,506,389,8,6,33,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,7,tw,506,404,8,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,8,10,1,100,0,0,22,0,192,0,-1--1--1,,1|(380,214)|
+1,9,10,2,4,0,0,22,0,192,0,-1--1--1,,1|(555,214)|
+11,10,0,417,214,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,11,tr,417,242,6,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,12,Total Nonmanger Workforce in Task Completion Rate,451,696,74,32,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,13,Task Success Frac,562,266,27,9,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||15-128-255,0,0,0,0,0,0
+1,14,13,11,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,15,13,7,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,16,18,3,100,0,0,22,0,192,0,-1--1--1,,3|(745,471)|(745,471)|(745,454)|
+1,17,18,1,4,0,0,22,0,192,0,-1--1--1,,3|(304,471)|(304,471)|(304,437)|
+11,18,0,542,471,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,19,detected,542,488,25,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,20,Task Done Right Submitted,1035,166,55,23,3,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-255,0,0,0,0,0,0
+10,21,Task Done Wrong Submitted,1026,365,59,23,3,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-255,0,0,0,0,0,0
+1,22,24,2,100,0,0,22,0,192,0,-1--1--1,,1|(843,164)|
+1,23,24,20,4,0,0,22,0,192,0,-1--1--1,,1|(938,164)|
+11,24,0,890,164,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,25,tr submit,890,181,25,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,26,28,3,100,0,0,22,0,192,0,-1--1--1,,1|(831,368)|
+1,27,28,21,4,0,0,22,0,192,0,-1--1--1,,1|(919,368)|
+11,28,0,865,368,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,29,tw submit,865,385,28,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,30,Test completion rate,1213,603,57,9,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,31,30,29,1,0,0,0,0,192,0,-1--1--1,,1|(1089,489)|
+1,32,30,19,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,33,Detection Frac,825,485,58,10,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||15-128-255,0,0,0,0,0,0
+1,34,33,29,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,35,33,19,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,36,Desired Nonmanager,-25,788,59,9,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,37,Time per Task,406,747,41,9,8,3,1,0,-1,0,0,0,0,0,0,0,0,0
+1,38,37,36,0,1,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,39,Desired Task Completion Rate,169,583,47,16,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,40,39,36,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,41,Target Task Completion Time,6,628,56,23,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+1,42,41,39,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,43,1,39,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,44,Nonmanager,58,924,43,23,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,45,48,-140,922,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,46,48,45,100,0,0,22,0,192,0,-1--1--1,,1|(-99,922)|
+1,47,48,44,4,0,0,22,0,192,0,-1--1--1,,1|(-20,922)|
+11,48,0,-61,922,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,49,Nonmanger Hiring,-61,953,51,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,50,48,242,924,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,51,53,44,100,0,0,22,0,192,0,-1--1--1,,1|(131,924)|
+1,52,53,50,4,0,0,22,0,192,0,-1--1--1,,1|(202,924)|
+11,53,0,167,924,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,54,Nonmanger Retiring,167,955,56,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,55,Time to Nonmanager Hiring,-206,1021,44,32,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+1,56,55,49,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,57,36,49,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,58,44,49,1,0,0,0,0,64,0,-1--1--1,,1|(7,972)|
+10,59,Time to Nonmanager Retiring,237,1050,44,32,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+1,60,59,54,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,61,Manager,1158,744,43,23,3,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||253-128-8,0,0,0,0,0,0
+12,62,48,938,743,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,63,65,62,100,0,0,22,0,192,0,-1--1--1,,1|(980,743)|
+1,64,65,61,4,0,0,22,1,192,0,253-128-8,|||0-0-0,1|(1070,743)|
+11,65,0,1019,743,6,8,34,3,0,2,1,0,0,0,0-0-0,0-0-0,|||253-128-8,0,0,0,0,0,0
+10,66,Manager Hiring,1019,774,52,23,40,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||253-128-8,0,0,0,0,0,0
+12,67,48,1314,744,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,68,70,61,100,0,0,22,0,192,0,-1--1--1,,1|(1223,744)|
+1,69,70,67,4,0,0,22,0,192,0,-1--1--1,,1|(1281,744)|
+11,70,0,1252,744,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,71,Manager Retiring,1252,775,48,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,72,Time to Manager Retiring,1343,855,56,23,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+1,73,72,71,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,74,Perceived Quality,1384,25,59,23,3,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-255,0,0,0,0,0,0
+12,75,48,1069,25,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,76,78,75,100,0,0,22,0,192,0,-1--1--1,,1|(1164,25)|
+1,77,78,74,4,0,0,22,0,192,0,-1--1--1,,1|(1293,25)|
+11,78,0,1255,25,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,79,Perceived Quality In,1255,42,56,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,80,74,79,1,0,0,0,0,192,0,-1--1--1,,1|(1352,87)|
+10,81,Time to Adjust Quality,1147,129,48,23,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+1,82,81,79,1,0,0,0,0,192,0,-1--1--1,,1|(1221,93)|
+10,83,Table for Company Quality 2 Desired Manager,712,872,63,32,8,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+10,84,Reference Task,-47,75,45,9,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,85,48,85,268,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,86,88,85,100,0,0,22,0,192,0,-1--1--1,,1|(121,268)|
+1,87,88,1,4,0,0,22,0,192,0,-1--1--1,,1|(204,268)|
+11,88,0,153,268,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,89,Task Arriving,153,299,37,9,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,90,Table for Manager to Detection Frac,999,480,60,23,8,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+1,91,90,33,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,92,Reference Manager,1677,627,55,9,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,93,92,33,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,94,Reference Nonmanager,-353,724,37,16,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,95,44,54,1,0,0,0,0,64,0,-1--1--1,,1|(99,977)|
+1,96,61,71,1,0,0,0,0,64,0,-1--1--1,,1|(1180,789)|
+10,97,Reference Task Arriving,-73,336,45,16,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,98,97,89,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,99,44,12,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,100,37,12,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,101,13,3,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,102,84,3,0,1,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,103,13,2,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,104,84,2,0,1,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,105,Time to Submit,866,269,43,9,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+1,106,105,25,1,0,0,0,0,64,0,-1--1--1,,1|(876,195)|
+1,107,61,30,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,108,37,30,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,109,Task Done Wrong,503,598,41,23,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,110,Task Done Right,539,541,53,12,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,111,2,25,1,0,0,0,0,64,0,-1--1--1,,1|(840,220)|
+10,112,Table for Normalized Effect Qualtiy 2 Task Arrival,110,187,62,23,8,3,0,16,-1,0,0,0,0-0-0,0-0-0,||U|0-0-0,0,0,0,0,0,0
+1,113,112,89,1,0,0,0,0,192,0,-1--1--1,,1|(132,278)|
+10,114,Manager,866,534,40,13,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,115,114,33,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,116,Time to Manager Hiring,975,849,48,16,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||251-2-7,0,0,0,0,0,0
+12,117,0,2040,962,80,40,8,7,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-255,0,0,0,0,0,0
+latent is grape|<<NnN>>|
+12,118,0,2043,911,80,40,8,7,0,2,-1,0,0,0,0-0-0,0-0-0,|||128-0-128,0,0,0,0,0,0
+measured is. plum|<<NnN>>|
+1,119,74,89,1,0,0,0,0,192,0,-1--1--1,,1|(214,185)|
+12,120,0,1808,901,80,40,8,7,0,2,-1,0,0,0,0-0-0,0-0-0,|||15-128-255,0,0,0,0,0,0
+most infgrained from data is aqua|<<NnN>>|
+12,121,0,1794,998,80,40,8,7,0,2,-1,0,0,0,-1--1--1,-1--1--1,|||251-2-7,0,0,0,0,0,0
+estimated or time is red|<<NnN>>|
+12,122,0,1795,951,80,40,8,7,0,2,-1,0,0,0,-1--1--1,-1--1--1,|||17-128-64,0,0,0,0,0,0
+assumed is moss|<<NnN>>|
+12,123,0,1790,1071,80,40,8,7,0,2,-1,0,0,0,0-0-0,0-0-0,|||253-128-8,0,0,0,0,0,0
+actionable is orange|<<NnN>>|
+12,124,0,1772,796,80,40,8,7,0,0,-1,0,0,0,0,0,0,0,0,0
+nonmanagers are reactive, managers are proactive|<<NnN>>|
+1,125,13,20,0,1,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,126,84,20,0,1,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,127,13,21,0,1,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,128,84,21,0,1,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,129,Company Quality,1315,277,48,9,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,130,25,129,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,131,29,129,1,0,0,0,0,192,0,-1--1--1,,1|(1149,375)|
+1,132,129,79,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,133,Company Quality,859,877,34,13,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,134,116,66,1,0,0,0,0,192,0,-1--1--1,,1|(1005,816)|
+1,135,61,66,1,0,0,0,0,64,0,-1--1--1,,1|(1101,784)|
+10,136,Workweek,580,572,30,9,8,3,1,0,-1,0,0,0,0,0,0,0,0,0
+1,137,136,12,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,138,136,30,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,139,Desired Manager,799,739,48,9,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,140,139,66,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,141,83,139,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,142,133,139,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,143,136,36,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,144,Reference Quality,151,364,50,9,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,145,144,89,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,146,Reference Quality,1630,231,40,23,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,147,146,74,1,0,0,0,0,192,1,-1--1--1,,1|(1428,55)|
+1,148,92,139,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,149,Reference Manager,630,732,40,23,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,150,Reference Quality,618,748,40,23,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,151,150,139,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,152,92,61,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,153,84,1,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,154,94,44,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+12,155,0,-29,-274,324,259,8,15,0,0,1,0,0,0,0,0,0,0,0,0
+how_manager_affect_quali
+10,156,Effort on Task to Filling Form Frac,530,582,56,32,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||15-128-255,0,0,0,0,0,0
+10,157,Efforts for Task Completion Rate in TCR Unit,390,593,55,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,158,Efforts for Filling Form in TCR Unit,641,633,43,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,159,12,157,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,160,12,158,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,161,157,7,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,162,157,11,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,163,156,157,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,164,156,158,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,165,Time for Filling Form to Task Frac,625,347,43,21,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||15-128-255,0,0,0,0,0,0
+1,166,158,13,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,167,165,13,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,168,Table for FF to Task Success Frac,773,283,62,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,169,partial profit over partial perceived quality,1499,421,56,32,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,170,74,169,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,171,Profit,1349,487,28,13,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,172,171,169,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,173,168,13,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*profit
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,90,0
+10,1,Cost Salary Cumulative,1764,487,43,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,2,Cost of Manager Salary,1179,409,55,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,3,Cost of Nonmanager Salary,1163,549,61,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,4,Cost of Manager Salary Cumulative,1471,319,61,23,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,5,Cost of Nonmanager Salary Cumulative,1482,521,61,32,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,6,48,1317,521,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,7,37,6,100,0,0,22,0,192,0,-1--1--1,,1|(1347,521)|
+1,8,37,5,4,0,0,22,0,192,0,-1--1--1,,1|(1400,521)|
+1,9,3,37,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,10,4,1,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,11,5,1,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,12,Manager,1239,460,40,13,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,13,Nonmanager,1241,607,52,13,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,14,13,37,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,15,Profit,2341,680,43,23,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,16,Revenue Cumulative,1765,815,43,23,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,17,Manager,1471,358,33,9,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+12,18,48,1278,317,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,19,35,18,100,0,0,22,0,192,0,-1--1--1,,1|(1318,317)|
+1,20,35,4,4,0,0,22,0,192,0,-1--1--1,,1|(1385,317)|
+1,21,2,35,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,22,12,35,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+12,23,48,1504,815,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,24,40,23,100,0,0,22,0,192,0,-1--1--1,,1|(1563,815)|
+1,25,40,16,4,0,0,22,0,192,0,-1--1--1,,1|(1673,815)|
+10,26,tr submit,1320,870,39,13,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,27,tw submit,1289,946,41,13,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,28,Margin of Task,1421,1001,55,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,29,26,40,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,30,27,40,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,31,28,40,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+12,32,48,2073,685,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,33,44,32,100,0,0,22,0,192,0,-1--1--1,,1|(2133,685)|
+1,34,44,15,4,0,0,22,0,192,0,-1--1--1,,1|(2247,685)|
+11,35,0,1355,317,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,36,manager salary per week,1355,348,52,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+11,37,0,1373,521,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,38,nonmanager salary per week,1373,552,76,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,39,Nonmanager,1482,569,44,9,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+11,40,0,1618,815,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,41,task revenue per week,1618,846,56,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,42,tr submit,1765,854,32,9,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,43,tw submit,1765,854,35,9,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+11,44,0,2190,685,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,45,profit per week,2190,716,50,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,46,36,45,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,47,38,45,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,48,41,45,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+///---\\\
+:GRAPH how_manager_affect_quali
+:TITLE how manager affect quality
+:X-AXIS Manager
+:SCALE
+:VAR Company Quality
+
+:TABLE TABLE
+:TITLE  
+:PRETTYNUM
+:COMLINE 
+:L<%^E!@
+1:current.vdfx
+4:Time
+5:Company Quality
+9:current
+19:162,0
+24:0
+25:100
+26:100
+31:0,ReferenceMode_manager
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:1
+72:0
+73:0
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Helvetica|12||0-0-0|0-0-0|-1--1--1|0-0-0|179-179-179|-1--1--1

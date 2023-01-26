@@ -1,0 +1,1747 @@
+{UTF-8}
+Follower Adoption from Push=
+	Follower Adopter*Follower Adoption Fraction*XIDZ( Total Population-Leader Adopter-Follower Adopter\
+		, Total Population, 0)
+	~	
+	~		|
+
+Follower Adoption Rate=
+	MIN(Desired Follower Adoption Rate, Potential Adopter*XIDZ(Desired Follower Adoption Rate\
+		, Desired Follower Adoption Rate+Desired Leader Adoption Rate, 0))
+	~	
+	~		|
+
+Leader Adoption Rate=
+	MIN(Desired Leader Adoption Rate, Potential Adopter*XIDZ(Desired Leader Adoption Rate\
+		, Desired Follower Adoption Rate+Desired Leader Adoption Rate, 0))
+	~	
+	~		|
+
+Desired Follower Adoption Rate=
+	Follower Adoption from Pull+Follower Adoption from Push
+	~	
+	~		|
+
+Desired Leader Adoption Rate=
+	Leader Adoption from Pull+Leader Adoption from Push
+	~	
+	~		|
+
+Pull Delay=
+	5
+	~	
+	~		|
+
+Pull Unit Chunk=
+	0.05
+	~	
+	~		|
+
+Follower Pull Fraction=
+	DELAY3(Follower Pull Investment, Pull Delay)
+	~	
+	~		|
+
+Decisiontime=
+	30
+	~	
+	~		|
+
+Leader Push Chunk=
+	IF THEN ELSE(Leader Investment Choice=2, Push Unit Chunk, 0)
+	~	
+	~		|
+
+Follower Investment Choice=
+	IF THEN ELSE(MODULO( Time, Decisiontime)=1:AND:Follower Market Share Difference>0, 0\
+		, 0)
+	~	
+	~		|
+
+Follower Market Share=
+	XIDZ(Follower Adopter, Follower Adopter+Leader Adopter, 1)
+	~	
+	~		|
+
+Leader Pull Chunk=
+	IF THEN ELSE(Leader Investment Choice=1, Pull Unit Chunk, 0)
+	~	
+	~		|
+
+Leader Pull Fraction=
+	DELAY3(Leader Pull Investment, Pull Delay)
+	~	
+	~		|
+
+Follower Adoption Fraction=
+	DELAY3(Follower Push Investment, Push Delay)
+	~	
+	~		|
+
+Follower Push Investment= INTEG (
+	Follower Push Chunk,
+		Push Unit Chunk)
+	~	
+	~		|
+
+Push Delay=
+	5
+	~	
+	~		|
+
+Push Unit Chunk=
+	0.05
+	~	
+	~		|
+
+Follower Pull Chunk=
+	IF THEN ELSE(Follower Investment Choice=1, Pull Unit Chunk, 0)
+	~	
+	~		|
+
+Leader Market Share=
+	XIDZ(Leader Adopter, Leader Adopter+Follower Adopter, 1)
+	~	
+	~		|
+
+Follower Pull Investment= INTEG (
+	Follower Pull Chunk,
+		Pull Unit Chunk)
+	~	
+	~		|
+
+Leader Target Market Share=
+	0.7
+	~	
+	~		|
+
+Leader Push Fraction=
+	DELAY3( Leader Push Investment, Push Delay)
+	~	
+	~		|
+
+Leader Push Investment= INTEG (
+	Leader Push Chunk,
+		Push Unit Chunk)
+	~	
+	~		|
+
+Follower Push Chunk=
+	IF THEN ELSE(Follower Investment Choice=2, Push Unit Chunk, 0)
+	~	
+	~		|
+
+Follower Market Share Difference=
+	Follower Target Market Share-Follower Market Share
+	~	
+	~		|
+
+Follower Target Market Share=
+	0.7
+	~	
+	~		|
+
+Leader Market Share Difference=
+	Leader Target Market Share-Leader Market Share
+	~	
+	~		|
+
+Leader Pull Investment= INTEG (
+	Leader Pull Chunk,
+		Pull Unit Chunk)
+	~	
+	~		|
+
+Leader Investment Choice=
+	IF THEN ELSE(MODULO( Time, Decisiontime)=0 :AND:Leader Market Share Difference>0, 2,\
+		 0)
+	~	
+	~		|
+
+L R Purchase=
+	MIN(L M Inventory, L M Backlog)
+	~	
+	~		|
+
+F Initial Backlog=
+	1.25
+	~	
+	~		|
+
+F Inventory Cost=
+	F M Inventory+F R Inventory+F S Inventory
+	~	
+	~		|
+
+F M Backlog= INTEG (
+	F M BLin-F M BLout,
+		F Initial Backlog)
+	~	
+	~		|
+
+F M BLin=
+	F M Demand
+	~	
+	~		|
+
+F M BLout=
+	F R Purchase
+	~	
+	~		|
+
+F M Demand=
+	F R Order Quantity
+	~	
+	~		|
+
+F M Forecasting=
+	SMOOTH(F M Demand, F M Smoothing Time)
+	~	
+	~		|
+
+F M Inventory= INTEG (
+	F M Shipment-F R Purchase,
+		F M Target Inventory)
+	~	
+	~		|
+
+F M Inventory Adjustment=
+	F M Target Supply Line-F M Supply Line+F M Target Inventory-F M Inventory
+	~	
+	~		|
+
+F M Leadtime=
+	5
+	~	
+	~		|
+
+F M Order Quantity=
+	MAX(0, F M Forecasting+F M Inventory Adjustment)
+	~	
+	~		|
+
+F M Purchase=
+	MIN(F S Backlog, F S Inventory)
+	~	
+	~		|
+
+F M Shipment=
+	F M Supply Line/F M Leadtime
+	~	
+	~		|
+
+F M Shortate Rate=
+	MAX(0, F M Backlog-F R Purchase)
+	~	
+	~		|
+
+F M Smoothing Time=
+	5
+	~	
+	~		|
+
+F M Supply Line= INTEG (
+	F M Purchase-F M Shipment,
+		F M Target Supply Line)
+	~	
+	~		|
+
+F M Target Days=
+	1.25494
+	~	
+	~		|
+
+F M Target Inventory=
+	F M Forecasting*F M Target Days
+	~	
+	~		|
+
+F M Target Supply Line=
+	F M Forecasting* F M Leadtime
+	~	
+	~		|
+
+F R Backlog= INTEG (
+	F R BLin-F R BLout,
+		F Initial Backlog)
+	~	
+	~		|
+
+F R BLin=
+	F R Demand
+	~	
+	~		|
+
+F R BLout=
+	F R Sale
+	~	
+	~		|
+
+F R Demand=
+	Follower Adoption Rate
+	~	
+	~		|
+
+F R Forecasting=
+	SMOOTH(F R Demand, F R Smoothing Time)
+	~	
+	~		|
+
+F R Inventory= INTEG (
+	F R Shipment-F R Sale,
+		F R Target Inventory)
+	~	
+	~		|
+
+F R Inventory Adjustment=
+	F R Target Inventory-F R Inventory+F R Target Supply Line-F R Supply Line
+	~	
+	~		|
+
+F R Leadtime=
+	3
+	~	
+	~		|
+
+F R Order Quantity=
+	MAX(0, F R Forecasting+F R Inventory Adjustment)
+	~	
+	~		|
+
+F R Purchase=
+	MIN(F M Inventory, F M Backlog)
+	~	
+	~		|
+
+F R Sale=
+	MIN(F R Backlog, F R Inventory)
+	~	
+	~		|
+
+F R Shipment=
+	F R Supply Line/F R Leadtime
+	~	
+	~		|
+
+F R Shortage Rate=
+	MAX(0, F R Backlog-F R Sale)
+	~	
+	~		|
+
+F R Smoothing Time=
+	3
+	~	
+	~		|
+
+F R Supply Line= INTEG (
+	F R Purchase-F R Shipment,
+		F R Target Supply Line)
+	~	
+	~		|
+
+F R Target Days=
+	1.47628
+	~	
+	~		|
+
+F R Target Inventory=
+	F R Forecasting*F R Target Days
+	~	
+	~		|
+
+F R Target Supply Line=
+	F R Forecasting*F R Leadtime
+	~	
+	~		|
+
+F S Backlog= INTEG (
+	F S BLin-F S BLout,
+		F Initial Backlog)
+	~	
+	~		|
+
+F S BLin=
+	F S Demand
+	~	
+	~		|
+
+F S BLout=
+	F M Purchase
+	~	
+	~		|
+
+F S Demand=
+	F M Order Quantity
+	~	
+	~		|
+
+F S Forecasting=
+	SMOOTH(F S Demand, F S Smoothing Time)
+	~	
+	~		|
+
+F S Inventory= INTEG (
+	F S Shipment-F M Purchase,
+		F S Target Inventory)
+	~	
+	~		|
+
+F S Inventory Adjustment=
+	F S Target Inventory-F S Inventory+F S Target Supply Line-F S Supply Line
+	~	
+	~		|
+
+F S Leadtime=
+	7
+	~	
+	~		|
+
+F S Order Quantity=
+	MAX(0, F S Inventory Adjustment+F S Forecasting)
+	~	
+	~		|
+
+F S Purchase=
+	F S Order Quantity
+	~	
+	~		|
+
+F S Shipment=
+	F S Supply Line/F S Leadtime
+	~	
+	~		|
+
+F S Shortage Rate=
+	MAX(0, F S Backlog-F M Purchase)
+	~	
+	~		|
+
+F S Smoothing Time=
+	7
+	~	
+	~		|
+
+F S Supply Line= INTEG (
+	F S Purchase-F S Shipment,
+		F S Target Supply Line)
+	~	
+	~		|
+
+F S Target Days=
+	1.24714
+	~	
+	~		|
+
+F S Target Inventory=
+	F S Forecasting*F S Target Days
+	~	
+	~		|
+
+F S Target Supply Line=
+	F S Forecasting*F S Leadtime
+	~	
+	~		|
+
+F Shortage Cost=
+	F R Shortage Rate*9
+	~	
+	~		|
+
+F Total Cost=
+	F Inventory Cost+F Shortage Cost
+	~	
+	~		|
+
+R BLout=
+	R Sale
+	~	
+	~		|
+
+R Demand=
+	(100+STEP(100, 31))*RANDOM UNIFORM( 0.75, 1.25, 2345)
+	~	
+	~		|
+
+R Forecasting=
+	SMOOTH(R Demand, R Smoothing Time)
+	~	
+	~		|
+
+R Inventory= INTEG (
+	R Shipment-R Sale,
+		R Target Inventory)
+	~	
+	~		|
+
+R Inventory Adjustment=
+	R Target Inventory-R Inventory+R Target Supply Line-R Supply Line
+	~	
+	~		|
+
+R Leadtime=
+	3
+	~	
+	~		|
+
+R Order Quantity=
+	MAX(0, R Forecasting+R Inventory Adjustment)
+	~	
+	~		|
+
+R Purchase=
+	MIN(M Inventory, M Backlog)
+	~	
+	~		|
+
+Inventory Cost=
+	M Inventory+R Inventory+S Inventory
+	~	
+	~		|
+
+L Initial Backlog=
+	5
+	~	
+	~		|
+
+L Inventory Cost=
+	L M Inventory+L R Inventory+L S Inventory
+	~	
+	~		|
+
+L M Backlog= INTEG (
+	L M BLin-L M BLout,
+		L Initial Backlog)
+	~	
+	~		|
+
+L M BLin=
+	L M Demand
+	~	
+	~		|
+
+L M BLout=
+	L R Purchase
+	~	
+	~		|
+
+L M Demand=
+	L R Order Quantity
+	~	
+	~		|
+
+L M Forecasting=
+	SMOOTH(L M Demand, L M Smoothing Time)
+	~	
+	~		|
+
+L M Inventory= INTEG (
+	L M Shipment-L R Purchase,
+		L M Target Inventory)
+	~	
+	~		|
+
+L M Inventory Adjustment=
+	L M Target Supply Line-L M Supply Line+L M Target Inventory-L M Inventory
+	~	
+	~		|
+
+L M Leadtime=
+	5
+	~	
+	~		|
+
+L M Order Quantity=
+	MAX(0, L M Forecasting+L M Inventory Adjustment)
+	~	
+	~		|
+
+L M Purchase=
+	MIN(L S Backlog, L S Inventory)
+	~	
+	~		|
+
+L M Shipment=
+	L M Supply Line/L M Leadtime
+	~	
+	~		|
+
+L M Shortate Rate=
+	MAX(0, L M Backlog-L R Purchase)
+	~	
+	~		|
+
+L M Smoothing Time=
+	5
+	~	
+	~		|
+
+L M Supply Line= INTEG (
+	L M Purchase-L M Shipment,
+		L M Target Supply Line)
+	~	
+	~		|
+
+L M Target Days=
+	1.41087
+	~	
+	~		|
+
+L M Target Inventory=
+	L M Forecasting*L M Target Days
+	~	
+	~		|
+
+L M Target Supply Line=
+	L M Forecasting* L M Leadtime
+	~	
+	~		|
+
+L R Backlog= INTEG (
+	L R BLin-L R BLout,
+		L Initial Backlog)
+	~	
+	~		|
+
+L R BLin=
+	L R Demand
+	~	
+	~		|
+
+L R BLout=
+	L R Sale
+	~	
+	~		|
+
+L R Demand=
+	Leader Adoption Rate
+	~	
+	~		|
+
+L R Forecasting=
+	SMOOTH(L R Demand, L R Smoothing Time)
+	~	
+	~		|
+
+L R Inventory= INTEG (
+	L R Shipment-L R Sale,
+		L R Target Inventory)
+	~	
+	~		|
+
+L R Inventory Adjustment=
+	L R Target Inventory-L R Inventory+L R Target Supply Line-L R Supply Line
+	~	
+	~		|
+
+L R Leadtime=
+	3
+	~	
+	~		|
+
+L R Order Quantity=
+	MAX(0, L R Forecasting+L R Inventory Adjustment)
+	~	
+	~		|
+
+Transport Cost=
+	(INTEGER(M Purchase)+1+INTEGER( R Purchase)+1+INTEGER(S Purchase)+1)*100
+	~	
+	~		|
+
+L R Sale=
+	MIN(L R Backlog, L R Inventory)
+	~	
+	~		|
+
+L R Shipment=
+	L R Supply Line/L R Leadtime
+	~	
+	~		|
+
+L R Shortage Rate=
+	MAX(0, L R Backlog-L R Sale)
+	~	
+	~		|
+
+L R Smoothing Time=
+	3
+	~	
+	~		|
+
+L R Supply Line= INTEG (
+	L R Purchase-L R Shipment,
+		L R Target Supply Line)
+	~	
+	~		|
+
+L R Target Days=
+	1.2257
+	~	
+	~		|
+
+L R Target Inventory=
+	L R Forecasting*L R Target Days
+	~	
+	~		|
+
+L R Target Supply Line=
+	L R Forecasting*L R Leadtime
+	~	
+	~		|
+
+L S Backlog= INTEG (
+	L S BLin-L S BLout,
+		L Initial Backlog)
+	~	
+	~		|
+
+L S BLin=
+	L S Demand
+	~	
+	~		|
+
+L S BLout=
+	L M Purchase
+	~	
+	~		|
+
+L S Demand=
+	L M Order Quantity
+	~	
+	~		|
+
+L S Forecasting=
+	SMOOTH(L S Demand, L S Smoothing Time)
+	~	
+	~		|
+
+L S Inventory= INTEG (
+	L S Shipment-L M Purchase,
+		L S Target Inventory)
+	~	
+	~		|
+
+L S Inventory Adjustment=
+	L S Target Inventory-L S Inventory+L S Target Supply Line-L S Supply Line
+	~	
+	~		|
+
+L S Leadtime=
+	7
+	~	
+	~		|
+
+L S Order Quantity=
+	MAX(0, L S Inventory Adjustment+L S Forecasting)
+	~	
+	~		|
+
+L S Purchase=
+	L S Order Quantity
+	~	
+	~		|
+
+L S Shipment=
+	L S Supply Line/L S Leadtime
+	~	
+	~		|
+
+L S Shortage Rate=
+	MAX(0, L S Backlog-L M Purchase)
+	~	
+	~		|
+
+L S Smoothing Time=
+	7
+	~	
+	~		|
+
+L S Supply Line= INTEG (
+	L S Purchase-L S Shipment,
+		L S Target Supply Line)
+	~	
+	~		|
+
+L S Target Days=
+	1.29491
+	~	
+	~		|
+
+L S Target Inventory=
+	L S Forecasting*L S Target Days
+	~	
+	~		|
+
+L S Target Supply Line=
+	L S Forecasting*L S Leadtime
+	~	
+	~		|
+
+L Shortage Cost=
+	L R Shortage Rate*9
+	~	
+	~		|
+
+L Total Cost=
+	L Inventory Cost+L Shortage Cost
+	~	
+	~		|
+
+S BLout=
+	M Purchase
+	~	
+	~		|
+
+S Demand=
+	M Order Quantity
+	~	
+	~		|
+
+S Forecasting=
+	SMOOTH(S Demand, S Smoothing Time)
+	~	
+	~		|
+
+S Inventory= INTEG (
+	S Shipment-M Purchase,
+		S Target Inventory)
+	~	
+	~		|
+
+S Inventory Adjustment=
+	S Target Inventory-S Inventory+S Target Supply Line-S Supply Line
+	~	
+	~		|
+
+S Leadtime=
+	7
+	~	
+	~		|
+
+S Order Quantity=
+	MAX(0, S Inventory Adjustment+S Forecasting)
+	~	
+	~		|
+
+S Purchase=
+	S Order Quantity
+	~	
+	~		|
+
+S Shipment=
+	S Supply Line/S Leadtime
+	~	
+	~		|
+
+M Backlog= INTEG (
+	M BLin-M BLout,
+		100)
+	~	
+	~		|
+
+M BLin=
+	M Demand
+	~	
+	~		|
+
+M BLout=
+	R Purchase
+	~	
+	~		|
+
+M Demand=
+	R Order Quantity
+	~	
+	~		|
+
+M Forecasting=
+	SMOOTH(M Demand, M Smoothing Time)
+	~	
+	~		|
+
+M Inventory= INTEG (
+	M Shipment-R Purchase,
+		M Target Inventory)
+	~	
+	~		|
+
+M Inventory Adjustment=
+	M Target Supply Line-M Supply Line+M Target Inventory-M Inventory
+	~	
+	~		|
+
+M Leadtime=
+	5
+	~	
+	~		|
+
+M Order Quantity=
+	MAX(0, M Forecasting+M Inventory Adjustment)
+	~	
+	~		|
+
+M Purchase=
+	MIN(S Backlog, S Inventory)
+	~	
+	~		|
+
+M Shipment=
+	M Supply Line/M Leadtime
+	~	
+	~		|
+
+M Shortate Rate=
+	MAX(0, M Backlog-R Purchase)
+	~	
+	~		|
+
+M Smoothing Time=
+	5
+	~	
+	~		|
+
+M Supply Line= INTEG (
+	M Purchase-M Shipment,
+		M Target Supply Line)
+	~	
+	~		|
+
+M Target Days=
+	M Leadtime
+	~	
+	~		|
+
+M Target Inventory=
+	M Forecasting*M Target Days
+	~	
+	~		|
+
+M Target Supply Line=
+	M Forecasting* M Leadtime
+	~	
+	~		|
+
+R Sale=
+	MIN(R Backlog, R Inventory)
+	~	
+	~		|
+
+R Backlog= INTEG (
+	R BLin-R BLout,
+		100)
+	~	
+	~		|
+
+R BLin=
+	R Demand
+	~	
+	~		|
+
+R Smoothing Time=
+	3
+	~	
+	~		|
+
+R Supply Line= INTEG (
+	R Purchase-R Shipment,
+		R Target Supply Line)
+	~	
+	~		|
+
+R Target Days=
+	R Leadtime
+	~	
+	~		|
+
+R Target Inventory=
+	R Forecasting*R Target Days
+	~	
+	~		|
+
+S Shortage Rate=
+	MAX(0, S Backlog-M Purchase)
+	~	
+	~		|
+
+S Smoothing Time=
+	7
+	~	
+	~		|
+
+S Supply Line= INTEG (
+	S Purchase-S Shipment,
+		S Target Supply Line)
+	~	
+	~		|
+
+S Target Days=
+	S Leadtime
+	~	
+	~		|
+
+Total Cost=
+	Inventory Cost+Transport Cost+Shortage Cost
+	~	
+	~		|
+
+R Shipment=
+	R Supply Line/R Leadtime
+	~	
+	~		|
+
+R Shortage Rate=
+	MAX(0, R Backlog-R Sale)
+	~	
+	~		|
+
+Shortage Cost=
+	R Shortage Rate*9
+	~	
+	~		|
+
+R Target Supply Line=
+	R Forecasting*R Leadtime
+	~	
+	~		|
+
+S Backlog= INTEG (
+	S BLin-S BLout,
+		100)
+	~	
+	~		|
+
+S BLin=
+	S Demand
+	~	
+	~		|
+
+S Target Inventory=
+	S Forecasting*S Target Days
+	~	
+	~		|
+
+S Target Supply Line=
+	S Forecasting*S Leadtime
+	~	
+	~		|
+
+Leader Adopter= INTEG (
+	-Leader Discard Rate+Leader Adoption Rate,
+		Leader Initial Adopter)
+	~	
+	~		|
+
+Leader Adoption from Pull=
+	Leader Pull Fraction*Potential Adopter
+	~	
+	~		|
+
+Leader Adoption from Push=
+	Leader Adopter*Leader Push Fraction*XIDZ( Total Population-Leader Adopter-Follower Adopter\
+		, Total Population, 0)
+	~	
+	~		|
+
+Leader Discard Rate=
+	Leader Adopter/Average Adoption Life
+	~	
+	~		|
+
+Leader Initial Adopter=
+	50
+	~	
+	~		|
+
+Average Adoption Life=
+	10
+	~	
+	~		|
+
+Follower Adopter= INTEG (
+	Follower Adoption Rate-Follower Discard Rate,
+		0)
+	~	
+	~		|
+
+Follower Adoption from Pull=
+	Potential Adopter*Follower Pull Fraction
+	~	
+	~		|
+
+Follower Discard Rate=
+	Follower Adopter/Average Adoption Life
+	~	
+	~		|
+
+Potential Adopter= INTEG (
+	Leader Discard Rate+Follower Discard Rate-Leader Adoption Rate-Follower Adoption Rate\
+		,
+		Total Population-Leader Initial Adopter)
+	~	
+	~		|
+
+Total Population=
+	100
+	~	
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 500
+	~	Day
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Day
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Day [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Day [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,101,0
+10,1,Potential Adopter,-1986,636,77,140,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,2,Leader Adopter,-1345,565,63,64,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,3,Follower Adopter,-1344,702,62,61,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,4,6,2,4,0,0,22,0,0,0,-1--1--1,,1|(-1545,614)|
+1,5,6,1,100,0,0,22,0,0,0,-1--1--1,,1|(-1801,614)|
+11,6,0,-1687,614,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,7,Leader Adoption Rate,-1687,641,55,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,8,10,3,4,0,0,22,0,0,0,-1--1--1,,1|(-1543,673)|
+1,9,10,1,100,0,0,22,0,0,0,-1--1--1,,1|(-1800,673)|
+11,10,0,-1685,673,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,11,Follower Adoption Rate,-1685,700,47,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,12,14,1,4,0,0,22,0,0,0,-1--1--1,,3|(-1988,400)|(-1988,392)|(-1988,444)|
+1,13,14,2,100,0,0,22,0,0,0,-1--1--1,,1|(-1345,400)|
+11,14,0,-1700,400,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,15,Leader Discard Rate,-1700,419,50,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,16,18,1,4,0,0,22,0,0,0,-1--1--1,,3|(-1987,869)|(-1987,861)|(-1987,818)|
+1,17,18,3,100,0,0,22,0,0,0,-1--1--1,,1|(-1344,869)|
+11,18,0,-1698,869,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,19,Follower Discard Rate,-1698,896,56,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,20,Leader Adoption from Pull,-1805,546,55,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,21,Leader Adoption from Push,-1568,549,55,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,22,Follower Adoption from Pull,-1794,769,61,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,23,Follower Adoption from Push,-1519,753,61,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,24,2,15,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,25,Average Adoption Life,-1556,423,45,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,26,25,15,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,27,3,19,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,28,25,19,1,1,0,0,0,64,0,-1--1--1,,1|(-1464,736)|
+10,29,Leader Pull Fraction,-1823,467,37,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,30,Follower Pull Fraction,-1877,837,43,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,31,Leader Push Fraction,-1643,475,41,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,32,Follower Adoption Fraction,-1694,837,61,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,33,1,20,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,34,29,20,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,35,1,22,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,36,30,22,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,37,2,21,1,0,0,0,0,64,0,-1--1--1,,1|(-1457,539)|
+1,38,31,21,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,39,3,23,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,40,32,23,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,41,Total Population,-1545,644,52,11,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,42,41,1,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,43,3,21,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,44,41,21,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,45,2,23,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,46,41,23,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+12,47,0,-1908,357,173,31,8,132,0,8,-1,0,0,0,0-0-0,0-0-0,|20||0-0-0,0,0,0,0,0,0
+Leader and Follower
+10,48,Leader Initial Adopter,-1277,469,42,19,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,49,48,2,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,50,48,1,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,51,Leader Market Share,-1185,586,49,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,52,2,51,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,53,3,51,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,54,Follower Market Share,-1173,681,55,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,55,2,54,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,56,3,54,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,57,Leader Pull Investment,-450,428,65,28,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,58,Leader Push Investment,-449,515,64,31,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+12,59,48,-642,427,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,60,62,57,4,0,0,22,0,0,0,-1--1--1,,1|(-542,427)|
+1,61,62,59,100,0,0,22,0,0,0,-1--1--1,,1|(-606,427)|
+11,62,0,-574,427,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,63,Leader Pull Chunk,-574,454,59,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,64,48,-637,518,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,65,67,58,4,0,0,22,0,0,0,-1--1--1,,1|(-539,518)|
+1,66,67,64,100,0,0,22,0,0,0,-1--1--1,,1|(-602,518)|
+11,67,0,-570,518,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,68,Leader Push Chunk,-570,545,41,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,69,Leader Target Market Share,-1120,438,46,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,70,Leader Market Share Difference,-987,495,54,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,71,Leader Investment Choice,-797,491,59,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,72,51,70,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,73,69,70,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,74,70,71,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,75,71,63,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,76,71,68,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,77,57,29,1,1,0,0,0,64,0,-1--1--1,,1|(-1349,362)|
+1,78,58,31,1,1,0,0,0,64,0,-1--1--1,,1|(-1207,393)|
+10,79,Follower Target Market Share,-1045,805,52,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,80,Follower Market Share Difference,-997,710,55,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,81,79,80,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,82,54,80,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,83,Follower Investment Choice,-807,717,59,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,84,Follower Pull Investment,-442,660,71,37,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,85,Follower Push Investment,-439,757,71,39,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+12,86,48,-644,662,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,87,89,84,4,0,0,22,0,0,0,-1--1--1,,1|(-541,662)|
+1,88,89,86,100,0,0,22,0,0,0,-1--1--1,,1|(-607,662)|
+11,89,0,-574,662,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,90,Follower Pull Chunk,-574,689,43,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,91,48,-645,763,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,92,94,85,4,0,0,22,0,0,0,-1--1--1,,1|(-539,763)|
+1,93,94,91,100,0,0,22,0,0,0,-1--1--1,,1|(-607,763)|
+11,94,0,-573,763,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,95,Follower Push Chunk,-573,790,46,19,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,96,80,83,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,97,83,90,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,98,83,95,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,99,85,32,1,1,0,0,0,64,0,-1--1--1,,1|(-1210,886)|
+1,100,84,30,1,1,0,0,0,64,0,-1--1--1,,1|(-1287,901)|
+10,101,Pull Unit Chunk,-574,492,50,11,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,102,101,63,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,103,101,57,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,104,Push Unit Chunk,-570,583,53,11,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,105,104,68,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,106,Decisiontime,-860,595,41,11,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,107,106,71,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,108,Time,-734,599,26,11,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,109,108,71,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,110,106,83,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,111,108,83,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,112,101,90,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,113,104,58,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,114,101,84,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,115,104,95,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,116,104,85,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,117,Pull Delay,-1884,424,33,11,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,118,117,29,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,119,Push Delay,-1702,526,36,11,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,120,119,31,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,121,117,30,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,122,119,32,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,123,1,7,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,124,1,11,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,125,Desired Leader Adoption Rate,-1686,581,50,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,126,20,125,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,127,21,125,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,128,Desired Follower Adoption Rate,-1666,757,56,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,129,22,128,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,130,23,128,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,131,125,7,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,132,128,11,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,133,128,7,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,134,125,11,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 2
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 3
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,L R Supply Line,1565,273,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,2,L R Inventory,1845,272,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,3,5,2,4,0,0,22,0,0,0,-1--1--1,,1|(1774,275)|
+1,4,5,1,100,0,0,22,0,0,0,-1--1--1,,1|(1668,275)|
+11,5,0,1738,275,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,6,L R Shipment,1738,294,44,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,7,48,2017,278,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,8,10,7,4,0,0,22,0,0,0,-1--1--1,,1|(1980,276)|
+1,9,10,2,100,0,0,22,0,0,0,-1--1--1,,1|(1913,276)|
+11,10,0,1947,276,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,11,L R Sale,1947,295,29,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,12,L R Backlog,1928,413,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,13,48,1807,414,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,14,16,12,4,0,0,22,0,0,0,-1--1--1,,1|(1868,411)|
+1,15,16,13,100,0,0,22,0,0,0,-1--1--1,,1|(1826,411)|
+11,16,0,1842,411,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,17,L R BLin,1842,430,30,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,18,48,2058,412,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,19,21,18,4,0,0,22,0,0,0,-1--1--1,,1|(2025,411)|
+1,20,21,12,100,0,0,22,0,0,0,-1--1--1,,1|(1979,411)|
+11,21,0,1996,411,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,22,L R BLout,1996,430,35,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,23,L R Demand,1886,501,41,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,24,L R Forecasting,1687,518,51,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,25,23,24,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,26,L R Leadtime,1748,342,44,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,27,26,6,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,28,1,6,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,29,L R Target Inventory,1574,497,35,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,30,L R Target Days,1748,463,53,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,31,24,29,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,32,30,29,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,33,L R Inventory Adjustment,1521,426,45,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,34,2,33,1,0,0,0,0,64,0,-1--1--1,,1|(1709,423)|
+1,35,29,33,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,36,23,17,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,37,12,11,1,0,0,0,0,64,0,-1--1--1,,1|(1865,360)|
+1,38,11,22,1,0,0,0,0,64,0,-1--1--1,,1|(1993,331)|
+10,39,L R Order Quantity,1435,506,34,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,40,33,39,1,0,0,0,0,64,0,-1--1--1,,1|(1466,459)|
+1,41,29,2,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,42,2,11,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,43,L R Smoothing Time,1671,571,48,19,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,44,43,24,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,45,Time,1537,518,26,11,8,2,17,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,46,L R Shortage Rate,1922,357,59,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,47,12,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,48,11,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,49,L M Supply Line,950,273,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,50,L M Inventory,1253,273,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,51,53,50,4,0,0,22,0,0,0,-1--1--1,,1|(1163,274)|
+1,52,53,49,100,0,0,22,0,0,0,-1--1--1,,1|(1046,274)|
+11,53,0,1108,274,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,54,L M Shipment,1108,293,46,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,55,L M Backlog,1302,422,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,56,48,1181,423,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,57,59,55,4,0,0,22,0,0,0,-1--1--1,,1|(1242,420)|
+1,58,59,56,100,0,0,22,0,0,0,-1--1--1,,1|(1200,420)|
+11,59,0,1216,420,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,60,L M BLin,1216,439,32,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,61,48,1440,421,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,62,64,61,4,0,0,22,0,0,0,-1--1--1,,1|(1403,420)|
+1,63,64,55,100,0,0,22,0,0,0,-1--1--1,,1|(1353,420)|
+11,64,0,1370,420,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,65,L M BLout,1370,439,37,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,66,L M Demand,1260,510,43,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,67,L M Forecasting,1061,527,53,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,68,66,67,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,69,L M Leadtime,1151,338,46,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,70,69,54,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,71,49,54,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,72,L M Target Inventory,963,497,37,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,73,L M Target Days,1122,472,55,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,74,67,72,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,75,73,72,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,76,L M Inventory Adjustment,912,414,47,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,77,50,76,1,0,0,0,0,64,0,-1--1--1,,1|(1101,406)|
+1,78,72,76,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,79,66,60,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,80,L M Order Quantity,826,503,36,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,81,76,80,1,0,0,0,0,64,0,-1--1--1,,1|(859,449)|
+10,82,L M Smoothing Time,1122,575,50,19,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,83,82,67,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,84,Time,807,609,26,11,8,2,17,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,85,L M Shortate Rate,1224,369,59,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,86,55,85,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,87,L S Supply Line,375,277,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,88,L S Inventory,623,276,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,89,48,194,283,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,90,92,87,4,0,0,22,0,0,0,-1--1--1,,1|(305,283)|
+1,91,92,89,100,0,0,22,0,0,0,-1--1--1,,1|(233,283)|
+11,92,0,269,283,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,93,L S Purchase,269,302,43,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,94,96,88,4,0,0,22,0,0,0,-1--1--1,,1|(536,276)|
+1,95,96,87,100,0,0,22,0,0,0,-1--1--1,,1|(446,276)|
+11,96,0,484,276,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,97,L S Shipment,484,295,43,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,98,L S Backlog,680,417,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,99,48,557,425,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,100,102,98,4,0,0,22,0,0,0,-1--1--1,,1|(619,422)|
+1,101,102,99,100,0,0,22,0,0,0,-1--1--1,,1|(576,422)|
+11,102,0,592,422,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,103,L S BLin,592,441,30,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,104,48,788,423,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,105,107,104,4,0,0,22,0,0,0,-1--1--1,,1|(765,422)|
+1,106,107,98,100,0,0,22,0,0,0,-1--1--1,,1|(730,422)|
+11,107,0,746,422,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,108,L S BLout,746,441,34,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,109,L S Demand,636,512,41,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,110,L S Forecasting,437,529,50,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,111,109,110,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,112,L S Leadtime,528,334,43,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,113,112,97,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,114,87,97,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,115,L S Target Inventory,377,486,35,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,116,L S Target Days,498,474,52,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,117,110,115,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,118,116,115,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,119,L S Inventory Adjustment,310,418,44,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,120,88,119,1,0,0,0,0,64,0,-1--1--1,,1|(490,416)|
+1,121,115,119,1,0,0,0,0,64,0,-1--1--1,,1|(325,462)|
+1,122,109,103,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,123,L S Order Quantity,234,368,34,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,124,123,93,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,125,119,123,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,126,L S Smoothing Time,511,567,48,19,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,127,126,110,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,128,Time,296,373,26,11,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,129,L S Shortage Rate,659,348,58,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,130,98,129,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,131,133,49,4,0,0,22,0,0,0,-1--1--1,,1|(856,275)|
+1,132,133,88,100,0,0,22,0,0,0,-1--1--1,,1|(726,275)|
+11,133,0,796,275,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,134,L M Purchase,796,294,45,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,135,137,1,4,0,0,22,0,0,0,-1--1--1,,1|(1476,270)|
+1,136,137,50,100,0,0,22,0,0,0,-1--1--1,,1|(1354,270)|
+11,137,0,1421,270,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,138,L R Purchase,1421,289,43,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,139,39,66,1,0,0,0,0,64,0,-1--1--1,,1|(1354,528)|
+1,140,55,138,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,141,50,138,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,142,138,65,1,0,0,0,0,64,0,-1--1--1,,1|(1417,357)|
+1,143,138,85,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,144,98,134,1,0,0,0,0,64,0,-1--1--1,,1|(725,355)|
+1,145,134,108,1,0,0,0,0,64,0,-1--1--1,,1|(809,358)|
+1,146,88,134,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,147,134,129,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,148,80,109,1,0,0,0,0,64,0,-1--1--1,,1|(723,536)|
+1,149,115,88,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,150,72,50,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,151,67,80,1,0,0,0,0,64,0,-1--1--1,,1|(940,557)|
+1,152,24,39,1,0,0,0,0,64,0,-1--1--1,,1|(1566,562)|
+1,153,110,123,1,0,0,0,0,64,0,-1--1--1,,1|(256,506)|
+1,154,112,116,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,155,69,73,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,156,26,30,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,157,L S Target Supply Line,441,366,39,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,158,L M Target Supply Line,1047,370,39,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,159,L R Target Supply Line,1651,353,39,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,160,112,157,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,161,110,157,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,162,87,119,1,0,0,0,0,64,0,-1--1--1,,1|(370,354)|
+1,163,157,119,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,164,69,158,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,165,67,158,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,166,49,76,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,167,158,76,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,168,157,87,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,169,158,49,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,170,1,33,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,171,24,159,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,172,159,33,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,173,26,159,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,174,159,1,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,175,L Inventory Cost,1392,178,54,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,176,88,175,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,177,50,175,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,178,2,175,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,179,L Total Cost,1543,174,41,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,180,175,179,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,181,L Shortage Cost,1215,178,52,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,182,46,181,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,183,181,179,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,184,Leader Adoption Rate,2022,533,60,19,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,185,184,23,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,186,L Initial Backlog,1813,178,52,11,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,187,186,98,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,188,186,55,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,189,186,12,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 4
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,F R Supply Line,1565,273,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,2,F R Inventory,1845,272,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,3,5,2,4,0,0,22,0,0,0,-1--1--1,,1|(1774,275)|
+1,4,5,1,100,0,0,22,0,0,0,-1--1--1,,1|(1668,275)|
+11,5,0,1738,275,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,6,F R Shipment,1738,294,44,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,7,48,2017,278,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,8,10,7,4,0,0,22,0,0,0,-1--1--1,,1|(1980,276)|
+1,9,10,2,100,0,0,22,0,0,0,-1--1--1,,1|(1913,276)|
+11,10,0,1947,276,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,11,F R Sale,1947,295,29,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,12,F R Backlog,1928,413,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,13,48,1807,414,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,14,16,12,4,0,0,22,0,0,0,-1--1--1,,1|(1868,411)|
+1,15,16,13,100,0,0,22,0,0,0,-1--1--1,,1|(1826,411)|
+11,16,0,1842,411,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,17,F R BLin,1842,430,30,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,18,48,2058,412,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,19,21,18,4,0,0,22,0,0,0,-1--1--1,,1|(2025,411)|
+1,20,21,12,100,0,0,22,0,0,0,-1--1--1,,1|(1979,411)|
+11,21,0,1996,411,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,22,F R BLout,1996,430,35,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,23,F R Demand,1886,501,41,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,24,F R Forecasting,1687,518,51,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,25,23,24,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,26,F R Leadtime,1748,342,44,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,27,26,6,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,28,1,6,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,29,F R Target Inventory,1574,497,35,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,30,F R Target Days,1748,463,53,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,31,24,29,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,32,30,29,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,33,F R Inventory Adjustment,1521,426,45,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,34,2,33,1,0,0,0,0,64,0,-1--1--1,,1|(1709,423)|
+1,35,29,33,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,36,23,17,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,37,12,11,1,0,0,0,0,64,0,-1--1--1,,1|(1865,360)|
+1,38,11,22,1,0,0,0,0,64,0,-1--1--1,,1|(1993,331)|
+10,39,F R Order Quantity,1435,506,34,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,40,33,39,1,0,0,0,0,64,0,-1--1--1,,1|(1466,459)|
+1,41,29,2,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,42,2,11,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,43,F R Smoothing Time,1671,571,48,19,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,44,43,24,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,45,Time,1537,518,26,11,8,2,17,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,46,F R Shortage Rate,1922,357,59,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,47,12,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,48,11,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,49,F M Supply Line,950,273,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,50,F M Inventory,1253,273,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,51,53,50,4,0,0,22,0,0,0,-1--1--1,,1|(1163,274)|
+1,52,53,49,100,0,0,22,0,0,0,-1--1--1,,1|(1046,274)|
+11,53,0,1108,274,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,54,F M Shipment,1108,293,46,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,55,F M Backlog,1302,422,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,56,48,1181,423,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,57,59,55,4,0,0,22,0,0,0,-1--1--1,,1|(1242,420)|
+1,58,59,56,100,0,0,22,0,0,0,-1--1--1,,1|(1200,420)|
+11,59,0,1216,420,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,60,F M BLin,1216,439,32,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,61,48,1440,421,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,62,64,61,4,0,0,22,0,0,0,-1--1--1,,1|(1403,420)|
+1,63,64,55,100,0,0,22,0,0,0,-1--1--1,,1|(1353,420)|
+11,64,0,1370,420,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,65,F M BLout,1370,439,37,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,66,F M Demand,1260,510,43,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,67,F M Forecasting,1061,527,53,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,68,66,67,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,69,F M Leadtime,1151,338,46,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,70,69,54,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,71,49,54,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,72,F M Target Inventory,963,497,37,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,73,F M Target Days,1122,472,55,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,74,67,72,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,75,73,72,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,76,F M Inventory Adjustment,912,414,47,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,77,50,76,1,0,0,0,0,64,0,-1--1--1,,1|(1101,406)|
+1,78,72,76,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,79,66,60,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,80,F M Order Quantity,826,503,36,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,81,76,80,1,0,0,0,0,64,0,-1--1--1,,1|(859,449)|
+10,82,F M Smoothing Time,1122,575,50,19,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,83,82,67,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,84,Time,807,609,26,11,8,2,17,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,85,F M Shortate Rate,1224,369,59,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,86,55,85,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,87,F S Supply Line,375,277,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,88,F S Inventory,623,276,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,89,48,194,283,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,90,92,87,4,0,0,22,0,0,0,-1--1--1,,1|(305,283)|
+1,91,92,89,100,0,0,22,0,0,0,-1--1--1,,1|(233,283)|
+11,92,0,269,283,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,93,F S Purchase,269,302,43,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,94,96,88,4,0,0,22,0,0,0,-1--1--1,,1|(536,276)|
+1,95,96,87,100,0,0,22,0,0,0,-1--1--1,,1|(446,276)|
+11,96,0,484,276,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,97,F S Shipment,484,295,43,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,98,F S Backlog,680,417,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,99,48,557,425,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,100,102,98,4,0,0,22,0,0,0,-1--1--1,,1|(619,422)|
+1,101,102,99,100,0,0,22,0,0,0,-1--1--1,,1|(576,422)|
+11,102,0,592,422,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,103,F S BLin,592,441,30,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,104,48,788,423,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,105,107,104,4,0,0,22,0,0,0,-1--1--1,,1|(765,422)|
+1,106,107,98,100,0,0,22,0,0,0,-1--1--1,,1|(730,422)|
+11,107,0,746,422,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,108,F S BLout,746,441,34,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,109,F S Demand,636,512,41,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,110,F S Forecasting,437,529,50,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,111,109,110,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,112,F S Leadtime,528,334,43,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,113,112,97,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,114,87,97,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,115,F S Target Inventory,377,486,35,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,116,F S Target Days,498,474,52,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,117,110,115,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,118,116,115,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,119,F S Inventory Adjustment,310,418,44,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,120,88,119,1,0,0,0,0,64,0,-1--1--1,,1|(490,416)|
+1,121,115,119,1,0,0,0,0,64,0,-1--1--1,,1|(325,462)|
+1,122,109,103,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,123,F S Order Quantity,234,368,34,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,124,123,93,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,125,119,123,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,126,F S Smoothing Time,511,567,48,19,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,127,126,110,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,128,Time,296,373,26,11,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,129,F S Shortage Rate,659,348,58,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,130,98,129,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,131,133,49,4,0,0,22,0,0,0,-1--1--1,,1|(856,275)|
+1,132,133,88,100,0,0,22,0,0,0,-1--1--1,,1|(726,275)|
+11,133,0,796,275,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,134,F M Purchase,796,294,45,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,135,137,1,4,0,0,22,0,0,0,-1--1--1,,1|(1476,270)|
+1,136,137,50,100,0,0,22,0,0,0,-1--1--1,,1|(1354,270)|
+11,137,0,1421,270,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,138,F R Purchase,1421,289,43,11,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,139,39,66,1,0,0,0,0,64,0,-1--1--1,,1|(1354,528)|
+1,140,55,138,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,141,50,138,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,142,138,65,1,0,0,0,0,64,0,-1--1--1,,1|(1417,357)|
+1,143,138,85,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,144,98,134,1,0,0,0,0,64,0,-1--1--1,,1|(725,355)|
+1,145,134,108,1,0,0,0,0,64,0,-1--1--1,,1|(809,358)|
+1,146,88,134,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,147,134,129,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,148,80,109,1,0,0,0,0,64,0,-1--1--1,,1|(723,536)|
+1,149,115,88,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,150,72,50,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,151,67,80,1,0,0,0,0,64,0,-1--1--1,,1|(940,557)|
+1,152,24,39,1,0,0,0,0,64,0,-1--1--1,,1|(1566,562)|
+1,153,110,123,1,0,0,0,0,64,0,-1--1--1,,1|(256,506)|
+10,154,F S Target Supply Line,441,366,39,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,155,F M Target Supply Line,1047,370,39,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,156,F R Target Supply Line,1651,353,39,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,157,112,154,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,158,110,154,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,159,87,119,1,0,0,0,0,64,0,-1--1--1,,1|(370,354)|
+1,160,154,119,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,161,69,155,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,162,67,155,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,163,49,76,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,164,155,76,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,165,154,87,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,166,155,49,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,167,1,33,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,168,24,156,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,169,156,33,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,170,26,156,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,171,156,1,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,172,F Inventory Cost,1391,176,54,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,173,88,172,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,174,50,172,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,175,2,172,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,176,F Total Cost,1538,175,41,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,177,172,176,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,178,F Shortage Cost,1215,178,52,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,179,46,178,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,180,178,176,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,181,Follower Adoption Rate,1886,531,52,19,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,182,181,23,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,183,F Initial Backlog,1823,176,52,11,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,184,183,98,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,185,183,55,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,186,183,12,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+///---\\\
+:GRAPH SAME_market_share
+:TITLE SAME market share
+:SCALE
+:VAR Leader Adopter
+:DATASET SAME
+:VAR Follower Adopter
+:DATASET SAME
+
+:GRAPH ADV2__Market_Share
+:TITLE ADV2  Market Share
+:SCALE
+:VAR Leader Adopter
+:DATASET ADV2
+:VAR Follower Adopter
+:DATASET ADV2
+
+:GRAPH WOM2_Market_Share
+:TITLE WOM2 Market Share
+:SCALE
+:VAR Leader Adopter
+:DATASET WOM2
+:VAR Follower Adopter
+:DATASET WOM2
+
+:GRAPH BOTH2_Market_Share
+:TITLE BOTH2 Market Share
+:SCALE
+:VAR Leader Adopter
+:DATASET BOTH2
+:VAR Follower Adopter
+:DATASET BOTH2
+
+:GRAPH 00_leader_and_follower_m
+:TITLE 00 leader and follower market share
+:SCALE
+:VAR Leader Market Share
+:Y-MIN 0
+:Y-MAX 1
+:VAR Follower Market Share
+
+:GRAPH 11_leader_and_follower_m
+:TITLE 11 leader and follower market share
+:SCALE
+:VAR Leader Market Share
+:DATASET 11
+:VAR Follower Market Share
+:DATASET 11
+
+:GRAPH 22_leader_and_followr_ma
+:TITLE 22 leader and followr market share
+:SCALE
+:VAR Leader Market Share
+:Y-MIN 0
+:Y-MAX 1
+:DATASET 22
+:VAR Follower Market Share
+:DATASET 22
+
+:GRAPH 21_leader-push__follower
+:TITLE 21 leader-push, follower-pull
+:SCALE
+:VAR Leader Market Share
+:DATASET 21
+:VAR Follower Market Share
+:DATASET 21
+
+:GRAPH 12_leader-pull__follower
+:TITLE 12 leader-pull, follower-push
+:SCALE
+:VAR Leader Market Share
+:DATASET 12
+:VAR Follower Market Share
+:DATASET 12
+:L<%^E!@
+4:Time
+5:Leader Pull Chunk
+9:20
+19:101,0
+24:0
+25:500
+26:500
+11:leader and follower SCM.voc
+12:leader and follower SCM.vpd
+15:0,0,0,0,0,0
+27:2,
+34:0,
+42:0
+72:0
+73:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Lucida Grande|12||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1

@@ -1,0 +1,51 @@
+---
+title: "movie system template"
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+Propensity score is the probability of receiving one of the treatments being compared, given the measured covariates.
+
+
+-- during the time of writing this paper, what was 
+- each section's disruption propensity
+- apply simulation-based calibration to ??
+
+weak calibration VS strong calibration
+
+## time and space
+### time disaggregation
+- author's trajectory, why they collaborated
+
+### space disaggregation 
+
+### time and space disaggregation 
+- how it affected the society across time and space 
+- 
+
+## parameter and value
+
+For a demonstration of a line plot on a polar axis, see @fig-polar.
+
+```{python}
+#| label: fig-polar
+#| fig-cap: "A line plot on a polar axis"
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+r = np.arange(0, 2, 0.01)
+theta = 2 * np.pi * r
+fig, ax = plt.subplots(
+  subplot_kw = {'projection': 'polar'} 
+)
+ax.plot(theta, r)
+ax.set_rticks([0.5, 1, 1.5, 2])
+ax.grid(True)
+plt.show()
+```
+
+
+<script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/3197_RC02/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"cognitive consequences of forced compliance","geo":"US","time":"2004-01-01 2023-01-17"}],"category":0,"property":""}, {"exploreQuery":"date=all&geo=US&q=cognitive%20consequences%20of%20forced%20compliance","guestPath":"https://trends.google.com:443/trends/embed/"}); </script>

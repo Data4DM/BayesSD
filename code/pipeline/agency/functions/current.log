@@ -1,0 +1,41 @@
+INFO:        Initial point of search.
+INFO:          Effort on Task to Filling Form Frac = 0.1.
+INFO:        Simulations = 1.
+INFO:        Pass = 0.
+INFO:        Payoff = 1.88716e+09.
+INFO:        ---------------------------------.
+INFO:        .
+INFO:        ERROR: Floating point error computing : Desired Manager.
+INFO:        ERROR: Check causes and uses of Desired Manager for division by zero or overflow.
+INFO:        .
+INFO:        Floating point error during optimization with.
+INFO:        ------------------.
+INFO:         *Effort on Task to Filling Form Frac = 8.57512e+36.
+INFO:        ------------------.
+INFO:        .
+INFO:        ERROR: Floating point error computing : Desired Manager.
+INFO:        ERROR: Check causes and uses of Desired Manager for division by zero or overflow.
+INFO:        .
+INFO:        .
+INFO:        ERROR: Floating point error computing : Desired Manager.
+INFO:        ERROR: Check causes and uses of Desired Manager for division by zero or overflow.
+INFO:        .
+INFO:        .
+INFO:        ERROR: Floating point error computing : Desired Manager.
+INFO:        ERROR: Check causes and uses of Desired Manager for division by zero or overflow.
+INFO:        .
+INFO:        .
+INFO:        ERROR: Floating point error computing : Desired Manager.
+INFO:        ERROR: Check causes and uses of Desired Manager for division by zero or overflow.
+INFO:        .
+INFO:        .
+INFO:        ERROR: Floating point error computing : Desired Manager.
+INFO:        ERROR: Check causes and uses of Desired Manager for division by zero or overflow.
+INFO:        .
+INFO:        Maximum payoff found at:.
+INFO:         *Effort on Task to Filling Form Frac = 0.1.
+INFO:        Simulations = 7.
+INFO:        NOTE 6 of the simulations caused floating point errors (first was reported).
+INFO:        Pass = 3.
+INFO:        Payoff = 1.88716e+09.
+INFO:        ---------------------------------.

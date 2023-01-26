@@ -1,0 +1,646 @@
+{UTF-8}
+income  = A FUNCTION OF( )
+	~	
+	~		|
+
+Task wrong  = A FUNCTION OF( )
+	~	
+	~		|
+
+desired test completion rate  = A FUNCTION OF( target test completion time,Worked Tasks\
+		) ~~|
+desired test completion rate=
+	Worked Tasks / target test completion time * Min(1, Manager Fatigue)
+	~	Manager*Week
+	~	desried test completion rate to complete the stacked worked task in target \
+		test completion time
+	|
+
+managers hiring  = A FUNCTION OF( Company Task Quality,Managers,Time to Manager Hire)\
+		 ~~|
+managers hiring=
+	Managers * Manager schedule pressure / Time to Manager Hire
+	~	Manager/Week
+	~		|
+
+error frac  = A FUNCTION OF( ) ~~|
+error frac=
+	Min(1, Manager Fatigue)
+	~	Dmnl
+	~	should find ways to use this test frac to set reference init values of four task \
+		stocks
+		
+		pasting prev. comments: With 40 tasks per month, 16 of them are tested by one \
+		manager (.25 managerweek per task) which gives 0.4 = 1/(40 * .25 / 4)
+		Reference Managers * Workweek /  (Reference task arriving * \
+		Task2ManagerWeek / Month2Week week2day)
+	|
+
+potential task completion rate  = A FUNCTION OF( Nonmanagers,standard task completion rate\
+		) ~~|
+potential task completion rate=
+	(Nonmanagers * Workweek /Time per Task) * Nonmanager Fatigue
+	~	Task/Week
+	~		|
+
+Deisred Nonmanagers  = A FUNCTION OF( desired task completion rate,standard task completion rate\
+		)
+	~	
+	~		|
+
+Desired Managers  = A FUNCTION OF( )
+	~	
+	~		|
+
+nonmanagers hiring=
+	(Deisred Nonmanagers - Nonmanagers)/Time to Nonmanager Hire
+	~	Person/Week
+	~	Nonmanagers * Nonmanager schedule pressure /Time to Nonmanager Hire
+	|
+
+Task right  = A FUNCTION OF( )
+	~	
+	~		|
+
+Perceived quality  = A FUNCTION OF( in)
+	~	
+	~		|
+
+in  = A FUNCTION OF( Company Task Quality,Perceived quality)
+	~	
+	~		|
+
+standard task completion rate=A FUNCTION OF(standard task completion rate,Time per Task\
+		,Workweek) ~~|
+task completion rate per person=
+	Time per Task * Workweek * productivity
+	~	Task/(Week*Person)
+	~	TODO value?
+	|
+
+Quality Decrease Index=
+	1
+	~	quality/Task
+	~		|
+
+Cost brand image=
+	1/Company Task Quality
+	~	Dollar
+	~	Compared to the original quality (1), lower quality has greater brand \
+		image cost, higher quality has lower brand image cost. This is relevant to \
+		revenue.
+	|
+
+Cost coordination=
+	1
+	~	Dollar
+	~	TODO formulation: why floating point error?
+		Nonmanagers * Nonmanagers * Managers * 
+		
+		For preventive maintenance by managers (john detecting johan, vicky's \
+		conflicting schedule)
+	|
+
+Cost mistake=
+	exposed mistake
+	~	Month/Task
+	~	(exposed mistake/working)^mistake affect rel2abs frac * (exposed \
+		mistake^(1-mistake affect rel2abs frac))
+	|
+
+Cost rework=
+	reworking * rework prevention cost effectiveness frac
+	~	Dollar
+	~	TODO which fraction variable can connect this to the rest of the model?
+	|
+
+Cost salary=
+	Nonmanagers * m2nm salary frac + Managers * 1
+	~	Dollar
+	~		|
+
+desired task completion rate=
+	Tasks to be Done/target task completion time
+	~	Task/Week
+	~	how many tasks should be done per week to finish the stocked tasks to be \
+		done in target task completion time
+	|
+
+Detected Tasks= INTEG (
+	testing-reworking,
+		Reference Task Arrival * standard test frac)
+	~	Task
+	~		|
+
+exposed good work=
+	Untested Tasks * (1-error frac)
+	~	Task/Month
+	~	1-error frac fraction of untested tasks become exposed as good work, \
+		increasing the perceived company task quality
+	|
+
+exposed mistake=
+	Untested Tasks*error frac
+	~	Task/Month
+	~		|
+
+m2nm salary frac=
+	0.2
+	~	
+	~	TODO have salary data; get retio; range from 1/3   1/30 from class
+	|
+
+target task completion time=
+	4
+	~	Week
+	~	TODO
+	|
+
+target test completion time=
+	0.25
+	~	Week
+	~	TODO find value for equilibrium
+	|
+
+Managers= INTEG (
+	managers hiring-managers retiring,
+		Reference Managers)
+	~	Manager
+	~		|
+
+managers retiring=
+	Managers/Time to Manager Retire
+	~	Manager/Week
+	~		|
+
+mistake affect rel2abs frac=
+	0.1
+	~	 [0,1]
+	~	between 0 and 1
+		i) ratio of mistake matters: alpha = 2
+		ii) number of mistake matters: alpha =1
+	|
+
+Reference Nonmanagers=
+	5
+	~	NManager
+	~		|
+
+Reference Task=
+	100
+	~	Task
+	~		|
+
+nonmanager retiring=
+	Nonmanagers / Time to Nonmanager Retire
+	~	Person/Week
+	~		|
+
+Nonmanagers= INTEG (
+	nonmanagers hiring-nonmanager retiring,
+		Reference Nonmanagers)
+	~	Person
+	~		|
+
+not testing=
+	testing * (1-standard test frac) / standard test frac
+	~	Task/Week
+	~	not testing : testing  = 1-p : p -> not testing = 1-p / p * testing
+	|
+
+potential test completion rate=
+	Managers * Workweek / Time per Test
+	~	Task/Week
+	~		|
+
+Quality Decrease=
+	Quality Decrease Index * exposed mistake
+	~	quality/Week
+	~		|
+
+Tasks to be Done= INTEG (
+	reworking+task arriving-working,
+		Reference Task )
+	~	Task
+	~		|
+
+quality frac=
+	0.8
+	~	Dmnl
+	~	TODO how to get this from data?
+	|
+
+Quality Increase=
+	exposed good work * Quality Increase Index
+	~	quality/Week
+	~		|
+
+Quality Increase Index=
+	Quality Decrease Index * quality frac
+	~	quality/Task
+	~		|
+
+Reference Managers=
+	10
+	~	Manager
+	~		|
+
+reworking=
+	Time to Rework Return
+	~	Task/Week
+	~		|
+
+working=
+	Min(desired task completion rate, potential task completion rate)
+	~	Task/Week
+	~		|
+
+Reference Task Arrival=
+	40
+	~	Task
+	~		|
+
+rework prevention cost effectiveness frac=
+	1/6
+	~	
+	~	acc.to John
+	|
+
+testing=
+	Min(Worked Tasks, potential test completion rate)
+	~	Task/Week
+	~	test frac fraction of the worked tasks becomes testing
+	|
+
+standard test completion rate=
+	2
+	~	Task/Week
+	~	TODO value? When each managers are working according to standard workweek \
+		(no overtime) and not cutting corner (standard time per task)
+	|
+
+standard test frac=
+	0.4
+	~	Dmnl
+	~		|
+
+task arriving=
+	Max(0, Company Task Quality * Reference Task Arrival)
+	~	Task/Week
+	~	with 5 nonmanagers working two for each week, ths is doable as 5 * 2 * 4 = \
+		40 task arrives
+	|
+
+Time per Task=
+	0.25
+	~	Day*NManager / Task
+	~	 number of days it takes for on one nonmanager to complete one task.
+	|
+
+Time per Test=
+	1
+	~	Day*Manager / Task
+	~	number of days it takes for one manager to complete one task.
+	|
+
+Time to Rework Return=
+	1
+	~	Week
+	~		|
+
+Time to Test Deadline=
+	15
+	~	Week
+	~	After one semester, the tasks doesn't need to be tested
+	|
+
+Untested Tasks= INTEG (
+	not testing-exposed good work-exposed mistake,
+		Reference Task Arrival * (1- standard test frac))
+	~	Task
+	~		|
+
+Workweek=
+	4
+	~	Day/Week
+	~	the number of days one manager
+	|
+
+Company Task Quality = INTEG (
+	Quality Increase-Quality Decrease,
+		1)
+	~	quality
+	~	TODO gap between the real task quality and customer perception is related \
+		to rate-ratio
+	|
+
+Worked Tasks= INTEG (
+	working-not testing-testing,
+		Reference Task Arrival)
+	~	Task
+	~	Seemingly completed task piled up, and a test fraction of them are tested
+	|
+
+Time to Manager Hire=
+	5
+	~	Week
+	~	Hiring delay of manager
+	|
+
+Time to Manager Retire=
+	30
+	~	Week
+	~		|
+
+Time to Nonmanager Hire=
+	3
+	~	Week
+	~	Hiring delay of non manager
+	|
+
+Time to Nonmanager Retire=
+	5
+	~	Week
+	~	Non manager retiring delay
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Week
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Week
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Week [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.125
+	~	Week [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Manager and Fatigue
+$-1--1--1,0,Times New Roman|12||0-0-0|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,96,0
+10,1,Tasks to be Done,773,700,47,188,3,131,0,37,0,0,0,0,251-2-7,255-255-255,Helvetica|||0-0-0,0,0,0,0,0,0
+12,2,48,580,617,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,3,5,1,4,0,0,22,0,0,0,-1--1--1,,1|(695,617)|
+1,4,5,2,100,0,0,22,0,0,0,-1--1--1,,1|(621,617)|
+11,5,0,658,617,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,6,task arriving,658,636,32,8,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,7,Worked Tasks,1003,568,42,62,3,131,0,33,0,0,0,0,17-128-64,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,8,10,7,4,0,0,22,0,0,0,-1--1--1,,1|(932,571)|
+1,9,10,1,100,0,0,22,0,0,0,-1--1--1,,1|(855,571)|
+11,10,0,897,571,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,11,working,897,590,22,8,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,12,Untested Tasks,1212,593,46,88,3,131,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,13,Detected Tasks,1006,808,42,63,3,131,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,14,16,12,4,0,0,22,0,0,0,-1--1--1,,1|(1142,571)|
+1,15,16,7,100,0,0,22,0,0,0,-1--1--1,,1|(1075,571)|
+11,16,0,1112,571,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,17,not testing,1112,587,36,8,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,18,20,1,4,0,0,22,0,0,0,-1--1--1,,1|(855,805)|
+1,19,20,13,100,0,0,22,0,0,0,-1--1--1,,1|(933,805)|
+11,20,0,897,805,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,21,reworking,897,821,27,8,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+12,22,48,1407,525,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,23,25,22,4,0,0,22,0,0,0,-1--1--1,,1|(1366,525)|
+1,24,25,12,100,0,0,22,0,0,0,-1--1--1,,1|(1290,525)|
+11,25,0,1329,525,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,26,exposed good work,1329,556,63,23,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+12,27,48,1412,644,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,28,30,27,4,0,0,22,0,0,0,-1--1--1,,1|(1374,644)|
+1,29,30,12,100,0,0,22,0,0,0,-1--1--1,,1|(1296,644)|
+11,30,0,1341,644,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,31,exposed mistake,1341,674,47,22,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,32,34,13,4,0,0,22,0,0,0,-1--1--1,,1|(1006,713)|
+1,33,34,7,100,0,0,22,0,0,0,-1--1--1,,1|(1006,650)|
+11,34,0,1006,676,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,35,testing,1046,676,32,12,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,36,Nonmanagers,185,1275,56,21,3,3,0,33,0,0,0,0,251-2-7,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+12,37,48,-39,1277,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,38,40,36,4,0,0,22,0,0,0,-1--1--1,,1|(94,1277)|
+1,39,40,37,100,0,0,22,0,0,0,-1--1--1,,1|(9,1277)|
+11,40,0,53,1277,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,41,nonmanagers hiring,53,1293,51,8,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+12,42,48,425,1275,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,43,45,42,4,0,0,22,0,0,0,-1--1--1,,1|(365,1275)|
+1,44,45,36,100,0,0,22,0,0,0,-1--1--1,,1|(272,1275)|
+11,45,0,310,1275,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,46,nonmanager retiring,310,1291,52,8,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,47,Time to Nonmanager Hire,18,1375,45,19,8,3,0,34,0,0,0,0,0-0-0,0-0-0,Helvetica|||251-2-255,0,0,0,0,0,0
+1,48,47,41,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,49,Time to Nonmanager Retire,337,1357,54,18,8,3,0,34,0,0,0,0,0-0-0,0-0-0,Helvetica|||251-2-255,0,0,0,0,0,0
+1,50,49,46,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,51,Managers,1652,1255,47,24,3,3,0,33,0,0,0,0,17-128-64,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+12,52,48,1435,1253,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,53,55,51,4,0,0,22,0,0,0,-1--1--1,,1|(1566,1253)|
+1,54,55,52,100,0,0,22,0,0,0,-1--1--1,,1|(1480,1253)|
+11,55,0,1522,1253,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,56,managers hiring,1522,1269,43,8,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+12,57,48,1833,1254,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,58,60,57,4,0,0,22,0,0,0,-1--1--1,,1|(1792,1254)|
+1,59,60,51,100,0,0,22,0,0,0,-1--1--1,,1|(1724,1254)|
+11,60,0,1756,1254,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,61,managers retiring,1756,1270,47,8,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,62,desired test completion rate,1329,1009,59,23,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,63,7,62,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,64,Time to Manager Hire,1536,1370,50,19,8,3,0,34,0,0,0,0,0-0-0,0-0-0,Helvetica|||251-2-255,0,0,0,0,0,0
+10,65,Time to Manager Retire,1777,1362,49,19,8,3,0,34,0,0,0,0,0-0-0,0-0-0,Helvetica|||251-2-255,0,0,0,0,0,0
+1,66,65,61,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,67,error frac,1571,769,49,21,8,3,0,34,0,0,0,0,0-0-0,0-0-0,Helvetica|||15-128-255,0,0,0,0,0,0
+1,68,67,26,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,69,67,31,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,70,Company Task Quality,1633,473,63,31,3,131,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+12,71,48,1465,482,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,72,74,70,4,0,0,22,0,0,0,-1--1--1,,1|(1557,482)|
+1,73,74,71,100,0,0,22,0,0,0,-1--1--1,,1|(1503,482)|
+11,74,0,1538,482,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,75,Quality Increase,1538,498,42,8,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+12,76,48,1863,478,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,77,79,76,4,0,0,22,0,0,0,-1--1--1,,1|(1824,478)|
+1,78,79,70,100,0,0,22,0,0,0,-1--1--1,,1|(1740,478)|
+11,79,0,1790,478,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,80,Quality Decrease,1790,494,44,8,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,81,26,75,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1468,552)|
+1,82,31,80,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1671,594)|
+10,83,Quality Increase Index,1722,630,57,8,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,84,83,75,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,85,Quality Decrease Index,1919,594,59,8,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,86,85,80,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,87,36,46,1,0,0,0,0,192,0,-1--1--1,,1|(263,1228)|
+1,88,51,60,1,0,0,0,0,192,0,-1--1--1,,1|(1692,1221)|
+1,89,36,41,1,0,0,0,0,64,0,-1--1--1,,1|(121,1325)|
+1,90,51,56,1,0,0,0,0,64,0,-1--1--1,,1|(1597,1291)|
+1,91,12,26,1,0,0,0,0,192,0,-1--1--1,,1|(1296,594)|
+1,92,12,31,1,0,0,0,0,192,0,-1--1--1,,1|(1284,623)|
+10,93,Reference Nonmanagers,-194,1279,63,23,8,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica||U|17-128-64,0,0,0,0,0,0
+10,94,Reference Managers,2266,1251,53,23,8,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica||U|17-128-64,0,0,0,0,0,0
+1,95,94,51,0,0,0,0,0,192,1,-1--1--1,,1|(0,0)|
+1,96,93,36,0,0,0,0,1,192,1,179-179-179,|||0-0-0,1|(0,0)|
+10,97,desired task completion rate,611,995,60,24,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,98,1,97,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,99,target task completion time,791,1350,58,23,8,3,0,34,-1,0,0,0,0-0-0,0-0-0,Helvetica|||251-2-255,0,0,0,0,0,0
+1,100,99,97,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,101,quality frac,1942,776,43,23,8,3,0,34,-1,0,0,0,0-0-0,0-0-0,Helvetica|||15-128-255,0,0,0,0,0,0
+1,102,101,83,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,103,85,83,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,104,target test completion time,1208,1358,60,13,8,3,0,34,-1,0,0,0,0-0-0,0-0-0,Helvetica|||251-2-255,0,0,0,0,0,0
+1,105,104,62,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,106,70,6,1,0,0,0,0,192,0,-1--1--1,,1|(798,430)|
+10,107,Time per Task,542,1240,47,23,8,3,0,34,-1,0,0,0,0-0-0,0-0-0,Helvetica||U|251-2-7,0,0,0,0,0,0
+10,108,Workweek,1005,1281,52,23,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica||U|0-0-0,0,0,0,0,0,0
+10,109,Time per Test,1194,1212,59,23,8,3,0,34,-1,0,0,0,0-0-0,0-0-0,Helvetica||U|17-128-64,0,0,0,0,0,0
+10,110,standard task completion rate,547,1088,64,16,8,3,0,50,-1,0,0,0,0-0-0,0-0-0,Helvetica||U|251-2-7,0,0,0,0,0,0
+10,111,standard test completion rate,1341,1210,62,23,8,3,0,50,-1,0,0,0,0-0-0,0-0-0,Helvetica||U|17-128-64,0,0,0,0,0,0
+10,112,potential task completion rate,856,1057,54,22,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,113,36,112,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,114,potential test completion rate,1134,1052,63,23,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,115,112,11,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,116,109,114,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,117,108,114,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,118,51,114,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,119,114,35,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,120,Reference Task Arrival,412,295,39,8,8,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica||U|0-0-0,0,0,0,0,0,0
+10,121,Time to Test Deadline,1126,475,56,23,8,3,0,34,-1,0,0,0,0-0-0,0-0-0,Helvetica|||251-2-255,0,0,0,0,0,0
+1,122,120,7,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,123,Time to Rework Return,895,874,59,8,8,3,0,34,-1,0,0,0,0-0-0,0-0-0,Helvetica|||251-2-255,0,0,0,0,0,0
+1,124,123,21,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,125,64,55,1,0,0,0,0,192,0,-1--1--1,,1|(1499,1307)|
+1,126,35,17,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,127,120,6,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,128,7,35,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,129,Reference Task,421,694,39,8,8,3,0,48,-1,0,0,0,0-0-0,0-0-0,Helvetica||U|0-0-0,0,0,0,0,0,0
+1,130,129,1,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,131,standard test frac,1404,772,58,8,8,3,0,34,-1,0,0,0,0-0-0,0-0-0,Helvetica|||15-128-255,0,0,0,0,0,0
+1,132,131,17,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,133,120,13,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,134,131,13,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,135,120,12,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,136,131,12,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,137,97,11,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,138,Deisred Nonmanagers,228,964,57,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,139,97,138,1,0,0,0,0,192,0,-1--1--1,,1|(402,935)|
+1,140,138,41,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,141,Perceived quality,1722,355,46,23,3,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,142,48,1568,349,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,143,145,142,100,0,0,22,0,192,0,-1--1--1,,1|(1599,349)|
+1,144,145,141,4,0,0,22,0,192,0,-1--1--1,,1|(1654,349)|
+11,145,0,1627,349,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,146,in,1627,380,43,23,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,147,70,146,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,148,141,146,1,0,0,0,0,192,0,-1--1--1,,1|(1711,399)|
+1,149,70,56,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,150,107,110,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,151,108,110,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,152,110,138,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,153,110,112,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,154,Desired Managers,1663,1083,48,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Cost
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,100,0
+11,1,0,1170,484,6,8,34,3,16,0,1,0,0,0,0,0,0,0,0,0
+10,2,working,1170,503,23,9,40,3,16,0,-1,0,0,0,0,0,0,0,0,0
+11,3,0,1170,718,6,8,34,3,16,0,1,0,0,0,0,0,0,0,0,0
+10,4,reworking,1170,734,28,9,40,3,16,0,-1,0,0,0,0,0,0,0,0,0
+10,5,Nonmanagers,566,886,40,20,3,3,16,0,0,0,0,0,0,0,0,0,0,0
+10,6,Managers,1934,900,40,20,3,3,16,0,0,0,0,0,0,0,0,0,0,0
+10,7,Company Task Quality,1442,306,63,31,3,131,16,0,0,0,0,0,0,0,0,0,0,0
+10,8,Tasks to be Done,1170,519,56,9,8,2,16,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,9,nonmanager retiring,566,922,40,16,8,2,16,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,10,9,5,0,16,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,11,nonmanagers hiring,566,922,43,16,8,2,16,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,12,11,5,0,16,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,13,Reference Nonmanagers,566,922,44,16,8,2,16,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,14,13,5,0,16,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,15,managers hiring,1934,936,52,9,8,2,16,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,16,15,6,0,16,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,17,managers retiring,1934,936,56,9,8,2,16,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,18,17,6,0,16,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,19,Reference Managers,1934,936,33,16,8,2,16,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,20,19,6,0,16,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,21,Quality Decrease,1442,353,55,9,8,2,16,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,22,21,7,0,16,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,23,Quality Increase,1442,353,53,9,8,2,16,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,24,23,7,0,16,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,25,working,391,387,36,13,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,26,reworking,391,494,42,13,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,27,Nonmanagers,418,610,56,13,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,28,Managers,389,776,43,13,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,29,Company Task Quality,417,873,88,17,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,30,Cost coordination,1020,612,60,9,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,31,Cost rework,1023,475,45,9,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,32,Cost salary,1022,688,43,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,33,Cost brand image,1026,874,59,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,34,Cost mistake,1010,408,48,9,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,35,mistake affect rel2abs frac,1193,409,60,23,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||15-128-255,0,0,0,0,0,0
+10,36,m2nm salary frac,1166,686,57,23,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||15-128-255,0,0,0,0,0,0
+1,37,36,32,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,38,29,33,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,39,26,31,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,40,27,32,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,41,28,32,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,42,exposed mistake,398,438,63,11,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,43,42,34,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,44,rework prevention cost effectiveness frac,1181,478,59,32,8,3,0,2,-1,0,0,0,0-0-0,0-0-0,|||15-128-255,0,0,0,0,0,0
+1,45,44,31,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+10,46,potential task completion rate,1253,587,47,16,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,47,46,2,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,48,Time to Rework Return,1170,759,48,16,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,49,48,4,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,50,desired task completion rate,1407,532,47,16,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,51,50,2,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,52,income,989,307,43,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,53,Task right,653,541,43,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,54,Task wrong,763,541,43,23,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*labor force
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,100,0
+///---\\\
+:L<%^E!@
+1:Current.vdfx
+4:Time
+5:Time
+9:Current
+19:96,0
+24:0
+25:100
+26:100
+15:0,0,0,0,0,0
+27:2,
+34:0,
+42:0
+72:0
+73:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Helvetica|12||0-0-0|0-0-0|-1--1--1|0-0-0|192-192-192|-1--1--1

@@ -1,0 +1,353 @@
+{UTF-8}
+quality frac  = A FUNCTION OF( )
+	~	
+	~		|
+
+scaled incorrect dissatisfaction=
+	scaled enjoying satisfaction * quality frac
+	~	Dmnl/Product
+	~		|
+
+scaled enjoying satisfaction=
+	1
+	~	Dmnl/Product
+	~	  1 correct output utility : .2 incorrect output utility 
+		= 10 enjoying output utility : -8 enraging incorrect utility (ENSURE abs utility \
+		value of dissatisfaction doesn't exceed satisfaction, else switch frac \
+		relation)
+		scaled enraging incorrect utility = scaled enjoying output utility * \
+		quality frac; larger quality frac should concentrate on qaulity
+	|
+
+Abandon to New Rule Effort Ratio=
+	2
+	~	Dmnl [0,10]
+	~		|
+
+"Effort per Out-of-date Rule Eliminated"=
+	Abandon to New Rule Effort Ratio/effort2rule unit
+	~	Hr/Rule
+	~		|
+
+"Effort to Check if Each Rule Out-of-date"=
+	1
+	~	Hr/Week [0,10]
+	~		|
+
+"Effort to Eliminate Out-of-date Rules"=
+	rule abandoning effort frac*Total Work Hours
+	~	Hr/Week
+	~		|
+
+rule abandoning effort frac=
+	0.1
+	~	Dmnl [0,1]
+	~		|
+
+********************************************************
+	.7 abstract model
+********************************************************~
+		<?xml version="1.0" encoding="UTF-8"?>
+		<richtext version="1.0.0.0" xmlns="http://www.wxwidgets.org">
+		  <paragraphlayout textcolor="#000000" fontpointsize="13" fontfamily="72" \
+		fontstyle="90" fontweight="400" fontunderlined="0" \
+		fontface=".AppleSystemUIFont" alignment="1" parspacingafter="10" \
+		parspacingbefore="0" linespacing="10" margin-left="5,4098" \
+		margin-right="5,4098" margin-top="5,4098" margin-bottom="5,4098">
+		    <paragraph>
+		      <text></text>
+		    </paragraph>
+		  </paragraphlayout>
+		</richtext>
+	|
+
+"incorrect output utility(c2)"=
+	scaled enjoying satisfaction - scaled incorrect dissatisfaction
+	~	Dmnl/Product
+	~		|
+
+"correct output utility (c1)"=
+	scaled enjoying satisfaction
+	~	Dmnl/Product
+	~		|
+
+eliminating rule=
+	"out of date rule (Ro)"/("up to date rule (Ru)"+"out of date rule (Ro)")*"Effort to Eliminate Out-of-date Rules"\
+		^2/4/("Effort per Out-of-date Rule Eliminated"*"Effort to Check if Each Rule Out-of-date"\
+		)
+	~	Rule/Week
+	~		|
+
+eroding rule=
+	"up to date rule (Ru)"/rule eroding frac
+	~	Rule/Week
+	~		|
+
+"baseline error rate (gamma0)"=
+	0.5
+	~	Dmnl [0,1]
+	~	Error rate if no regulation
+	|
+
+Desired Enforcement Effort=
+	Desired Enforcement Effort per Rule*("up to date rule (Ru)" + "out of date rule (Ro)"\
+		)
+	~	Hr/Week
+	~		|
+
+"error rate (gamma)"=
+	"baseline error rate (gamma0)"*EXP(- "up to date rule (Ru)"/(LN( 2 )*"Reference Number of Rules that Halfs Error Rate (Rh)"\
+		)*"Enforcement Effectiveness (f)" )
+	~	Dmnl
+	~	from hazhir's paper on short-termism
+	|
+
+"out of date rule (Ro)"= INTEG (
+	eroding rule-eliminating rule,
+		0)
+	~	Rule
+	~		|
+
+rule eroding frac=
+	1/12
+	~	1/Week [0,200]
+	~		|
+
+"Reference Number of Rules that Halfs Error Rate (Rh)"=
+	5
+	~	Rule [0,100]
+	~		|
+
+"up to date rule (Ru)"= INTEG (
+	making rule-eroding rule,
+		1)
+	~	Rule
+	~		|
+
+total utility=
+	"throughput quantity (n)"*("correct output utility (c1)"*(1-"error rate (gamma)") - \
+		"incorrect output utility(c2)"*("error rate (gamma)"))
+	~	Dmnl/Week
+	~		|
+
+Desired Enforcement Effort per Rule=
+	5
+	~	Hr/Rule/Week
+	~		|
+
+effort2rule unit=
+	1/50
+	~	Rule/Hr [0,200]
+	~		|
+
+allocated real work effort=
+	Total Work Hours*(1-rule enforcing effort frac-rule making effort frac)
+	~	Hr/Week
+	~		|
+
+allocated rule efforcing effort=
+	Total Work Hours*rule enforcing effort frac
+	~	Hr/Week
+	~		|
+
+allocated rule making effort=
+	Total Work Hours*rule making effort frac
+	~	Hr/Week
+	~		|
+
+"Enforcement Effectiveness (f)"=
+	MIN( 1 , allocated rule efforcing effort/Desired Enforcement Effort )
+	~	Dmnl
+	~		|
+
+rule enforcing effort frac=
+	0.3
+	~	Dmnl [0,1]
+	~		|
+
+rule making effort frac=
+	0.2
+	~	Dmnl [0,1]
+	~		|
+
+hr2product unit=
+	1
+	~	Product/Hr
+	~		|
+
+making rule=
+	allocated rule making effort * effort2rule unit
+	~	Rule/Week
+	~		|
+
+"throughput quantity (n)"=
+	allocated real work effort*hr2product unit
+	~	Product/Week
+	~		|
+
+Total Work Hours=
+	100
+	~	Hr/Week [0,10000]
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Week
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Week
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Week [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.25
+	~	Week [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,90,0
+10,1,"up to date rule (Ru)",855,-70,54,23,3,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+12,2,48,494,-79,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,3,5,2,100,0,0,22,1,192,0,0-0-0,|||0-0-0,1|(568,-79)|
+1,4,5,1,4,0,0,22,1,192,0,0-0-0,|||0-0-0,1|(722,-79)|
+11,5,0,638,-79,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,6,making rule,638,-48,58,23,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,7,allocated rule making effort,565,600,54,32,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,8,allocated rule efforcing effort,1161,622,54,32,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,9,7,6,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(394,335)|
+10,10,total utility,859,146,46,32,8,3,0,34,-1,0,0,0,-1--1--1,-1--1--1,Helvetica|||253-128-8,0,0,0,0,0,0
+10,11,allocated real work effort,869,613,54,24,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,12,"throughput quantity (n)",865,341,54,23,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,13,"error rate (gamma)",1126,182,50,23,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,14,1,13,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1000,45)|
+1,15,11,12,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,16,12,10,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,17,13,10,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,18,Total Work Hours,825,778,54,23,8,3,0,34,-1,0,0,0,-1--1--1,-1--1--1,Helvetica|||128-0-128,0,0,0,0,0,0
+1,19,18,11,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,20,rule enforcing effort frac,1028,517,57,32,8,3,0,34,-1,0,0,0,-1--1--1,-1--1--1,Helvetica|||0-0-128,0,0,0,0,0,0
+1,21,20,8,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,22,18,8,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1024,728)|
+1,23,18,7,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(693,727)|
+12,24,0,1522,-373,80,40,8,7,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+Maybe as this to be an optimization problem. At each point in time, ask what is the optimal allocation for enforcement vs. real work vs. rule building. 
+10,25,"correct output utility (c1)",675,253,63,32,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,26,25,10,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,27,"incorrect output utility(c2)",692,143,50,32,8,3,0,34,-1,0,0,0,-1--1--1,-1--1--1,Helvetica|||128-0-128,0,0,0,0,0,0
+1,28,27,10,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,29,Desired Enforcement Effort,1272,84,58,32,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,30,"Enforcement Effectiveness (f)",1310,380,58,32,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,31,30,13,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1238,255)|
+1,32,8,30,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1299,504)|
+1,33,29,30,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1368,242)|
+10,34,rule making effort frac,713,521,50,32,8,3,0,34,-1,0,0,0,-1--1--1,-1--1--1,Helvetica|||0-0-128,0,0,0,0,0,0
+1,35,34,7,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,36,34,11,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,37,20,11,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,38,effort2rule unit,418,1,63,23,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,39,38,6,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,40,1,29,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1061,-25)|
+10,41,Desired Enforcement Effort per Rule,1484,129,67,32,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,42,41,29,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,43,hr2product unit,690,414,54,23,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,44,43,12,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,45,"baseline error rate (gamma0)",985,277,63,23,8,3,0,34,-1,0,0,0,-1--1--1,-1--1--1,Helvetica|||128-0-128,0,0,0,0,0,0
+1,46,45,13,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,47,"Reference Number of Rules that Halfs Error Rate (Rh)",1133,362,84,32,8,3,0,34,-1,0,0,0,-1--1--1,-1--1--1,Helvetica|||128-0-128,0,0,0,0,0,0
+1,48,47,13,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,49,"out of date rule (Ro)",1335,-73,54,23,3,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,50,52,1,100,0,0,22,1,192,0,0-0-0,|||0-0-0,1|(1015,-76)|
+1,51,52,49,4,0,0,22,1,192,0,0-0-0,|||0-0-0,1|(1207,-76)|
+11,52,0,1127,-76,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,53,eroding rule,1127,-45,54,23,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+12,54,48,1656,-73,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,55,57,49,100,0,0,22,1,192,0,0-0-0,|||0-0-0,1|(1449,-73)|
+1,56,57,54,4,0,0,22,1,192,0,0-0-0,|||0-0-0,1|(1583,-73)|
+11,57,0,1515,-73,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,58,eliminating rule,1515,-42,58,23,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,59,49,29,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,60,allocated rule making effort,1630,77,50,23,8,2,1,35,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+10,61,rule eroding frac,1169,-149,58,32,8,3,0,34,-1,0,0,0,-1--1--1,-1--1--1,Helvetica|||251-2-7,0,0,0,0,0,0
+1,62,61,52,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,63,1,52,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(991,-147)|
+10,64,effort2rule unit,1731,3,50,23,8,2,1,35,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+12,65,0,2502,-42,268,38,8,7,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+Here I assume one abandon rule as one makes a new one (to replace old one. The effort to overturn outdated rules should be considered another degree of freedom organization has)
+10,66,rule abandoning effort frac,1751,470,63,31,8,3,0,34,-1,0,0,0,-1--1--1,-1--1--1,Helvetica|||0-0-128,0,0,0,0,0,0
+10,67,"Effort to Eliminate Out-of-date Rules",1622,343,75,32,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,68,66,67,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,69,18,67,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1363,674)|
+1,70,67,58,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1620,159)|
+10,71,"Effort per Out-of-date Rule Eliminated",1751,128,71,32,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,72,71,58,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,73,Abandon to New Rule Effort Ratio,1944,135,63,32,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,74,73,71,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,75,effort2rule unit,1923,215,50,23,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,76,75,71,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,77,49,58,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1431,-3)|
+1,78,1,57,1,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(1201,-247)|
+10,79,"Effort to Check if Each Rule Out-of-date",1851,20,71,32,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,80,79,58,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,81,quality frac,149,446,75,23,8,3,0,42,-1,0,0,0,0-0-0,0-0-0,Helvetica|10||15-128-255,0,0,0,0,0,0
+10,82,scaled enjoying satisfaction,318,340,67,32,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,83,scaled incorrect dissatisfaction,297,214,66,32,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,84,82,25,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,85,83,27,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,86,82,27,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,87,81,83,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+1,88,82,83,0,0,0,0,0,192,0,-1--1--1,,1|(0,0)|
+///---\\\
+:L<%^E!@
+1:current.vdfx
+4:Time
+5:scaled incorrect dissatisfaction
+9:current
+19:90,0
+24:0
+25:100
+26:100
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:1
+72:0
+73:0
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Courier|12||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1

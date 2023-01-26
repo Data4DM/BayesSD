@@ -19,3 +19,10 @@ venv/
 .DS_Store
 .obsidian
 .idea
+
+## data types for pipeline
+**/*.pkl
+**/*.txt
+**/*.tsv
+**/*.csv
+**/*.list

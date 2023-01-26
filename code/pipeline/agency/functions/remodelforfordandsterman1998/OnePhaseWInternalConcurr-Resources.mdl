@@ -1,0 +1,486 @@
+{UTF-8}
+Project backlog=
+	Initial completion backlog+Quality Assurance Backlog+Rework Backlog
+	~	work packages
+	~	The total project backlog of work to be processed is the summ of the three \
+		work backlogs.
+	|
+
+Rework resources=
+	(Rework Backlog/Project backlog)*Project resources
+	~	person
+	~	The resources allocated to rework is directly proportional to the size of \
+		the rework backlog compared to the project backlog. For simplicity it is \
+		assumed that resources are reallocated without delay.
+	|
+
+Project resources=
+	1e+17
+	~	person
+	~	Total project resources, assumed to be persons, but can represent crews, \
+		equipment, or other forms of resources used in processing work.
+	|
+
+Initial completion resources=
+	(Initial completion backlog/Project backlog)*Project resources
+	~	person
+	~	The resources allocated to initial completion work is directly \
+		proportional to the size of the initial completion backlog compared to the \
+		project backlog. For simplicity it is assumed that resources are \
+		reallocated without delay.
+	|
+
+Initial completion resources rate=
+	Initial completion resources*Resource productivity
+	~	work packages/week
+	~	The rate that resources will allow initial completion is the product of \
+		the amount of initial completion resources applied and the productivity of \
+		those resources.
+	|
+
+Quality assurance resources rate=
+	Quality assurance resources*Resource productivity
+	~	work packages/week
+	~	The rate that resources will allow quality assurnce work is the product of \
+		the amount of quality assurance resources applied and the productivity of \
+		those resources.
+	|
+
+Rework resources rate=
+	Rework resources*Resource productivity
+	~	work packages/week
+	~	The rate that resources will allow rework is the product of the amount of \
+		rework resources applied and the productivity of those resources.
+	|
+
+Quality assurance rate=
+	Min(Quality assurance resources rate,Quality Assurance Backlog/min quality assurance duration\
+		)
+	~	work packages/week
+	~	The rate at which work packages are checked for errors can be constrained \
+		by either available resources or available work packages. The minimum rate \
+		between available work and available resources determines the rate at \
+		which packages are checked for errors.
+	|
+
+Quality assurance resources=
+	(Quality Assurance Backlog/Project backlog)*Project resources
+	~	person
+	~	The resources allocated to quality assurance work is directly proportional \
+		to the size of the quality assurance backlog compared to the project \
+		backlog. For simplicity it is assumed that resources are reallocated \
+		without delay.
+	|
+
+Initial completion rate=
+	Min(Initial completion resources rate,Current work available/min initial completion duration\
+		)
+	~	work packages/week
+	~	The rate at which work packages are initially completed can be constrained \
+		by either available resources or available work packages. The minimum rate \
+		between available work and available resources determines the rate at \
+		which packages are initially completed.
+	|
+
+Rework rate=
+	Min(Rework resources rate,Rework Backlog/min rework duration)
+	~	work packages/week
+	~	The rate at which work packages are reworked can be constrained by either \
+		available resources or available work packages. The minimum rate between \
+		available work and available resources determines the rate at which \
+		packages are reworked.
+	|
+
+Resource productivity=
+	1
+	~	work packages/(week*person)
+	~	The productivity of the resource is assumed to be the same for each \
+		activity (initial completion, quality assurance, or rework).
+	|
+
+Quality Assurance effectiveness=
+	1
+	~	Dmnl
+	~	QA effectiveness reflects the ability of the QA process to discover rework \
+		needs in work packages. It is modeled as a fraction from 0 to 1, with 0 \
+		representing a QA process that finds none of the existing rework needs and \
+		1 representing a QA process that discovers all of the rework needs. The \
+		base case is 1.
+	|
+
+discover rework rate=
+	Rraction discovered to require rework*Quality assurance rate
+	~	work packages/week
+	~	The rate at which work packages are discovered to require rework. The rate \
+		increases with both the quality assurance rate and the percentage of tasks \
+		that require rework.
+	|
+
+Increase in fraction requiring rework=
+	0
+	~	Dmnl
+	~	The amount that the fraction of work requiring rework increases.
+	|
+
+Fraction requiring rework=
+	Reference fraction requiring rework+STEP(Increase in fraction requiring rework, Increase in fraction requiring rework time\
+		)
+	~	Dmnl
+	~	The fraction (range 0 to 1) of work packages that require rework. This can \
+		be used to reflect the complexity of initial completion, workforce ability \
+		and competency, or management interference in the initial completion \
+		process. The step function can reflect an unexpected problem or challenge \
+		in initial completion.
+	|
+
+Reference fraction requiring rework=
+	0.2
+	~	Dmnl
+	~	The reference or normal fraction of work requiring rework.
+	|
+
+Increase in fraction requiring rework time=
+	30
+	~	week
+	~	The time when the fraction requiring rework increases.
+	|
+
+Rraction discovered to require rework=
+	Fraction requiring rework*Quality Assurance effectiveness
+	~	Dmnl
+	~	The fraction of work packages that are discovered to require rework is the \
+		fraction required to need rework times the effectiveness of the QA \
+		operation in discovering those rework needs.
+	|
+
+Current work initially completed=
+	Project scope-Initial completion backlog
+	~	work packages
+	~		|
+
+Initial completion backlog= INTEG (
+	-Initial completion rate,
+		Project scope)
+	~	work packages
+	~	The number of work packages waiting to be constructed.
+	|
+
+percent complete=
+	Work Released/Project scope
+	~	Dmnl
+	~	The percent complete describes the evolution of project progress. The \
+		current formulation uses the project backlog rather then the initial scope \
+		since the ripple effect rate adds additional work to the project above the \
+		initial scope.
+	|
+
+Total work available=
+	Project scope*((0*1)+(1*Fraction of total work available))
+	~	work packages
+	~		|
+
+Definition of complete=
+	0.99
+	~	Dmnl
+	~	Definition of completed project in fraction of work packages released.
+	|
+
+Current work available=
+	Total work available-Current work initially completed
+	~	work packages
+	~		|
+
+Internal Concurrence Relationship(
+	[(0,0)-(1,1)],(0,1),(0.9,1),(1,1))
+	~	Dmnl
+	~	The concurrence constraint within a project or a single phase of a project.
+	|
+
+Fraction of total work available=
+	Internal Concurrence Relationship(percent complete)
+	~	Dmnl
+	~		|
+
+Increase project duration=
+	IF THEN ELSE(percent complete<Definition of complete, 1, 0)
+	~	week/week
+	~	Rate at which time in weeks is added to the Project Duration stock. One \
+		week added per week that the project has not met the Completed condition.
+	|
+
+Project duration= INTEG (
+	Increase project duration,
+		0)
+	~	week
+	~	Time that the project has been operational. Adds one week each week until \
+		"Complete" condition is met.
+	|
+
+project staff=
+	20
+	~	person
+	~	The number of people assigned to the project. NOTE the base case value is \
+		20 persons.
+	|
+
+staff productivity=
+	1
+	~	work packages/(person*week)
+	~	The number of work packages that a person can complete in a week. The \
+		current formulation assumes that staff productivity is constant through \
+		the project and across activities. NOTE the base case value is 1.
+	|
+
+Approve work rate=
+	Quality assurance rate-discover rework rate
+	~	work packages/week
+	~	The rate at which work packages are approved and released. It is the \
+		difference between the quality assurance rate and the rate at which work \
+		packages are discovered to require rework.
+	|
+
+min initial completion duration=
+	3
+	~	week
+	~	The minimum number of weeks a work packages must stay in the design \
+		backlog until it can be constructed. NOTE the base case value is 1.
+	|
+
+min quality assurance duration=
+	1
+	~	week
+	~	The minimum number of weeks a work packages must stay in the quality \
+		assurance backlog until it can be checked for errors. NOTE the base case \
+		value is 1.
+	|
+
+min rework duration=
+	1
+	~	week
+	~	The minimum number of weeks a work packages must stay in the rework \
+		backlog until it can be reworked. NOTE the base case value is 1.
+	|
+
+Project scope=
+	1000
+	~	work packages
+	~	The number of work packages that must be completed and approved to \
+		complete the project. Each work packages represents a small piece of the \
+		project. NOTE the base case value is 500 work packages.
+	|
+
+Work Released= INTEG (
+	Approve work rate,
+		0)
+	~	work packages
+	~	The number of work packages that have been completed.
+	|
+
+Quality Assurance Backlog= INTEG (
+	+Initial completion rate+Rework rate-Approve work rate-discover rework rate,
+		0)
+	~	work packages
+	~	The number of work packages waiting to be checked for quality assurance.
+	|
+
+Rework Backlog= INTEG (
+	discover rework rate-Rework rate,
+		0)
+	~	work packages
+	~	The number of work packages that are waiting to be reworked.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 200
+	~	week
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	week
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP 
+	~	week
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.125
+	~	week
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Work flows
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1|72,72,100,0
+10,1,Initial completion backlog,266,450,47,32,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,2,Quality Assurance Backlog,452,338,50,35,3,3,0,0,0,1,0,0,0,0,0,0,0,0
+10,3,Work Released,673,335,43,29,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,4,Rework Backlog,271,256,44,31,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,5,7,2,4,0,0,22,0,0,0,-1--1--1,,1|(452,449)|
+1,6,7,1,100,0,0,22,0,0,0,-1--1--1,,1|(350,449)|
+11,7,596,392,449,5,6,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,8,Initial completion rate,392,469,56,8,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,9,11,3,4,0,0,22,0,0,0,-1--1--1,,1|(597,336)|
+1,10,11,2,100,0,0,22,3,0,0,0-0-0,|12||0-0-0,1|(528,336)|
+11,11,706,560,336,5,6,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,12,Approve work rate,560,356,37,14,40,131,0,0,-1,0,0,0,0,0,0,0,0,0
+1,13,15,4,4,0,0,22,0,0,0,-1--1--1,,1|(352,252)|
+1,14,15,2,100,0,0,22,0,0,0,-1--1--1,,1|(452,252)|
+11,15,1190,394,252,5,6,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,16,discover rework rate,394,272,40,14,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,17,19,2,4,0,0,22,0,0,0,-1--1--1,,1|(373,341)|
+1,18,19,4,100,0,0,22,0,0,0,-1--1--1,,1|(271,341)|
+11,19,376,340,341,5,6,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,20,Rework rate,340,355,32,8,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,21,Quality assurance rate,592,199,56,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,22,21,15,1,0,43,0,1,64,0,0-0-255,|12||0-0-0,1|(451,195)|
+1,23,21,11,1,0,43,0,3,64,0,0-0-255,|12||0-0-0,1|(608,283)|
+10,24,Project scope,262,492,33,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,25,16,11,1,0,45,0,1,64,0,0-0-255,|12||0-0-0,1|(521,282)|
+10,26,min initial completion duration,342,598,52,14,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,27,min quality assurance duration,724,222,44,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,28,min rework duration,166,399,22,17,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,29,Rraction discovered to require rework,305,189,52,14,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,30,29,15,1,0,43,0,1,64,0,0-0-255,|12||0-0-0,1|(375,223)|
+10,31,percent complete,719,405,29,14,8,131,0,2,0,0,0,0,0-0-0,0-0-0,|12|B|0-0-0,0,0,0,0,0,0
+10,39,Project duration,906,396,30,15,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,40,48,795,397,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,41,43,39,4,0,0,22,0,0,0,-1--1--1,,1|(860,397)|
+1,42,43,40,100,0,0,22,0,0,0,-1--1--1,,1|(819,397)|
+11,43,48,839,397,5,6,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,44,Increase project duration,839,423,27,20,40,131,0,0,-1,0,0,0,0,0,0,0,0,0
+1,45,31,43,1,0,0,0,3,64,0,0-0-255,|12||0-0-0,1|(792,366)|
+10,46,Definition of complete,915,499,33,14,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,47,46,44,0,0,0,0,3,64,0,0-0-255,|12||0-0-0,1|(884,468)|
+10,48,Internal Concurrence Relationship,778,533,34,21,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,49,Fraction of total work available,695,474,38,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,50,48,49,0,0,43,0,3,192,0,0-0-255,|12||0-0-0,1|(737,503)|
+1,51,31,49,1,0,43,14,3,192,0,0-0-255,|12||0-0-0,1|(726,423)|
+10,52,Total work available,640,538,27,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,53,49,52,1,0,43,14,3,192,0,0-0-255,|12||0-0-0,1|(676,507)|
+1,54,3,31,0,0,43,14,3,64,0,0-0-255,|12||0-0-0,1|(694,368)|
+10,55,Current work available,516,593,33,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,56,52,55,1,0,43,14,3,192,0,0-0-255,|12||0-0-0,1|(598,576)|
+10,57,Current work initially completed,554,516,38,20,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,58,1,57,1,0,45,0,3,192,0,0-0-255,|12||0-0-0,1|(413,401)|
+1,59,57,55,0,0,45,0,3,192,0,0-0-255,|12||0-0-0,1|(536,550)|
+10,61,Project scope,586,422,40,8,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,62,61,31,0,0,0,0,3,64,0,0-0-255,|12||0-0-0,1|(651,413)|
+1,63,61,52,0,0,0,0,3,64,0,0-0-255,|12||0-0-0,1|(608,470)|
+1,64,61,57,0,0,0,0,3,64,0,0-0-255,|12||0-0-0,1|(574,456)|
+1,65,2,21,0,0,43,0,1,64,0,0-0-255,|12||0-0-0,1|(530,259)|
+1,66,4,19,1,0,0,0,3,64,0,0-0-255,|12||0-0-0,1|(318,299)|
+1,67,28,20,1,0,0,0,3,64,0,0-0-255,|12||0-0-0,1|(238,393)|
+1,68,26,8,1,0,0,0,3,64,0,0-0-255,|12||0-0-0,1|(351,531)|
+1,69,55,8,1,0,0,0,3,64,0,0-0-255,|12||0-0-0,1|(406,544)|
+1,70,27,21,1,0,0,0,3,64,0,0-0-255,|12||0-0-0,1|(662,209)|
+1,71,24,1,0,0,0,0,0,64,1,-1--1--1,,1|(262,490)|
+10,72,Fraction requiring rework,374,107,47,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,73,Quality Assurance effectiveness,150,155,47,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,74,73,29,0,0,0,0,0,64,0,-1--1--1,,1|(218,169)|
+1,75,72,29,0,0,0,0,0,64,0,-1--1--1,,1|(344,142)|
+10,76,Reference fraction requiring rework,238,57,48,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,77,Increase in fraction requiring rework,446,48,50,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,78,Increase in fraction requiring rework time,524,122,56,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,79,76,72,0,0,0,0,0,64,0,-1--1--1,,1|(298,79)|
+1,80,77,72,0,0,0,0,0,64,0,-1--1--1,,1|(415,73)|
+1,81,78,72,0,0,0,0,0,64,0,-1--1--1,,1|(451,114)|
+10,82,Quality assurance resources rate,712,146,49,14,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|0||128-128-128,0,0,0,0,0,0
+10,83,Initial completion resources rate,246,562,49,14,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|0||128-128-128,0,0,0,0,0,0
+10,84,Rework resources rate,144,325,40,14,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|0||128-128-128,0,0,0,0,0,0
+1,85,82,21,0,0,0,0,0,64,0,-1--1--1,,1|(651,172)|
+1,86,83,8,1,0,0,0,0,64,0,-1--1--1,,1|(313,505)|
+1,87,84,20,1,0,0,0,0,64,0,-1--1--1,,1|(235,353)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Resources
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|72,72,100,0
+10,1,Initial completion resources rate,716,162,46,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,2,Quality assurance resources rate,738,265,46,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,3,Rework resources rate,730,379,46,17,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,4,Initial completion backlog,164,135,49,14,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|0||128-128-128,0,0,0,0,0,0
+10,5,Quality Assurance Backlog,170,238,54,14,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|0||128-128-128,0,0,0,0,0,0
+10,6,Rework Backlog,164,356,50,8,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|0||128-128-128,0,0,0,0,0,0
+10,7,Project backlog,315,242,40,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,8,4,7,0,0,0,0,0,64,0,-1--1--1,,1|(237,186)|
+1,9,5,7,0,0,0,0,0,64,0,-1--1--1,,1|(242,239)|
+1,10,6,7,0,0,0,0,0,64,0,-1--1--1,,1|(233,303)|
+10,11,Initial completion resources,462,159,46,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,12,Quality assurance resources,452,248,46,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,13,Rework resources,446,359,45,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,14,Resource productivity,908,264,40,17,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,15,14,1,0,0,0,0,0,64,0,-1--1--1,,1|(815,214)|
+1,16,14,2,0,0,0,0,0,64,0,-1--1--1,,1|(833,264)|
+1,17,14,3,0,0,0,0,0,64,0,-1--1--1,,1|(824,317)|
+1,18,4,11,0,0,0,0,0,64,0,-1--1--1,,1|(307,145)|
+1,19,7,11,0,0,0,0,0,64,0,-1--1--1,,1|(376,206)|
+1,20,7,12,0,0,0,0,0,64,0,-1--1--1,,1|(373,243)|
+1,21,7,13,0,0,0,0,0,64,0,-1--1--1,,1|(374,295)|
+1,22,6,13,0,0,0,0,0,64,0,-1--1--1,,1|(300,356)|
+1,23,5,12,1,0,0,0,0,64,0,-1--1--1,,1|(308,284)|
+10,24,Project resources,580,254,43,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,25,24,11,0,0,0,0,0,64,0,-1--1--1,,1|(530,213)|
+1,26,24,12,0,0,0,0,0,64,0,-1--1--1,,1|(524,251)|
+1,27,24,13,0,0,0,0,0,64,0,-1--1--1,,1|(518,302)|
+1,28,13,3,0,0,0,0,0,64,0,-1--1--1,,1|(580,368)|
+1,29,11,1,0,0,0,0,0,64,0,-1--1--1,,1|(582,159)|
+1,30,12,2,1,0,0,0,0,64,0,-1--1--1,,1|(625,297)|
+///---\\\
+:GRAPH WORK_BACKLOGS
+:TITLE Work Backlogs
+:SCALE
+:VAR Initial completion backlog
+:VAR Quality Assurance Backlog
+:VAR Rework Backlog
+:L<%^E!@
+1:LinearConcurrence-ResourceConstrained.vdfx
+1:FullyConcurrent-ResourceConstrained.vdfx
+1:FullyConcurrent-Uncapacitated.vdfx
+1:LinearConcurrence-Uncapacitated.vdfx
+9:FullyConcurrent-Uncapacitated
+22:$,Dollar,Dollars,$s
+22:Day,Days
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+23:0
+15:0,0,0,0,0,0
+19:100,0
+27:2,
+34:0,
+42:0
+72:0
+73:0
+4:Time
+5:Project duration
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+76:0
+77:0
+78:0
+79:0
+80:0
+81:0
+24:0
+25:200
+26:200
+87:0
+75:
+43:

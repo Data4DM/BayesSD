@@ -1,0 +1,604 @@
+{UTF-8}
+approving task=
+	Quality Assurance*(1-Test Rejection Time Frac)
+	~	Task/Month
+	~	Rate of approving tasks after ensuring its quality.(eq9,pg43)
+	|
+
+Available Resources=
+	5
+	~	Person
+	~		|
+
+Avg Dfct in Apvd Task=
+	-ln((1-Defective in Approved Tasks Frac))
+	~	Defect/Task
+	~		|
+
+completing task=
+	Feasible New Dev Rate
+	~	Task/Month
+	~	The rate of completing tasks as a first development stage. (eq13,pg43)
+	|
+
+Correct Defective Tasks=
+	XIDZ(Defective Tasks to be Reworked, Task to be Reworked, 0)*Task Correction Frac*reworking task
+	~	Task/Month
+	~	Changes that were corrected after being discovered. (eq32,pg64) Use a \
+		different parameter for the error rate
+	|
+
+Current Defect Rate in Completion=
+	Defect Rate in Completion*Schedule Pressure Impacted on Defects
+	~	Defect/Task
+	~		|
+
+Current Defect Rate in Rework=
+	Defect Rate in Rework*Schedule Pressure Impacted on Defects
+	~	Defect/Task
+	~		|
+
+Current Task Remained=
+	Task to be Approved+Task to be Reworked
+	~	Task
+	~		|
+
+Defect Correction Rate=
+	0.8
+	~	Defect/Task
+	~		|
+
+Defect Rate in Completion=
+	0.4
+	~	Defect/Task
+	~	The number of defects made when working on a task, in average.
+	|
+
+Defect Rate in Rework=
+	0.4
+	~	Defect/Task
+	~	The defect rate for creating new defects in the reworked Task.
+	|
+
+Defective Completion Frac=
+	(1-EXP(-Defect Rate in Completion))*(1-Schedule Pressure SW) + (1-EXP(-Current Defect Rate in Completion\
+		))*Schedule Pressure SW
+	~	dmnl
+	~	This is one minus the probability that there is no error in the task. \
+		Given that errors are distributed randomly across the tasks, with the \
+		error density given from M3, we can find probability of having \
+		Defect=1-probability of having no error, which latter, given a Poisson \
+		distribution can be expressed as above. I am not quite sure if this is \
+		correct however: it assumes tasks are of the same size (?)
+	|
+
+Defective in Approved Tasks Frac=
+	ZIDZ(Defective Tasks Approved, Tasks Approved)
+	~	dmnl
+	~		|
+
+Defective Task Not Fixed=
+	(XIDZ(Defective Tasks to be Reworked, Task to be Reworked, 0))*(1-Task Correction Frac\
+		)*reworking task
+	~	Task/Month
+	~	Taks that were discoved with more changes during the change avtivity. \
+		(eq31,pg64)
+	|
+
+Defective Tasks Approved= INTEG (
+	missing defect while testing task,
+		0)
+	~	Task
+	~	Total changes approved. (eq28,pg63)
+	|
+
+Defective Tasks Density UM2=
+	ZIDZ(Defective Tasks to be Reworked,Task to be Reworked)
+	~	dmnl
+	~		|
+
+Defective Tasks to be Reworked= INTEG (
+	discovering defect-Correct Defective Tasks-Defective Task Not Fixed,
+		0)
+	~	Task
+	~	Tasks that were discovered with changes.(eq27,pg63)
+	|
+
+Defective Tasks to be Tested= INTEG (
+	+Defective Task Not Fixed+making defect while completing task-missing defect while testing task\
+		-discovering defect,
+		0)
+	~	Task
+	~	Changes that were not discovered. (eq26,pg63)
+	|
+
+Dev Resources to New Dev=
+	Dsrd New Dev Resources*MIN(1,ZIDZ(Available Resources,Total Desired Resources))*Task Finish Switch
+	~	Person
+	~	The resources between rework and new development are distributed based on \
+		how much need there is for each, proportionately.
+	|
+
+Dev Resources to Rework=
+	Dsrd Rwrk Resources*MIN(1,ZIDZ(Available Resources,Total Desired Resources))*Task Finish Switch
+	~	Person
+	~	The resources between rework and new development are distributed based on \
+		how much need there is for each, proportionately.
+	|
+
+discovering defect=
+	rejecting task
+	~	Task/Month
+	~	Rate of discovering chages within tasks. (eq33,pg64)
+	|
+
+Dsrd New Dev Resources=
+	Task to be Approved/Min Time to Do Task/Productivity
+	~	Person
+	~	Desired new development rate depends on the productivity in normal \
+		situations and the rate of development desired.
+	|
+
+Dsrd Rwrk Resources=
+	Task to be Reworked/Min Time to Do Task/Productivity
+	~	Person
+	~	The desired resources for rework depend on the normal productivity of \
+		people and the desired rework rate.
+	|
+
+Expected Time Left=
+	Current Task Remained/(Available Resources*Productivity)
+	~	Month
+	~		|
+
+Feasible New Dev Rate=
+	Dev Resources to New Dev*Productivity
+	~	Task/Month
+	~	The development rate that is feasible based on availability of resources \
+		for development of new Task.
+	|
+
+reworking feasible=
+	Dev Resources to Rework*Productivity
+	~	Task/Month
+	~	Feasible rework rate from resources depends on the availability of \
+		resources as well as their productivity.
+	|
+
+Test Rejection Time Frac=
+	Tasks Defective Frac*(1-Defect Missing Frac)
+	~	dmnl
+	~	Discovering changes depend on the probability of discovering changes from \
+		all developed tasks and probability of changes required within all tasks. \
+		(eq10, pg43)  .......****11-EXP(ln(1-Fraction Tasks Defective \
+		M2)*(1-Probability of Missing a Defect))
+	|
+
+Tasks Defective Frac=
+	ZIDZ( Defective Tasks to be Tested, Task to be Tested)
+	~	dmnl [0,1]
+	~	The probability of tasks that need to be changed among all developed \
+		tasks. Not a parameter, see equation 36
+	|
+
+making defect while completing task=
+	(completing task*Defective Completion Frac)
+	~	Task/Month
+	~	Rate of generating changes during completion avtivity.(eq39,pg65)
+	|
+
+Initial Tasks to Complete=
+	100
+	~	Task
+	~		|
+
+Initial Time Schedule=
+	Initial Tasks to Complete/(Available Resources*Productivity)
+	~	Month
+	~		|
+
+Min Time Left=
+	1
+	~	Month
+	~		|
+
+Min Time to Do Task=
+	0.2
+	~	Month
+	~		|
+
+missing defect while testing task=
+	(Quality Assurance*Tasks Defective Frac)-discovering defect
+	~	Task/Month
+	~	Rate in which the changes are approved during task approval phase. \
+		(eq37,pg65)
+	|
+
+Defect Missing Frac=
+	0.3
+	~	dmnl [0,0.99]
+	~	This parameter represents the quality of testing, as captured by \
+		probability of missing an error that exists in the task, while doing the \
+		testing.
+	|
+
+Productivity=
+	5
+	~	Task/Person/Month
+	~	The productivity depends on the work pressure and Task complexity effects.
+	|
+
+Quality Assurance=
+	Task to be Tested/Testing Time*Task Finish Switch
+	~	Task/Month
+	~	Number of tasks that could be checked for quality in a Month. (eq7,pg42)
+	|
+
+rejecting task=
+	Test Rejection Time Frac*Quality Assurance
+	~	Task/Month
+	~	The rate of discovering changes from tasks that were completed. (eq8, pg43)
+	|
+
+reworking task=
+	reworking feasible
+	~	Task/Month
+	~	The rate of changing tasks. The errors need to be corrected before \
+		apporving the task. (eq6,pg42
+	|
+
+Schedule Pressure Impacted on Defects=
+	Table of Schedule Pressure(Schedule Pressure)
+	~	dmnl
+	~		|
+
+Schedule Pressure=
+	Expected Time Left/Schedule Time Left
+	~	dmnl
+	~		|
+
+Schedule Pressure SW=
+	0
+	~	dmnl [0,1]
+	~	when Schedule Pressure SW = 0, there is no effect on changing the defect \
+		rate from Schedule Pressure. When it equals to 1, schedule pressure \
+		impacts on the defect rate.
+	|
+
+Schedule Time Left=
+	Max(Min Time Left, (Initial Time Schedule-Time) )
+	~	Month
+	~		|
+
+Table of Schedule Pressure(
+	[(0,0)-(2,2)],(0,1),(1,1),(1.5,1.5),(2,1.5))
+	~	dmnl
+	~		|
+
+Task Correction Frac=
+	((1-EXP(-Defect Correction Rate))*EXP(-Defect Rate in Rework))*(1-Schedule Pressure SW\
+		) + ((1-EXP(-Defect Correction Rate))*EXP(-Current Defect Rate in Rework))*Schedule Pressure SW
+	~	dmnl
+	~	We correct an error if 1-The error is fixed in the change activity 2-No \
+		additional errors are added to the task. The above equation reflects this.
+	|
+
+Task Finish Switch=
+	if then else(Tasks Approved<Initial Tasks to Complete*Threshold Finish Task, 1, 0)
+	~	dmnl
+	~		|
+
+Tasks Approved= INTEG (
+	approving task,
+		0)
+	~	Task
+	~	Tasks that are approved for quality.(eq4,pg40)
+	|
+
+Task to be Approved= INTEG (
+	-completing task,
+		Initial Tasks to Complete)
+	~	Task
+	~	These are tasks that needs to be completed and checked before releasing. \
+		(eq1,pg40)
+	|
+
+Task to be Reworked= INTEG (
+	rejecting task-reworking task,
+		0)
+	~	Task
+	~	Tasks that were discovered with errors are stocked under tasks to be \
+		changed. These tasks will have to undergo chnages before being approved. \
+		(eq3, pg40)
+	|
+
+Task to be Tested= INTEG (
+	reworking task+completing task-rejecting task-approving task,
+		0)
+	~	Task
+	~	Tasks that were completed during the initial stage but not yet checked for \
+		errors. (eq2, pg40)
+	|
+
+Testing Time=
+	0.1
+	~	Month
+	~		|
+
+Threshold Finish Task=
+	0.99
+	~	dmnl
+	~	Fraction of tasks to complete before calling the project complete
+	|
+
+Total Desired Resources=
+	Dsrd New Dev Resources+Dsrd Rwrk Resources
+	~	Person
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Month
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Month
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Month [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.03125
+	~	Month [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Model
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|255-255-255|255-255-255|96,96,107,0
+10,1,Task to be Reworked,753,378,47,25,3,131,0,35,0,0,0,0,128-0-128,0-0-0,Helvetica|||128-0-128,0,0,0,0,0,0
+10,2,Task to be Tested,753,151,53,31,3,131,0,35,0,0,0,0,128-0-128,0-0-0,Helvetica|||128-0-128,0,0,0,0,0,0
+10,3,Tasks Approved,991,151,50,22,3,131,0,35,0,0,0,0,128-0-128,0-0-0,Helvetica|||128-0-128,0,0,0,0,0,0
+10,4,Task to be Approved,392,151,45,24,3,131,0,35,0,0,0,0,128-0-128,0-0-0,Helvetica|||128-0-128,0,0,0,0,0,0
+1,5,7,2,4,0,0,22,1,0,0,0-0-0,|||0-0-0,1|(724,231)|
+1,6,7,1,100,0,0,22,0,0,0,-1--1--1,,1|(724,323)|
+11,7,0,724,287,8,6,33,3,0,0,2,0,0,0,0,0,0,0,0,0
+10,8,reworking task,667,287,49,23,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,9,11,2,4,0,0,22,1,0,0,0-0-0,|||0-0-0,1|(642,152)|
+1,10,11,4,100,0,0,22,0,0,0,-1--1--1,,1|(504,152)|
+11,11,0,578,152,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,12,completing task,578,183,52,23,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,13,15,3,4,0,0,22,1,0,0,0-0-0,|||0-0-0,1|(906,152)|
+1,14,15,2,100,0,0,22,0,0,0,-1--1--1,,1|(832,152)|
+11,15,0,865,152,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,16,approving task,865,178,52,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,17,Quality Assurance,1013,308,53,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,18,Tasks Defective Frac,1109,433,43,12,8,3,0,34,0,0,0,0,0-0-0,0-0-0,Helvetica|||15-128-255,0,0,0,0,0,0
+10,19,Test Rejection Time Frac,949,436,59,21,8,131,0,34,0,0,0,0,0-0-0,0-0-0,Helvetica|||15-128-255,0,0,0,0,0,0
+1,20,18,19,0,0,43,0,35,64,0,0-0-0,Arial|||0-0-0,1|(0,0)|
+1,21,2,17,1,0,43,0,35,64,0,0-0-0,Arial|||0-0-0,1|(858,226)|
+1,22,17,16,0,0,43,0,35,64,0,0-0-0,Arial|||0-0-0,1|(0,0)|
+1,23,25,1,4,0,0,22,1,0,0,0-0-0,|||0-0-0,1|(782,324)|
+1,24,25,2,100,0,0,22,0,0,0,-1--1--1,,1|(782,233)|
+11,25,0,782,290,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,26,rejecting task,857,290,67,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,27,19,26,1,0,43,0,35,64,0,0-0-0,Arial|||0-0-0,1|(923,407)|
+10,28,Task to be Tested,1239,399,45,15,8,130,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,29,28,18,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,30,Defective Tasks to be Tested,1222,482,54,17,8,130,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,31,30,18,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,32,Dev Resources to New Dev,699,-233,66,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,33,Feasible New Dev Rate,563,-88,51,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,34,32,33,1,0,43,0,41,64,0,0-0-0,Arial|12||0-0-0,1|(686,-217)|
+10,35,Dev Resources to Rework,448,0,66,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,36,reworking feasible,291,-23,53,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,37,35,36,1,0,43,0,41,64,0,0-0-0,Arial|12||0-0-0,1|(374,-29)|
+10,38,Dsrd New Dev Resources,246,-261,54,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,39,Dsrd Rwrk Resources,99,4,45,16,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,40,39,35,1,0,43,0,33,64,0,0-0-0,Arial|||0-0-0,1|(255,35)|
+1,41,38,32,0,0,43,0,33,64,0,0-0-0,Arial|||0-0-0,1|(0,0)|
+10,42,Total Desired Resources,383,-167,54,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,43,42,35,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(389,-167)|
+1,44,42,32,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,45,39,42,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(157,-113)|
+1,46,38,42,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(326,-216)|
+10,47,Task to be Reworked,-24,-50,60,18,8,130,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,48,47,39,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,49,33,12,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(587,87)|
+10,50,Productivity,252,-103,51,10,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,51,50,36,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(274,-66)|
+1,52,50,39,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,53,50,33,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,54,50,38,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,55,Testing Time,1040,385,47,10,8,3,0,34,-1,0,0,0,128-128-128,0-0-0,Helvetica|||251-2-7,0,0,0,0,0,0
+1,56,55,17,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,57,Min Time to Do Task,78,-323,56,18,8,3,0,34,-1,0,0,0,128-128-128,0-0-0,Helvetica|||251-2-7,0,0,0,0,0,0
+1,58,57,38,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,59,Defect Missing Frac,1098,491,62,18,8,131,0,34,-1,0,0,0,128-128-128,0-0-0,Helvetica|||15-128-255,0,0,0,0,0,0
+1,60,59,19,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,61,Defective Tasks to be Tested,753,561,56,32,3,3,0,35,0,0,0,0,128-0-255,0-0-0,Helvetica|||128-0-255,0,0,0,0,0,0
+1,62,63,61,100,0,0,22,0,0,0,-1--1--1,,1|(785,640)|
+11,63,0,785,693,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,64,discovering defect,862,693,69,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,65,66,61,100,0,0,22,0,0,0,-1--1--1,,1|(855,566)|
+11,66,0,907,566,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,67,missing defect while testing task,907,597,57,23,40,131,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,68,69,61,4,0,0,22,1,0,0,0-0-0,|||0-0-0,1|(616,572)|
+11,69,0,530,572,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,70,making defect while completing task,530,598,79,18,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,71,Defective Tasks to be Reworked,753,823,49,27,3,131,0,35,0,0,0,0,128-0-255,0-0-0,Helvetica|||128-0-255,0,0,0,0,0,0
+1,72,63,71,4,0,0,22,1,0,0,0-0-0,|||0-0-0,1|(785,747)|
+1,73,75,61,4,0,0,22,1,0,0,0-0-0,|||0-0-0,1|(734,638)|
+1,74,75,71,100,0,0,22,0,0,0,-1--1--1,,1|(734,745)|
+11,75,0,734,689,8,6,33,3,0,0,2,0,0,0,0,0,0,0,0,0
+10,76,Defective Task Not Fixed,671,689,55,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+12,77,48,740,969,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,78,80,77,4,0,0,22,1,0,0,0-0-0,|||0-0-0,1|(740,937)|
+1,79,80,71,100,0,0,22,0,0,0,-1--1--1,,1|(740,875)|
+11,80,0,740,907,8,6,33,131,0,0,2,0,0,0,0,0,0,0,0,0
+10,81,Correct Defective Tasks,667,907,65,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,82,Defective Tasks Approved,1086,561,40,30,3,131,0,35,0,0,0,0,128-0-255,0-0-0,Helvetica|||128-0-255,0,0,0,0,0,0
+1,83,66,82,4,0,0,22,1,0,0,0-0-0,|||0-0-0,1|(979,566)|
+1,84,71,76,1,0,43,0,35,0,0,0-0-0,Arial|||0-0-0,1|(693,759)|
+10,85,Task to be Reworked,472,811,60,18,8,130,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,86,85,76,1,0,43,0,35,0,0,0-0-0,Arial|||0-0-0,1|(545,707)|
+10,87,reworking task,596,770,53,18,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,88,87,76,1,0,45,0,35,0,0,0-0-0,Arial|||0-0-0,1|(613,741)|
+1,89,71,81,1,0,43,0,35,64,0,0-0-0,Arial|||0-0-0,1|(679,884)|
+1,90,85,81,1,0,45,0,35,64,0,0-0-0,Arial|||0-0-0,1|(575,857)|
+1,91,87,81,1,0,43,0,35,64,0,0-0-0,Arial|||0-0-0,1|(596,810)|
+10,92,rejecting task,922,810,71,18,8,130,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,93,92,64,0,0,43,0,35,64,0,0-0-0,Arial|||0-0-0,1|(0,0)|
+10,94,Quality Assurance,1196,679,58,18,8,130,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+10,95,Tasks Defective Frac,1142,749,59,18,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,96,94,67,0,0,43,0,35,64,0,0-0-0,Arial|||0-0-0,1|(0,0)|
+1,97,95,67,1,0,43,0,35,64,0,0-0-0,Arial|||0-0-0,1|(1009,693)|
+1,98,64,67,1,0,45,0,35,64,0,0-0-0,Arial|||0-0-0,1|(825,607)|
+10,99,completing task,172,616,47,18,8,130,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,100,99,70,0,0,43,0,35,64,0,0-0-0,Arial|||0-0-0,1|(0,0)|
+10,101,Tasks Approved,1089,789,55,18,8,2,1,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+12,102,48,285,572,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,103,69,102,100,0,0,22,0,0,0,-1--1--1,,1|(409,572)|
+10,104,Defective Completion Frac,227,730,53,27,8,3,0,34,0,0,0,0,0-0-0,0-0-0,Helvetica|||15-128-255,0,0,0,0,0,0
+1,105,104,70,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,106,Defect Rate in Completion,262,815,57,18,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,107,106,104,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,108,Task Correction Frac,308,886,59,18,8,3,0,34,0,0,0,0,0-0-0,0-0-0,Helvetica|||15-128-255,0,0,0,0,0,0
+1,109,108,81,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(467,922)|
+1,110,108,76,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(385,743)|
+10,111,Defect Rate in Rework,481,961,57,18,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,112,111,108,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,113,reworking feasible,522,366,58,18,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,114,113,8,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,115,Task to be Approved,-92,-193,59,18,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,116,115,38,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,117,Test Rejection Time Frac,1137,273,66,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Helvetica|||15-128-255,0,0,0,0,0,0
+1,118,117,16,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,119,17,26,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(935,332)|
+10,120,Defective Tasks Density UM2,895,948,59,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,121,Task to be Reworked,1067,991,60,18,8,130,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,122,121,120,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,123,71,120,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,124,Avg Dfct in Apvd Task,1388,496,70,18,8,3,0,48,0,0,0,0,0-0-0,0-0-0,Helvetica||U|0-0-0,0,0,0,0,0,0
+10,125,Defective in Approved Tasks Frac,1329,329,51,18,8,131,0,34,0,0,0,0,0-0-0,0-0-0,Helvetica|||15-128-255,0,0,0,0,0,0
+1,126,3,125,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1181,200)|
+1,127,82,125,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1258,498)|
+1,128,125,124,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,129,Task Finish Switch,793,-91,43,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,130,129,32,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,131,129,35,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,132,129,17,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1089,79)|
+10,133,Initial Tasks to Complete,311,270,57,18,8,2,17,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,134,133,4,0,17,0,0,0,64,1,-1--1--1,,1|(0,0)|
+10,135,Available Resources,912,-184,40,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,136,135,32,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,137,Available Resources,451,73,45,18,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,138,137,35,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,139,Min Time to Do Task,99,115,48,18,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,140,139,39,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,141,Defect Correction Rate,208,939,58,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,142,141,108,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,143,Initial Time Schedule,1129,-184,48,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,144,Schedule Time Left,1221,-278,55,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,145,Expected Time Left,1343,-121,56,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,146,Current Task Remained,1353,3,52,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,147,Task to be Approved,1261,108,59,18,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+10,148,Task to be Reworked,1430,93,60,18,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,149,147,146,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1300,54)|
+1,150,148,146,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1406,55)|
+1,151,146,145,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1362,-57)|
+10,152,Productivity,1138,-97,42,10,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+10,153,Schedule Pressure,1411,-285,47,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,154,Schedule Pressure Impacted on Defects,1601,-207,75,27,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,155,Current Defect Rate in Completion,1706,-58,73,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,156,Current Defect Rate in Rework,1653,108,70,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+10,157,Time,1198,-387,29,10,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+10,158,Min Time Left,1041,-336,49,10,8,3,0,34,-1,0,0,0,128-128-128,0-0-0,Helvetica|||251-2-7,0,0,0,0,0,0
+1,159,157,144,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1225,-332)|
+1,160,158,144,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1149,-320)|
+1,161,143,144,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1167,-230)|
+1,162,152,143,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1115,-140)|
+1,163,152,145,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1249,-88)|
+1,164,135,143,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1024,-191)|
+1,165,135,145,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1108,-34)|
+10,166,Initial Tasks to Complete,961,-256,52,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,167,166,143,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1077,-242)|
+1,168,144,153,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1309,-314)|
+10,169,Table of Schedule Pressure,1605,-347,70,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,170,169,154,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1605,-260)|
+1,171,153,154,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1536,-251)|
+1,172,154,155,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1676,-112)|
+1,173,154,156,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1548,-11)|
+10,174,Defect Rate in Completion,1772,-181,53,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+10,175,Defect Rate in Rework,1777,32,53,18,8,3,0,32,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,176,174,155,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1716,-131)|
+1,177,175,156,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1696,63)|
+1,178,145,153,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(1398,-184)|
+10,179,Schedule Pressure SW,137,853,49,18,8,3,1,32,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+10,180,Current Defect Rate in Completion,95,783,78,18,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,181,180,104,1,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(129,746)|
+1,182,179,104,1,1,0,0,1,64,0,0-0-0,|||0-0-0,1|(168,801)|
+10,183,Current Defect Rate in Rework,478,1001,74,18,8,2,0,33,-1,0,0,0,128-128-128,0-0-0,Helvetica|||128-128-128,0,0,0,0,0,0
+1,184,179,108,1,1,0,0,1,64,0,0-0-0,|||0-0-0,1|(290,960)|
+1,185,183,108,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,186,166,129,0,0,0,0,1,0,0,0-0-0,|||0-0-0,1|(0,0)|
+1,187,3,129,0,0,0,0,1,0,0,0-0-0,|||0-0-0,1|(0,0)|
+10,188,Threshold Finish Task,725,-3,53,19,8,3,0,32,-1,0,0,0,0-0-0,0-0-0,Helvetica|||0-0-0,0,0,0,0,0,0
+1,189,188,129,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Introduction
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|255-255-255|255-255-255|96,96,100,0
+12,1,0,439,328,107,28,8,7,0,0,-1,0,0,0,0,0,0,0,0,0
+Project Dynamics Model from Ford and Sterman, 1997 paper in System Dynamics Review
+12,2,0,451,431,120,38,8,7,0,0,-1,0,0,0,0,0,0,0,0,0
+Replicated by Hazhir Rahmandad and Kun Hu in developing the 2011 SDR paper on capturing multiple errors per task
+///---\\\
+:L<%^E!@
+5:Quality Assurance
+9:current
+19:107,0
+24:0
+25:0
+26:0
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:1
+72:0
+73:0
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Arial|11||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1

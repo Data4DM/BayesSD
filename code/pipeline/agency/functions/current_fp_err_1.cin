@@ -1,0 +1,30 @@
+Cost of Manager Salary = 5000
+Cost of Nonmanager Salary = 1000
+Doing Right Frac = 0.8
+Effort on Task to Filling Form Frac = 0.1
+FINAL TIME = 100
+INITIAL TIME = 0
+Margin of Task = 300
+Ratio to Quality Unit = 1
+Reference Manager = 2
+Reference Nonmanager = 5
+Reference Quality = 1
+Reference Task = 160
+Reference Task Arriving = 40
+Target Task Completion Time = 4
+Time for Filling Form to Task Frac = 0.25
+TIME STEP = 1
+Time to Adjust Quality = 4
+Time to Manager Hiring = 12
+Time to Manager Retiring = 12
+Time to Nonmanager Hiring = 8
+Time to Nonmanager Retiring = 4
+Time to Submit = 4
+Workweek = 4
+Normalized Table for Company Quality 2 Desired Manager(
+(0,2),(0.5,1.5),(1,1))
+Table for Manager to Detection Frac(
+(0,0.3),(0.5,0.5),(1,0.7))
+Table for Normalized Effect Qualtiy 2 Task Arrival(
+(0,0),(0.5,0.5),(1,1),(1.5,1.1),
+(2,1.15))
