@@ -187,7 +187,7 @@ def branching(df, time_resol:str= 'DATECODE', space_resol:str = '3AGY',branch='s
         # DB: PUBLIC INTEREST DECLASSIFICATION BOARD 0.439841 (small size, zero mng)
         # DG: NORTHERN BORDER REGIONAL COMMISSION (~5 but survivor! 10~21)
         # YF :??  0.478675 (two year: 10/11-13/56)
-
+        # TD?
         
         ##########################################
         # df[(df.reg_frac > np.percentile(df.reg_frac, 95)) & (df.s_size > 30)]

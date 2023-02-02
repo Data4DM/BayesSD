@@ -2,7 +2,7 @@ goal:
 - view generator and estimator from joint function space of simulate and infer
 - to argue Hierarchical draws2data causes data2draw uncertainty 
 
-- find data with symmetry, hierarchy, by time and space based on [[daily_diary]], [[forming_data_agency]]
+- find data with symmetry, hierarchy, by time and space based on [[../../../../MoonVolve🌀/queue/johan_dominance💫🔭/angie/daily_diary]], [[../../../../MoonVolve🌀/queue/vicky_regulation🗡🛡/angie/forming_data_agency]]
 
 #### Recovery quality under uncertainty
 parameter retrieval quality (RQ) is a measure of model trustability defined with sbc metric
