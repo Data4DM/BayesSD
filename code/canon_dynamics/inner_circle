@@ -1,0 +1,19 @@
+Inner cycle from the diagram in https://github.com/Data4DM/BayesSD/discussions/156#discussioncomment-6857745
+
+Compared to `outer_circle`, approximator+analytical (A) is more emphasized, making `inner_circle` computaitional statistics topic, rather than social science or business.
+
+Code in this repo can be organized as below
+## 1_Analyze
+### StockFlowDiag
+### 7_StrucDomAnal
+
+## 2_Infer
+### 1_MLE
+### 2_MSM
+### 3_SEM
+### 4_FLT
+### 5_MCMC
+
+## 3_Action
+### 6_BATS
+### 8_SOPS
