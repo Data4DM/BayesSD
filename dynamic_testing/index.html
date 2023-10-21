@@ -1,0 +1,346 @@
+<!DOCTYPE html><head><meta charset = "utf-8">
+<title>Screening_submitted12_clean4_0100</title>
+
+<style type = "text/css">
+* {
+  box-sizing: border-box;
+}
+div.sketch {
+  position: relative;
+}
+.io-slider-box {
+background-color: white; border: 1px solid gray; font-size:11px;
+text-align: center; vertical-align: middle; line-height: 13px;
+}
+.io-slider-slide {
+  padding: 0; margin: 0; -webkit-appearance: none; background: transparent;
+}
+.io-slider-slide::-ms-track {
+  background: transparent; border-color: transparent; color: transparent;
+}
+.io-slider-slide::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px;
+  border-radius: 20%; background: blue; cursor: pointer;
+}
+.io-slider-slide::-moz-range-thumb {
+  height: 14px; width: 14px;
+    border-radius: 20%; background: blue; cursor: pointer;
+}
+.io-slider-slide::-ms-thumb {
+  height: 14px; width: 14px;
+  border-radius: 20%; background: blue; cursor: pointer;
+}
+div.io-chart {
+  background: white;
+  border: 1px solid gray;
+}
+div.io-chart > .svg {
+  width: 100%;
+  height: 100%;
+}
+div.topBar * {
+  display: inline-block;
+}
+h1, h3 {
+  margin: 0 9px;
+}
+button.resetAll {
+  padding: 12px 24px;
+  text-align: center;
+  font-size: 16px;
+  margin: 12px;
+}
+button.exportCSV {
+  padding: 12px 24px;
+  text-align: center;
+  font-size: 16px;
+  margin: 12px;
+}
+</style>
+
+<script type="text/javascript" src="mdl.js"></script>
+<script type="text/javascript" src="vensim_wasm.js"></script>
+<script type="text/javascript" src="wasm-arrays.min.js"></script>
+<script type="text/javascript" src="d3.min.js"></script>
+</head><body>
+<h1>Screening_submitted12_clean4_0100</h1>
+
+<div class="topBar">
+<h3>powered by <a target="blank" href="https://vensim.com/">Vensim</a></h3>
+<button class="resetAll">Reset All Sliders</button>
+<button class="exportCSV">Export CSV</button>
+</div>
+
+<div class="sketch">
+<img src="sketch.png"></img>
+<div class="io-slider-box" name="Public Perception Delay" style="position: absolute; top: 277px; left: 532px; width: 111px; height: 13px">
+2
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 290px; left: 532px; width: 111px" type="range" name="Public Perception Delay" min="-10" max="20" step="0.1"></input>
+<div class="io-slider-box" name="Time to Adj R" style="position: absolute; top: 151px; left: 39px; width: 92px; height: 13px">
+1.5
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 164px; left: 39px; width: 92px" type="range" name="Time to Adj R" min="-10" max="20" step="0.1"></input>
+<div class="io-slider-box" name="HBR Multiplier R" style="position: absolute; top: 617px; left: 78px; width: 95px; height: 13px">
+0.5
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 630px; left: 78px; width: 95px" type="range" name="HBR Multiplier R" min="-1" max="2" step="0.01"></input>
+<div class="io-slider-box" name="INIT R" style="position: absolute; top: 78px; left: -5px; width: 56px; height: 14px">
+50
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 92px; left: -5px; width: 56px" type="range" name="INIT R" min="-100" max="200" step="1"></input>
+<div class="io-slider-box" name="INIT R" style="position: absolute; top: 50px; left: 725px; width: 122px; height: 13px">
+50
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 63px; left: 725px; width: 122px" type="range" name="INIT R" min="30" max="70" step="2.5"></input>
+<div class="io-slider-box" name="Public Perception Delay" style="position: absolute; top: 161px; left: 725px; width: 122px; height: 13px">
+2
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 174px; left: 725px; width: 122px" type="range" name="Public Perception Delay" min="2" max="15" step="1"></input>
+<div class="io-slider-box" name="Time to Adj R" style="position: absolute; top: 100px; left: 725px; width: 122px; height: 14px">
+1.5
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 114px; left: 725px; width: 122px" type="range" name="Time to Adj R" min="0.5" max="5" step="0.5"></input>
+<div class="io-slider-box" name="Switch V" style="position: absolute; top: 270px; left: 730px; width: 122px; height: 14px">
+1
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 284px; left: 730px; width: 122px" type="range" name="Switch V" min="0" max="1" step="1"></input>
+<div class="io-slider-box" name="Switch R" style="position: absolute; top: 147px; left: 239px; width: 61px; height: 13px">
+1
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 160px; left: 239px; width: 61px" type="range" name="Switch R" min="-1" max="2" step="0.01"></input>
+<div class="io-slider-box" name="Switch R" style="position: absolute; top: 217px; left: 729px; width: 122px; height: 13px">
+1
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 230px; left: 729px; width: 122px" type="range" name="Switch R" min="0" max="1" step="1"></input>
+<div class="io-slider-box" name="Guideline Start Year" style="position: absolute; top: 75px; left: 91px; width: 83px; height: 13px">
+10
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 88px; left: 91px; width: 83px" type="range" name="Guideline Start Year" min="-10" max="20" step="0.1"></input>
+<div class="io-slider-box" name="HBR Multiplier R" style="position: absolute; top: 4px; left: 715px; width: 121px; height: 14px">
+0.5
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 18px; left: 715px; width: 121px" type="range" name="HBR Multiplier R" min="0" max="1" step="0.1"></input>
+<div class="io-slider-box" name=""Slope D+"" style="position: absolute; top: 467px; left: 710px; width: 122px; height: 13px">
+0.012
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 480px; left: 710px; width: 122px" type="range" name=""Slope D+"" min="0" max="0.02" step="0.001"></input>
+<div class="io-slider-box" name="Reference HBR" style="position: absolute; top: 552px; left: 19px; width: 67px; height: 14px">
+1
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 566px; left: 19px; width: 67px" type="range" name="Reference HBR" min="-1" max="2" step="0.01"></input>
+<div class="io-slider-box" name="Bias on R" style="position: absolute; top: 474px; left: 2px; width: 59px; height: 13px">
+1
+</div>
+<input class="io-slider-slide" style="position: absolute; top: 487px; left: 2px; width: 59px" type="range" name="Bias on R" min="-1" max="2" step="0.01"></input>
+<div class="io-chart" name="Age to Start Screening" varname='Recommended Starting Age R' xaxisname="Year" yaxisname="years" include0 style="position: absolute; top: 26px; left: 927px; width: 342px; height: 289px"></div>
+<div class="io-chart" name="D+ in Screened Population" varname='"Age Specific Prevalence D+"' xaxisname="Year" yaxisname="dmnl" include0 style="position: absolute; top: 322px; left: 924px; width: 348px; height: 279px"></div>
+</div>
+
+<script type="text/javascript">
+
+var VensimLoadedFlag = 0;
+
+function OnVensimLoaded()
+	{
+		VensimLoadedFlag = _IsVensimLoaded();
+		runModel(0);
+	}
+
+
+var VensimCharts = [];
+
+function UpdateCharts(run)
+	{
+            var margin = {left: 70, right: 30, top: 30, bottom: 50};
+			d3.selectAll("div.io-chart").each(function() {
+				var div = d3.select(this);
+				var width = parseInt(div.style("width"), 10);
+				var height = parseInt(div.style("height"), 10);
+				var temp = ["0", "0", width, height];
+				div.selectAll("svg").data([0]).join("svg").attr("viewBox", temp.join(","));
+				var chart = div.select("svg");
+				var fTimeVals = GetSeries("Time");
+                                var varname = div.attr("varname");
+				var fVals = GetSeries(varname);
+				if (!VensimCharts[varname]) {
+					VensimCharts[varname] = { runs: [] };
+				}
+				var o = VensimCharts[varname];
+				o.runs[run] = {
+					times: fTimeVals,
+					vals: fVals,
+				}
+
+				var vmin = Number.MAX_VALUE;
+				var vmax = -Number.MAX_VALUE;
+				for (r in o.runs) {
+					vmin = Math.min(vmin, d3.min(o.runs[r].vals));
+					vmax = Math.max(vmax, d3.max(o.runs[r].vals));
+				}
+				if ( this.hasAttribute("include0") ) { // force the range to include zero
+					if (vmin > 0) vmin = 0;
+					else if (vmax < 0) vmax = 0;
+				}
+				if ( this.hasAttribute("ymin") ) {
+					vmin = this.getAttribute("ymin");
+				}
+				if ( this.hasAttribute("ymax") ) {
+					vmax = this.getAttribute("ymax");
+				}
+				if ( vmin == vmax ) { // if the range is degenerate, modify
+					if ( vmin == 0 ) {
+						vmin = 0;
+						vmax = 1;
+					}
+					else {
+						vmin = vmax/2;
+						vmax = vmax*2;
+					}
+				}
+				
+                chart.selectAll("text.title")
+                  .data([0])
+                  .join("text").attr("class", "title")
+                  .attr("x", (width - margin.left - margin.right)/2 + margin.left)
+                  .attr("y", (margin.top / 2))
+                  .attr("text-anchor", "middle")
+                  .style("font-size", "16px")
+                  .text(div.attr("name"));
+				  
+                var xscale = d3.scaleLinear()
+                    .domain([d3.min(fTimeVals), d3.max(fTimeVals)])
+                    .range([margin.left, width - margin.right]);
+                chart.selectAll("g.xaxis")
+                  .data([0])
+                  .join("g").attr("class", "xaxis")
+                  .attr("transform", "translate(0, " + (height - margin.bottom) + ")")
+                  .call(d3.axisBottom(xscale).ticks(width / 80).tickSizeOuter(0));
+                chart.selectAll("text.xunits")
+                  .data([0])
+                  .join("text").attr("class", "xunits")
+                  .attr("x", (width - margin.left - margin.right)/2 + margin.left)
+                  .attr("y", height - 14)
+                  .attr("text-anchor", "middle")
+                  .style("font-size", "16px")
+                  .text(div.attr("xaxisname"));
+				  
+                var yscale = d3.scaleLinear()
+                    .domain([vmin, vmax])
+                    .range([margin.top, height - margin.bottom]);
+                var yscale_inv = d3.scaleLinear()
+                    .domain([vmin, vmax])
+                    .range([height - margin.bottom, margin.top]);
+                chart.selectAll("g.yaxis")
+                  .data([0])
+                  .join("g").attr("class", "yaxis")
+                  .attr("transform", "translate(" + margin.left + ", 0)")
+                  .call(d3.axisLeft(yscale_inv));
+                chart.selectAll("text.yunits")
+                  .data([0])
+                  .join("text").attr("class", "yunits")
+                  .attr("transform", "rotate(-90)")
+                  .attr("y", 16)
+                  .attr("x", -(height - margin.top - margin.bottom)/2 - margin.top)
+                  .attr("text-anchor", "middle")
+                  .style("font-size", "16px")
+                  .text(div.attr("yaxisname"));
+				  
+                for (r in o.runs) {
+                    var color = "red";
+                    if (r == 0) { color = "blue"; }
+                    chart.selectAll("path.data" + r)
+                      .data([o.runs[r].vals])
+                      .join("path").attr("class", "data" + r).attr("d", (d, i) =>
+                        d3.line()
+                          .x((d, i) => xscale(o.runs[r].times[i]))
+                          .y((d) => height - margin.bottom - yscale(d) + margin.top)(d))
+                      .attr("stroke", color)
+                      .attr("fill", "none");
+                }
+            });
+}
+
+// reset slider values to the value attribute in the io-slider-slide
+function resetAllSliders() {
+	d3.selectAll("input.io-slider-slide").nodes().forEach(function(i){
+		i.value = i.getAttribute("value");
+		d3.selectAll("div.io-slider-box[name=\"" + i.name + "\"]").text(i.valueAsNumber);
+	});
+}
+
+// reset slider values to the value in the WASM code
+function updateAllSliders() {
+	d3.selectAll("input.io-slider-slide").nodes().forEach(function(i){
+		i.value = GetConstant(i.name);
+		d3.selectAll("div.io-slider-box[name=\"" + i.name + "\"]").text(i.valueAsNumber);
+	});
+}
+
+// set slider values to the value in the WASM code and modify the DOM io-slider values to make that permanent
+// if the value attribute is already defined, skip
+// this permits the user to add value="37.5" to an io-slider-slider to override the WASM default
+function initializeSliders() {
+	d3.selectAll("input.io-slider-slide").nodes().forEach(function(i){
+		var v;
+		if ( i.hasAttribute("value")) {
+			v = i.getAttribute("value");
+		}
+		else {
+			v = GetConstant(i.name);
+			i.setAttribute( "value", v);
+		}
+		// ensure that the property and text match the attribute
+		i.value = v;
+		d3.selectAll("div.io-slider-box[name=\"" + i.name + "\"]").text(i.valueAsNumber);
+	});
+}
+
+firstRun = true;
+
+function runModel(run) {
+if (  VensimLoadedFlag == 0)
+{
+	return;
+}
+//if ( VensimLoadingFilesCount > 0)
+//{
+//	return;
+//}
+
+InitializeModel();
+if (firstRun) {
+	initializeSliders();
+	firstRun = false;
+}
+
+// set all slider constants
+d3.selectAll("input.io-slider-slide").each(function() {
+	//console.log("Setting " + this.name + " to " + this.valueAsNumber);
+	SetConstant(this.name, this.valueAsNumber);
+});
+RunSim();
+UpdateCharts(run);
+}
+
+d3.select("button.resetAll").nodes()[0].onclick = function() {
+resetAllSliders();
+runModel(1);
+}
+
+d3.select("button.exportCSV").nodes()[0].onclick = function() {
+ExportCSV();
+}
+
+d3.selectAll("input.io-slider-slide").nodes().forEach(function(i){
+i.oninput = function() {
+// update the number shown for all sliders of this var
+d3.selectAll("div.io-slider-box[name=\"" + i.name + "\"]").text(i.valueAsNumber);
+d3.selectAll("input.io-slider-slide[name=\"" + i.name + "\"]").each(function() { this.value = i.valueAsNumber; })
+runModel(1);
+};
+});
+
+</script>
+
+</body></html>
