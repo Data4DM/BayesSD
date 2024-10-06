@@ -1,0 +1,20 @@
+name: Discussion to Markdown
+run-name: Capture ${{ inputs.discussion-url }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      discussion-url:
+        type: string
+        description: GitHub discussion URL
+        required: true
+
+jobs:
+  test-discussion-to-markdown:
+    name: Discussion to Markdown
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mamuso/discussion-to-markdown-action@main
+        with:
+          discussion-url: ${{ github.event.inputs.discussion-url }}
+          token: ${{ secrets.GITHUB_TOKEN }}
